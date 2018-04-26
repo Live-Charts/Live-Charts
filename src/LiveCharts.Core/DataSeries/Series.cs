@@ -31,6 +31,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
@@ -188,7 +189,13 @@ namespace LiveCharts.Core.DataSeries
                 _dataLabelsForeground = value;
                 OnPropertyChanged();
             }
-        }        
+        }
+
+        /// <inheritdoc />
+        public TimeSpan AnimationsSpeed { get; set; }
+
+        /// <inheritdoc />
+        public IEnumerable<Frame> AnimationLine { get; set; }
 
         /// <inheritdoc />
         int ISeries.GroupingIndex => -1;
@@ -367,19 +374,26 @@ namespace LiveCharts.Core.DataSeries
                 });
         }
 
-        void ISeries.OnPointHover(PackedPoint point)
+        void ISeries.OnPointHighlight(PackedPoint point, IChartView chart)
         {
-            ViewProvider.OnPointHighlight(point);
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.AnimationLine
+            };
+
+            ViewProvider.OnPointHighlight(point, animation);
         }
 
-        void ISeries.OnPointSelected(PackedPoint point)
+        void ISeries.RemovePointHighlight(PackedPoint point, IChartView chart)
         {
-            ViewProvider.OnPointHighlight(point);
-        }
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.AnimationLine
+            };
 
-        void ISeries.ResetPointStyle(PackedPoint point)
-        {
-            ViewProvider.RemovePointHighlight(point);
+            ViewProvider.RemovePointHighlight(point, animation);
         }
 
         /// <summary>
@@ -477,6 +491,8 @@ namespace LiveCharts.Core.DataSeries
                 ModelType = t,
                 IsValueType = t.IsValueType
             };
+            AnimationsSpeed = TimeSpan.MaxValue;
+            AnimationLine = null;
             Charting.BuildFromSettings<ISeries>(this);
         }
 

@@ -26,6 +26,7 @@
 #region
 
 using System.Windows.Shapes;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -61,14 +62,14 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnPointHighlight(PackedPoint point)
+        public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>) point.View;
             view.Shape.Opacity = 0.85;
         }
 
         /// <inheritdoc />
-        public void RemovePointHighlight(PackedPoint point)
+        public void RemovePointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>)point.View;
             view.Shape.Opacity = 1;

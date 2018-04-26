@@ -418,7 +418,7 @@ namespace LiveCharts.Core.Charts
                 y += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]);
                 if (View.Hoverable)
                 {
-                    cartesianSeries.OnPointHover(point);
+                    cartesianSeries.OnPointHighlight(point, View);
                 }
             }
 

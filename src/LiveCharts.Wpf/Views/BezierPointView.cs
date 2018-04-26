@@ -30,6 +30,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -59,6 +60,7 @@ namespace LiveCharts.Wpf.Views
         private BezierPointView<TModel, TLabel> _previous;
         private BezierSegment _segment;
         private BezierViewModel _vm;
+        private TimeLine _lastTimeLine;
 
         public CartesianPath Path => (CartesianPath) _path;
 
@@ -66,7 +68,8 @@ namespace LiveCharts.Wpf.Views
 
         protected override void OnDraw(
             Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous)
+            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous,
+            TimeLine timeLine)
         {
             var chart = point.Chart.View;
             _vm = point.ViewModel;
@@ -88,14 +91,17 @@ namespace LiveCharts.Wpf.Views
                 _path = _vm.Path;
                 _segment = (BezierSegment) _path.InsertSegment(_segment, _vm.Index, _vm.Point1, _vm.Point2, _vm.Point3);
 
-                var bm = BounceMagnitude.Small;
+                var geometryAnimation = new TimeLine
+                {
+                    AnimationLine = timeLine.AnimationLine,
+                    Duration = TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2)
+                };
 
-                Shape.Animate()
-                    .AtSpeed(TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2))
-                    .Bounce(Canvas.LeftProperty, _vm.Location.X, _vm.Location.X - r, bm, 0.5)
-                    .Bounce(Canvas.TopProperty, _vm.Location.Y, _vm.Location.Y - r, bm, 0.5)
-                    .Bounce(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, bm, 0.5)
-                    .Bounce(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, bm, 0.5)
+                Shape.Animate(geometryAnimation)
+                    .Property(Canvas.LeftProperty, _vm.Location.X, _vm.Location.X - r, 0.5)
+                    .Property(Canvas.TopProperty, _vm.Location.Y, _vm.Location.Y - r, 0.5)
+                    .Property(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, 0.5)
+                    .Property(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, 0.5)
                     .Begin();
             }
 
@@ -107,19 +113,19 @@ namespace LiveCharts.Wpf.Views
 
             if (!isNew)
             {
-                Shape.Animate()
-                    .AtSpeed(speed)
-                    .Property(Canvas.LeftProperty, _vm.Location.X - r)
-                    .Property(Canvas.TopProperty, _vm.Location.Y - r)
+                Shape.Animate(timeLine)
+                    .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), _vm.Location.X - r)
+                    .Property(Canvas.TopProperty, Canvas.GetTop(Shape), _vm.Location.Y - r)
                     .Begin();
             }
 
-            _segment.Animate()
-                .AtSpeed(speed)
-                .Property(BezierSegment.Point1Property, _vm.Point1.AsWpf())
-                .Property(BezierSegment.Point2Property, _vm.Point2.AsWpf())
-                .Property(BezierSegment.Point3Property, _vm.Point3.AsWpf())
+            _segment.Animate(timeLine)
+                .Property(BezierSegment.Point1Property, _segment.Point1, _vm.Point1.AsWpf())
+                .Property(BezierSegment.Point2Property, _segment.Point2, _vm.Point2.AsWpf())
+                .Property(BezierSegment.Point3Property, _segment.Point3, _vm.Point3.AsWpf())
                 .Begin();
+
+            _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
@@ -142,10 +148,11 @@ namespace LiveCharts.Wpf.Views
         {
             var t = _next ?? _previous ?? this;
 
-            var shapeAnimation = Shape.Animate()
-                .AtSpeed(chart.AnimationsSpeed)
-                .Property(Canvas.LeftProperty, t._vm.Location.X - .5 * _vm.GeometrySize)
-                .Property(Canvas.TopProperty, t._vm.Location.Y - .5 * _vm.GeometrySize);
+            var shapeAnimation = Shape.Animate(_lastTimeLine)
+                .Property(
+                    Canvas.LeftProperty, Canvas.GetLeft(Shape), t._vm.Location.X - .5 * _vm.GeometrySize)
+                .Property(
+                    Canvas.TopProperty, Canvas.GetTop(Shape), t._vm.Location.Y - .5 * _vm.GeometrySize);
 
             shapeAnimation
                 .Then((sender, args) =>
@@ -159,14 +166,14 @@ namespace LiveCharts.Wpf.Views
                 _path.RemoveSegment(_segment);
                 _segment = null;
                 _path = null;
+                _lastTimeLine = null;
             }
             else
             {
-                var segmentAnimation = _segment.Animate()
-                    .AtSpeed(chart.AnimationsSpeed)
-                    .Property(BezierSegment.Point1Property, t._vm.Point1.AsWpf())
-                    .Property(BezierSegment.Point2Property, t._vm.Point1.AsWpf())
-                    .Property(BezierSegment.Point3Property, t._vm.Point1.AsWpf());
+                var segmentAnimation = _segment.Animate(_lastTimeLine)
+                    .Property(BezierSegment.Point1Property, _segment.Point1, t._vm.Point1.AsWpf())
+                    .Property(BezierSegment.Point2Property, _segment.Point2, t._vm.Point1.AsWpf())
+                    .Property(BezierSegment.Point3Property, _segment.Point3, t._vm.Point1.AsWpf());
 
                 segmentAnimation
                     .Then((sender, args) =>
@@ -174,6 +181,7 @@ namespace LiveCharts.Wpf.Views
                         _path.RemoveSegment(_segment);
                         _segment = null;
                         _path = null;
+                        _lastTimeLine = null;
                         segmentAnimation.Dispose();
                     })
                     .Begin();

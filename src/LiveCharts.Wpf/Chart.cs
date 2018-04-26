@@ -33,6 +33,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
@@ -116,14 +117,14 @@ namespace LiveCharts.Wpf
             new PropertyMetadata(null, RaiseOnPropertyChanged(nameof(Series))));
 
         /// <summary>
-        /// The animations speed property, default value is 250 milliseconds.
+        /// The animations speed property, default value is 550 milliseconds.
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             nameof(AnimationsSpeed), typeof(TimeSpan), typeof(Chart),
-            new PropertyMetadata(TimeSpan.FromMilliseconds(850), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
+            new PropertyMetadata(TimeSpan.FromMilliseconds(550), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
 
         /// <summary>
-        /// The tooltip timeout property
+        /// The tooltip timeout property, default is 150 ms.
         /// </summary>
         public static readonly DependencyProperty TooltipTimeoutProperty = DependencyProperty.Register(
             nameof(TooltipTimeOut), typeof(TimeSpan), typeof(Chart),
@@ -155,6 +156,13 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty HoverableProperty = DependencyProperty.Register(
             nameof(Hoverable), typeof(bool), typeof(Chart), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The animation line property, default is bounce medium.
+        /// </summary>
+        public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
+            nameof(AnimationLine), typeof(IEnumerable<Core.Animations.Frame>), typeof(Chart),
+            new PropertyMetadata(TimeLines.BounceMedium));
 
         #endregion
 
@@ -346,6 +354,13 @@ namespace LiveCharts.Wpf
         {
             get => (TimeSpan)GetValue(AnimationsSpeedProperty);
             set => SetValue(AnimationsSpeedProperty, value);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Core.Animations.Frame> AnimationLine
+        {
+            get => (IEnumerable<Core.Animations.Frame>)GetValue(AnimationLineProperty);
+            set => SetValue(AnimationLineProperty, value);
         }
 
         /// <inheritdoc />

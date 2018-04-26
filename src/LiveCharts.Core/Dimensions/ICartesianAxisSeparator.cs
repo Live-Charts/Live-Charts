@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
@@ -58,13 +59,15 @@ namespace LiveCharts.Core.Dimensions
         /// Moves the specified point1.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        void DrawShape(CartesianAxisSectionArgs args);
+        /// <param name="timeLine">The animation.</param>
+        void DrawShape(CartesianAxisSectionArgs args, TimeLine timeLine);
 
         /// <summary>
         /// Draws the label.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        void DrawLabel(CartesianAxisSectionArgs args);
+        /// <param name="timeLine">The animation.</param>
+        void DrawLabel(CartesianAxisSectionArgs args, TimeLine timeLine);
 
         /// <summary>
         /// Disposes the specified view.

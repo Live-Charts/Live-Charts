@@ -48,9 +48,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animations\BounceAnimations.cs" />
-    <Compile Include="Animations\BounceMagnitude.cs" />
-    <Compile Include="Animations\Frame.cs" />
     <Compile Include="Animations\Extensions.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Controls\ChartContent.cs" />

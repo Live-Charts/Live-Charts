@@ -29,6 +29,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -53,10 +54,13 @@ namespace LiveCharts.Wpf.Views
         where TCoordinate : ICoordinate
         where TSeries : IStrokeSeries, ICartesianSeries
     {
+        private TimeLine _lastTimeLine;
+
         /// <inheritdoc />
         protected override void OnDraw(
             Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point,
-            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> previous)
+            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> previous,
+            TimeLine timeLine)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -79,28 +83,24 @@ namespace LiveCharts.Wpf.Views
             Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
             Panel.SetZIndex(Shape, point.Series.ZIndex);
 
-            var speed = chart.AnimationsSpeed;
-
             if (isNew)
             {
-                const BounceMagnitude bm = BounceMagnitude.Small;
-
-                Shape.Animate()
-                    .AtSpeed(speed)
-                    .Bounce(Canvas.LeftProperty, vm.Location.X, vm.Location.X, bm)
-                    .Bounce(Canvas.TopProperty, vm.Location.Y, vm.Location.Y, bm)
-                    .Bounce(FrameworkElement.WidthProperty, 0, vm.Diameter, bm)
-                    .Bounce(FrameworkElement.HeightProperty, 0, vm.Diameter, bm)
+                Shape.Animate(timeLine)
+                    .Property(Canvas.LeftProperty, vm.Location.X, vm.Location.X)
+                    .Property(Canvas.TopProperty, vm.Location.Y, vm.Location.Y)
+                    .Property(FrameworkElement.WidthProperty, 0, vm.Diameter)
+                    .Property(FrameworkElement.HeightProperty, 0, vm.Diameter)
                     .Begin();
             }
             else
             {
-                Shape.Animate()
-                    .AtSpeed(speed)
-                    .Property(Canvas.LeftProperty, vm.Location.X)
-                    .Property(Canvas.TopProperty, vm.Location.Y)
+                Shape.Animate(timeLine)
+                    .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), vm.Location.X)
+                    .Property(Canvas.TopProperty, Canvas.GetTop(Shape), vm.Location.Y)
                     .Begin();
             }
+
+            _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
@@ -126,16 +126,17 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            var animation = Shape.Animate()
-                .AtSpeed(chart.AnimationsSpeed)
-                .Property(FrameworkElement.HeightProperty, 0)
-                .Property(FrameworkElement.WidthProperty, 0);
+            var animation = Shape.Animate(_lastTimeLine)
+                .Property(FrameworkElement.HeightProperty, Shape.Height, 0)
+                .Property(FrameworkElement.WidthProperty, Shape.Width, 0);
+
             animation.Then((sender, args) =>
             {
                 chart.Content.RemoveChild(Shape);
                 chart.Content.RemoveChild(Label);
                 animation.Dispose();
                 animation = null;
+                _lastTimeLine = null;
             }).Begin();
         }
     }

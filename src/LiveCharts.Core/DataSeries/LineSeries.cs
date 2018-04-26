@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
@@ -91,6 +92,12 @@ namespace LiveCharts.Core.DataSeries
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+            };
+
             Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous = null;
 
             Content[chart].TryGetValue(Path, out var path);
@@ -99,7 +106,7 @@ namespace LiveCharts.Core.DataSeries
             if (cartesianPath == null)
             {
                 cartesianPath = Charting.Current.UiProvider.GetNewPath();
-                cartesianPath.Initialize(chart.View);
+                cartesianPath.Initialize(chart.View, animation);
                 Content[chart][Path] = cartesianPath;
             }
 
@@ -138,10 +145,10 @@ namespace LiveCharts.Core.DataSeries
 
                 currentBezier.ViewModel.Path = cartesianPath;
                 currentBezier.Point.ViewModel = currentBezier.ViewModel;
-                currentBezier.Point.View.DrawShape(currentBezier.Point, previous);
+                currentBezier.Point.View.DrawShape(currentBezier.Point, previous, animation);
                 if (DataLabels)
                     currentBezier.Point.View.DrawLabel(
-                        currentBezier.Point, DataLabelsPosition, LabelsStyle);
+                        currentBezier.Point, DataLabelsPosition, LabelsStyle, animation);
                 Mapper.EvaluateModelDependentActions(
                     currentBezier.Point.Model, currentBezier.Point.View.VisualElement, currentBezier.Point);
 

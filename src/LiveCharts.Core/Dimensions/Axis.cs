@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
@@ -257,6 +258,22 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
+        public TimeSpan AnimationsSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the animation line.
+        /// </summary>
+        /// <value>
+        /// The animation line.
+        /// </value>
+        public IEnumerable<Frame> AnimationLine { get; set; }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
@@ -371,6 +388,12 @@ namespace LiveCharts.Core.Dimensions
                     _activeSeparators.Add(key, separator);
                 }
 
+                var animation = new TimeLine
+                {
+                    Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                    AnimationLine = AnimationLine ?? chart.View.AnimationLine
+                };
+
                 var labelModel = EvaluateAxisLabel(dummyControl, labelStyle, i, chart.DrawAreaSize, unit, chart);
 
                 if (Dimension == 0)
@@ -390,8 +413,8 @@ namespace LiveCharts.Core.Dimensions
                         ChartView = chart.View
                     };
 
-                    separator.View.DrawShape(args);
-                    separator.View.DrawLabel(args);
+                    separator.View.DrawShape(args, animation);
+                    separator.View.DrawLabel(args, animation);
                 }
                 else
                 {
@@ -409,8 +432,8 @@ namespace LiveCharts.Core.Dimensions
                         ChartView = chart.View
                     };
 
-                    separator.View.DrawShape(args);
-                    separator.View.DrawLabel(args);
+                    separator.View.DrawShape(args, animation);
+                    separator.View.DrawLabel(args, animation);
                 }
 
                 chart.RegisterINotifyPropertyChanged(separator);
@@ -437,6 +460,12 @@ namespace LiveCharts.Core.Dimensions
             {
                 labelStyle.LabelsRotation = -90;
             }
+
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+            };
 
             foreach (var section in Sections)
             {
@@ -529,8 +558,8 @@ namespace LiveCharts.Core.Dimensions
                     ChartView = chart.View
                 };
 
-                section.View.DrawShape(args);
-                section.View.DrawLabel(args);
+                section.View.DrawShape(args, animation);
+                section.View.DrawLabel(args, animation);
 
                 chart.RegisterINotifyPropertyChanged(section);
             }

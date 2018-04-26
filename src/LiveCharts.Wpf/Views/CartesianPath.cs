@@ -30,6 +30,7 @@ using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
@@ -45,7 +46,7 @@ namespace LiveCharts.Wpf.Views
         private readonly PathFigure _figure;
         private IEnumerable<double> _strokeDashArray;
         private double _previousLength;
-        private TimeSpan _animationsSpeed;
+        private TimeLine _timeLine;
         private bool _isNew;
 
         public CartesianPath()
@@ -69,9 +70,9 @@ namespace LiveCharts.Wpf.Views
         public Path FillPath => null;
 
         /// <inheritdoc />
-        public void Initialize(IChartView view)
+        public void Initialize(IChartView view, TimeLine timeLine)
         {
-            _animationsSpeed = view.AnimationsSpeed;
+            _timeLine = timeLine;
             view.Content.AddChild(StrokePath);
             _isNew = true;
         }
@@ -89,9 +90,8 @@ namespace LiveCharts.Wpf.Views
             }
             else
             {
-                _figure.Animate()
-                    .AtSpeed(_animationsSpeed)
-                    .Property(PathFigure.StartPointProperty, startPoint.AsWpf())
+                _figure.Animate(_timeLine)
+                    .Property(PathFigure.StartPointProperty, _figure.StartPoint, startPoint.AsWpf())
                     .Begin();
             }
 

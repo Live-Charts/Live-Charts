@@ -24,11 +24,11 @@
 #endregion
 #region
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
+using LiveCharts.Core;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
@@ -71,6 +71,7 @@ namespace LiveCharts.Wpf
             SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(WeightPlaneProperty, new ChartingCollection<Plane> {new Plane()});
+            Charting.BuildFromSettings(this);
         }
 
         #region Dependency properties

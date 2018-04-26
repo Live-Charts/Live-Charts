@@ -26,6 +26,7 @@
 #region
 
 using System;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
@@ -122,7 +123,7 @@ namespace LiveCharts.Core.DataSeries
 
             var barsCount = context.GetBarsCount(ScalesAt[1]);
 
-            var cw = (uw[0] - ((float) BarPadding) * barsCount) / barsCount;
+            var cw = (uw[0] - (float) BarPadding * barsCount) / barsCount;
             var position = context.GetBarIndex(ScalesAt[1], this);
 
             if (cw > MaxColumnWidth)
@@ -153,6 +154,12 @@ namespace LiveCharts.Core.DataSeries
             
             var pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+            };
+
             Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
 
             foreach (var current in Points)
@@ -167,8 +174,8 @@ namespace LiveCharts.Core.DataSeries
                     scaleAxis, cw, pivot, byBarOffset,
                     positionOffset, orientation, h, w);
 
-                current.View.DrawShape(current, previous);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
+                current.View.DrawShape(current, previous, animation);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, animation);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
 

@@ -29,6 +29,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction.Controls;
@@ -63,10 +64,9 @@ namespace LiveCharts.Wpf.Views
         public TLabel Label { get; protected set; }
 
         /// <inheritdoc />
-        public virtual void DrawShape(CartesianAxisSectionArgs args)
+        public virtual void DrawShape(CartesianAxisSectionArgs args, TimeLine timeLine)
         {
             var isNewShape = Rectangle == null;
-            var speed = args.ChartView.AnimationsSpeed;
 
             // initialize the shape
             if (isNewShape)
@@ -79,8 +79,7 @@ namespace LiveCharts.Wpf.Views
                 Rectangle.Height = args.Rectangle.From.Height;
                 Panel.SetZIndex(Rectangle, args.ZIndex);
                 
-                Rectangle.Animate()
-                    .AtSpeed(speed)
+                Rectangle.Animate(timeLine)
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Begin();
             }
@@ -92,37 +91,39 @@ namespace LiveCharts.Wpf.Views
                 ? null
                 : new DoubleCollection(args.Style?.StrokeDashArray.Select(x => (double) x));
 
-            var storyboard = Rectangle.Animate()
-                .AtSpeed(speed)
-                .Property(Canvas.TopProperty, args.Rectangle.To.Top)
-                .Property(Canvas.LeftProperty, args.Rectangle.To.Left)
+            var rectangleAnimation = Rectangle.Animate(timeLine)
+                .Property(Canvas.TopProperty, Canvas.GetTop(Rectangle), args.Rectangle.To.Top)
+                .Property(Canvas.LeftProperty, Canvas.GetLeft(Rectangle), args.Rectangle.To.Left)
                 .Property(FrameworkElement.HeightProperty,
+                    Rectangle.Height,
                     args.Rectangle.To.Height > (args.Style?.StrokeThickness ?? 0)
                         ? args.Rectangle.To.Height
                         : args.Style?.StrokeThickness ?? 0)
                 .Property(FrameworkElement.WidthProperty,
+                    Rectangle.Width,
                     args.Rectangle.To.Width > (args.Style?.StrokeThickness ?? 0)
                         ? args.Rectangle.To.Width
                         : args.Style?.StrokeThickness ?? 0);
 
             if (args.Disposing)
             {
-                storyboard
-                    .Property(UIElement.OpacityProperty, 0)
-                    .ChangeTarget(Rectangle)
-                    .Property(UIElement.OpacityProperty, 0)
+                Label.Animate(timeLine)
+                    .Property(UIElement.OpacityProperty, 1, 0)
+                    .Begin();
+                rectangleAnimation
+                    .Property(UIElement.OpacityProperty, 1, 0)
                     .Then((sender, e) =>
                     {
                         ((IPlaneSeparatorView) this).Dispose(args.ChartView);
-                        storyboard = null;
+                        rectangleAnimation = null;
                     });
             }
 
-            storyboard.Begin();
+            rectangleAnimation.Begin();
         }
 
         /// <inheritdoc />
-        public virtual void DrawLabel(CartesianAxisSectionArgs args)
+        public virtual void DrawLabel(CartesianAxisSectionArgs args, TimeLine timeLine)
         {
             var isNewLabel = Label == null;
 
@@ -136,10 +137,9 @@ namespace LiveCharts.Wpf.Views
 
             Label.Measure(args.Label.Content, args.Label.LabelStyle);
 
-            Label.Animate()
-                .AtSpeed(args.ChartView.AnimationsSpeed)
-                .Property(Canvas.LeftProperty, args.Label.Position.X)
-                .Property(Canvas.TopProperty, args.Label.Position.Y)
+            Label.Animate(timeLine)
+                .Property(Canvas.LeftProperty, Canvas.GetLeft(Label), args.Label.Position.X)
+                .Property(Canvas.TopProperty, Canvas.GetTop(Label), args.Label.Position.Y)
                 .Begin();
         }
 

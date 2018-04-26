@@ -27,6 +27,7 @@
 
 using System.Drawing;
 using System.Windows.Controls;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -49,9 +50,18 @@ namespace LiveCharts.Wpf.Views
     public class HeatPointView<TModel>
         : PointView<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries, Rectangle>
     {
+        private TimeLine _lastTimeLine;
+
+        /// <summary>
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="previous"></param>
+        /// <param name="timeLinen"></param>
+        /// <inheritdoc />
         protected override void OnDraw(
             Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point,
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous)
+            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous,
+            TimeLine timeLine)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -70,21 +80,18 @@ namespace LiveCharts.Wpf.Views
             Canvas.SetTop(Shape, vm.Rectangle.Top);
             Shape.Width = vm.Rectangle.Width;
             Shape.Height = vm.Rectangle.Height;
-            // Shape.Stroke = point.Series.Stroke.AsWpf();
-            // Shape.Fill = point.Series.Fill.AsWpf();
-            //Shape.StrokeThickness = point.Series.StrokeThickness;
             Panel.SetZIndex(Shape, point.Series.ZIndex);
-            //if (point.Series.StrokeDashArray != null)
-            //{
-            //    Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
-            //}
 
             // animate
 
-            Shape.Fill.Animate()
-                .AtSpeed(chart.AnimationsSpeed)
-                .Property(SolidColorBrush.ColorProperty, Color.FromArgb(vm.To.A, vm.To.R, vm.To.G, vm.To.B))
+            Shape.Fill.Animate(timeLine)
+                .Property(
+                    SolidColorBrush.ColorProperty,
+                    ((SolidColorBrush) (Shape.Fill)).Color,
+                    Color.FromArgb(vm.To.A, vm.To.R, vm.To.G, vm.To.B))
                 .Begin();
+
+            _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
@@ -107,6 +114,7 @@ namespace LiveCharts.Wpf.Views
         {
             chart.Content.RemoveChild(Shape);
             chart.Content.RemoveChild(Label);
+            _lastTimeLine = null;
         }
     }
 }

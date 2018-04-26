@@ -31,6 +31,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
@@ -170,10 +171,16 @@ namespace LiveCharts.Wpf.Controls
         void IDataToolTip.Move(PointF location, IChartView chart)
         {
             var wpfChart = (Chart) chart;
-            wpfChart.TooltipPopup.Animate()
-                .AtSpeed(TimeSpan.FromMilliseconds(150))
-                .Property(Popup.HorizontalOffsetProperty, location.X)
-                .Property(Popup.VerticalOffsetProperty, location.Y)
+            wpfChart.TooltipPopup.Animate(
+                    new TimeLine
+                    {
+                        Duration = chart.AnimationsSpeed,
+                        AnimationLine = chart.AnimationLine
+                    })
+                .Property(
+                    Popup.HorizontalOffsetProperty, wpfChart.TooltipPopup.HorizontalOffset, location.X)
+                .Property(
+                    Popup.VerticalOffsetProperty, wpfChart.TooltipPopup.VerticalOffset, location.Y)
                 .Begin();
         }
     }

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Input;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -126,7 +127,23 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The actual series.
         /// </value>
-        IEnumerable<ISeries> Series { get; }
+        IEnumerable<ISeries> Series { get; set; }
+
+        /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
+        TimeSpan AnimationsSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the animation line.
+        /// </summary>
+        /// <value>
+        /// The animation line.
+        /// </value>
+        IEnumerable<Frame> AnimationLine { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IChartView"/> is hoverable.
@@ -137,20 +154,12 @@ namespace LiveCharts.Core.Charts
         bool Hoverable { get; set; }
 
         /// <summary>
-        /// Gets the animations speed.
-        /// </summary>
-        /// <value>
-        /// The animations speed.
-        /// </value>
-        TimeSpan AnimationsSpeed { get; }
-
-        /// <summary>
-        /// Gets the tooltip time out.
+        /// Gets or sets the tooltip time out.
         /// </summary>
         /// <value>
         /// The tooltip time out.
         /// </value>
-        TimeSpan TooltipTimeOut { get; }
+        TimeSpan TooltipTimeOut { get; set; }
 
         /// <summary>
         /// Gets the legend.
@@ -158,7 +167,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The legend.
         /// </value>
-        ILegend Legend { get; }
+        ILegend Legend { get; set; }
 
         /// <summary>
         /// Gets the legend position.
@@ -166,7 +175,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The legend position.
         /// </value>
-        LegendPosition LegendPosition { get; }
+        LegendPosition LegendPosition { get; set; }
 
         /// <summary>
         /// Gets the data tooltip.
@@ -174,7 +183,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The data tooltip.
         /// </value>
-        IDataToolTip DataToolTip { get; }
+        IDataToolTip DataToolTip { get; set; }
 
         /// <summary>
         /// Sets the draw area.

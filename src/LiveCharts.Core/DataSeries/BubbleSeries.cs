@@ -26,6 +26,7 @@
 
 using System;
 using System.Drawing;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
@@ -99,6 +100,12 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+            };
+
             Point<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> previous = null;
 
             foreach (var current in Points)
@@ -124,8 +131,8 @@ namespace LiveCharts.Core.DataSeries
                 };
 
                 current.ViewModel = vm;
-                current.View.DrawShape(current, previous);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle);
+                current.View.DrawShape(current, previous, animation);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, animation);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(

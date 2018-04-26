@@ -29,6 +29,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -57,11 +58,13 @@ namespace LiveCharts.Wpf.Views
         where TShape : Shape, new()
     {
         private Point<TModel, TCoordinate, RectangleViewModel, TSeries> _point;
+        private TimeLine _lastTimeLine;
 
         /// <inheritdoc />
         protected override void OnDraw(
             Point<TModel, TCoordinate, RectangleViewModel, TSeries> point, 
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous)
+            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous,
+            TimeLine timeLine)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -99,39 +102,40 @@ namespace LiveCharts.Wpf.Views
 
             // animate
 
-            var animation = Shape.Animate().AtSpeed(chart.AnimationsSpeed);
+            var shapeAnimation = Shape.Animate(timeLine);
 
             if (!isNewShape)
             {
-                animation
-                    .Property(Canvas.LeftProperty, vm.To.Left)
-                    .Property(FrameworkElement.WidthProperty, vm.To.Width)
-                    .Property(Canvas.TopProperty, vm.To.Top)
-                    .Property(FrameworkElement.HeightProperty, vm.To.Height);
+                shapeAnimation
+                    .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), vm.To.Left)
+                    .Property(FrameworkElement.WidthProperty, Shape.Width, vm.To.Width)
+                    .Property(Canvas.TopProperty, Canvas.GetTop(Shape), vm.To.Top)
+                    .Property(FrameworkElement.HeightProperty, Shape.Height, vm.To.Height);
             }
             else
             {
                 if (vm.Orientation == Orientation.Horizontal)
                 {
-                    animation
-                        .Property(Canvas.LeftProperty, vm.To.Left)
-                        .Property(FrameworkElement.WidthProperty, vm.To.Width)
-                        .Bounce(Canvas.TopProperty, vm.From.Top, vm.To.Top)
-                        .Bounce(FrameworkElement.HeightProperty, vm.From.Height, vm.To.Height);
+                    shapeAnimation
+                        .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), vm.To.Left)
+                        .Property(FrameworkElement.WidthProperty, Shape.Width, vm.To.Width)
+                        .Property(Canvas.TopProperty, vm.From.Top, Canvas.GetTop(Shape), vm.To.Top)
+                        .Property(FrameworkElement.HeightProperty, vm.From.Height, vm.To.Height);
                 }
                 else
                 {
-                    animation
-                        .Property(Canvas.TopProperty, vm.To.Top)
-                        .Property(FrameworkElement.HeightProperty, vm.To.Height)
-                        .Bounce(Canvas.LeftProperty, vm.From.Left, vm.To.Left)
-                        .Bounce(FrameworkElement.WidthProperty, vm.From.Width, vm.To.Width);
+                    shapeAnimation
+                        .Property(Canvas.TopProperty, Canvas.GetTop(Shape), vm.To.Top)
+                        .Property(FrameworkElement.HeightProperty, Shape.Height, vm.To.Height)
+                        .Property(Canvas.LeftProperty, vm.From.Left, vm.To.Left)
+                        .Property(FrameworkElement.WidthProperty, vm.From.Width, vm.To.Width);
                 }
             }
 
-            animation.Begin();
+            shapeAnimation.Begin();
 
             _point = point;
+            _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
@@ -154,13 +158,12 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            var cartesianSeries = (ICartesianSeries) _point.Series;
-            var zero = chart.Model.ScaleToUi(0, chart.Dimensions[1][cartesianSeries.ScalesAt[1]]);
+            var barSeries = (IBarSeries) _point.Series;
+            var pivot = chart.Model.ScaleToUi(barSeries.Pivot, chart.Dimensions[1][barSeries.ScalesAt[1]]);
 
-            var animation = Shape.Animate()
-                .AtSpeed(chart.AnimationsSpeed)
-                .Property(Canvas.TopProperty, zero)
-                .Property(FrameworkElement.HeightProperty, 0);
+            var animation = Shape.Animate(_lastTimeLine)
+                .Property(Canvas.TopProperty, Canvas.GetTop(Shape), pivot)
+                .Property(FrameworkElement.HeightProperty, Shape.Height, 0);
 
             animation.Then((sender, args) =>
             {

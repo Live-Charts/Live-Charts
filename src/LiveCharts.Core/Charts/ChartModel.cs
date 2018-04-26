@@ -387,7 +387,7 @@ namespace LiveCharts.Core.Charts
                                                   !x.InteractionArea.Contains(pointerLocation))
                                           ?? Enumerable.Empty<PackedPoint>())
                 {
-                    leftPoint.Series.ResetPointStyle(leftPoint);
+                    leftPoint.Series.RemovePointHighlight(leftPoint, View);
                     OnDataPointerLeave(query);
                 }
 

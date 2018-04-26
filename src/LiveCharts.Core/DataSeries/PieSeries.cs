@@ -27,6 +27,7 @@
 
 using System;
 using System.Drawing;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
@@ -117,6 +118,12 @@ namespace LiveCharts.Core.DataSeries
                     ? 0f
                     : (float) pieChart.StartingRotationAngle);
 
+            var animation = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+            };
+
             Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous = null;
 
             foreach (var current in Points)
@@ -148,7 +155,8 @@ namespace LiveCharts.Core.DataSeries
                 }
 
                 current.ViewModel = vm;
-                current.View.DrawShape(current, previous);
+                current.View.DrawShape(current, previous, animation);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, animation);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new PolarInteractionArea(
                     vm.To.OuterRadius, vm.To.Rotation, vm.To.Rotation + vm.To.Wedge, centerPoint);

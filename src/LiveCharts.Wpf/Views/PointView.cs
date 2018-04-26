@@ -25,20 +25,21 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
 using FontFamily = System.Windows.Media.FontFamily;
-using Size = System.Windows.Size;
+using Frame = LiveCharts.Core.Animations.Frame;
 
 #endregion
 
@@ -67,12 +68,10 @@ namespace LiveCharts.Wpf.Views
         public Label Label { get; protected set; }
 
         /// <inheritdoc cref="IPointView{TModel,TCoordinate,TViewModel,TSeries}.DrawShape"/>
-        protected virtual void OnDraw(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
-            Point<TModel, TCoordinate, TViewModel, TSeries> previous)
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract void OnDraw(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point,
+            Point<TModel, TCoordinate, TViewModel, TSeries> previous,
+            TimeLine timeLine);
 
         /// <summary>
         /// Gets the content of the label.
@@ -95,7 +94,8 @@ namespace LiveCharts.Wpf.Views
         protected virtual void OnDrawLabel(
             Point<TModel, TCoordinate, TViewModel, TSeries> point,
             DataLabelsPosition position,
-            LabelStyle style)
+            LabelStyle style,
+            TimeLine timeLine)
         {
             var chart = point.Chart.View;
             var isNew = Label == null;
@@ -126,10 +126,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc cref="Dispose"/>
-        protected virtual void OnDispose(IChartView chart)
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract void OnDispose(IChartView chart);
 
         #region ResourceViewImplementation
         
@@ -140,18 +137,20 @@ namespace LiveCharts.Wpf.Views
         object IPointView<TModel, TCoordinate, TViewModel, TSeries>.Label => Label;
 
         /// <inheritdoc />
-        void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawShape(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous)
+        void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawShape(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point,
+            Point<TModel, TCoordinate, TViewModel, TSeries> previous, TimeLine timeLine)
         {
-            OnDraw(point, previous);
+            OnDraw(point, previous, timeLine);
         }
 
         /// <inheritdoc />
         void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawLabel(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
+            Point<TModel, TCoordinate, TViewModel, TSeries> point,
             DataLabelsPosition position,
-            LabelStyle style)
+            LabelStyle style, TimeLine timeLine)
         {
-            OnDrawLabel(point, position, style);
+            OnDrawLabel(point, position, style, timeLine);
         }
         
         public event DisposingResourceHandler Disposed;

@@ -26,6 +26,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 
 #endregion
@@ -41,7 +42,8 @@ namespace LiveCharts.Core.Interaction.Controls
         /// Initializes the specified view.
         /// </summary>
         /// <param name="view">The view.</param>
-        void Initialize(IChartView view);
+        /// <param name="timeLine">The animation.</param>
+        void Initialize(IChartView view, TimeLine timeLine);
 
         /// <summary>
         /// Sets the style.

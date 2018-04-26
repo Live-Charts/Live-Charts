@@ -24,8 +24,11 @@
 #endregion
 #region
 
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Animation;
+using LiveCharts.Core.Animations;
 
 #endregion
 
@@ -36,14 +39,30 @@ namespace LiveCharts.Wpf.Animations
     /// </summary>
     public static class Extensions
     {
-        public static AnimationBuilder Animate(this FrameworkElement element)
+        /// <summary>
+        /// Animates the specified element.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="timeLinen">The animation.</param>
+        /// <returns></returns>
+        public static AnimationBuilder Animate(
+            this FrameworkElement element, TimeLine timeLine)
         {
-            return new AnimationBuilder(true).ChangeTarget(element);
+            return new AnimationBuilder(
+                element, timeLine.Duration, timeLine.AnimationLine, true);
         }
 
-        public static AnimationBuilder Animate(this Animatable animatable)
+        /// <summary>
+        /// Animates the specified element.
+        /// </summary>
+        /// <param name="animatable">The animatable.</param>
+        /// <param name="timeLinen">The animation vector.</param>
+        /// <returns></returns>
+        public static AnimationBuilder Animate(
+            this Animatable animatable, TimeLine timeLine)
         {
-            return new AnimationBuilder(false).ChangeTarget(animatable);
+            return new AnimationBuilder(
+                animatable, timeLine.Duration, timeLine.AnimationLine, true);
         }
     }
 }

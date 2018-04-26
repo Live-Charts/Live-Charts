@@ -28,6 +28,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -59,7 +60,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnPointHighlight(PackedPoint point)
+        public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (BezierPointView<TModel, TextBlock>)point.View;
             view.Shape.RenderTransformOrigin = new Point(0.5, 0.5);
@@ -67,7 +68,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void RemovePointHighlight(PackedPoint point)
+        public void RemovePointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (BezierPointView<TModel, TextBlock>)point.View;
             view.Shape.RenderTransformOrigin = new Point();

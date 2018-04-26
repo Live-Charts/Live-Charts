@@ -26,6 +26,7 @@
 #region
 
 using System.Windows.Controls;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -59,24 +60,24 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnPointHighlight(PackedPoint point)
+        public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (PiePointView<TModel>) point.View;
             view.Shape
-                .Animate()
-                .AtSpeed(point.Chart.AnimationsSpeed)
-                .Property(Slice.PushOutProperty, ((IPieSeries) point.Series).PushOut + 15)
+                .Animate(timeLine)
+                .Property(
+                    Slice.PushOutProperty, view.Shape.PushOut, ((IPieSeries) point.Series).PushOut + 15)
                 .Begin();
         }
 
         /// <inheritdoc />
-        public void RemovePointHighlight(PackedPoint point)
+        public void RemovePointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (PiePointView<TModel>)point.View;
             view.Shape
-                .Animate()
-                .AtSpeed(point.Chart.AnimationsSpeed)
-                .Property(Slice.PushOutProperty, ((IPieSeries) point.Series).PushOut)
+                .Animate(timeLine)
+                .Property(
+                    Slice.PushOutProperty, view.Shape.PushOut, ((IPieSeries) point.Series).PushOut)
                 .Begin();
         }
 

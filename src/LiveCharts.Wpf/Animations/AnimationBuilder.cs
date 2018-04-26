@@ -30,6 +30,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Core;
+using LiveCharts.Core.Animations;
 
 #endregion
 
@@ -40,15 +41,25 @@ namespace LiveCharts.Wpf.Animations
     /// </summary>
     public class AnimationBuilder
     {
-        private Storyboard _storyboard;
-        private DependencyObject _target;
-        private readonly bool _isFe;
+        private readonly bool _isFrameworkElement;
+        private readonly IEnumerable<Frame> _animationLine;
         private List<Tuple<DependencyProperty, Timeline>> _animations = new List<Tuple<DependencyProperty, Timeline>>();
 
-        public AnimationBuilder(bool isFe)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnimationBuilder"/> class.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="animationLine">The animation vector.</param>
+        /// <param name="isFrameworkElement">if set to <c>true</c> [is framework element].</param>
+        public AnimationBuilder(
+            DependencyObject target, TimeSpan duration, IEnumerable<Frame> animationLine, bool isFrameworkElement)
         {
-            _storyboard = new Storyboard();
-            _isFe = isFe;
+            Target = target;
+            Duration = duration;
+            _isFrameworkElement = isFrameworkElement;
+            _animationLine = animationLine;
+            Storyboard = new Storyboard();
         }
 
         /// <summary>
@@ -57,157 +68,136 @@ namespace LiveCharts.Wpf.Animations
         /// <value>
         /// The duration.
         /// </value>
-        public TimeSpan Duration { get; private set; }
+        public TimeSpan Duration { get; }
+
+        /// <summary>
+        /// Gets or sets the target.
+        /// </summary>
+        /// <value>
+        /// The target.
+        /// </value>
+        public DependencyObject Target { get; }
+
+        /// <summary>
+        /// Gets or sets the storyboard.
+        /// </summary>
+        /// <value>
+        /// The storyboard.
+        /// </value>
+        protected Storyboard Storyboard { get; set; }
 
         /// <summary>
         /// Runs this instance.
         /// </summary>
         public void Begin()
         {
-            if (_isFe)
+            if (_isFrameworkElement)
             {
-                _storyboard.Begin();
-                _storyboard.Completed += OnFinished;
+                Storyboard.Begin();
+                Storyboard.Completed += OnFinished;
             }
             else
             {
                 if (_animations.Count > 0) _animations[0].Item2.Completed += OnFinished;
                 foreach (var x in _animations)
                 {
-                    ((Animatable) _target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
+                    ((Animatable) Target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
                 }
             }
         }
 
         /// <summary>
-        /// Specifies the storyboard speed.
-        /// </summary>
-        /// <param name="speedSpan">The speed span.</param>
-        /// <returns></returns>
-        public AnimationBuilder AtSpeed(TimeSpan speedSpan)
-        {
-            Duration = speedSpan;
-            return this;
-        }
-
-        /// <summary>
-        /// Animates the specified double property.
-        /// </summary>
-        /// <param name="property">Name of the property.</param>
-        /// <param name="to">To.</param>
-        /// <param name="from">From.</param>
-        /// <param name="speed">The speed.</param>
-        /// <returns></returns>
-        public AnimationBuilder Property(DependencyProperty property, double to, double? from = null,
-            TimeSpan? speed = null)
-        {
-            var animation = from == null
-                ? new DoubleAnimation(to, speed ?? Duration)
-                : new DoubleAnimation(from.Value, to, speed ?? Duration);
-            animation.RepeatBehavior = new RepeatBehavior(1);
-            _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _target);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
-            return this;
-        }
-
-        /// <summary>
-        /// Animates the specified property using a key frames.
+        /// Animates the specified property.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <param name="frames">The frames.</param>
+        /// <param name="to">Where the animation finishes.</param>
+        /// <param name="from">Where the animation starts.</param>
+        /// <param name="delay">The delay in proportion of the time line duration, form 0 to 1.</param>
         /// <returns></returns>
-        public AnimationBuilder Property(DependencyProperty property, IEnumerable<Frame> frames)
+        public AnimationBuilder Property(
+            DependencyProperty property, double from, double to, double delay = 0)
         {
-            var animation = new DoubleAnimationUsingKeyFrames { RepeatBehavior = new RepeatBehavior(1) };
+            var animation = new DoubleAnimationUsingKeyFrames {RepeatBehavior = new RepeatBehavior(1)};
+
+            var frames = delay > 0 ? _animationLine.Delay(delay) : _animationLine;
+
             foreach (var frame in frames)
             {
                 animation.KeyFrames.Add(
                     new LinearDoubleKeyFrame(
-                        frame.ToValue,
-                        TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.ElapsedTime)));
+                        from + frame.Value * (to - from),
+                        TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.Time)));
             }
 
-            _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _target);
+            Storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, Target);
             Storyboard.SetTargetProperty(animation, new PropertyPath(property));
             return this;
         }
 
         /// <summary>
-        /// Animates to the specifies point property.
+        /// Animates the specified property.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <param name="to">To.</param>
         /// <param name="from">From.</param>
-        /// <param name="speed">The speed.</param>
+        /// <param name="to">To.</param>
+        /// /// <param name="delay">The delay in proportion of the time line duration, form 0 to 1.</param>
         /// <returns></returns>
         public AnimationBuilder Property(
-            DependencyProperty property, Point to, Point? from = null, TimeSpan? speed = null)
+            DependencyProperty property, Point from, Point to, double delay = 0)
         {
-            if (_isFe)
+            var animation = new PointAnimationUsingKeyFrames {RepeatBehavior = new RepeatBehavior(1)};
+
+            var frames = delay > 0 ? _animationLine.Delay(delay) : _animationLine;
+
+            foreach (var frame in frames)
             {
-                var feAnim = from == null
-                    ? new PointAnimation(to, speed ?? Duration)
-                    : new PointAnimation(from.Value, to, speed ?? Duration);
-                feAnim.RepeatBehavior = new RepeatBehavior(1);
-                _storyboard.Children.Add(feAnim);
-                Storyboard.SetTarget(feAnim, _target);
-                Storyboard.SetTargetProperty(feAnim, new PropertyPath(property));
-                return this;
+                animation.KeyFrames.Add(
+                    new LinearPointKeyFrame(
+                        new Point(
+                            from.X + frame.Value * (to.X - from.X),
+                            from.Y + frame.Value * (to.Y - from.Y)),
+                        TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.Time)));
             }
 
-            // storyboard for some reason only works with FrameworkElement, 
-            // because <- insert reason here???? ->
-
-            var animation = from == null
-                ? new PointAnimation(to, speed ?? Duration)
-                : new PointAnimation(from.Value, to, speed ?? Duration);
-
-            _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
+            Storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, Target);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
 
             return this;
         }
 
         /// <summary>
-        /// Animates to the specified color property.
+        /// Animates the specified property.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <param name="to">To.</param>
         /// <param name="from">From.</param>
-        /// <param name="speed">The speed.</param>
+        /// <param name="to">To.</param>
+        /// /// <param name="delay">The delay in proportion of the time line duration, form 0 to 1.</param>
         /// <returns></returns>
         public AnimationBuilder Property(
-            DependencyProperty property, Color to, Color? from = null, TimeSpan? speed = null)
+            DependencyProperty property, Color from, Color to, double delay = 0)
         {
-            if (_isFe)
+            var animation = new ColorAnimationUsingKeyFrames { RepeatBehavior = new RepeatBehavior(1) };
+
+            var frames = delay > 0 ? _animationLine.Delay(delay) : _animationLine;
+
+            foreach (var frame in frames)
             {
-                var feAnim = from == null
-                    ? new ColorAnimation(to, speed ?? Duration)
-                    : new ColorAnimation(from.Value, to, speed ?? Duration);
-                feAnim.RepeatBehavior = new RepeatBehavior(1);
-                _storyboard.Children.Add(feAnim);
-                Storyboard.SetTarget(feAnim, _target);
-                Storyboard.SetTargetProperty(feAnim, new PropertyPath(property));
-                return this;
+                animation.KeyFrames.Add(
+                    new LinearColorKeyFrame(
+                        Color.FromArgb(
+                            (byte) (from.A + frame.Value * (to.A - from.A)),
+                            (byte) (from.R + frame.Value * (to.R - from.R)),
+                            (byte) (from.G + frame.Value * (to.G - from.G)),
+                            (byte) (from.B + frame.Value * (to.B - from.B))),
+                        TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.Time)));
             }
 
-            var animation = from == null
-                ? new ColorAnimation(to, speed ?? Duration)
-                : new ColorAnimation(from.Value, to, speed ?? Duration);
+            Storyboard.Children.Add(animation);
+            Storyboard.SetTarget(animation, Target);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(property));
 
-            _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the target.
-        /// </summary>
-        /// <returns></returns>
-        public AnimationBuilder ChangeTarget(DependencyObject target)
-        {
-            _target = target;
             return this;
         }
 
@@ -218,7 +208,7 @@ namespace LiveCharts.Wpf.Animations
         /// <returns></returns>
         public AnimationBuilder Then(EventHandler callback)
         {
-            if (!_isFe)
+            if (!_isFrameworkElement)
             {
                 if (_animations.Count < 1)
                 {
@@ -230,7 +220,7 @@ namespace LiveCharts.Wpf.Animations
             }
             else
             {
-                _storyboard.Completed += callback;
+                Storyboard.Completed += callback;
             }
 
             return this;
@@ -246,7 +236,7 @@ namespace LiveCharts.Wpf.Animations
         /// </summary>
         public void Dispose()
         {
-            _storyboard = null;
+            Storyboard = null;
             _animations = null;
         }
     }

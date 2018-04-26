@@ -239,11 +239,19 @@ namespace LiveCharts.Core.DataSeries
         /// <returns></returns>
         IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation);
 
-        void OnPointHover(PackedPoint point);
+        /// <summary>
+        /// Highlights a point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="chart">The chart view.</param>
+        void OnPointHighlight(PackedPoint point, IChartView chart);
 
-        void ResetPointStyle(PackedPoint point);
-
-        void OnPointSelected(PackedPoint point);
+        /// <summary>
+        /// Removes the highlight of a point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="chart">The chart view.</param>
+        void RemovePointHighlight(PackedPoint point, IChartView chart);
 
         /// <summary>
         /// Updates the started.

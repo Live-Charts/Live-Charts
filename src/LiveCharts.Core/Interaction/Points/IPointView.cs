@@ -24,7 +24,7 @@
 #endregion
 #region
 
-using System.Drawing;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -66,7 +66,11 @@ namespace LiveCharts.Core.Interaction.Points
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="previous">The previous.</param>
-        void DrawShape(Point<TModel, TCoordinate, TViewModel, TSeries> point, Point<TModel, TCoordinate, TViewModel, TSeries> previous);
+        /// <param name="timeLine">The animation.</param>
+        void DrawShape(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point,
+            Point<TModel, TCoordinate, TViewModel, TSeries> previous,
+            TimeLine timeLine);
 
         /// <summary>
         /// Draws the label.
@@ -74,6 +78,11 @@ namespace LiveCharts.Core.Interaction.Points
         /// <param name="point">The point.</param>
         /// <param name="position">The labels position.</param>
         /// <param name="style">The data label style.</param>
-        void DrawLabel(Point<TModel, TCoordinate, TViewModel, TSeries> point, DataLabelsPosition position, LabelStyle style);
+        /// <param name="timeLine">The animation.</param>
+        void DrawLabel(
+            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
+            DataLabelsPosition position, 
+            LabelStyle style,
+            TimeLine timeLine);
     }
 }

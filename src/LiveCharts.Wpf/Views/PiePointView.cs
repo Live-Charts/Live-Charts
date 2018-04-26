@@ -35,6 +35,7 @@ using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Wpf.Animations;
 using Slice = LiveCharts.Wpf.Shapes.Slice;
+using TimeLine = LiveCharts.Core.Animations.TimeLine;
 
 #endregion
 
@@ -48,10 +49,13 @@ namespace LiveCharts.Wpf.Views
     public class PiePointView<TModel>
         : PointView<TModel, StackedPointCoordinate, PieViewModel, IPieSeries, Slice>
     {
+        private TimeLine _lastTimeLine;
+
         /// <inheritdoc />
         protected override void OnDraw(
             Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point,
-            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous)
+            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous,
+            TimeLine timeLine)
         {
             var chart = point.Chart.View;
             var vm = point.ViewModel;
@@ -86,24 +90,25 @@ namespace LiveCharts.Wpf.Views
 
             // animate
 
-            var animation = Shape.Animate().AtSpeed(chart.AnimationsSpeed);
+            var shapeAnimation = Shape.Animate(timeLine);
 
             if (isNewShape)
             {
                 Shape.Radius = vm.To.OuterRadius * .8;
-                animation
+                shapeAnimation
                     .Property(Slice.RadiusProperty, vm.To.OuterRadius, 0)
-                    .Property(Slice.RotationProperty, vm.To.Rotation)
-                    .Bounce(Slice.WedgeProperty, 0, vm.To.Wedge);
+                    .Property(Slice.RotationProperty, 0, vm.To.Rotation)
+                    .Property(Slice.WedgeProperty, 0, vm.To.Wedge);
             }
             else
             {
-                animation
-                    .Property(Slice.RotationProperty, vm.To.Rotation)
-                    .Property(Slice.WedgeProperty, vm.To.Wedge);
+                shapeAnimation
+                    .Property(Slice.RotationProperty, Shape.Rotation, vm.To.Rotation)
+                    .Property(Slice.WedgeProperty, Shape.Wedge, vm.To.Wedge);
             }
 
-            animation.Begin();
+            shapeAnimation.Begin();
+            _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
@@ -126,7 +131,17 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            base.OnDispose(chart);
+            var sliceAnimation = Shape.Animate(_lastTimeLine)
+                .Property(Slice.WedgeProperty, Shape.Wedge, 0);
+
+            sliceAnimation
+                .Then((sender, args) =>
+                {
+                    chart.Content.RemoveChild(Shape);
+                    chart.Content.RemoveChild(Label);
+                    sliceAnimation.Dispose();
+                    sliceAnimation = null;
+                });
         }
     }
 }

@@ -25,6 +25,7 @@
 
 #region
 
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -58,13 +59,15 @@ namespace LiveCharts.Core.Interaction.Series
         /// Called when a point is selected.
         /// </summary>
         /// <param name="point">The point.</param>
-        void OnPointHighlight(PackedPoint point);
+        /// <param name="timeLine">The animation.</param>
+        void OnPointHighlight(PackedPoint point, TimeLine timeLine);
 
         /// <summary>
         /// Resets the point style.
         /// </summary>
         /// <param name="point">The point.</param>
-        void RemovePointHighlight(PackedPoint point);
+        /// <param name="timeLine">The animation.</param>
+        void RemovePointHighlight(PackedPoint point, TimeLine timeLine);
 
         /// <summary>the series update finishes.
         /// </summary>
