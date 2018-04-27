@@ -62,6 +62,9 @@
     <Compile Include="NavigationHandler.cs" />
     <Compile Include="SampleImageConverter.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="Views\Animations.xaml.cs">
+      <DependentUpon>Animations.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AxisSections.xaml.cs">
       <DependentUpon>AxisSections.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Animations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AxisSections.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -236,7 +243,8 @@
     <Resource Include="Images\DataLabels.png" />
     <Resource Include="Images\AxisSections.png" />
     <Resource Include="Images\ModelDependentStyle.png" />
-    <Resource Include="Images\ZommingAndPanning.png" />
+    <Resource Include="Images\ZoomingAndPanning.png" />
+    <Resource Include="Images\Animations.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

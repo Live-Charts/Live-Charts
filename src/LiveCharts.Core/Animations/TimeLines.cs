@@ -18,7 +18,7 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The lineal animation.
         /// </value>
-        public static IEnumerable<Frame> LinealAnimation => new[]
+        public static IEnumerable<Frame> Lineal => new[]
         {
             new Frame(0, 0),
             new Frame(1, 1)
@@ -108,7 +108,7 @@ namespace LiveCharts.Core.Animations
                     bezier.GetFrame(0.5),
                     bezier.GetFrame(0.58),
                     bezier.GetFrame(0.75),
-                    bezier.GetFrame(0.1)
+                    bezier.GetFrame(1)
                 };
 
                 return _easeOut;
@@ -245,7 +245,7 @@ namespace LiveCharts.Core.Animations
             new Frame(0.6607, 1.006),
             new Frame(0.7558, 0.997),
             new Frame(0.8509, 1.002),
-            new Frame(0.9469, 0)
+            new Frame(0.9469, 1)
         };
     }
 }

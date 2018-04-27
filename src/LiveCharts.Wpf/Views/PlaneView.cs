@@ -80,7 +80,7 @@ namespace LiveCharts.Wpf.Views
                 Panel.SetZIndex(Rectangle, args.ZIndex);
                 
                 Rectangle.Animate(timeLine)
-                    .Property(UIElement.OpacityProperty, 1, 0)
+                    .Property(UIElement.OpacityProperty, 0, 1)
                     .Begin();
             }
             

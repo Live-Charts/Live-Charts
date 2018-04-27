@@ -102,37 +102,14 @@ namespace LiveCharts.Wpf.Views
 
             // animate
 
-            var shapeAnimation = Shape.Animate(timeLine);
-
-            if (!isNewShape)
-            {
-                shapeAnimation
-                    .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), vm.To.Left)
-                    .Property(FrameworkElement.WidthProperty, Shape.Width, vm.To.Width)
-                    .Property(Canvas.TopProperty, Canvas.GetTop(Shape), vm.To.Top)
-                    .Property(FrameworkElement.HeightProperty, Shape.Height, vm.To.Height);
-            }
-            else
-            {
-                if (vm.Orientation == Orientation.Horizontal)
-                {
-                    shapeAnimation
-                        .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), vm.To.Left)
-                        .Property(FrameworkElement.WidthProperty, Shape.Width, vm.To.Width)
-                        .Property(Canvas.TopProperty, vm.From.Top, Canvas.GetTop(Shape), vm.To.Top)
-                        .Property(FrameworkElement.HeightProperty, vm.From.Height, vm.To.Height);
-                }
-                else
-                {
-                    shapeAnimation
-                        .Property(Canvas.TopProperty, Canvas.GetTop(Shape), vm.To.Top)
-                        .Property(FrameworkElement.HeightProperty, Shape.Height, vm.To.Height)
-                        .Property(Canvas.LeftProperty, vm.From.Left, vm.To.Left)
-                        .Property(FrameworkElement.WidthProperty, vm.From.Width, vm.To.Width);
-                }
-            }
-
-            shapeAnimation.Begin();
+            Shape
+                .Animate(timeLine)
+                .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), vm.To.Left)
+                .Property(FrameworkElement.WidthProperty, Shape.Width, vm.To.Width)
+                .Property(Canvas.TopProperty, Canvas.GetTop(Shape), vm.To.Top)
+                .Property(
+                    FrameworkElement.HeightProperty, !isNewShape ? Shape.Height : vm.From.Height, vm.To.Height)
+                .Begin();
 
             _point = point;
             _lastTimeLine = timeLine;

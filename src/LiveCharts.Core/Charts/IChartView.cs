@@ -130,6 +130,14 @@ namespace LiveCharts.Core.Charts
         IEnumerable<ISeries> Series { get; set; }
 
         /// <summary>
+        /// Gets or sets the state of the updater.
+        /// </summary>
+        /// <value>
+        /// The state of the updater.
+        /// </value>
+        UpdaterStates UpdaterState { get; set; }
+
+        /// <summary>
         /// Gets or sets the animations speed.
         /// </summary>
         /// <value>
@@ -184,6 +192,11 @@ namespace LiveCharts.Core.Charts
         /// The data tooltip.
         /// </value>
         IDataToolTip DataToolTip { get; set; }
+
+        /// <summary>
+        /// Updates the chart manually.
+        /// </summary>
+        void Update(bool restartAnimations = false);
 
         /// <summary>
         /// Sets the draw area.

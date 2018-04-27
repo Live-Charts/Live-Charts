@@ -393,7 +393,6 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc cref="IDisposable.Dispose"/>
         protected virtual void OnDispose(IChartView view)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>

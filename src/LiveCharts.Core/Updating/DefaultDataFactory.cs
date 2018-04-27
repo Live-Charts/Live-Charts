@@ -57,7 +57,7 @@ namespace LiveCharts.Core.Updating
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                context.Chart.Invalidate(context.Chart.View);
+                context.Chart.Invalidate();
             }
 
             for (var index = 0; index < collection.Count; index++)

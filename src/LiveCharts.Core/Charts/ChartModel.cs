@@ -71,9 +71,12 @@ namespace LiveCharts.Core.Charts
             view.ChartViewLoaded += sender =>
             {
                 IsViewInitialized = true;
-                Invalidate(sender);
+                Invalidate();
             };
-            view.ChartViewResized += Invalidate;
+            view.ChartViewResized += sender =>
+            {
+                Invalidate();
+            };
             view.PointerMoved += ViewOnPointerMoved;
             view.PropertyChanged += InvalidatePropertyChanged;
             ToolTipTimeoutTimer = new Timer();
@@ -281,13 +284,24 @@ namespace LiveCharts.Core.Charts
         /// Invalidates this instance, the chart will queue an update request.
         /// </summary>
         /// <returns></returns>
-        public async void Invalidate(object sender)
+        public async void Invalidate(bool restart = false, bool force = false)
         {
             if (!IsViewInitialized)
             {
                 return;
             }
-            if (_delayer != null && !_delayer.IsCompleted) return;
+
+            if (!force)
+            {
+                if (View.UpdaterState == UpdaterStates.Paused)
+                {
+                    return;
+                }
+                if (_delayer != null && !_delayer.IsCompleted)
+                {
+                    return;
+                }
+            }
 
             var delay = AnimationsSpeed.TotalMilliseconds < 10
                 ? TimeSpan.FromMilliseconds(10)
@@ -314,7 +328,7 @@ namespace LiveCharts.Core.Charts
 
                     context.Ranges = dims;
 
-                    Update(false, context);
+                    Update(restart, context);
                 }
             });
         }
@@ -644,13 +658,13 @@ namespace LiveCharts.Core.Charts
             }
 
             if (!IsViewInitialized) return;
-            Invalidate(View);
+            Invalidate();
         }
 
         private void InvalidateOnCollectionChanged(
             object sender, NotifyCollectionChangedEventArgs args)
         {
-            Invalidate(View);
+            Invalidate();
         }
 
         /// <inheritdoc />
@@ -664,12 +678,12 @@ namespace LiveCharts.Core.Charts
             foreach (var resourceCollection in _enumerableResources.Values)
             {
                 // ReSharper disable once IdentifierTypo
-                if (resourceCollection is INotifyCollectionChanged incc)
+                if (resourceCollection.Collection is INotifyCollectionChanged incc)
                 {
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;
                 }
             }
-;
+
             UpdateId = null;
 
             _resources = null;

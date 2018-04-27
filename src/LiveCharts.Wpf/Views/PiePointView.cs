@@ -96,7 +96,7 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape.Radius = vm.To.OuterRadius * .8;
                 shapeAnimation
-                    .Property(Slice.RadiusProperty, vm.To.OuterRadius, 0)
+                    .Property(Slice.RadiusProperty, vm.From.InnerRadius, vm.To.OuterRadius)
                     .Property(Slice.RotationProperty, 0, vm.To.Rotation)
                     .Property(Slice.WedgeProperty, 0, vm.To.Wedge);
             }

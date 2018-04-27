@@ -373,6 +373,8 @@ namespace LiveCharts.Core.Dimensions
 
             var delta = (float) ActualStep;
 
+            if (_activeSeparators == null) _activeSeparators = new Dictionary<double, PlaneSeparator>();
+
             for (var i = (float) from; i <= to + tolerance; i += delta)
             {
                 alternate = !alternate;

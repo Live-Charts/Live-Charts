@@ -56,17 +56,24 @@
         "id": "BasicPie",
         "name": "Basic Pie chart",
         "text": "Generate pie charts easily"
-      }, {
+      },
+      {
         "id": "ModelDependentStyle",
         "name": "Model Dependent Style",
         "text": "The chart style changes according to the data in every point.",
         "extraFiles": [
           "Models/Player.cs"
         ]
-      }, {
+      },
+      {
         "id": "ZoomingAndPanning",
         "name": "Zooming and panning",
-        "text": "A chart with zooming and pannign enabled." 
+        "text": "A chart with zooming and pannign enabled."
+      },
+      {
+        "id": "Animations",
+        "name": "Animations",
+        "text": "Change all the animations with only one property."
       }
     ],
     "Testing": [

@@ -43,7 +43,7 @@ namespace LiveCharts.Wpf.Animations
         /// Animates the specified element.
         /// </summary>
         /// <param name="element">The element.</param>
-        /// <param name="timeLinen">The animation.</param>
+        /// <param name="timeLine">The animation.</param>
         /// <returns></returns>
         public static AnimationBuilder Animate(
             this FrameworkElement element, TimeLine timeLine)
@@ -56,13 +56,13 @@ namespace LiveCharts.Wpf.Animations
         /// Animates the specified element.
         /// </summary>
         /// <param name="animatable">The animatable.</param>
-        /// <param name="timeLinen">The animation vector.</param>
+        /// <param name="timeLine">The animation vector.</param>
         /// <returns></returns>
         public static AnimationBuilder Animate(
             this Animatable animatable, TimeLine timeLine)
         {
             return new AnimationBuilder(
-                animatable, timeLine.Duration, timeLine.AnimationLine, true);
+                animatable, timeLine.Duration, timeLine.AnimationLine, false);
         }
     }
 }

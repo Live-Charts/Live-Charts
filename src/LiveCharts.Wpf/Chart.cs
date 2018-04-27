@@ -145,6 +145,13 @@ namespace LiveCharts.Wpf
             new PropertyMetadata(LegendPosition.None, RaiseOnPropertyChanged(nameof(LegendPosition))));
 
         /// <summary>
+        /// The updater state property
+        /// </summary>
+        public static readonly DependencyProperty UpdaterStateProperty = DependencyProperty.Register(
+            nameof(UpdaterState), typeof(UpdaterStates), typeof(Chart),
+            new PropertyMetadata(UpdaterStates.Running, RaiseOnPropertyChanged(nameof(UpdaterState))));
+
+        /// <summary>
         /// The data tooltip property.
         /// </summary>
         public static readonly DependencyProperty DataTooltipProperty = DependencyProperty.Register(
@@ -162,7 +169,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
             nameof(AnimationLine), typeof(IEnumerable<Core.Animations.Frame>), typeof(Chart),
-            new PropertyMetadata(TimeLines.BounceMedium));
+            new PropertyMetadata(TimeLines.EaseInOut));
 
         #endregion
 
@@ -187,7 +194,7 @@ namespace LiveCharts.Wpf
         {
             return (sender, eventArgs) =>
             {
-                var chart = (Chart)sender;
+                var chart = (Chart) sender;
                 chart.OnPropertyChanged(propertyName);
             };
         }
@@ -243,7 +250,7 @@ namespace LiveCharts.Wpf
             if (args.ClickCount != 2) return;
             var p = args.GetPosition(this);
             var c = new Point(
-                p.X +GetLeft(VisualDrawMargin),
+                p.X + GetLeft(VisualDrawMargin),
                 p.Y + GetTop(VisualDrawMargin));
             var points = Model.GetHoveredPoints(new PointF((float) c.X, (float) c.Y));
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
@@ -334,7 +341,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
-        float[] IChartView.ControlSize => new [] {(float) ActualWidth, (float) ActualHeight};
+        float[] IChartView.ControlSize => new[] {(float) ActualWidth, (float) ActualHeight};
 
         /// <inheritdoc cref="IChartView.DrawMargin"/>
         public Margin DrawMargin { get; set; }
@@ -345,57 +352,70 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.Series"/>
         public IEnumerable<ISeries> Series
         {
-            get => (IEnumerable<ISeries>)GetValue(SeriesProperty);
+            get => (IEnumerable<ISeries>) GetValue(SeriesProperty);
             set => SetValue(SeriesProperty, value);
+        }
+
+        /// <inheritdoc />
+        public UpdaterStates UpdaterState
+        {
+            get => (UpdaterStates) GetValue(UpdaterStateProperty);
+            set => SetValue(UpdaterStateProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.AnimationsSpeed"/>
         public TimeSpan AnimationsSpeed
         {
-            get => (TimeSpan)GetValue(AnimationsSpeedProperty);
+            get => (TimeSpan) GetValue(AnimationsSpeedProperty);
             set => SetValue(AnimationsSpeedProperty, value);
         }
 
         /// <inheritdoc />
         public IEnumerable<Core.Animations.Frame> AnimationLine
         {
-            get => (IEnumerable<Core.Animations.Frame>)GetValue(AnimationLineProperty);
+            get => (IEnumerable<Core.Animations.Frame>) GetValue(AnimationLineProperty);
             set => SetValue(AnimationLineProperty, value);
         }
 
         /// <inheritdoc />
         public TimeSpan TooltipTimeOut
         {
-            get => (TimeSpan)GetValue(TooltipTimeoutProperty);
+            get => (TimeSpan) GetValue(TooltipTimeoutProperty);
             set => SetValue(TooltipTimeoutProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.Legend"/>
         public ILegend Legend
         {
-            get => (ILegend)GetValue(LegendProperty);
+            get => (ILegend) GetValue(LegendProperty);
             set => SetValue(LegendProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.LegendPosition"/>
         public LegendPosition LegendPosition
         {
-            get => (LegendPosition)GetValue(LegendPositionProperty);
+            get => (LegendPosition) GetValue(LegendPositionProperty);
             set => SetValue(LegendPositionProperty, value);
         }
 
         /// <inheritdoc />
         public bool Hoverable
         {
-            get => (bool)GetValue(HoverableProperty);
+            get => (bool) GetValue(HoverableProperty);
             set => SetValue(HoverableProperty, value);
         }
 
         /// <inheritdoc cref="IChartView.DataToolTip"/>
         public IDataToolTip DataToolTip
         {
-            get => (IDataToolTip)GetValue(DataTooltipProperty);
+            get => (IDataToolTip) GetValue(DataTooltipProperty);
             set => SetValue(DataTooltipProperty, value);
+        }
+
+        /// <inheritdoc />
+        public void Update(bool restartAnimations = false)
+        {
+            Model.Invalidate(restartAnimations, true);
         }
 
         void IChartView.SetDrawArea(RectangleF drawArea)
@@ -429,7 +449,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public ICommand DataClickCommand
         {
-            get => (ICommand)GetValue(DataClickCommandProperty);
+            get => (ICommand) GetValue(DataClickCommandProperty);
             set => SetValue(DataClickCommandProperty, value);
         }
 
@@ -447,7 +467,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public ICommand DataDoubleClickCommand
         {
-            get => (ICommand)GetValue(DataDoubleClickCommandProperty);
+            get => (ICommand) GetValue(DataDoubleClickCommandProperty);
             set => SetValue(DataDoubleClickCommandProperty, value);
         }
 

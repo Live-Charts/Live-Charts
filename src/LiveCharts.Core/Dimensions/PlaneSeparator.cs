@@ -13,7 +13,7 @@ namespace LiveCharts.Core.Dimensions
 
         public void Dispose(IChartView view)
         {
-            View.Dispose(view);
+            View?.Dispose(view);
             View = null;
         }
     }
