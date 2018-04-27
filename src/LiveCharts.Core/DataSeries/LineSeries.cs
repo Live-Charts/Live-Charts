@@ -131,13 +131,6 @@ namespace LiveCharts.Core.DataSeries
                     i = p[0];
                 }
 
-                currentBezier.Point.InteractionArea = new RectangleInteractionArea(
-                    new RectangleF(
-                        p[0] - (float) GeometrySize * .5f,
-                        p[1] - (float) GeometrySize * .5f,
-                        (float) GeometrySize,
-                        (float) GeometrySize));
-
                 if (currentBezier.Point.View == null)
                 {
                     currentBezier.Point.View = ViewProvider.GetNewPoint();
@@ -145,6 +138,12 @@ namespace LiveCharts.Core.DataSeries
 
                 currentBezier.ViewModel.Path = cartesianPath;
                 currentBezier.Point.ViewModel = currentBezier.ViewModel;
+                currentBezier.Point.InteractionArea = new RectangleInteractionArea(
+                    new RectangleF(
+                        currentBezier.ViewModel.Location.X,
+                        currentBezier.ViewModel.Location.Y,
+                        (float) GeometrySize,
+                        (float) GeometrySize));
                 currentBezier.Point.View.DrawShape(currentBezier.Point, previous, animation);
                 if (DataLabels)
                     currentBezier.Point.View.DrawLabel(
@@ -167,6 +166,7 @@ namespace LiveCharts.Core.DataSeries
             var i = 0;
 
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
+            var r = (float) (GeometrySize * .5);
 
             var e = Points.GetEnumerator();
             var isFirstPoint = true;
@@ -218,7 +218,7 @@ namespace LiveCharts.Core.DataSeries
                 var bezier = new BezierViewModel
                 {
                     Index = i,
-                    Location = current,
+                    Location = new PointF(current.X - r, current.Y - r),
                     Point1 = isFirstPoint ? current : new PointF((float) c1X, (float) c1Y),
                     Point2 = new PointF((float) c2X, (float) c2Y),
                     Point3 = next,

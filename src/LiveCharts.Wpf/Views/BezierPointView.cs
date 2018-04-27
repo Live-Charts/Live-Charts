@@ -29,7 +29,6 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -79,14 +78,12 @@ namespace LiveCharts.Wpf.Views
             _previous = (BezierPointView<TModel, TLabel>) previous?.View;
             if (_previous != null) _previous._next = this;
 
-            var r = .5 * _vm.GeometrySize;
-
             if (isNew)
             {
                 Shape = new Path {Stretch = Stretch.Fill};
                 chart.Content.AddChild(Shape);
-                Canvas.SetLeft(Shape, point.ViewModel.Location.X - r);
-                Canvas.SetTop(Shape, point.ViewModel.Location.Y - r);
+                Canvas.SetLeft(Shape, point.ViewModel.Location.X);
+                Canvas.SetTop(Shape, point.ViewModel.Location.Y);
                 Shape.Width = 0;
                 Shape.Height = 0;
                 _path = _vm.Path;
@@ -99,8 +96,8 @@ namespace LiveCharts.Wpf.Views
                 };
 
                 Shape.Animate(geometryAnimation)
-                    .Property(Canvas.LeftProperty, _vm.Location.X, _vm.Location.X - r, 0.5)
-                    .Property(Canvas.TopProperty, _vm.Location.Y, _vm.Location.Y - r, 0.5)
+                    .Property(Canvas.LeftProperty, _vm.Location.X, _vm.Location.X, 0.5)
+                    .Property(Canvas.TopProperty, _vm.Location.Y, _vm.Location.Y, 0.5)
                     .Property(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, 0.5)
                     .Property(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, 0.5)
                     .Begin();
@@ -115,8 +112,8 @@ namespace LiveCharts.Wpf.Views
             if (!isNew)
             {
                 Shape.Animate(timeLine)
-                    .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), _vm.Location.X - r)
-                    .Property(Canvas.TopProperty, Canvas.GetTop(Shape), _vm.Location.Y - r)
+                    .Property(Canvas.LeftProperty, Canvas.GetLeft(Shape), _vm.Location.X)
+                    .Property(Canvas.TopProperty, Canvas.GetTop(Shape), _vm.Location.Y)
                     .Begin();
             }
 
