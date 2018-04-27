@@ -47,7 +47,8 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Axis : Plane
     {
-        private Dictionary<double, PlaneSeparator> _activeSeparators = new Dictionary<double, PlaneSeparator>();
+        internal Dictionary<ChartModel, Dictionary<double, PlaneSeparator>> DependentCharts =
+            new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>();
 
         private IPlaneViewProvider _planeViewProvider;
         private double _step;
@@ -68,6 +69,7 @@ namespace LiveCharts.Core.Dimensions
             MaxRange = double.MaxValue;
             MinRange = double.MinValue;
             Position = AxisPosition.Auto;
+            SharedAxes = new List<Axis>();
             XSeparatorStyle =
                 new ShapeStyle(
                     new SolidColorBrush(Color.FromArgb(255, 250, 250, 250)),
@@ -178,6 +180,16 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Gets the shares with collection, add an <see cref="Axis"/> here so the the space
+        /// between all the elements in this collection will be computed together, then
+        /// the space taken by this axis will be the maximum according to the collection.
+        /// </summary>
+        /// <value>
+        /// The shares with.
+        /// </value>
+        public List<Axis> SharedAxes { get;}
+
+        /// <summary>
         /// Gets or sets the x axis separator style.
         /// </summary>
         /// <value>
@@ -285,7 +297,7 @@ namespace LiveCharts.Core.Dimensions
             return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
-        internal Margin CalculateAxisMargin(ChartModel chart)
+        internal Margin CalculateAxisMargin(ChartModel chart, Axis axis)
         {
 #region note
             // we'll ask the axis to generate a label every 5px to estimate its size
@@ -309,38 +321,38 @@ namespace LiveCharts.Core.Dimensions
             // ... this is not supported for now.
 #endregion
             var space = chart.DrawAreaSize;
-            if (!(Dimension == 0 || Dimension == 1))
+            if (!(axis.Dimension == 0 || axis.Dimension == 1))
             {
                 throw new LiveChartsException(
-                    $"A Cartesian chart is not able to handle dimension {Dimension}.", 130);
+                    $"A Cartesian chart is not able to handle dimension {axis.Dimension}.", 130);
             }
-            var dimension = space[Dimension];
+            var dimension = space[axis.Dimension];
             var step = (float) (double.IsNaN(Step) ? 5d : Step);
 
-            var unit = ActualPointLength?[Dimension] ?? 0f;
+            var unit = axis.ActualPointLength?[axis.Dimension] ?? 0f;
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
-            var dummyControl = ViewProvider.GetMeasurableLabel();
+            var dummyControl = axis.ViewProvider.GetMeasurableLabel();
             var labelsStyle = new LabelStyle
             {
-                Font = LabelsFont,
-                Foreground = LabelsForeground,
-                LabelsRotation = LabelsRotation,
-                Padding = LabelsPadding
+                Font = axis.LabelsFont,
+                Foreground =  axis.LabelsForeground,
+                LabelsRotation = axis.LabelsRotation,
+                Padding = axis.LabelsPadding
             };
 
             for (var i = 0f; i < dimension; i += step)
             {
-                var label = EvaluateAxisLabel(
+                var label = axis.EvaluateAxisLabel(
                     dummyControl,
                     labelsStyle,
-                    (float) chart.ScaleFromUi(i, this, space),
+                    (float) chart.ScaleFromUi(i, axis, space),
                     space,
                     unit,
                     chart);
 
-                var li = label.Position.X;// - label.Margin.Left;
+                var li = label.Position.X;
                 if (li < 0 && l < -li) l = -li;
 
                 var ri = label.Position.X + label.Margin.Right;
@@ -373,7 +385,13 @@ namespace LiveCharts.Core.Dimensions
 
             var delta = (float) ActualStep;
 
-            if (_activeSeparators == null) _activeSeparators = new Dictionary<double, PlaneSeparator>();
+            if (DependentCharts == null) DependentCharts = new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>();
+
+            if (!DependentCharts.TryGetValue(chart, out var viewHolder))
+            {
+                viewHolder = new Dictionary<double, PlaneSeparator>();
+                DependentCharts.Add(chart, viewHolder);
+            }
 
             for (var i = (float) from; i <= to + tolerance; i += delta)
             {
@@ -381,13 +399,13 @@ namespace LiveCharts.Core.Dimensions
                 var iui = chart.ScaleToUi(i, this);
                 var key = Math.Round(i / tolerance) * tolerance;
 
-                if (!_activeSeparators.TryGetValue(key, out var separator))
+                if (!viewHolder.TryGetValue(key, out var separator))
                 {
                     separator = new PlaneSeparator
                     {
                         View = ViewProvider.GetNewVisual()
                     };
-                    _activeSeparators.Add(key, separator);
+                    viewHolder.Add(key, separator);
                 }
 
                 var animation = new TimeLine
@@ -443,11 +461,14 @@ namespace LiveCharts.Core.Dimensions
 
             // remove unnecessary elements from cache
             // the visual element will be removed by the chart's resource collector
-            foreach (var separator in _activeSeparators.ToArray())
+            foreach (var holder in DependentCharts.ToArray())
             {
-                if (separator.Value.UpdateId != chart.UpdateId)
+                foreach (var separator in holder.Value.ToArray())
                 {
-                    _activeSeparators.Remove(separator.Key);
+                    if (separator.Value.UpdateId != chart.UpdateId)
+                    {
+                        viewHolder.Remove(separator.Key);
+                    }
                 }
             }
         }
@@ -570,9 +591,12 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc cref="Plane.OnDispose"/>
         protected override void OnDispose(IChartView chart)
         {
-            foreach (var separator in _activeSeparators)
+            foreach (var holder in DependentCharts)
             {
-                separator.Value.Dispose(chart);
+                foreach (var separator in holder.Value)
+                {
+                    separator.Value.Dispose(chart);
+                }
             }
 
             foreach (var section in Sections ?? Enumerable.Empty<Section>())
@@ -580,8 +604,8 @@ namespace LiveCharts.Core.Dimensions
                 section.View.Dispose(chart);
             }
 
-            _activeSeparators.Clear();
-            _activeSeparators = null;
+            DependentCharts.Clear();
+            DependentCharts = null;
         }
         
         /// <inheritdoc />

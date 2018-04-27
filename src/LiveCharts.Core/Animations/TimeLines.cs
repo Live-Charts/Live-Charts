@@ -13,6 +13,17 @@ namespace LiveCharts.Core.Animations
         private static Frame[] _easeInOut;
 
         /// <summary>
+        /// Gets the disable animations vector.
+        /// </summary>
+        /// <value>
+        /// The disable animations.
+        /// </value>
+        public static IEnumerable<Frame> DisableAnimations => new[]
+        {
+            new Frame(1, 1)
+        };
+
+        /// <summary>
         /// Gets the lineal animation vector.
         /// </summary>
         /// <value>

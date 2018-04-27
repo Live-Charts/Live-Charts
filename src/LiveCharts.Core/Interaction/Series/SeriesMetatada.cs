@@ -36,19 +36,27 @@ namespace LiveCharts.Core.Interaction.Series
     public struct SeriesMetadata
     {
         /// <summary>
-        /// Gets or sets the type of the model.
+        /// Gets the type of the model.
         /// </summary>
         /// <value>
         /// The type of the model.
         /// </value>
-        public Type ModelType { get; set; }
+        public Type ModelType { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is referenced type.
+        /// Gets a value indicating whether this instance is referenced type.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is referenced type; otherwise, <c>false</c>.
         /// </value>
-        public bool IsValueType { get; set; }
+        public bool IsValueType { get; internal set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is observable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is observable; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsObservable { get; internal set; }
     }
 }

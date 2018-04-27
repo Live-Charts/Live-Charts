@@ -191,10 +191,20 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
         public TimeSpan AnimationsSpeed { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the animation line.
+        /// </summary>
+        /// <value>
+        /// The animation line.
+        /// </value>
         public IEnumerable<Frame> AnimationLine { get; set; }
 
         /// <inheritdoc />
@@ -376,24 +386,24 @@ namespace LiveCharts.Core.DataSeries
 
         void ISeries.OnPointHighlight(PackedPoint point, IChartView chart)
         {
-            var animation = new TimeLine
+            var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.AnimationLine
             };
 
-            ViewProvider.OnPointHighlight(point, animation);
+            ViewProvider.OnPointHighlight(point, timeLine);
         }
 
         void ISeries.RemovePointHighlight(PackedPoint point, IChartView chart)
         {
-            var animation = new TimeLine
+            var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.AnimationLine
             };
 
-            ViewProvider.RemovePointHighlight(point, animation);
+            ViewProvider.RemovePointHighlight(point, timeLine);
         }
 
         /// <summary>
@@ -482,14 +492,15 @@ namespace LiveCharts.Core.DataSeries
         {
             _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
-            DataLabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            DataLabelsForeground = new SolidColorBrush(Color.FromArgb(30, 30, 30));
+            _dataLabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
+            _dataLabelsForeground = new SolidColorBrush(Color.FromArgb(30, 30, 30));
             _values = itemsSource ?? new ChartingCollection<TModel>();
             var t = typeof(TModel);
             Metadata = new SeriesMetadata
             {
                 ModelType = t,
-                IsValueType = t.IsValueType
+                IsValueType = t.IsValueType,
+                IsObservable = typeof(INotifyPropertyChanged).IsAssignableFrom(t)
             };
             AnimationsSpeed = TimeSpan.MaxValue;
             AnimationLine = null;

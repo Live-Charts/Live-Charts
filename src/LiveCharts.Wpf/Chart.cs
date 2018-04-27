@@ -110,6 +110,13 @@ namespace LiveCharts.Wpf
         #region Dependency properties
 
         /// <summary>
+        /// The draw margin property, default is LiveCharts.Core.Drawing.Margin.Empty which means that the library will calculate it.
+        /// </summary>
+        public static readonly DependencyProperty DrawMarginProperty = DependencyProperty.Register(
+            nameof(DrawMargin), typeof(Margin), typeof(Chart), 
+            new PropertyMetadata(Core.Drawing.Margin.Empty, RaiseOnPropertyChanged(nameof(DrawMargin))));
+
+        /// <summary>
         /// The series property.
         /// </summary>
         public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
@@ -169,7 +176,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
             nameof(AnimationLine), typeof(IEnumerable<Core.Animations.Frame>), typeof(Chart),
-            new PropertyMetadata(TimeLines.EaseInOut));
+            new PropertyMetadata(TimeLines.Ease));
 
         #endregion
 
@@ -344,7 +351,11 @@ namespace LiveCharts.Wpf
         float[] IChartView.ControlSize => new[] {(float) ActualWidth, (float) ActualHeight};
 
         /// <inheritdoc cref="IChartView.DrawMargin"/>
-        public Margin DrawMargin { get; set; }
+        public Margin DrawMargin
+        {
+            get => (Margin) GetValue(DrawMarginProperty);
+            set => SetValue(DrawMarginProperty, value);
+        }
 
         /// <inheritdoc />
         IList<IList<Plane>> IChartView.Dimensions => GetOrderedDimensions();

@@ -332,8 +332,9 @@ namespace LiveCharts.Core.Charts
 
             base.Update(restart, context);
 
-            // see appendix/chart.spacing.png
-            var drawMargin = EvaluateAxisAndGetDrawMargin(context);
+            // see docs/resources/chart.spacing.png
+            var drawMargin = EvaluateAxisAndGetDrawMargin(context, this);
+            var v = View.DrawMargin;
 
             DrawAreaSize = new[]
             {
@@ -428,7 +429,7 @@ namespace LiveCharts.Core.Charts
             return new PointF(x, y);
         }
 
-        internal Margin EvaluateAxisAndGetDrawMargin(UpdateContext context)
+        internal Margin EvaluateAxisAndGetDrawMargin(UpdateContext context, ChartModel chart)
         {
             var requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
 
@@ -493,7 +494,6 @@ namespace LiveCharts.Core.Charts
                     plane.ActualReverse = plane.Dimension == 1;
                     if (plane.Reverse) plane.ActualReverse = !plane.ActualReverse;
 
-                    if (!requiresDrawMarginEvaluation) continue;
                     if (!(plane is Axis axis)) continue;
 
                     axis.ActualPosition = axis.Position == AxisPosition.Auto
@@ -502,8 +502,25 @@ namespace LiveCharts.Core.Charts
                             : AxisPosition.Left)
                         : axis.Position;
 
+                    if (!requiresDrawMarginEvaluation) continue;
+
                     // we stack the axis required margin
-                    var mi = axis.CalculateAxisMargin(this);
+
+                    var mi = axis.CalculateAxisMargin(chart, axis);
+
+                    foreach (var sharedAx in axis.SharedAxes)
+                    {
+                        foreach (var dependentChart in sharedAx.DependentCharts)
+                        {
+                            var mj = axis.CalculateAxisMargin(dependentChart.Key, sharedAx);
+
+                            mi = new Margin(
+                                mj.Top > mi.Top ? mj.Top : mi.Top,
+                                mj.Right > mi.Top ? mj.Right : mi.Right,
+                                mj.Bottom > mi.Bottom ? mj.Bottom : mi.Bottom,
+                                mj.Left > mi.Left ? mj.Left : mi.Left);
+                        }
+                    }
 
                     switch (axis.ActualPosition)
                     {

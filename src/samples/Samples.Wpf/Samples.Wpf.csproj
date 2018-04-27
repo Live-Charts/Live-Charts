@@ -107,6 +107,9 @@
     <Compile Include="Views\ObservableSeries.xaml.cs">
       <DependentUpon>ObservableSeries.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SharedAxes.xaml.cs">
+      <DependentUpon>SharedAxes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ZoomingAndPanning.xaml.cs">
       <DependentUpon>ZoomingAndPanning.xaml</DependentUpon>
     </Compile>
@@ -179,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ObservableSeries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SharedAxes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

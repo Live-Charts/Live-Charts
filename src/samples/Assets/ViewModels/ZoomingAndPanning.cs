@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
 namespace Assets.ViewModels
@@ -12,7 +11,7 @@ namespace Assets.ViewModels
 
         public ZoomingAndPanning()
         {
-            SeriesCollection = new SeriesCollection
+            SeriesCollection = new ObservableCollection<ISeries>
             {
                 new LineSeries<double>
                 {

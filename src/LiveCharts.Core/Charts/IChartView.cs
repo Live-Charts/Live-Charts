@@ -106,10 +106,10 @@ namespace LiveCharts.Core.Charts
         float[] ControlSize { get; }
 
         /// <summary>
-        /// Gets the size of the draw margin.
+        /// Gets the draw margin, this margin indicates the distance every axis has to display its labels.
         /// </summary>
         /// <value>
-        /// The size of the draw margin.
+        /// The draw margin.
         /// </value>
         Margin DrawMargin { get; }
 

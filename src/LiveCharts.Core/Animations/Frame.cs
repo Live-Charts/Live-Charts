@@ -27,7 +27,7 @@
         public double Time { get; set; }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets the value in percentage.
         /// </summary>
         /// <value>
         /// The value.

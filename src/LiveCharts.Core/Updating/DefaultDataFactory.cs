@@ -49,10 +49,10 @@ namespace LiveCharts.Core.Updating
         {
             var results = new List<Point<TModel, TCoordinate, TViewModel, TSeries>>();
             var mapper = context.Mapper;
-            var notifiesChange = typeof(INotifyPropertyChanged).IsAssignableFrom(context.Series.Metadata.ModelType);
+            var notifiesChange = context.Series.Metadata.IsObservable;
             var collection = context.Collection;
             var isValueType = context.Series.Metadata.IsValueType;
-            var tracker = (Dictionary<object, Point<TModel, TCoordinate, TViewModel, TSeries>>)
+            var pointTracker = (Dictionary<object, Point<TModel, TCoordinate, TViewModel, TSeries>>)
                 context.Series.Content[context.Chart][Config.TrackerKey];
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -66,10 +66,10 @@ namespace LiveCharts.Core.Updating
 
                 var key = isValueType ? index : (object) instance;
 
-                if (!tracker.TryGetValue(key, out var chartPoint))
+                if (!pointTracker.TryGetValue(key, out var chartPoint))
                 {
                     chartPoint = new Point<TModel, TCoordinate, TViewModel, TSeries>();
-                    tracker.Add(key, chartPoint);
+                    pointTracker.Add(key, chartPoint);
                     if (notifiesChange)
                     {
                         var npc = (INotifyPropertyChanged) instance;
@@ -77,7 +77,7 @@ namespace LiveCharts.Core.Updating
                         void DisposeByValPoint(IChartView view, object sender)
                         {
                             npc.PropertyChanged -= InvalidateOnPropertyChanged;
-                            tracker.Remove(key);
+                            pointTracker.Remove(key);
                         }
 
                         npc.PropertyChanged += InvalidateOnPropertyChanged;

@@ -69,6 +69,10 @@
         "id": "ZoomingAndPanning",
         "name": "Zooming and panning",
         "text": "A chart with zooming and pannign enabled."
+      }, {
+        "id": "SharedAxes",
+        "name": "Shared axes",
+        "text": "Illustrates how to share an axis in multiple charts."
       },
       {
         "id": "Animations",

@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -99,6 +98,9 @@ namespace LiveCharts.Wpf.Animations
             }
             else
             {
+                // I think this in an error in the WPF framework design
+                // this is just a work around.
+                // storyboards do not work on all Animatable objects, only in FrameworkElements.
                 if (_animations.Count > 0) _animations[0].Item2.Completed += OnFinished;
                 foreach (var x in _animations)
                 {
@@ -220,7 +222,7 @@ namespace LiveCharts.Wpf.Animations
                             (byte) (from.R + frame.Value * (to.R - from.R)),
                             (byte) (from.G + frame.Value * (to.G - from.G)),
                             (byte) (from.B + frame.Value * (to.B - from.B))),
-                        KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.Time))));
+                        KeyTime.FromPercent(frame.Time)));
             }
 
             if (_isFrameworkElement)

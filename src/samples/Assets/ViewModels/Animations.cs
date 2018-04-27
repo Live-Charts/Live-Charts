@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Animations;
-using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 
 namespace Assets.ViewModels
@@ -14,7 +13,7 @@ namespace Assets.ViewModels
 
         public Animations()
         {
-            SeriesCollection = new SeriesCollection
+            SeriesCollection = new ObservableCollection<ISeries>
             {
                 new LineSeries<double>
                 {
@@ -42,6 +41,7 @@ namespace Assets.ViewModels
 
             PredefinedTimeLines = new[]
             {
+                TimeLines.DisableAnimations,
                 TimeLines.Lineal,
                 TimeLines.Ease,
                 TimeLines.EaseIn,

@@ -26,6 +26,7 @@
 #region
 
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -34,6 +35,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Wpf.Animations;
 
 #endregion
 
@@ -66,6 +68,7 @@ namespace LiveCharts.Wpf.Views.Providers
         public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
         {
             var view = (GeometryPointView<TModel, TCoordinate, TSeries>) point.View;
+
             view.Shape.RenderTransformOrigin = new Point(0.5, 0.5);
             view.Shape.RenderTransform = new ScaleTransform(1.2, 1.2);
         }
