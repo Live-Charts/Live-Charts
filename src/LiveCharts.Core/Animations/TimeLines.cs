@@ -101,13 +101,11 @@ namespace LiveCharts.Core.Animations
                 _easeOut = new[]
                 {
                     bezier.GetFrame(0),
-                    bezier.GetFrame(0.1),
-                    bezier.GetFrame(0.2),
                     bezier.GetFrame(0.3),
-                    bezier.GetFrame(0.4),
-                    bezier.GetFrame(0.5),
                     bezier.GetFrame(0.58),
-                    bezier.GetFrame(0.75),
+                    bezier.GetFrame(0.7),
+                    bezier.GetFrame(0.8),
+                    bezier.GetFrame(0.9),
                     bezier.GetFrame(1)
                 };
 
