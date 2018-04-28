@@ -19,9 +19,9 @@
         <lvc:CartesianChart Grid.Row="0"
                             Series="{Binding SeriesCollection}"
                             XAxis="{Binding XAxisCollection}"/>
-        <StackPanel Grid.Row="1" >
-            <Slider Width="100" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MinValue}" />
-            <Slider Width="100" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MaxValue}" />
+        <StackPanel Grid.Row="1" Margin="20" >
+            <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MinValue}" />
+            <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MaxValue}" />
         </StackPanel>
     </Grid>
 </UserControl>

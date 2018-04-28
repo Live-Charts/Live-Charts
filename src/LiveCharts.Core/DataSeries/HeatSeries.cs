@@ -125,13 +125,15 @@ namespace LiveCharts.Core.DataSeries
             var minW = context.Ranges[2][ScalesAt[2]][0];
             var maxW = context.Ranges[2][ScalesAt[2]][1];
 
-            var animation = new TimeLine
+            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous = null;
+            var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous = null;
+            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalAnimationLine = timeLine.AnimationLine;
+            var i = 0;
 
             foreach (var current in Points)
             {
@@ -157,13 +159,21 @@ namespace LiveCharts.Core.DataSeries
                     To = ColorInterpolation(minW, maxW, current.Coordinate.Weight)
                 };
 
+                if (DelayRule != DelayRules.None)
+                {
+                    timeLine = AnimationExtensions.Delay(
+                        // ReSharper disable once PossibleMultipleEnumeration
+                        originalDuration, originalAnimationLine, i / (double)PointsCount, DelayRule);
+                }
+
                 current.ViewModel = vm;
-                current.View.DrawShape(current, previous, animation);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, animation);
+                current.View.DrawShape(current, previous, timeLine);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(vm.Rectangle);
 
                 previous = current;
+                i++;
             }
         }
 

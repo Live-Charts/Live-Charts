@@ -67,7 +67,8 @@
     <Compile Include="Views\HeatPointView.cs" />
     <Compile Include="Views\PiePointView.cs" />
     <Compile Include="Views\Providers\BarSeriesViewProvider.cs" />
-    <Compile Include="Views\Providers\BezierSeriesViewProvider.cs" />
+    <Compile Include="Views\Providers\SelfDrawnBezierSeriesViewProvider.cs" />
+    <Compile Include="Views\Providers\FromPivotBezierSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\HeatViewSeriesProvider.cs" />
     <Compile Include="Views\Providers\PieSeriesViewProvider.cs" />
     <Compile Include="Views\Providers\PlaneViewProvider.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="CartesianChart.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\SelfDrawnPath.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Views\BarPointView.cs" />

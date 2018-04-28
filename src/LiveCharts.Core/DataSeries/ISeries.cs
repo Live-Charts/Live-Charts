@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
@@ -72,6 +73,14 @@ namespace LiveCharts.Core.DataSeries
         /// The points.
         /// </value>
         IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
+
+        /// <summary>
+        /// Gets the points count.
+        /// </summary>
+        /// <value>
+        /// The points count.
+        /// </value>
+        int PointsCount { get; }
 
         /// <summary>
         /// Gets the view provider.
@@ -193,6 +202,30 @@ namespace LiveCharts.Core.DataSeries
         /// The title.
         /// </value>
         string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the animations speed.
+        /// </summary>
+        /// <value>
+        /// The animations speed.
+        /// </value>
+        TimeSpan AnimationsSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the animation line.
+        /// </summary>
+        /// <value>
+        /// The animation line.
+        /// </value>
+        IEnumerable<Frame> AnimationLine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delay rule.
+        /// </summary>
+        /// <value>
+        /// The delay rule.
+        /// </value>
+        DelayRules DelayRule { get; set; }
 
         /// <summary>
         /// Gets the index of the group, -1 indicates that the series is not grouped.

@@ -46,6 +46,23 @@
             return new Frame(x, CalcBezier(GetTForX(x), _my1, _my2));
         }
 
+        /// <summary>
+        /// Gets the y.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <returns></returns>
+        public double GetY(double x)
+        {
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            if (_mx1 == _my1 && _mx2 == _my2)
+            {
+                return x;
+            }
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+
+            return CalcBezier(GetTForX(x), _my1, _my2);
+        }
+
         private double GetTForX(double aX)
         {
             // Newton raphson iteration

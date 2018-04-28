@@ -43,7 +43,7 @@ namespace LiveCharts.Core.Updating
     {
         /// <inheritdoc />
         public Point<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-            DataFactoryContext<TModel, TCoordinate, TSeries> context)
+            DataFactoryContext<TModel, TCoordinate, TSeries> context, out int count)
             where TCoordinate : ICoordinate
             where TSeries : ISeries
         {
@@ -59,7 +59,7 @@ namespace LiveCharts.Core.Updating
             {
                 context.Chart.Invalidate();
             }
-
+            
             for (var index = 0; index < collection.Count; index++)
             {
                 var instance = collection[index];
@@ -101,6 +101,7 @@ namespace LiveCharts.Core.Updating
                 results.Add(chartPoint);
             }
 
+            count = collection.Count;
             return results.ToArray();
         }
     }

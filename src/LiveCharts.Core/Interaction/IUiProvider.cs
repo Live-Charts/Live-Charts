@@ -61,12 +61,6 @@ namespace LiveCharts.Core.Interaction
         IPlaneViewProvider GetNewSection();
 
         /// <summary>
-        /// The path provider.
-        /// </summary>
-        /// <returns></returns>
-        ICartesianPath GetNewPath();
-
-        /// <summary>
         /// Provides LiveCharts with a builder that returns a column view.
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
@@ -83,7 +77,7 @@ namespace LiveCharts.Core.Interaction
         /// </summary>
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> 
+        IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> 
             BezierViewProvider<TModel>();
 
         /// <summary>

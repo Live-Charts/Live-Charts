@@ -25,6 +25,7 @@
 
 #region
 
+using System.Collections.Generic;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;

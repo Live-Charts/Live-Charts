@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 
 namespace Assets.ViewModels
 {
-    public class ScrollBar : INotifyPropertyChanged
+    public class ScrollBar
     {
-        private double _scroll;
-
         public ScrollBar()
         {
             var random = new Random();
@@ -45,23 +41,5 @@ namespace Assets.ViewModels
         public ObservableCollection<ISeries> SeriesCollection { get; set; }
         public ObservableCollection<Plane> XAxisCollection { get; set; }
         public Axis ScrollableAxis { get; set; }
-
-        public double Scroll
-        {
-            get => _scroll;
-            set
-            {
-                _scroll = value;
-                ScrollableAxis.MinValue = _scroll;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

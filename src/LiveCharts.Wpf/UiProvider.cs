@@ -65,12 +65,6 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ICartesianPath GetNewPath()
-        {
-            return new CartesianPath();
-        }
-
-        /// <inheritdoc />
         public ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries> 
             BarViewProvider<TModel, TCoordinate, TSeries>()
             where TCoordinate : ICoordinate
@@ -80,9 +74,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> BezierViewProvider<TModel>()
+        public IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> BezierViewProvider<TModel>()
         {
-            return new BezierSeriesViewProvider<TModel>();
+            return new SelfDrawnBezierSeriesViewProvider<TModel>();
         }
 
         /// <inheritdoc />

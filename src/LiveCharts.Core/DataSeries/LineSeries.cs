@@ -86,27 +86,31 @@ namespace LiveCharts.Core.DataSeries
         public override void UpdateView(ChartModel chart, UpdateContext context)
         {
             var cartesianChart = (CartesianChartModel) chart;
+            var bezierViewProvider =
+                (IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries>) ViewProvider;
 
             var x = chart.Dimensions[0][ScalesAt[0]];
             var y = chart.Dimensions[1][ScalesAt[1]];
 
             var uw = chart.Get2DUiUnitWidth(x, y);
 
-            var animation = new TimeLine
+            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous = null;
+            var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous = null;
+            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalAnimationLine = timeLine.AnimationLine;
+            var itl = 0;
 
             Content[chart].TryGetValue(Path, out var path);
             var cartesianPath = (ICartesianPath) path;
 
             if (cartesianPath == null)
             {
-                cartesianPath = Charting.Current.UiProvider.GetNewPath();
-                cartesianPath.Initialize(chart.View, animation);
+                cartesianPath = bezierViewProvider.GetNewPath();
+                cartesianPath.Initialize(chart.View, timeLine);
                 Content[chart][Path] = cartesianPath;
             }
 
@@ -136,6 +140,13 @@ namespace LiveCharts.Core.DataSeries
                     currentBezier.Point.View = ViewProvider.GetNewPoint();
                 }
 
+                if (DelayRule != DelayRules.None)
+                {
+                    timeLine = AnimationExtensions.Delay(
+                        // ReSharper disable once PossibleMultipleEnumeration
+                        originalDuration, originalAnimationLine, itl / (double)PointsCount, DelayRule);
+                }
+
                 currentBezier.ViewModel.Path = cartesianPath;
                 currentBezier.Point.ViewModel = currentBezier.ViewModel;
                 currentBezier.Point.InteractionArea = new RectangleInteractionArea(
@@ -144,16 +155,17 @@ namespace LiveCharts.Core.DataSeries
                         currentBezier.ViewModel.Location.Y,
                         (float) GeometrySize,
                         (float) GeometrySize));
-                currentBezier.Point.View.DrawShape(currentBezier.Point, previous, animation);
+                currentBezier.Point.View.DrawShape(currentBezier.Point, previous, timeLine);
                 if (DataLabels)
                     currentBezier.Point.View.DrawLabel(
-                        currentBezier.Point, DataLabelsPosition, LabelsStyle, animation);
+                        currentBezier.Point, DataLabelsPosition, LabelsStyle, timeLine);
                 Mapper.EvaluateModelDependentActions(
                     currentBezier.Point.Model, currentBezier.Point.View.VisualElement, currentBezier.Point);
 
                 previous = currentBezier.Point;
                 length += currentBezier.ViewModel.AproxLength;
                 j = p[0];
+                itl++;
             }
 
             cartesianPath.Close(chart.View, (float) length, i, j);

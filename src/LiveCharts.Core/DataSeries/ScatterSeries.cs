@@ -112,13 +112,15 @@ namespace LiveCharts.Core.DataSeries
 
             var r = (float) GeometrySize * .5f;
 
-            var animation = new TimeLine
+            Point<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> previous = null;
+            var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-
-            Point<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> previous = null;
+            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalAnimationLine = timeLine.AnimationLine;
+            var i = 0;
 
             foreach (var current in Points)
             {
@@ -139,9 +141,16 @@ namespace LiveCharts.Core.DataSeries
                     Diameter = (float) GeometrySize
                 };
 
+                if (DelayRule != DelayRules.None)
+                {
+                    timeLine = AnimationExtensions.Delay(
+                        // ReSharper disable once PossibleMultipleEnumeration
+                        originalDuration, originalAnimationLine, i / (double)PointsCount, DelayRule);
+                }
+
                 current.ViewModel = vm;
-                current.View.DrawShape(current, previous, animation);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, animation);
+                current.View.DrawShape(current, previous, timeLine);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
@@ -150,6 +159,7 @@ namespace LiveCharts.Core.DataSeries
                         (float) GeometrySize,
                         (float) GeometrySize));
                 previous = current;
+                i++;
             }
         }
     }

@@ -28,11 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Wpf.Animations;
 using Brush = LiveCharts.Core.Drawing.Brush;
@@ -44,8 +42,8 @@ namespace LiveCharts.Wpf.Views
     public class CartesianPath : ICartesianPath
     {
         private readonly PathFigure _figure;
-        private IEnumerable<double> _strokeDashArray;
-        private double _previousLength;
+        protected IEnumerable<double> StrokeDashArray;
+        protected double PreviousLength;
         private TimeLine _timeLine;
         private bool _isNew;
 
@@ -79,7 +77,7 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         public void SetStyle(
-            PointF startPoint, Brush stroke, Brush fill, 
+            PointF startPoint, Brush stroke, Brush fill,
             double strokeThickness, IEnumerable<double> strokeDashArray)
         {
             if (_isNew)
@@ -98,14 +96,14 @@ namespace LiveCharts.Wpf.Views
             StrokePath.Stroke = stroke.AsWpf();
             StrokePath.Fill = null;
             StrokePath.StrokeThickness = strokeThickness;
-            _strokeDashArray = strokeDashArray;
+            StrokeDashArray = strokeDashArray;
             StrokePath.StrokeDashOffset = 0;
         }
 
         /// <inheritdoc />
         public object InsertSegment(object segment, int index, PointF p1, PointF p2, PointF p3)
         {
-            var s = (BezierSegment) segment ?? new BezierSegment(p1.AsWpf(), p2.AsWpf(), p3.AsWpf(), true);
+            var s = (BezierSegment)segment ?? new BezierSegment(p1.AsWpf(), p2.AsWpf(), p3.AsWpf(), true);
 
             _figure.Segments.Remove(s);
             _figure.Segments.Insert(index, s);
@@ -115,27 +113,12 @@ namespace LiveCharts.Wpf.Views
 
         public void RemoveSegment(object segment)
         {
-            _figure.Segments.Remove((PathSegment) segment);
+            _figure.Segments.Remove((PathSegment)segment);
         }
 
-        public void Close(IChartView view, float length, float i, float j)
+        public virtual void Close(IChartView view, float length, float i, float j)
         {
-            var l = length / StrokePath.StrokeThickness;
-            var tl = l - _previousLength;
-            var remaining = 0d;
-            if (tl < 0)
-            {
-                remaining = -tl;
-            }
-
-            StrokePath.StrokeDashArray = new DoubleCollection(
-                Effects.GetAnimatedDashArray(_strokeDashArray, (float) (l + remaining)));
-            StrokePath.BeginAnimation(
-                Shape.StrokeDashOffsetProperty,
-                new DoubleAnimation(tl + remaining, 0, view.AnimationsSpeed, FillBehavior.Stop));
-
-            StrokePath.StrokeDashOffset = 0;
-            _previousLength = l;
+            
         }
 
         public void Dispose(IChartView view)

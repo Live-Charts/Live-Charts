@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf.Views
         private BezierViewModel _vm;
         private TimeLine _lastTimeLine;
 
-        public CartesianPath Path => (CartesianPath) _path;
+        public SelfDrawnPath Path => (SelfDrawnPath) _path;
 
         private bool IsMiddlePoint => _next != null && _previous != null;
 
@@ -95,9 +95,11 @@ namespace LiveCharts.Wpf.Views
                     Duration = TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2)
                 };
 
+                var r = _vm.GeometrySize * .5;
+
                 Shape.Animate(geometryAnimation)
-                    .Property(Canvas.LeftProperty, _vm.Location.X, _vm.Location.X, 0.5)
-                    .Property(Canvas.TopProperty, _vm.Location.Y, _vm.Location.Y, 0.5)
+                    .Property(Canvas.LeftProperty, _vm.Location.X + r, _vm.Location.X, 0.5)
+                    .Property(Canvas.TopProperty, _vm.Location.Y + r, _vm.Location.Y, 0.5)
                     .Property(FrameworkElement.WidthProperty, 0, _vm.GeometrySize, 0.5)
                     .Property(FrameworkElement.HeightProperty, 0, _vm.GeometrySize, 0.5)
                     .Begin();

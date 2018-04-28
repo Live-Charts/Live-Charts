@@ -25,7 +25,9 @@
 
 #region
 
-using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
@@ -40,45 +42,49 @@ using LiveCharts.Core.Interaction.Series;
 namespace LiveCharts.Wpf.Views.Providers
 {
     /// <summary>
-    /// The bar view provider class.
+    /// The bezier view provider class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel,TSeries}" />
-    public class BarSeriesViewProvider<TModel, TCoordinate, TSeries> 
-        : ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries>
-        where TCoordinate : ICoordinate
-        where TSeries : ICartesianSeries, IStrokeSeries
+    public class SelfDrawnBezierSeriesViewProvider<TModel>
+        : IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries>
     {
         /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, TSeries series)
+        public void OnUpdateStarted(IChartView chart, ILineSeries series)
         {
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, TCoordinate, RectangleViewModel, TSeries> GetNewPoint()
+        public IPointView<TModel, PointCoordinate, BezierViewModel, ILineSeries> GetNewPoint()
         {
-            return new BarPointView<TModel, TCoordinate, TSeries, Rectangle>();
+            return new BezierPointView<TModel, TextBlock>();
         }
 
         /// <inheritdoc />
         public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
         {
-            var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>) point.View;
-            view.Shape.Opacity = 0.85;
+            var view = (BezierPointView<TModel, TextBlock>) point.View;
+            view.Shape.RenderTransformOrigin = new Point(0.5, 0.5);
+            view.Shape.RenderTransform = new ScaleTransform(1.2, 1.2);
         }
 
         /// <inheritdoc />
         public void RemovePointHighlight(PackedPoint point, TimeLine timeLine)
         {
-            var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>)point.View;
-            view.Shape.Opacity = 1;
+            var view = (BezierPointView<TModel, TextBlock>) point.View;
+            view.Shape.RenderTransformOrigin = new Point();
+            view.Shape.RenderTransform = null;
         }
 
         /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, TSeries series)
+        public void OnUpdateFinished(IChartView chart, ILineSeries series)
         {
+        }
+
+        /// <inheritdoc />
+        public ICartesianPath GetNewPath()
+        {
+            return new SelfDrawnPath();
         }
     }
 }

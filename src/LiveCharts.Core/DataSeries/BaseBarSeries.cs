@@ -26,6 +26,7 @@
 #region
 
 using System;
+using System.Linq;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
@@ -154,13 +155,15 @@ namespace LiveCharts.Core.DataSeries
             
             var pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            var animation = new TimeLine
+            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
+            var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
+            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalAnimationLine = timeLine.AnimationLine;
+            var i = 0;
 
             foreach (var current in Points)
             {
@@ -174,12 +177,20 @@ namespace LiveCharts.Core.DataSeries
                     scaleAxis, cw, pivot, byBarOffset,
                     positionOffset, orientation, h, w);
 
-                current.View.DrawShape(current, previous, animation);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, animation);
+                if (DelayRule != DelayRules.None)
+                {
+                    timeLine = AnimationExtensions.Delay(
+                        // ReSharper disable once PossibleMultipleEnumeration
+                        originalDuration, originalAnimationLine, i / (double) PointsCount, DelayRule);
+                }
+
+                current.View.DrawShape(current, previous, timeLine);
+                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
 
                 previous = current;
+                i++;
             }
         }
 

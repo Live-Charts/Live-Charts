@@ -191,21 +191,14 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <summary>
-        /// Gets or sets the animations speed.
-        /// </summary>
-        /// <value>
-        /// The animations speed.
-        /// </value>
+        /// <inheritdoc />
         public TimeSpan AnimationsSpeed { get; set; }
 
-        /// <summary>
-        /// Gets or sets the animation line.
-        /// </summary>
-        /// <value>
-        /// The animation line.
-        /// </value>
+        /// <inheritdoc />
         public IEnumerable<Frame> AnimationLine { get; set; }
+
+        /// <inheritdoc />
+        public DelayRules DelayRule { get; set; }
 
         /// <inheritdoc />
         int ISeries.GroupingIndex => -1;
@@ -253,6 +246,9 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         public IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; private set; }
+
+        /// <inheritdoc />
+        public int PointsCount { get; private set; }
 
         /// <summary>
         /// Gets or sets the point builder.
@@ -342,7 +338,7 @@ namespace LiveCharts.Core.DataSeries
 
             // call the factory to fetch our data.
             // Fetch() has 2 main tasks.
-            // 1. Calculate each ChartPoint required by the series.
+            // 1. Calculate each ChartPoint required by the series, and count the points.
             // 2. Evaluate every dimension in the case of a cartesian chart, get Max and Min limits, 
             // if stacked, then also do the stacking...
 
@@ -362,7 +358,9 @@ namespace LiveCharts.Core.DataSeries
                 Collection = Values.ToArray()
             })
             {
-                Points = Charting.Current.DataFactory.Fetch<TModel, TCoordinate, TViewModel, TSeries>(factoryContext);
+                Points = Charting.Current.DataFactory.Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+                    factoryContext, out var count);
+                PointsCount = count;
             }
         }
 
@@ -504,6 +502,7 @@ namespace LiveCharts.Core.DataSeries
             };
             AnimationsSpeed = TimeSpan.MaxValue;
             AnimationLine = null;
+            DelayRule = DelayRules.Random;
             Charting.BuildFromSettings<ISeries>(this);
         }
 

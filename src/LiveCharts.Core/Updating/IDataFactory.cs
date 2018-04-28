@@ -45,9 +45,10 @@ namespace LiveCharts.Core.Updating
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <param name="context">The arguments.</param>
+        /// <param name="count">The points count.</param>
         /// <returns></returns>
         Point<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-            DataFactoryContext<TModel, TCoordinate, TSeries> context)
+            DataFactoryContext<TModel, TCoordinate, TSeries> context, out int count)
             where TCoordinate : ICoordinate
             where TSeries : ISeries;
     }
