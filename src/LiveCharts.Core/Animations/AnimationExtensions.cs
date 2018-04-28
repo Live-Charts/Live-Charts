@@ -8,8 +8,8 @@ namespace LiveCharts.Core.Animations
     /// </summary>
     public static class AnimationExtensions
     {
-        private static readonly KeySpline _delaySpline = new KeySpline(0.25, 0.1, 0.25, 1.0);
-        private static readonly Random _random = new Random();
+        private static readonly KeySpline DelaySpline = new KeySpline(0.25, 0.1, 0.25, 1.0);
+        private static readonly Random Random = new Random();
 
         /// <summary>
         /// Delays the specified time in percentage.
@@ -44,22 +44,28 @@ namespace LiveCharts.Core.Animations
         /// <returns></returns>
         public static TimeLine Delay(double duration, IEnumerable<Frame> animationLine, double x, DelayRules rule)
         {
+            double delayTime;
+
             switch (rule)
             {
+                case DelayRules.LeftToRight:
+                    delayTime = DelaySpline.GetY(x) * duration;
+                    break;
                 case DelayRules.RightToLeft:
                     x = 1 - x;
+                    delayTime = DelaySpline.GetY(x) * duration;
                     break;
                 case DelayRules.Random:
-                    x = _random.NextDouble();
+                    x = Random.NextDouble();
+                    delayTime = x * duration;
                     break;
                 case DelayRules.None:
-                case DelayRules.LeftToRight:
+                    delayTime = 0;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rule), rule, null);
             }
 
-            var delayTime = _delaySpline.GetY(x) * duration;
             return new TimeLine
             {
                 AnimationLine = animationLine.Delay(delayTime / (duration + delayTime)),

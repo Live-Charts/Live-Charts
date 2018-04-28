@@ -83,11 +83,13 @@ namespace LiveCharts.Wpf.Views
             Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
             Panel.SetZIndex(Shape, point.Series.ZIndex);
 
+            var r = vm.Diameter * .5f;
+
             if (isNew)
             {
                 Shape.Animate(timeLine)
-                    .Property(Canvas.LeftProperty, vm.Location.X, vm.Location.X)
-                    .Property(Canvas.TopProperty, vm.Location.Y, vm.Location.Y)
+                    .Property(Canvas.LeftProperty, vm.Location.X + r, vm.Location.X)
+                    .Property(Canvas.TopProperty, vm.Location.Y + r, vm.Location.Y)
                     .Property(FrameworkElement.WidthProperty, 0, vm.Diameter)
                     .Property(FrameworkElement.HeightProperty, 0, vm.Diameter)
                     .Begin();
