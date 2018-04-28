@@ -73,6 +73,10 @@
         "id": "SharedAxes",
         "name": "Shared axes",
         "text": "Illustrates how to share an axis in multiple charts."
+      }, {
+        "id": "ScrollBar",
+        "name": "ScrollBar",
+        "text": "Just an scrollable chart."
       },
       {
         "id": "Animations",

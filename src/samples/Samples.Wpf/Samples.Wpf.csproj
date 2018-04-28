@@ -107,6 +107,9 @@
     <Compile Include="Views\ObservableSeries.xaml.cs">
       <DependentUpon>ObservableSeries.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScrollBar.xaml.cs">
+      <DependentUpon>ScrollBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SharedAxes.xaml.cs">
       <DependentUpon>SharedAxes.xaml</DependentUpon>
     </Compile>
@@ -185,6 +188,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SharedAxes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -252,6 +259,8 @@
     <Resource Include="Images\ModelDependentStyle.png" />
     <Resource Include="Images\ZoomingAndPanning.png" />
     <Resource Include="Images\Animations.png" />
+    <Resource Include="Images\ScrollBar.png" />
+    <Resource Include="Images\SharedAxes.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
