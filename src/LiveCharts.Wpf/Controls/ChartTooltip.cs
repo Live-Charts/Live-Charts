@@ -93,6 +93,24 @@ namespace LiveCharts.Wpf.Controls
         }
 
         /// <summary>
+        /// The tooltip position property
+        /// </summary>
+        public static readonly DependencyProperty TooltipPositionProperty = DependencyProperty.Register(
+            nameof(Position), typeof(ToolTipPosition), typeof(ChartToolTip), new PropertyMetadata(default(ToolTipPosition)));
+
+        /// <summary>
+        /// Gets or sets the tooltip position.
+        /// </summary>
+        /// <value>
+        /// The tooltip position.
+        /// </value>
+        public ToolTipPosition Position
+        {
+            get => (ToolTipPosition)GetValue(TooltipPositionProperty);
+            set => SetValue(TooltipPositionProperty, value);
+        }
+
+        /// <summary>
         /// The default group style property
         /// </summary>
         public static readonly DependencyProperty DefaultGroupStyleProperty = DependencyProperty.Register(

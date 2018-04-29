@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public enum TooltipPosition
+    public enum ToolTipPosition
     {
         /// <summary>
         /// The top

@@ -4,10 +4,13 @@
     xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls"
     xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
     xmlns:points="clr-namespace:LiveCharts.Core.Interaction.Points;assembly=LiveCharts.Core"
-    xmlns:series="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core">
+    xmlns:series="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
+    xmlns:shapes="clr-namespace:LiveCharts.Wpf.Shapes">
 
     <converters:CoreToWpfBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
+    <converters:GetWidthForDialog x:Key="GetWidthForDialog"></converters:GetWidthForDialog>
+    <converters:GetHeightForDialog x:Key="GetHeightForDialog"></converters:GetHeightForDialog>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
 
     <Style TargetType="{x:Type controls:ChartToolTip}">
@@ -26,7 +29,6 @@
                             Padding="{TemplateBinding Padding}"
                             Margin="{TemplateBinding Margin}"
                             CornerRadius="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}">
-                        <!--https://stackoverflow.com/questions/8656737/templatebinding-to-dependencyproperty-on-a-custom-control-not-working-->
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black"
                                               Opacity=".42" RenderingBias="Performance" />
@@ -106,6 +108,46 @@
                         <TextBlock Text="{Binding Title}" VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:DialogContent}">
+        
+        <Setter Property="Padding" Value="20"></Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Canvas>
+                        <shapes:DialogShape
+                            x:Name="DialogShape"
+                            Wedge="{Binding Path=Wedge, RelativeSource={RelativeSource TemplatedParent}}"
+                            WedgeHypotenuse="{Binding Path=WedgeHypotenuse, RelativeSource={RelativeSource TemplatedParent}}" 
+                            Position="{Binding Path=Position, RelativeSource={RelativeSource TemplatedParent}}"
+                            CornerRadius="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
+                            Effect="{TemplateBinding Effect}"
+                            Fill="Red">
+                            <shapes:DialogShape.Width>
+                                <MultiBinding Converter="{StaticResource GetWidthForDialog}">
+                                    <Binding Path="Content" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"/>
+                                </MultiBinding>
+                            </shapes:DialogShape.Width>
+                            <shapes:DialogShape.Height>
+                                <MultiBinding Converter="{StaticResource GetHeightForDialog}" >
+                                    <Binding Path="Content" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"/>
+                                </MultiBinding>
+                            </shapes:DialogShape.Height>
+                        </shapes:DialogShape>
+                        <ContentControl
+                            Margin="{TemplateBinding Padding}"
+                            Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+                            Canvas.Left="{Binding Path=Rectangle.Left, ElementName=DialogShape}"
+                            Canvas.Top="{Binding Path=Rectangle.Top, ElementName=DialogShape}"/>
+                    </Canvas>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

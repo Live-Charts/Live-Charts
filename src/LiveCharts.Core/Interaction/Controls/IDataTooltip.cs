@@ -48,6 +48,14 @@ namespace LiveCharts.Core.Interaction.Controls
         TooltipSelectionMode SelectionMode { get; }
 
         /// <summary>
+        /// Gets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
+        ToolTipPosition Position { get; }
+
+        /// <summary>
         /// Measures this instance with the selected points.
         /// </summary>
         /// <returns></returns>

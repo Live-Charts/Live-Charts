@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:Samples.Wpf"
         xmlns:shapes="clr-namespace:LiveCharts.Wpf.Shapes;assembly=LiveCharts.Wpf"
+        xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="700"
@@ -17,7 +18,18 @@
         <wpf:NavigationHandler />
     </Window.DataContext>
     <Grid>
-        <shapes:Bubble Fill="Blue" Height="100" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20"></shapes:Bubble>
+        <controls:DialogContent VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"
+                                Background="WhiteSmoke"
+                                CornerRadius="20"
+                                Position="Bottom"
+                                Margin="20">
+            <controls:DialogContent.Effect>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black"
+                                  Opacity="1" RenderingBias="Performance" />
+            </controls:DialogContent.Effect>
+            <TextBlock>hola</TextBlock>
+        </controls:DialogContent>
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

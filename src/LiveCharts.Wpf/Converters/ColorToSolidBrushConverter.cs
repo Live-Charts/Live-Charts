@@ -26,14 +26,84 @@
 
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts.Core;
+using LiveCharts.Core.Animations;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Wpf.Controls;
 
 #endregion
 
 namespace LiveCharts.Wpf.Converters
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Data.IValueConverter" />
+    public class GetWidthForDialog : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(values[0] is FrameworkElement content) || !(values[1] is DialogContent control))
+            {
+                return new Size(0, 0);
+            }
+
+            content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            var xOverFlow = 0d;
+
+            if (control.Position == ToolTipPosition.Left || control.Position == ToolTipPosition.Right)
+            {
+                var hyp = control.WedgeHypotenuse;
+                var alpha = control.Wedge * Math.PI / 180d;
+               xOverFlow = Math.Cos(alpha / 2d) * hyp;
+            }
+
+            return content.DesiredSize.Width + control.Padding.Left + control.Padding.Right + xOverFlow;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Data.IValueConverter" />
+    public class GetHeightForDialog : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(values[0] is FrameworkElement content) || !(values[1] is DialogContent control))
+            {
+                return new Size(0, 0);
+            }
+
+            content.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            var yOverFlow = 0d;
+
+            if (control.Position == ToolTipPosition.Bottom || control.Position == ToolTipPosition.Top)
+            {
+                var hyp = control.WedgeHypotenuse;
+                var alpha = control.Wedge * Math.PI / 180d;
+                yOverFlow = Math.Sin(alpha / 2d) * hyp;
+            }
+
+            return content.DesiredSize.Width + control.Padding.Top + control.Padding.Bottom + yOverFlow;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>

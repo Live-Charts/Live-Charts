@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -11,10 +13,10 @@ namespace LiveCharts.Wpf.Shapes
     /// A bubble shape.
     /// </summary>
     /// <seealso cref="System.Windows.Shapes.Shape" />
-    public class Bubble : Shape
+    public class DialogShape : Shape, INotifyPropertyChanged
     {
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            nameof(CornerRadius), typeof(double), typeof(Bubble),
+            nameof(CornerRadius), typeof(double), typeof(DialogShape),
             new FrameworkPropertyMetadata(3d, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double CornerRadius
@@ -24,7 +26,7 @@ namespace LiveCharts.Wpf.Shapes
         }
 
         public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
-            nameof(Wedge), typeof(double), typeof(Bubble),
+            nameof(Wedge), typeof(double), typeof(DialogShape),
             new FrameworkPropertyMetadata(75d, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double Wedge
@@ -34,7 +36,7 @@ namespace LiveCharts.Wpf.Shapes
         }
 
         public static readonly DependencyProperty WedgeHypotenuseProperty = DependencyProperty.Register(
-            nameof(WedgeHypotenuse), typeof(double), typeof(Bubble),
+            nameof(WedgeHypotenuse), typeof(double), typeof(DialogShape),
             new FrameworkPropertyMetadata(12d, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double WedgeHypotenuse
@@ -44,13 +46,25 @@ namespace LiveCharts.Wpf.Shapes
         }
 
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            nameof(Position), typeof(TooltipPosition), typeof(Bubble),
-            new FrameworkPropertyMetadata(TooltipPosition.Right, FrameworkPropertyMetadataOptions.AffectsRender));
+            nameof(Position), typeof(ToolTipPosition), typeof(DialogShape),
+            new FrameworkPropertyMetadata(ToolTipPosition.Right, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public TooltipPosition Position
+        private Rect _rectangle;
+
+        public ToolTipPosition Position
         {
-            get => (TooltipPosition) GetValue(PositionProperty);
+            get => (ToolTipPosition) GetValue(PositionProperty);
             set => SetValue(PositionProperty, value);
+        }
+
+        public Rect Rectangle
+        {
+            get => _rectangle;
+            private set
+            {
+                _rectangle = value;
+                OnPropertyChanged();
+            }
         }
 
         protected override Geometry DefiningGeometry
@@ -63,15 +77,31 @@ namespace LiveCharts.Wpf.Shapes
                         "The bubble size must be explicitly set", 600);
                 }
 
+                var hyp = WedgeHypotenuse;
+                var alpha = Wedge * Math.PI / 180d;
+                var tx = Math.Sin(alpha / 2d) * hyp;
+                var ty = Math.Cos(alpha / 2d) * hyp;
+                var t = tx < ty ? ty : tx;
+
+                if (Width < t)
+                {
+                    Width = t;
+                }
+
+                if (Height < t)
+                {
+                    Height = t;
+                }
+
                 switch (Position)
                 {
-                    case TooltipPosition.Top:
+                    case ToolTipPosition.Top:
                         return PlaceTop();
-                    case TooltipPosition.Left:
+                    case ToolTipPosition.Left:
                         return PlaceLeft();
-                    case TooltipPosition.Right:
+                    case ToolTipPosition.Right:
                         return PlaceRight();
-                    case TooltipPosition.Bottom:
+                    case ToolTipPosition.Bottom:
                         return PlaceBottom();
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -87,10 +117,10 @@ namespace LiveCharts.Wpf.Shapes
             var alpha = Wedge * Math.PI / 180d;
             var tx = Math.Sin(alpha / 2d) * hyp;
             var ty = Math.Cos(alpha / 2d) * hyp;
-            
+
             var rectangle =
                 new RectangleGeometry(
-                    new Rect(0, ty, Width, Height),
+                    Rectangle = new Rect(0, ty, Width, Height - ty),
                     CornerRadius,
                     CornerRadius);
 
@@ -124,7 +154,7 @@ namespace LiveCharts.Wpf.Shapes
 
             var rectangle =
                 new RectangleGeometry(
-                    new Rect(0, 0, Width, Height - ty),
+                    Rectangle = new Rect(0, 0, Width, Height - ty),
                     CornerRadius,
                     CornerRadius);
 
@@ -159,7 +189,7 @@ namespace LiveCharts.Wpf.Shapes
 
             var rectangle =
                 new RectangleGeometry(
-                    new Rect(ty, 0, Width - ty, Height),
+                    Rectangle = new Rect(ty, 0, Width - ty, Height),
                     CornerRadius,
                     CornerRadius);
 
@@ -193,7 +223,7 @@ namespace LiveCharts.Wpf.Shapes
 
             var rectangle =
                 new RectangleGeometry(
-                    new Rect(0, 0, Width - ty, Height),
+                    Rectangle = new Rect(0, 0, Width - ty, Height),
                     CornerRadius,
                     CornerRadius);
 
@@ -215,6 +245,13 @@ namespace LiveCharts.Wpf.Shapes
             combined.Freeze();
 
             return combined;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
