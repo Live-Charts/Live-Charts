@@ -86,6 +86,14 @@ namespace LiveCharts.Core.Coordinates
         /// </value>
         public float To { get; protected set; }
 
+        /// <summary>
+        /// Gets the total stack.
+        /// </summary>
+        /// <value>
+        /// The total stack.
+        /// </value>
+        public float TotalStack { get; protected internal set; }
+
         /// <inheritdoc />
         public void Compare(IDataFactoryContext context)
         {
@@ -113,16 +121,6 @@ namespace LiveCharts.Core.Coordinates
             if (index < x[0]) x[0] = index;
             if (To > y[1]) y[1] = To;
             if (To < y[0]) y[0] = To;
-        }
-
-        /// <inheritdoc />
-        public string[] AsTooltipData(params Plane[] dimensions)
-        {
-            return new[]
-            {
-                dimensions[0].FormatValue(Key),
-                dimensions[1].FormatValue(Value)
-            };
         }
     }
 }

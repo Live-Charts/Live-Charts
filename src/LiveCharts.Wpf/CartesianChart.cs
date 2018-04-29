@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf
             SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(WeightPlaneProperty, new ChartingCollection<Plane> {new Plane()});
-            Charting.BuildFromSettings(this);
+            Charting.BuildFromTheme(this);
         }
 
         #region Dependency properties

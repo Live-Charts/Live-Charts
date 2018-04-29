@@ -8,13 +8,12 @@
 
     <converters:CoreToWpfBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
-    <converters:GetXFromPointConverter x:Key="GetX" />
-    <converters:GetYFromPointConverter x:Key="GetY" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
 
     <Style TargetType="{x:Type controls:ChartToolTip}">
 
         <Setter Property="Background" Value="White" />
-        <Setter Property="Padding" Value="8 4" />
+        <Setter Property="Padding" Value="16 12" />
         <Setter Property="Margin" Value="3" />
         <Setter Property="CornerRadius" Value="3" />
 
@@ -24,9 +23,10 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}"
-                            Margin="{TemplateBinding Margin}">
+                            Margin="{TemplateBinding Margin}"
+                            CornerRadius="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}">
+                        <!--https://stackoverflow.com/questions/8656737/templatebinding-to-dependencyproperty-on-a-custom-control-not-working-->
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black"
                                               Opacity=".42" RenderingBias="Performance" />
@@ -47,8 +47,8 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                         </Grid.ColumnDefinitions>
                         <Path Grid.Column="0"
-                              Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
-                              Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
+                              Width="{Binding Path=GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
+                              Height="{Binding Path=GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
                               StrokeThickness="{Binding Series.Style.StrokeThickness}"
                               Stroke="{Binding Series.Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                               Fill="{Binding Series.Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
@@ -57,9 +57,10 @@
                               Margin="0 0 6 0" />
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Series.Title}"
+                                   Visibility="{Binding Path=ShowSeriesNames, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                    VerticalAlignment="Center"
                                    Margin="0 0 6 0" />
-                        <TextBlock Grid.Column="2" Text="{Binding Converter={StaticResource GetY}}" />
+                        <TextBlock Grid.Column="2" Text="{Binding TooltipText}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>

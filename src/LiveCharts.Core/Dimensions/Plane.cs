@@ -73,7 +73,7 @@ namespace LiveCharts.Core.Dimensions
             _labelFormatter = Format.AsMetricNumber;
             _labelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
             _labelsForeground = new SolidColorBrush(Color.FromArgb(255, 30, 30, 30));
-            Charting.BuildFromSettings(this);
+            Charting.BuildFromTheme(this);
         }
 
         /// <summary>

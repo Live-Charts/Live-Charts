@@ -112,14 +112,6 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override string GetLabelContent(
-            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point)
-        {
-            var valueAxis = point.Chart.Dimensions[1][0];
-            return valueAxis.FormatValue(point.Coordinate.Value);
-        }
-
-        /// <inheritdoc />
         protected override void PlaceLabel(
             Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point,
             SizeF labelSize)

@@ -77,20 +77,5 @@ namespace LiveCharts.Core.Coordinates
             if (Radius > radius[1]) radius[1] = Radius;
             if (Radius < radius[0]) radius[0] = Radius;
         }
-
-        /// <inheritdoc />
-        public string[] AsTooltipData(params Plane[] dimensions)
-        {
-            return new[]
-            {
-                // x dimension:
-                // dimensions[0]
-                dimensions[0].FormatValue(Angle),
-
-                // y dimension
-                // dimensions[1]
-                dimensions[1].FormatValue(Radius)
-            };
-        }
     }
 }

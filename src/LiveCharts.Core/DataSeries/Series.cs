@@ -98,7 +98,7 @@ namespace LiveCharts.Core.DataSeries
 #region Properties
 
         /// <inheritdoc />
-        public abstract Type ResourceKey { get; }
+        public abstract Type ThemeKey { get; }
 
         /// <inheritdoc />
         public virtual SeriesStyle Style => throw new NotImplementedException();
@@ -283,7 +283,25 @@ namespace LiveCharts.Core.DataSeries
             Padding = new Margin(0f)
         };
 
-#endregion
+        #endregion
+
+        /// <inheritdoc />
+        public Func<TCoordinate, string> DataLabelFormatter { get; set; }
+
+        /// <inheritdoc />
+        public Func<TCoordinate, string> TooltipFormatter { get; set; }
+
+        /// <inheritdoc />
+        string ISeries.GetDataLabel(ICoordinate coordinate)
+        {
+            return DataLabelFormatter((TCoordinate) coordinate);
+        }
+
+        /// <inheritdoc />
+        string ISeries.GetTooltipLabel(ICoordinate coordinate)
+        {
+            return TooltipFormatter((TCoordinate) coordinate);
+        }
 
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
@@ -502,8 +520,8 @@ namespace LiveCharts.Core.DataSeries
             };
             AnimationsSpeed = TimeSpan.MaxValue;
             AnimationLine = null;
-            DelayRule = DelayRules.Random;
-            Charting.BuildFromSettings<ISeries>(this);
+            DelayRule = DelayRules.None;
+            Charting.BuildFromTheme<ISeries>(this);
         }
 
 #region IResource implementation

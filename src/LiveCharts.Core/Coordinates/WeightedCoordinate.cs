@@ -92,16 +92,5 @@ namespace LiveCharts.Core.Coordinates
             if (Weight > w[1]) w[1] = Weight;
             if (Weight < w[0]) w[0] = Weight;
         }
-
-        /// <inheritdoc />
-        public string[] AsTooltipData(params Plane[] dimensions)
-        {
-            return new[]
-            {
-                dimensions[0].FormatValue(X),
-                dimensions[1].FormatValue(Y),
-                dimensions[2].FormatValue(Weight)
-            };
-        }
     }
 }

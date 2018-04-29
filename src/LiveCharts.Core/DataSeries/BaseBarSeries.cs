@@ -66,7 +66,6 @@ namespace LiveCharts.Core.DataSeries
         {
             MaxColumnWidth = 45f;
             BarPadding = 6f;
-            Charting.BuildFromSettings<IBarSeries>(this);
         }
 
         /// <inheritdoc />
@@ -103,7 +102,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override Type ResourceKey => typeof(IBarSeries);
+        public override Type ThemeKey => typeof(IBarSeries);
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] { 1f, 0f };

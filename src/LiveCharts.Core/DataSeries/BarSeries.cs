@@ -31,6 +31,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
@@ -46,6 +47,15 @@ namespace LiveCharts.Core.DataSeries
     public class BarSeries<TModel> : BaseBarSeries<TModel, PointCoordinate, IBarSeries>
     {
         private ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries> _provider;
+
+        /// <inheritdoc />
+        public BarSeries()
+        {
+            DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Y);
+            TooltipFormatter = DataLabelFormatter;
+            Charting.BuildFromTheme<IBarSeries>(this);
+            Charting.BuildFromTheme<ISeries<PointCoordinate>>(this);
+        }
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries>

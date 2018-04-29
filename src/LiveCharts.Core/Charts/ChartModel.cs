@@ -86,7 +86,7 @@ namespace LiveCharts.Core.Charts
                 ToolTipTimeoutTimer.Stop();
             };
 
-            Charting.BuildFromSettings(view);
+            Charting.BuildFromTheme(view);
         }
 
         /// <summary>

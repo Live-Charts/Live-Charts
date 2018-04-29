@@ -106,17 +106,6 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override string GetLabelContent(
-            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point)
-        {
-            var chart = point.Chart;
-            var xAxis = chart.Dimensions[0][point.Series.ScalesAt[0]];
-            var yAxis = chart.Dimensions[1][point.Series.ScalesAt[1]];
-
-            return $"{xAxis.FormatValue(point.Coordinate[0][0])}, {yAxis.FormatValue(point.Coordinate[1][0])}";
-        }
-
-        /// <inheritdoc />
         protected override void PlaceLabel(
             Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point,
             SizeF labelSize)

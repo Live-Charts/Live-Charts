@@ -52,11 +52,5 @@ namespace LiveCharts.Core.Coordinates
         /// </summary>
         /// <param name="context">The context.</param>
         void Compare(IDataFactoryContext context);
-
-        /// <summary>
-        /// Gets the coordinate as tooltip data.
-        /// </summary>
-        /// <returns></returns>
-        string[] AsTooltipData(params Plane[] dimensions);
     }
 }

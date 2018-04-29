@@ -27,7 +27,6 @@
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction.ChartAreas;
 
 #endregion
@@ -112,28 +111,20 @@ namespace LiveCharts.Core.Interaction.Points
         public ChartModel Chart { get; internal set; }
 
         /// <summary>
-        /// Returns a string array containing the default representation of a coordinate in every dimension.
+        /// Gets the tooltip text.
         /// </summary>
-        /// <returns></returns>
-        public string[] AsTooltipData()
-        {
-            var planes = new Plane[Chart.Dimensions.Length];
-            for (var index = 0; index < Chart.Dimensions.Length; index++)
-            {
-                var dimension = Chart.Dimensions[index];
+        /// <value>
+        /// The tooltip text.
+        /// </value>
+        public string TooltipText => Series.GetTooltipLabel(Coordinate);
 
-                var scalingIndex = 0;
-
-                if (Series is ICartesianSeries series)
-                {
-                    if (index >= series.ScalesAt.Length) continue;
-                    scalingIndex = series.ScalesAt[index];
-                }
-
-                planes[index] = dimension[scalingIndex];
-            }
-            return Coordinate.AsTooltipData(planes);
-        }
+        /// <summary>
+        /// Gets the data label string.
+        /// </summary>
+        /// <value>
+        /// The data label string.
+        /// </value>
+        public string DataLabelString => Series.GetDataLabel(Coordinate);
 
         /// <inheritdoc />
         public override bool Equals(object obj)
@@ -154,6 +145,7 @@ namespace LiveCharts.Core.Interaction.Points
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     public class PackedPoint<TModel, TCoordinate>
+        where TCoordinate : ICoordinate
     {
         private readonly object _packingSource;
 
@@ -218,6 +210,22 @@ namespace LiveCharts.Core.Interaction.Points
         /// The chart.
         /// </value>
         public ChartModel Chart { get; internal set; }
+
+        /// <summary>
+        /// Gets the tooltip text.
+        /// </summary>
+        /// <value>
+        /// The tooltip text.
+        /// </value>
+        public string TooltipText => Series.GetTooltipLabel(Coordinate);
+
+        /// <summary>
+        /// Gets the data label string.
+        /// </summary>
+        /// <value>
+        /// The data label string.
+        /// </value>
+        public string DataLabelString => Series.GetDataLabel(Coordinate);
 
         /// <inheritdoc />
         public override bool Equals(object obj)

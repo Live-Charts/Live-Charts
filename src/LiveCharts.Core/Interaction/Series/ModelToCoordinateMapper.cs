@@ -47,13 +47,10 @@ namespace LiveCharts.Core.Interaction.Series
         /// Initializes a new instance of the <see cref="ModelToCoordinateMapper{TModel,TCoordinate}"/> class.
         /// </summary>
         /// <param name="pointPredicate">The point predicate.</param>
-        /// <param name="labelPredicate">The label predicate.</param>
         public ModelToCoordinateMapper(
-            Func<TModel, int, TCoordinate> pointPredicate,
-            Func<TModel, string> labelPredicate)
+            Func<TModel, int, TCoordinate> pointPredicate)
         {
             PointPredicate = pointPredicate;
-            LabelPredicate = labelPredicate;
         }
 
         /// <summary>
@@ -65,19 +62,12 @@ namespace LiveCharts.Core.Interaction.Series
         public Func<TModel, int, TCoordinate> PointPredicate { get; }
 
         /// <summary>
-        /// Gets the point predicate.
-        /// </summary>
-        /// <value>
-        /// The point predicate.
-        /// </value>
-        public Func<TModel, string> LabelPredicate { get; }
-
-        /// <summary>
         /// Whens this instance.
         /// </summary>
         /// <returns></returns>
         public ModelToCoordinateMapper<TModel, TCoordinate> When(
-            Func<TModel, bool> trigger, ModelStateHandler<TModel, TCoordinate> handler)
+            Func<TModel, bool> trigger, 
+            ModelStateHandler<TModel, TCoordinate> handler)
         {
             if (_modelDependentActions == null)
             {

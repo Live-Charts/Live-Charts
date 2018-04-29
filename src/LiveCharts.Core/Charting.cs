@@ -103,15 +103,14 @@ namespace LiveCharts.Core
         /// <typeparam name="TCoordinate">the type of the coordinate.</typeparam>
         /// <returns></returns>
         private ModelToCoordinateMapper<TModel, TCoordinate> Learn<TModel, TCoordinate>(
-            Func<TModel, int, TCoordinate> pointPredicate,
-            Func<TModel, string> labelPredicate)
+            Func<TModel, int, TCoordinate> pointPredicate)
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
             var coordinateType = typeof(TCoordinate);
             var key = new Tuple<Type, Type>(modelType, coordinateType);
             var modelToPoint = new ModelToCoordinateMapper<TModel, TCoordinate>(
-                pointPredicate, labelPredicate);
+                pointPredicate);
             if (DefaultMappers.ContainsKey(key))
             {
                 DefaultMappers[key] = modelToPoint;
@@ -132,23 +131,7 @@ namespace LiveCharts.Core
             Func<TModel, int, TPoint> predicate)
             where TPoint: ICoordinate
         {
-            return Learn(predicate, null);
-        }
-
-        /// <summary>
-        /// Maps a model to a specified point and saves the mapper globally.
-        /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <typeparam name="TPoint">The type of the point.</typeparam>
-        /// <param name="pointPredicate">The point predicate.</param>
-        /// <param name="labelPredicate">The point label predicate.</param>
-        /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, TPoint> LearnType<TModel, TPoint>(
-            Func<TModel, int, TPoint> pointPredicate,
-            Func<TModel, string> labelPredicate)
-            where TPoint : ICoordinate
-        {
-            return Learn(pointPredicate, labelPredicate);
+            return Learn(predicate);
         }
 
         #endregion
@@ -187,7 +170,7 @@ namespace LiveCharts.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The instance.</param>
-        public static void BuildFromSettings<T>(T instance)
+        public static void BuildFromTheme<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
             var builderForT = (Action<T>) builder;

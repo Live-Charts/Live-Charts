@@ -31,6 +31,7 @@ using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
@@ -60,7 +61,11 @@ namespace LiveCharts.Core.DataSeries
             GeometrySize = 18;
             StrokeThickness = 1;
             Geometry = Geometry.Circle;
-            Charting.BuildFromSettings<IScatterSeries>(this);
+            DataLabelFormatter = coordinate =>
+                $"{Format.AsMetricNumber(coordinate.X)}, {Format.AsMetricNumber(coordinate.Y)}";
+            TooltipFormatter = DataLabelFormatter;
+            Charting.BuildFromTheme<IScatterSeries>(this);
+            Charting.BuildFromTheme<ISeries<PointCoordinate>>(this);
         }
 
         /// <summary>
@@ -80,7 +85,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override Type ResourceKey => typeof(IScatterSeries);
+        public override Type ThemeKey => typeof(IScatterSeries);
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {0f, 0f};

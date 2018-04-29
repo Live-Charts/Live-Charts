@@ -97,7 +97,7 @@ namespace LiveCharts.Wpf
         /// <value>
         /// The visual draw margin.
         /// </value>
-        protected ContentPresenter VisualDrawMargin { get; set; }
+        public ContentPresenter VisualDrawMargin { get; protected set; }
 
         /// <summary>
         /// Gets the tooltip popup.

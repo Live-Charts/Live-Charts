@@ -78,21 +78,6 @@ namespace LiveCharts.Core.Coordinates
             if (Y < y[0]) y[0] = Y;
         }
 
-        /// <inheritdoc />
-        public string[] AsTooltipData(params Plane[] dimensions)
-        {
-            return new[]
-            {
-                // x dimension:
-                // dimensions[0]
-                dimensions[0].FormatValue(X),
-
-                // y dimension
-                // dimensions[1]
-                dimensions[1].FormatValue(Y)
-            };
-        }
-
         /// <summary>
         /// Implements the operator +.
         /// </summary>

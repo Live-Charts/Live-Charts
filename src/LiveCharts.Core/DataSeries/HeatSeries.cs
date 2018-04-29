@@ -32,6 +32,7 @@ using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
@@ -60,7 +61,10 @@ namespace LiveCharts.Core.DataSeries
         {
             ScalesAt = new[] {0, 0, 0};
             DefaultFillOpacity = .2f;
-            Charting.BuildFromSettings<IHeatSeries>(this);
+            DataLabelFormatter = coordinate => $"{Format.AsMetricNumber(coordinate.Weight)}";
+            TooltipFormatter = DataLabelFormatter;
+            Charting.BuildFromTheme<IHeatSeries>(this);
+            Charting.BuildFromTheme<ISeries<WeightedCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -75,7 +79,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override Type ResourceKey => typeof(IHeatSeries);
+        public override Type ThemeKey => typeof(IHeatSeries);
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {1f, 1f};

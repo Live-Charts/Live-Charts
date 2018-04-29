@@ -54,7 +54,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <seealso cref="ISeries" />
-    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries
+    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries<TCoordinate>
         where TCoordinate : ICoordinate
         where TSeries : ISeries
     {
@@ -89,7 +89,35 @@ namespace LiveCharts.Core.DataSeries
         /// The view provider.
         /// </value>
         ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> ViewProvider { get; set; }
+
+        
     }
+
+    /// <summary>
+    /// A series with a defined coordinate.
+    /// </summary>
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <seealso cref="LiveCharts.Core.DataSeries.ISeries" />
+    public interface ISeries<TCoordinate> : ISeries
+        where TCoordinate : ICoordinate
+    {
+        /// <summary>
+        /// Gets or sets the data label formatter, a delegate that will build every DataLabel.
+        /// </summary>
+        /// <value>
+        /// The data label formatter.
+        /// </value>
+        Func<TCoordinate, string> DataLabelFormatter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tooltip formatter, a delegate that will build the coordinate in the tooltip.
+        /// </summary>
+        /// <value>
+        /// The tooltip formatter.
+        /// </value>
+        Func<TCoordinate, string> TooltipFormatter { get; set; }
+    }
+
 
     /// <summary>
     /// The series interface.
@@ -102,7 +130,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The resource key.
         /// </value>
-        Type ResourceKey { get; }
+        Type ThemeKey { get; }
 
         /// <summary>
         /// Gets the metadata.
@@ -285,6 +313,19 @@ namespace LiveCharts.Core.DataSeries
         /// <param name="point">The point.</param>
         /// <param name="chart">The chart view.</param>
         void RemovePointHighlight(PackedPoint point, IChartView chart);
+
+        /// <summary>
+        /// Gets the label for.
+        /// </summary>
+        /// <param name="coordinate">The coordinate.</param>
+        string GetDataLabel(ICoordinate coordinate);
+
+        /// <summary>
+        /// Gets the tooltip label.
+        /// </summary>
+        /// <param name="coordinate">The coordinate.</param>
+        /// <returns></returns>
+        string GetTooltipLabel(ICoordinate coordinate);
 
         /// <summary>
         /// Updates the started.

@@ -74,14 +74,6 @@ namespace LiveCharts.Wpf.Views
             TimeLine timeLine);
 
         /// <summary>
-        /// Gets the content of the label.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <returns></returns>
-        protected abstract string GetLabelContent(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point);
-
-        /// <summary>
         /// Places the label.
         /// </summary>
         /// <param name="point">The point.</param>
@@ -106,7 +98,7 @@ namespace LiveCharts.Wpf.Views
                 chart.Content.AddChild(Label);
             }
 
-            Label.Content = GetLabelContent(point);
+            Label.Content = point.Series.GetDataLabel(point.Coordinate);
 
             Label.Foreground = style.Foreground.AsWpf();
             Label.FontFamily = new FontFamily(style.Font.FamilyName);

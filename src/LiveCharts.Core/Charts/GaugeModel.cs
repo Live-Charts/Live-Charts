@@ -93,7 +93,7 @@ namespace LiveCharts.Core.Charts
                 if (!(series is IPieSeries))
                 {
                     throw new LiveChartsException(
-                        $"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                        $"{series.ThemeKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
                 }
 
                 series.UpdateStarted(View);

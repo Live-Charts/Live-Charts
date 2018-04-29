@@ -52,9 +52,6 @@
     <Compile Include="Chart.cs" />
     <Compile Include="Controls\ChartContent.cs" />
     <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
-    <Compile Include="Converters\PointAsTooltipData.cs" />
-    <Compile Include="Converters\GetXFromPointConverter.cs" />
-    <Compile Include="Converters\GetYFromPointConverter.cs" />
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
     <Compile Include="Controls\ChartTooltip.cs" />
     <Compile Include="Controls\ChartLegend.cs" />

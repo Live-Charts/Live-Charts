@@ -36,7 +36,7 @@ namespace LiveCharts.Core.Updating
 {
     /// <summary>
     /// The update context class lives as the update is done once the chart is updated, all the resources consumed by 
-    /// this class update should be released, it should also lazy load the resources as the series needs.
+    /// this class update should be released, it should also lazy load the resources as the series needs them.
     /// </summary>
     public class UpdateContext : IDisposable
     {

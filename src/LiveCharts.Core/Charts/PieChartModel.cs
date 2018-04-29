@@ -50,7 +50,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="view">The chart view.</param>
         public PieChartModel(IChartView view) : base(view)
         {
-            Charting.BuildFromSettings((IPieChartView) view);
+            Charting.BuildFromTheme((IPieChartView) view);
         }
 
         /// <inheritdoc />
@@ -104,7 +104,7 @@ namespace LiveCharts.Core.Charts
                 if (!(series is IPieSeries))
                 {
                     throw new LiveChartsException(
-                        $"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                        $"{series.ThemeKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
                 }
 
                 series.UpdateStarted(View);

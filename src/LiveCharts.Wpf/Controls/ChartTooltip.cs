@@ -129,6 +129,21 @@ namespace LiveCharts.Wpf.Controls
             set => SetValue(CornerRadiusProperty, value);
         }
 
+        /// <summary>
+        /// The show series names property
+        /// </summary>
+        public static readonly DependencyProperty ShowSeriesNamesProperty = DependencyProperty.Register(
+            nameof(ShowSeriesNames), typeof(bool), typeof(ChartToolTip), new PropertyMetadata(default(bool)));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the series name should be displayed in the tooltip.
+        /// </summary>
+        public bool ShowSeriesNames
+        {
+            get => (bool) GetValue(ShowSeriesNamesProperty);
+            set => SetValue(ShowSeriesNamesProperty, value);
+        }
+
         #endregion
 
         private static void OnDefaultGroupStyleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
@@ -171,6 +186,12 @@ namespace LiveCharts.Wpf.Controls
         void IDataToolTip.Move(PointF location, IChartView chart)
         {
             var wpfChart = (Chart) chart;
+
+            var x = location.X + (float) Canvas.GetLeft(wpfChart.VisualDrawMargin) - (float) DesiredSize.Width * .5f;
+            var y = location.Y + (float) Canvas.GetTop(wpfChart.VisualDrawMargin);
+
+            location = new PointF(x, y);
+
             wpfChart.TooltipPopup.Animate(
                     new TimeLine
                     {

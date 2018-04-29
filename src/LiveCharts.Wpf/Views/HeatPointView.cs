@@ -56,7 +56,7 @@ namespace LiveCharts.Wpf.Views
         /// </summary>
         /// <param name="point"></param>
         /// <param name="previous"></param>
-        /// <param name="timeLinen"></param>
+        /// <param name="timeLine"></param>
         /// <inheritdoc />
         protected override void OnDraw(
             Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point,
@@ -95,21 +95,13 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override string GetLabelContent(
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point)
-        {
-            var chart = point.Chart;
-            var wAxis = chart.Dimensions[2][point.Series.ScalesAt[2]];
-
-            return $"{wAxis.FormatValue(point.Coordinate[2][0])}";
-        }
-
         protected override void PlaceLabel(Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point, SizeF labelSize)
         {
             Canvas.SetTop(Label, point.ViewModel.Rectangle.Y);
             Canvas.SetLeft(Label, point.ViewModel.Rectangle.X);
         }
 
+        /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
             chart.Content.RemoveChild(Shape);

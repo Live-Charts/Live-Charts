@@ -31,6 +31,7 @@ using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
@@ -58,7 +59,11 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public PieSeries()
         {
-            Charting.BuildFromSettings<IPieSeries>(this);
+            DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Value);
+            TooltipFormatter = coordinate =>
+                $"{Format.AsMetricNumber(coordinate.Value)} / {Format.AsMetricNumber(coordinate.TotalStack)}";
+            Charting.BuildFromTheme<IPieSeries>(this);
+            Charting.BuildFromTheme<ISeries<StackedPointCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -84,7 +89,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public override Type ResourceKey => typeof(IPieSeries);
+        public override Type ThemeKey => typeof(IPieSeries);
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new[] {0f, 0f};
@@ -132,21 +137,21 @@ namespace LiveCharts.Core.DataSeries
             {
                 var range = current.Coordinate.To - current.Coordinate.From;
 
-                float stacked;
+                float stack;
 
                 unchecked
                 {
-                    stacked = context.GetStack((int) current.Coordinate.Key, 0, true);
+                    stack = context.GetStack((int) current.Coordinate.Key, 0, true);
                 }
 
                 var vm = new PieViewModel
                 {
                     To = new SliceViewModel
                     {
-                        Wedge = range * 360f / stacked,
+                        Wedge = range * 360f / stack,
                         InnerRadius = (float) innerRadius,
                         OuterRadius = outerDiameter / 2,
-                        Rotation = startsAt + current.Coordinate.From * 360f / stacked
+                        Rotation = startsAt + current.Coordinate.From * 360f / stack
                     },
                     ChartCenter = centerPoint
                 };
@@ -163,6 +168,7 @@ namespace LiveCharts.Core.DataSeries
                         originalDuration, originalAnimationLine, i / (double)PointsCount, DelayRule);
                 }
 
+                current.Coordinate.TotalStack = stack;
                 current.ViewModel = vm;
                 current.View.DrawShape(current, previous, timeLine);
                 if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);

@@ -46,7 +46,7 @@ namespace LiveCharts.Core.Charts
         public CartesianChartModel(IChartView view)
             : base(view)
         {
-            Charting.BuildFromSettings((ICartesianChartView) view);
+            Charting.BuildFromTheme((ICartesianChartView) view);
         }
 
         /// <inheritdoc />
@@ -386,7 +386,7 @@ namespace LiveCharts.Core.Charts
                 if (!(series is ICartesianSeries))
                 {
                     throw new LiveChartsException(
-                        $"{series.ResourceKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                        $"{series.ThemeKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
                 }
 
                 series.UpdateStarted(View);
@@ -414,9 +414,17 @@ namespace LiveCharts.Core.Charts
             foreach (var point in points)
             {
                 var coordinate = point.Coordinate;
-                var cartesianSeries = (ICartesianSeries)point.Series;
-                x += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]);
-                y += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]);
+                var cartesianSeries = (ICartesianSeries) point.Series;
+
+                var uw = Get2DUiUnitWidth(
+                    Dimensions[0][cartesianSeries.ScalesAt[0]],
+                    Dimensions[1][cartesianSeries.ScalesAt[1]]);
+
+                x += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]) +
+                     uw[0] * .5f;
+                y += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]) +
+                     cartesianSeries.PointMargin * .5f;
+
                 if (View.Hoverable)
                 {
                     cartesianSeries.OnPointHighlight(point, View);

@@ -57,7 +57,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected StrokeSeries()
         {
-            Charting.BuildFromSettings<IStrokeSeries>(this);
+            Charting.BuildFromTheme<IStrokeSeries>(this);
         }
 
         /// <inheritdoc />

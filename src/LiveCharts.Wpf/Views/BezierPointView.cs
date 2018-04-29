@@ -128,14 +128,6 @@ namespace LiveCharts.Wpf.Views
             _lastTimeLine = timeLine;
         }
 
-        /// <inheritdoc />
-        protected override string GetLabelContent(
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point)
-        {
-            var xAxis = point.Chart.Dimensions[0][point.Series.ScalesAt[0]];
-            return xAxis.FormatValue(point.Coordinate[1][0]);
-        }
-
         protected override void PlaceLabel(
             Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
             SizeF labelSize)

@@ -110,21 +110,5 @@ namespace LiveCharts.Core.Coordinates
             if (High > y[1]) y[1] = High;
             if (Low < y[0]) y[0] = Low;
         }
-
-        /// <inheritdoc />
-        public string[] AsTooltipData(params Plane[] dimensions)
-        {
-            var n = Environment.NewLine;
-            return new[]
-            {
-                // x dimension:
-                // dimensions[0]
-                dimensions[0].FormatValue(Index),
-
-                // y dimension
-                // dimensions[1]
-                $"Open: {dimensions[1].FormatValue(Open)}{n}High: {dimensions[1].FormatValue(High)}{n}Low: {dimensions[1].FormatValue(Low)}{n}Close: {dimensions[1].FormatValue(Close)}"
-            };
-        }
     }
 }

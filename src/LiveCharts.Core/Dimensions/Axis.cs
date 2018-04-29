@@ -80,7 +80,7 @@ namespace LiveCharts.Core.Dimensions
             XAlternativeSeparatorStyle = null;
             YSeparatorStyle = null;
             YSeparatorStyle = null;
-            Charting.BuildFromSettings(this);
+            Charting.BuildFromTheme(this);
         }
 
         /// <summary>

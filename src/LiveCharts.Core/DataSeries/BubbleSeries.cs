@@ -30,6 +30,7 @@ using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
@@ -57,7 +58,11 @@ namespace LiveCharts.Core.DataSeries
             MinGeometrySize = 14f;
             StrokeThickness = 1f;
             Geometry = Geometry.Circle;
-            Charting.BuildFromSettings<IBubbleSeries>(this);
+            DataLabelFormatter = coordinate =>
+                $"{Format.AsMetricNumber(coordinate.X)}, {Format.AsMetricNumber(coordinate.Y)}, {Format.AsMetricNumber(coordinate.Weight)}";
+            TooltipFormatter = DataLabelFormatter;
+            Charting.BuildFromTheme<IBubbleSeries>(this);
+            Charting.BuildFromTheme<ISeries<WeightedCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -67,7 +72,7 @@ namespace LiveCharts.Core.DataSeries
         public double MinGeometrySize { get; set; }
 
         /// <inheritdoc />
-        public override Type ResourceKey => typeof(IBubbleSeries);
+        public override Type ThemeKey => typeof(IBubbleSeries);
 
         /// <inheritdoc />
         public override float[] DefaultPointWidth => new []{0f,0f};

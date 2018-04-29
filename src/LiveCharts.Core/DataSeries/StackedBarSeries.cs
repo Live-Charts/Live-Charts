@@ -32,6 +32,7 @@ using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
@@ -59,7 +60,11 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public StackedBarSeries()
         {
-            Charting.BuildFromSettings<IStackedBarSeries>(this);
+            DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Value);
+            TooltipFormatter = coordinate =>
+                $"{Format.AsMetricNumber(coordinate.Value)} / {Format.AsMetricNumber(coordinate.TotalStack)}";
+            Charting.BuildFromTheme<IStackedBarSeries>(this);
+            Charting.BuildFromTheme<ISeries<StackedPointCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -123,6 +128,8 @@ namespace LiveCharts.Core.DataSeries
                 currentOffset,
                 columnStart + (columnCorner1[1] < columnStart ? difference[1] : 0f) 
             };
+
+            current.Coordinate.TotalStack = stack;
 
             if (current.View.VisualElement == null)
             {
