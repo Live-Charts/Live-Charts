@@ -17,8 +17,8 @@
         <wpf:NavigationHandler />
     </Window.DataContext>
     <Grid>
-
-        <Grid.RowDefinitions>
+        <shapes:Bubble Fill="Blue" Height="100" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20"></shapes:Bubble>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -31,6 +31,6 @@
         </StackPanel>
         <ScrollViewer Grid.Row="1">
             <ContentControl Content="{Binding CurrentView}" />
-        </ScrollViewer>
+        </ScrollViewer>-->
     </Grid>
 </Window>

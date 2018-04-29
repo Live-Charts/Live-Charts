@@ -60,6 +60,7 @@
     <Compile Include="CorePlatformMapping.cs" />
     <Compile Include="Interaction\DataInteractionHandler.cs" />
     <Compile Include="PieChart.cs" />
+    <Compile Include="Shapes\Bubble.cs" />
     <Compile Include="Shapes\Slice.cs" />
     <Compile Include="Views\HeatPointView.cs" />
     <Compile Include="Views\PiePointView.cs" />
