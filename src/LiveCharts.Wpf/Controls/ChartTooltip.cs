@@ -113,6 +113,12 @@ namespace LiveCharts.Wpf.Controls
         public static readonly DependencyProperty SnapToClosestProperty = DependencyProperty.Register(
             nameof(SnapToClosest), typeof(bool), typeof(ChartToolTip), new PropertyMetadata(default(bool)));
 
+        /// <summary>
+        /// The show series geometry property
+        /// </summary>
+        public static readonly DependencyProperty ShowSeriesGeometryProperty = DependencyProperty.Register(
+            "ShowSeriesGeometry", typeof(bool), typeof(ChartToolTip), new PropertyMetadata(default(bool)));
+
         #endregion
 
         #region Properties
@@ -180,6 +186,18 @@ namespace LiveCharts.Wpf.Controls
         {
             get => (bool) GetValue(ShowSeriesNamesProperty);
             set => SetValue(ShowSeriesNamesProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the series geometry is visible.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show series geometry]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowSeriesGeometry
+        {
+            get => (bool) GetValue(ShowSeriesGeometryProperty);
+            set => SetValue(ShowSeriesGeometryProperty, value);
         }
       
         /// <summary>

@@ -21,13 +21,13 @@
         <Setter Property="BorderThickness" Value="1"></Setter>
         <Setter Property="Background" Value="White" />
         <Setter Property="Foreground" Value="#303030"></Setter>
-        <Setter Property="Padding" Value="20" />
+        <Setter Property="Padding" Value="16 12" />
         <!--only for the shadow to be visible-->
         <Setter Property="Margin" Value="3" />
         <Setter Property="CornerRadius" Value="3" />
         <Setter Property="Position" Value="Top"></Setter>
         <Setter Property="SnapToClosest" Value="True"></Setter>
-        <Setter Property="SelectionMode" Value="SharedX"></Setter>
+        <Setter Property="SelectionMode" Value="SharedXy"></Setter>
         <Setter Property="Wedge" Value="75"></Setter>
         <Setter Property="WedgeHypotenuse" Value="12"></Setter>
         
@@ -106,15 +106,16 @@
                               StrokeThickness="{Binding Series.Style.StrokeThickness}"
                               Stroke="{Binding Series.Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                               Fill="{Binding Series.Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
+                              Visibility="{Binding Path=ShowSeriesGeometry, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                               Stretch="Fill"
                               Data="{Binding Path=Series.Geometry.Data}"
-                              Margin="0 0 6 0" />
+                              Margin="20" />
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Series.Title}"
                                    Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Path=Foreground}"
                                    Visibility="{Binding Path=ShowSeriesNames, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                    VerticalAlignment="Center"
-                                   Margin="0 0 6 0" />
+                                   Margin="0 0 12 0" />
                             <TextBlock Grid.Column="2" 
                                        Text="{Binding TooltipText}" 
                                        Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Path=Foreground}"/>

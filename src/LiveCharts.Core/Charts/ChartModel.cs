@@ -369,6 +369,23 @@ namespace LiveCharts.Core.Charts
         /// <returns></returns>
         public IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest)
         {
+            if (snapToClosest)
+            {
+                var previousMin = float.MaxValue;
+                var bySeries = Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, true))
+                    .ToArray();
+                var min = bySeries.Aggregate(bySeries.FirstOrDefault(), (currentMin, current) =>
+                {
+                    var currentDistance = current.InteractionArea.DistanceTo(pointerLocation, selectionMode);
+
+                    if (!(currentDistance < previousMin)) return currentMin;
+
+                    previousMin = currentDistance;
+                    return current;
+                });
+                return new List<PackedPoint> {min};
+            }
+
             return Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, snapToClosest));
         }
 
