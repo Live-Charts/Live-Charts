@@ -27,6 +27,8 @@
 
 using System;
 using System.Drawing;
+using System.Net.Sockets;
+using LiveCharts.Core.Interaction.Controls;
 
 #endregion
 
@@ -42,12 +44,15 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// Initializes a new instance of the <see cref="PolarInteractionArea"/> class.
         /// </summary>
         /// <param name="radius">The radius.</param>
+        /// <param name="innerRadius"></param>
         /// <param name="angleFrom">The angle from.</param>
         /// <param name="angleTo">The angle to.</param>
         /// <param name="chartCenter">The chart center.</param>
-        public PolarInteractionArea(float radius, float angleFrom, float angleTo, PointF chartCenter)
+        public PolarInteractionArea(
+            float radius, float innerRadius, float angleFrom, float angleTo, PointF chartCenter)
         {
             Radius = radius;
+            InnerRadius = innerRadius;
             AngleFrom = angleFrom;
             AngleTo = angleTo;
             Center = chartCenter;
@@ -60,6 +65,14 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// The radius.
         /// </value>
         public float Radius { get; }
+
+        /// <summary>
+        /// Gets the inner radius.
+        /// </summary>
+        /// <value>
+        /// The inner radius.
+        /// </value>
+        public float InnerRadius { get; }
 
         /// <summary>
         /// Gets the angle start point in radians.
@@ -86,7 +99,7 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         public PointF Center { get; }
 
         /// <inheritdoc />
-        public override bool Contains(PointF pointerLocation)
+        public override bool Contains(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
             var x = pointerLocation.X;
             var y = pointerLocation.Y;
@@ -119,7 +132,27 @@ namespace LiveCharts.Core.Interaction.ChartAreas
                 angle = 270 + angle;
             }
 
-            return AngleFrom <= angle && AngleTo >= angle && radius < Radius;
+            return AngleFrom <= angle && AngleTo >= angle && radius <= Radius && radius >= InnerRadius;
+        }
+
+        /// <inheritdoc />
+        public override float DistanceTo(PointF pointerLocation, ToolTipSelectionMode selectionMode)
+        {
+            var x = pointerLocation.X;
+            var y = pointerLocation.Y;
+
+            var dx = Math.Abs(x - Center.X);
+            var dy = Math.Abs(y - Center.Y);
+
+            var radius = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+            var angle = Math.Atan(dy / dx);
+
+            var a = (AngleFrom + AngleTo) / 2d;
+            var r = (Math.PI / 180) * (InnerRadius + Radius) / 2d;
+
+            return (float) Math.Sqrt(
+                Math.Pow(Math.Sin(angle) * radius - Math.Sin(a) * r, 2) +
+                Math.Pow(Math.Cos(angle) * radius - Math.Cos(a) * r, 2));
         }
     }
 }

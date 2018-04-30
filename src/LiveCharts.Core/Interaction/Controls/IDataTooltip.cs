@@ -48,6 +48,14 @@ namespace LiveCharts.Core.Interaction.Controls
         ToolTipSelectionMode SelectionMode { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the tooltip will be displayed to the closest point to the pointer position.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [snap to closest]; otherwise, <c>false</c>.
+        /// </value>
+        bool SnapToClosest { get; }
+
+        /// <summary>
         /// Gets the position.
         /// </summary>
         /// <value>

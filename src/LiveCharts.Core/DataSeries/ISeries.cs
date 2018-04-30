@@ -34,6 +34,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
@@ -297,8 +298,10 @@ namespace LiveCharts.Core.DataSeries
         /// Gets the interacted points according to a mouse position.
         /// </summary>
         /// <param name="pointerLocation">The pointer location.</param>
+        /// <param name="selectionMode">The selection mode.</param>
+        /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
         /// <returns></returns>
-        IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation);
+        IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest);
 
         /// <summary>
         /// Highlights a point.

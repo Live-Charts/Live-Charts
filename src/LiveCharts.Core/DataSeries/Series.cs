@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -37,6 +38,7 @@ using LiveCharts.Core.Collections;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
@@ -383,21 +385,53 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation)
+        public virtual IEnumerable<PackedPoint> GetPointsAt(
+            PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest)
         {
-            return Points
-                .Where(point => point.InteractionArea.Contains(pointerLocation))
-                .Select(point => new PackedPoint(point)
+            if (!snapToClosest)
+            {
+                return Points
+                    .Where(point => point.InteractionArea.Contains(pointerLocation, selectionMode))
+                    .Select(point => new PackedPoint(point)
+                    {
+                        Key = point.Key,
+                        Model = point.Model,
+                        Chart = point.Chart,
+                        Coordinate = point.Coordinate,
+                        Series = point.Series,
+                        View = point.View,
+                        ViewModel = point.ViewModel,
+                        InteractionArea = point.InteractionArea
+                    });
+            }
+
+            var previousMin = float.MaxValue;
+            var min = Points.Aggregate(Points.FirstOrDefault(), (currentMin, current) =>
+            {
+                var currentDistance = current.InteractionArea.DistanceTo(pointerLocation, selectionMode);
+
+                if (!(currentDistance < previousMin)) return currentMin;
+
+                previousMin = currentDistance;
+                return current;
+
+            });
+
+            return new List<PackedPoint>
+            {
+                new PackedPoint(min)
                 {
-                    Key = point.Key,
-                    Model = point.Model,
-                    Chart = point.Chart,
-                    Coordinate = point.Coordinate,
-                    Series = point.Series,
-                    View = point.View,
-                    ViewModel = point.ViewModel,
-                    InteractionArea = point.InteractionArea
-                });
+                    Key = min.Key,
+                    Model = min.Model,
+                    Chart = min.Chart,
+                    Coordinate = min.Coordinate,
+                    Series = min.Series,
+                    View = min.View,
+                    ViewModel = min.ViewModel,
+                    InteractionArea = min.InteractionArea
+                }
+            };
+
         }
 
         void ISeries.OnPointHighlight(PackedPoint point, IChartView chart)

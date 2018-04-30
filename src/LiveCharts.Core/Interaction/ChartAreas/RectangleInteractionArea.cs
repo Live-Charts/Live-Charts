@@ -24,7 +24,9 @@
 #endregion
 #region
 
+using System;
 using System.Drawing;
+using LiveCharts.Core.Interaction.Controls;
 
 #endregion
 
@@ -54,13 +56,44 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         public RectangleF Rectangle { get; }
 
         /// <inheritdoc />
-        public override bool Contains(PointF pointerLocation)
+        public override bool Contains(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
             var x = pointerLocation.X;
             var y = pointerLocation.Y;
 
-            return x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width &&
-                   y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
+            var sharesX = x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width;
+            var sharesY = y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
+
+            switch (selectionMode)
+            {
+                case ToolTipSelectionMode.SharedXy:
+                    return sharesX && sharesY;
+                case ToolTipSelectionMode.SharedX:
+                    return sharesX;
+                case ToolTipSelectionMode.SharedY:
+                    return sharesY;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(selectionMode), selectionMode, null);
+            }
+        }
+
+        /// <inheritdoc />
+        public override float DistanceTo(PointF pointerLocation, ToolTipSelectionMode selectionMode)
+        {
+            var x = pointerLocation.X;
+            var y = pointerLocation.Y;
+
+            switch (selectionMode)
+            {
+                case ToolTipSelectionMode.SharedXy:
+                    return (float) Math.Sqrt(Math.Pow(x - Rectangle.Left, 2) + Math.Pow(y - Rectangle.Top, 2));
+                case ToolTipSelectionMode.SharedX:
+                    return Math.Abs(x - Rectangle.Left);
+                case ToolTipSelectionMode.SharedY:
+                    return Math.Abs(y - Rectangle.Top);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(selectionMode), selectionMode, null);
+            }
         }
     }
 }

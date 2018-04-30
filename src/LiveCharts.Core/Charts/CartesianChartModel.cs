@@ -150,7 +150,7 @@ namespace LiveCharts.Core.Charts
             if (!IsViewInitialized) return;
 
             var cartesianView = (ICartesianChartView) View;
-            ToolTip.Hide(View);
+            View.DataToolTip.Hide(View);
 
             var speed = cartesianView.ZoomingSpeed < 0.1
                 ? 0.1
@@ -218,7 +218,7 @@ namespace LiveCharts.Core.Charts
             if (!IsViewInitialized) return;
             if (cartesianView.Zooming == Zooming.None) return;
 
-            ToolTip.Hide(View);
+            View.DataToolTip.Hide(View);
 
             var speed = cartesianView.ZoomingSpeed < 0.1
                 ? 0.1
@@ -413,12 +413,12 @@ namespace LiveCharts.Core.Charts
             float x = 0f, y = 0f;
 
             var xDirection = 1;
-            if (ToolTip.Position == ToolTipPosition.Left) xDirection = -1;
-            if (ToolTip.Position == ToolTipPosition.Top || ToolTip.Position == ToolTipPosition.Bottom) xDirection = 0;
+            if (View.DataToolTip.Position == ToolTipPosition.Left) xDirection = -1;
+            if (View.DataToolTip.Position == ToolTipPosition.Top || View.DataToolTip.Position == ToolTipPosition.Bottom) xDirection = 0;
 
             var yDirection = 1;
-            if (ToolTip.Position == ToolTipPosition.Top) yDirection = -1;
-            if (ToolTip.Position == ToolTipPosition.Right || ToolTip.Position == ToolTipPosition.Left) yDirection = 0;
+            if (View.DataToolTip.Position == ToolTipPosition.Top) yDirection = -1;
+            if (View.DataToolTip.Position == ToolTipPosition.Right || View.DataToolTip.Position == ToolTipPosition.Left) yDirection = 0;
 
             int xi = 0, yi = 1;
             if (InvertXy)

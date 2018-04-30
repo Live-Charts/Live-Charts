@@ -34,6 +34,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -82,7 +83,7 @@ namespace LiveCharts.Core.Charts
             ToolTipTimeoutTimer = new Timer();
             ToolTipTimeoutTimer.Elapsed += (sender, args) =>
             {
-                View.InvokeOnUiThread(() => { ToolTip.Hide(View); });
+                View.InvokeOnUiThread(() => { view.DataToolTip.Hide(View); });
                 ToolTipTimeoutTimer.Stop();
             };
 
@@ -239,14 +240,6 @@ namespace LiveCharts.Core.Charts
         public TimeSpan AnimationsSpeed { get; internal set; }
 
         /// <summary>
-        /// Gets the tool tip.
-        /// </summary>
-        /// <value>
-        /// The tool tip.
-        /// </value>
-        public IDataToolTip ToolTip { get; internal set; }
-
-        /// <summary>
         /// Gets the legend.
         /// </summary>
         /// <value>
@@ -371,10 +364,12 @@ namespace LiveCharts.Core.Charts
         /// Selects the points.
         /// </summary>
         /// <param name="pointerLocation">The dimensions.</param>
+        /// <param name="selectionMode">The selection mode.</param>
+        /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
         /// <returns></returns>
-        public IEnumerable<PackedPoint> GetHoveredPoints(PointF pointerLocation)
+        public IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest)
         {
-            return Series.SelectMany(series => series.GetHoveredPoints(pointerLocation));
+            return Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, snapToClosest));
         }
 
         /// <summary>
@@ -385,21 +380,20 @@ namespace LiveCharts.Core.Charts
         protected virtual void ViewOnPointerMoved(ToolTipSelectionMode selectionMode, PointF pointerLocation)
         {
             if (Series == null) return;
-            var query = GetHoveredPoints(pointerLocation).ToArray();
+            if (!IsViewInitialized) return;
+            if (View.DataToolTip == null) return;
 
-            if (selectionMode == ToolTipSelectionMode.Auto)
-            {
-                // ToDo: guess what the user meant here ...
-            }
+            var query = GetPointsAt(pointerLocation, selectionMode, View.DataToolTip.SnapToClosest).ToArray();
 
-            ToolTip = View.DataToolTip;
+            View.DataToolTip = View.DataToolTip;
 
             if (View.Hoverable)
             {
-                foreach (var leftPoint in _previousHovered?
-                                              .Where(x =>
-                                                  !x.InteractionArea.Contains(pointerLocation))
-                                          ?? Enumerable.Empty<PackedPoint>())
+                var pts = _previousHovered?.Where(x =>
+                              !x.InteractionArea.Contains(pointerLocation, selectionMode))
+                          ?? Enumerable.Empty<PackedPoint>();
+
+                foreach (var leftPoint in pts)
                 {
                     leftPoint.Series.RemovePointHighlight(leftPoint, View);
                     OnDataPointerLeave(query);
@@ -423,7 +417,7 @@ namespace LiveCharts.Core.Charts
             var xCorrection = 0f;
             var yCorrection = 0f;
 
-            switch (ToolTip.Position)
+            switch (View.DataToolTip.Position)
             {
                 case ToolTipPosition.Top:
                     xCorrection = -size.Width * .5f;

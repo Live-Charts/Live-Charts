@@ -26,8 +26,6 @@
 
 #endregion
 
-using LiveCharts.Core.Interaction.Points;
-
 namespace LiveCharts.Core.Interaction.Controls
 {
     /// <summary>
@@ -36,19 +34,15 @@ namespace LiveCharts.Core.Interaction.Controls
     public enum ToolTipSelectionMode
     {
         /// <summary>
-        /// LiveCharts will decide the selection mode based on the current data.
+        /// Selects the points that share both X and Y coordinates with the pointer location.
         /// </summary>
-        Auto,
+        SharedXy,
         /// <summary>
-        /// Displays the first <see cref="Point{TModel,TCoordinate,TViewModel,TSeries}"/> that is in the pointer position.
-        /// </summary>
-        First,
-        /// <summary>
-        /// Displays all the points that share the X dimension.
+        /// Displays all the points that share the X dimension with the pointer location.
         /// </summary>
         SharedX,
         /// <summary>
-        /// Displays all the points that share the Y dimension.
+        /// Displays all the points that share the Y dimension with the pointer location.
         /// </summary>
         SharedY
     }

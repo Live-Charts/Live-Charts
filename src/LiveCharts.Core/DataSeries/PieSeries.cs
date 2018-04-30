@@ -108,7 +108,7 @@ namespace LiveCharts.Core.DataSeries
             
             var maxPushOut = context.GetMaxPushOut();
 
-            var innerRadius = pieChart.InnerRadius;
+            var innerRadius = (float) pieChart.InnerRadius;
             var outerDiameter = pieChart.ControlSize[0] < pieChart.ControlSize[1]
                 ? pieChart.ControlSize[0]
                 : pieChart.ControlSize[1];
@@ -174,7 +174,7 @@ namespace LiveCharts.Core.DataSeries
                 if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
                 Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
                 current.InteractionArea = new PolarInteractionArea(
-                    vm.To.OuterRadius, vm.To.Rotation, vm.To.Rotation + vm.To.Wedge, centerPoint);
+                    vm.To.OuterRadius, innerRadius, vm.To.Rotation, vm.To.Rotation + vm.To.Wedge, centerPoint);
 
                 previous = current;
                 i++;

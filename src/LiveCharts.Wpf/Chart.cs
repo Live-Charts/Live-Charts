@@ -259,7 +259,7 @@ namespace LiveCharts.Wpf
             var c = new Point(
                 p.X + GetLeft(VisualDrawMargin),
                 p.Y + GetTop(VisualDrawMargin));
-            var points = Model.GetHoveredPoints(new PointF((float) c.X, (float) c.Y));
+            var points = Model.GetPointsAt(new PointF((float) c.X, (float) c.Y), ToolTipSelectionMode.SharedXy, false);
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
                 RoutedEvent = MouseDownEvent
@@ -273,7 +273,7 @@ namespace LiveCharts.Wpf
             var c = new Point(
                 p.X + GetLeft(VisualDrawMargin),
                 p.Y + GetTop(VisualDrawMargin));
-            var points = Model.GetHoveredPoints(new PointF((float) c.X, (float) c.Y));
+            var points = Model.GetPointsAt(new PointF((float) c.X, (float) c.Y), ToolTipSelectionMode.SharedXy, false);
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
                 RoutedEvent = MouseDownEvent,

@@ -54,14 +54,69 @@ namespace LiveCharts.Wpf.Controls
                 new FrameworkPropertyMetadata(typeof(ChartToolTip)));
         }
 
-        #region Properties
+        #region Dependency properties
 
         /// <summary>
         /// The bullet size property
         /// </summary>
         public static readonly DependencyProperty GeometrySizeProperty = DependencyProperty.Register(
-            nameof(GeometrySize), typeof(double), typeof(ChartToolTip), 
+            nameof(GeometrySize), typeof(double), typeof(ChartToolTip),
             new FrameworkPropertyMetadata(15d, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// The selection mode property
+        /// </summary>
+        public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
+            nameof(SelectionMode), typeof(ToolTipSelectionMode), typeof(ChartToolTip), new PropertyMetadata(default(ToolTipSelectionMode)));
+
+        /// <summary>
+        /// The position property
+        /// </summary>
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+            "Position", typeof(ToolTipPosition), typeof(ChartToolTip),
+            new FrameworkPropertyMetadata(default(ToolTipPosition), FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+               /// <summary>
+        /// The default group style property
+        /// </summary>
+        public static readonly DependencyProperty DefaultGroupStyleProperty = DependencyProperty.Register(
+            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartToolTip), 
+            new PropertyMetadata(default(GroupStyle), OnDefaultGroupStyleChanged));
+
+        /// <summary>
+        /// The corner radius property
+        /// </summary>
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            nameof(CornerRadius), typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
+        
+        /// <summary>
+        /// The show series names property
+        /// </summary>
+        public static readonly DependencyProperty ShowSeriesNamesProperty = DependencyProperty.Register(
+            nameof(ShowSeriesNames), typeof(bool), typeof(ChartToolTip), new PropertyMetadata(default(bool)));
+
+        /// <summary>
+        /// The wedge property
+        /// </summary>
+        public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
+            nameof(Wedge), typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// The wedge hypotenuse property
+        /// </summary>
+        public static readonly DependencyProperty WedgeHypotenuseProperty = DependencyProperty.Register(
+            nameof(WedgeHypotenuse), typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// The snap to closest property
+        /// </summary>
+        public static readonly DependencyProperty SnapToClosestProperty = DependencyProperty.Register(
+            nameof(SnapToClosest), typeof(bool), typeof(ChartToolTip), new PropertyMetadata(default(bool)));
+
+        #endregion
+
+        #region Properties
+
 
         /// <summary>
         /// Gets or sets the size of the bullet.
@@ -74,13 +129,7 @@ namespace LiveCharts.Wpf.Controls
             get => (double) GetValue(GeometrySizeProperty);
             set => SetValue(GeometrySizeProperty, value);
         }
-
-        /// <summary>
-        /// The selection mode property
-        /// </summary>
-        public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-            nameof(SelectionMode), typeof(ToolTipSelectionMode), typeof(ChartToolTip), new PropertyMetadata(default(ToolTipSelectionMode)));
-
+ 
         /// <summary>
         /// Gets or sets the selection mode.
         /// </summary>
@@ -93,27 +142,13 @@ namespace LiveCharts.Wpf.Controls
             set => SetValue(SelectionModeProperty, value);
         }
 
-        /// <summary>
-        /// The tooltip position property
-        /// </summary>
-        public static readonly DependencyProperty TooltipPositionProperty = DependencyProperty.Register(
-            nameof(Position), typeof(ToolTipPosition), typeof(ChartToolTip), 
-            new FrameworkPropertyMetadata(default(ToolTipPosition), FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
         /// <inheritdoc />
         public ToolTipPosition Position
         {
-            get => (ToolTipPosition)GetValue(TooltipPositionProperty);
-            set => SetValue(TooltipPositionProperty, value);
+            get => (ToolTipPosition) GetValue(PositionProperty);
+            set => SetValue(PositionProperty, value);
         }
-
-        /// <summary>
-        /// The default group style property
-        /// </summary>
-        public static readonly DependencyProperty DefaultGroupStyleProperty = DependencyProperty.Register(
-            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartToolTip), 
-            new PropertyMetadata(default(GroupStyle), OnDefaultGroupStyleChanged));
-
+ 
         /// <summary>
         /// Gets or sets the default group style.
         /// </summary>
@@ -125,13 +160,7 @@ namespace LiveCharts.Wpf.Controls
             get => (GroupStyle) GetValue(DefaultGroupStyleProperty);
             set => SetValue(DefaultGroupStyleProperty, value);
         }
-
-        /// <summary>
-        /// The corner radius property
-        /// </summary>
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            nameof(CornerRadius), typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
-
+        
         /// <summary>
         /// Gets or sets the corner radius.
         /// </summary>
@@ -143,13 +172,7 @@ namespace LiveCharts.Wpf.Controls
             get => (double) GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
-
-        /// <summary>
-        /// The show series names property
-        /// </summary>
-        public static readonly DependencyProperty ShowSeriesNamesProperty = DependencyProperty.Register(
-            nameof(ShowSeriesNames), typeof(bool), typeof(ChartToolTip), new PropertyMetadata(default(bool)));
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether the series name should be displayed in the tooltip.
         /// </summary>
@@ -158,13 +181,7 @@ namespace LiveCharts.Wpf.Controls
             get => (bool) GetValue(ShowSeriesNamesProperty);
             set => SetValue(ShowSeriesNamesProperty, value);
         }
-
-        /// <summary>
-        /// The wedge property
-        /// </summary>
-        public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
-            "Wedge", typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
-
+      
         /// <summary>
         /// Gets or sets the wedge, in degrees.
         /// </summary>
@@ -176,13 +193,7 @@ namespace LiveCharts.Wpf.Controls
             get => (double) GetValue(WedgeProperty);
             set => SetValue(WedgeProperty, value);
         }
-
-        /// <summary>
-        /// The wedge hypotenuse property
-        /// </summary>
-        public static readonly DependencyProperty WedgeHypotenuseProperty = DependencyProperty.Register(
-            "WedgeHypotenuse", typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
-
+  
         /// <summary>
         /// Gets or sets the wedge hypotenuse.
         /// </summary>
@@ -193,6 +204,13 @@ namespace LiveCharts.Wpf.Controls
         {
             get => (double) GetValue(WedgeHypotenuseProperty);
             set => SetValue(WedgeHypotenuseProperty, value);
+        }
+        
+        /// <inheritdoc />
+        public bool SnapToClosest
+        {
+            get => (bool) GetValue(SnapToClosestProperty);
+            set => SetValue(SnapToClosestProperty, value);
         }
 
         #endregion

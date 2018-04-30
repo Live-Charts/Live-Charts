@@ -24,6 +24,7 @@
 #endregion
 
 using System.Drawing;
+using LiveCharts.Core.Interaction.Controls;
 
 namespace LiveCharts.Core.Interaction.ChartAreas
 {
@@ -36,9 +37,18 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// Determines whether this area contains the given n dimensions point.
         /// </summary>
         /// <param name="pointerLocation">The dimensions.</param>
+        /// <param name="selectionMode">The selection mode.</param>
         /// <returns>
         ///   <c>true</c> if [contains] [the specified selection model]; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Contains(PointF pointerLocation);
+        public abstract bool Contains(PointF pointerLocation, ToolTipSelectionMode selectionMode);
+
+        /// <summary>
+        /// Gets the distance to.
+        /// </summary>
+        /// <param name="pointerLocation">The pointer location.</param>
+        /// <param name="selectionMode">The selection mode.</param>
+        /// <returns></returns>
+        public abstract float DistanceTo(PointF pointerLocation, ToolTipSelectionMode selectionMode);
     }
 }
