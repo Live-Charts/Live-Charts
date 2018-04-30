@@ -25,7 +25,7 @@
         <!--only for the shadow to be visible-->
         <Setter Property="Margin" Value="3" />
         <Setter Property="CornerRadius" Value="3" />
-        <Setter Property="Position" Value="Right"></Setter>
+        <Setter Property="Position" Value="Top"></Setter>
         <Setter Property="Wedge" Value="75"></Setter>
         <Setter Property="WedgeHypotenuse" Value="12"></Setter>
         

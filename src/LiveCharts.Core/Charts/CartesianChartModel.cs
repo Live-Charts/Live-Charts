@@ -420,6 +420,13 @@ namespace LiveCharts.Core.Charts
             if (ToolTip.Position == ToolTipPosition.Top) yDirection = -1;
             if (ToolTip.Position == ToolTipPosition.Right || ToolTip.Position == ToolTipPosition.Left) yDirection = 0;
 
+            int xi = 0, yi = 1;
+            if (InvertXy)
+            {
+                xi = 1;
+                yi = 0;
+            }
+
             foreach (var point in points)
             {
                 var coordinate = point.Coordinate;
@@ -433,10 +440,10 @@ namespace LiveCharts.Core.Charts
                 var yCorr = cartesianSeries.PointMargin * .5f * yDirection;
 
                 x += ScaleToUi(
-                         coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]) +
+                         coordinate[xi][0], Dimensions[xi][cartesianSeries.ScalesAt[0]]) +
                      uw[0] * .5f + xCorr ;
                 y += ScaleToUi(
-                         coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]) +
+                         coordinate[yi][0], Dimensions[yi][cartesianSeries.ScalesAt[1]]) +
                      uw[1] * .5f + yCorr;
 
                 if (View.Hoverable)
