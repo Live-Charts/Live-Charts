@@ -29,7 +29,7 @@
         <Setter Property="SnapToClosest" Value="True"></Setter>
         <Setter Property="SelectionMode" Value="SharedXy"></Setter>
         <Setter Property="Wedge" Value="75"></Setter>
-        <Setter Property="WedgeHypotenuse" Value="12"></Setter>
+        <Setter Property="WedgeHypotenuse" Value="15"></Setter>
         
         <Setter Property="Effect">
             <Setter.Value>

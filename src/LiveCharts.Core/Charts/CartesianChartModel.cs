@@ -508,7 +508,13 @@ namespace LiveCharts.Core.Charts
                     {
                         plane.ActualMinValue = context.Ranges[dimensionIndex][planeIndex][0];
                         plane.ActualMaxValue = context.Ranges[dimensionIndex][planeIndex][1];
-                        uiPointMargin = ScaleFromUi((float) plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane);
+                        uiPointMargin = Math.Abs(
+                            ScaleFromUi((float) plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane));
+                    }
+
+                    if (plane.Dimension == 1)
+                    {
+                        var a = 2;
                     }
 
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
