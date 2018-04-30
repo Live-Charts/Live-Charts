@@ -789,7 +789,7 @@ namespace LiveCharts.Core.Dimensions
             // correction by axis point unit
             if (axisPointWidth > 0f)
             {
-                var uiPw = chart.ScaleToUi(axisPointWidth, this) - chart.ScaleToUi(0, this);
+                var uiPw = Math.Abs(chart.ScaleToUi(axisPointWidth, this) - chart.ScaleToUi(0, this));
 
                 if (Dimension == 0)
                 {

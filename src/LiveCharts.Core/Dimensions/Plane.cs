@@ -385,8 +385,8 @@ namespace LiveCharts.Core.Dimensions
         {
             return new[]
             {
-                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointLength[0], this),
-                chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointLength[1], this)
+                Math.Abs(chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointLength[0], this)),
+                Math.Abs(chart.ScaleToUi(0f, this) - chart.ScaleToUi(PointLength[1], this))
             };
         }
 
