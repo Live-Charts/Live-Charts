@@ -18,9 +18,7 @@
         <wpf:NavigationHandler />
     </Window.DataContext>
     <Grid>
-        <controls:DialogContent VerticalAlignment="Top" 
-                                HorizontalAlignment="Left"
-                                Background="WhiteSmoke"
+        <!--<controls:DialogContent Background="WhiteSmoke"
                                 CornerRadius="20"
                                 Position="Bottom"
                                 Margin="20">
@@ -29,8 +27,8 @@
                                   Opacity="1" RenderingBias="Performance" />
             </controls:DialogContent.Effect>
             <TextBlock>hola</TextBlock>
-        </controls:DialogContent>
-        <!--<Grid.RowDefinitions>
+        </controls:DialogContent>-->
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -43,6 +41,6 @@
         </StackPanel>
         <ScrollViewer Grid.Row="1">
             <ContentControl Content="{Binding CurrentView}" />
-        </ScrollViewer>-->
+        </ScrollViewer>
     </Grid>
 </Window>

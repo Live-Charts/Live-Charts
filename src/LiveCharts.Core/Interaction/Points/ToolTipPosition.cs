@@ -8,6 +8,10 @@
         /// <summary>
         /// The top
         /// </summary>
+        Top,
+        /// <summary>
+        /// The top
+        /// </summary>
         Bottom,
         /// <summary>
         /// The left
@@ -16,10 +20,6 @@
         /// <summary>
         /// The right
         /// </summary>
-        Right,
-        /// <summary>
-        /// The top
-        /// </summary>
-        Top
+        Right
     }
 }

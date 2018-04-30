@@ -60,7 +60,8 @@ namespace LiveCharts.Wpf.Controls
         /// The bullet size property
         /// </summary>
         public static readonly DependencyProperty GeometrySizeProperty = DependencyProperty.Register(
-            nameof(GeometrySize), typeof(double), typeof(ChartToolTip), new PropertyMetadata(15d));
+            nameof(GeometrySize), typeof(double), typeof(ChartToolTip), 
+            new FrameworkPropertyMetadata(15d, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Gets or sets the size of the bullet.
@@ -78,7 +79,7 @@ namespace LiveCharts.Wpf.Controls
         /// The selection mode property
         /// </summary>
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-            nameof(SelectionMode), typeof(TooltipSelectionMode), typeof(ChartToolTip), new PropertyMetadata(default(TooltipSelectionMode)));
+            nameof(SelectionMode), typeof(ToolTipSelectionMode), typeof(ChartToolTip), new PropertyMetadata(default(ToolTipSelectionMode)));
 
         /// <summary>
         /// Gets or sets the selection mode.
@@ -86,9 +87,9 @@ namespace LiveCharts.Wpf.Controls
         /// <value>
         /// The selection mode.
         /// </value>
-        public TooltipSelectionMode SelectionMode
+        public ToolTipSelectionMode SelectionMode
         {
-            get => (TooltipSelectionMode) GetValue(SelectionModeProperty);
+            get => (ToolTipSelectionMode) GetValue(SelectionModeProperty);
             set => SetValue(SelectionModeProperty, value);
         }
 
@@ -96,14 +97,10 @@ namespace LiveCharts.Wpf.Controls
         /// The tooltip position property
         /// </summary>
         public static readonly DependencyProperty TooltipPositionProperty = DependencyProperty.Register(
-            nameof(Position), typeof(ToolTipPosition), typeof(ChartToolTip), new PropertyMetadata(default(ToolTipPosition)));
+            nameof(Position), typeof(ToolTipPosition), typeof(ChartToolTip), 
+            new FrameworkPropertyMetadata(default(ToolTipPosition), FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        /// <summary>
-        /// Gets or sets the tooltip position.
-        /// </summary>
-        /// <value>
-        /// The tooltip position.
-        /// </value>
+        /// <inheritdoc />
         public ToolTipPosition Position
         {
             get => (ToolTipPosition)GetValue(TooltipPositionProperty);
@@ -162,6 +159,42 @@ namespace LiveCharts.Wpf.Controls
             set => SetValue(ShowSeriesNamesProperty, value);
         }
 
+        /// <summary>
+        /// The wedge property
+        /// </summary>
+        public static readonly DependencyProperty WedgeProperty = DependencyProperty.Register(
+            "Wedge", typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// Gets or sets the wedge, in degrees.
+        /// </summary>
+        /// <value>
+        /// The wedge.
+        /// </value>
+        public double Wedge
+        {
+            get => (double) GetValue(WedgeProperty);
+            set => SetValue(WedgeProperty, value);
+        }
+
+        /// <summary>
+        /// The wedge hypotenuse property
+        /// </summary>
+        public static readonly DependencyProperty WedgeHypotenuseProperty = DependencyProperty.Register(
+            "WedgeHypotenuse", typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// Gets or sets the wedge hypotenuse.
+        /// </summary>
+        /// <value>
+        /// The wedge hypotenuse.
+        /// </value>
+        public double WedgeHypotenuse
+        {
+            get => (double) GetValue(WedgeHypotenuseProperty);
+            set => SetValue(WedgeHypotenuseProperty, value);
+        }
+
         #endregion
 
         private static void OnDefaultGroupStyleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
@@ -176,7 +209,7 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
-        TooltipSelectionMode IDataToolTip.SelectionMode => SelectionMode;
+        ToolTipSelectionMode IDataToolTip.SelectionMode => SelectionMode;
 
         SizeF IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
         {
@@ -205,7 +238,7 @@ namespace LiveCharts.Wpf.Controls
         {
             var wpfChart = (Chart) chart;
 
-            var x = location.X + (float) Canvas.GetLeft(wpfChart.VisualDrawMargin) - (float) DesiredSize.Width * .5f;
+            var x = location.X + (float) Canvas.GetLeft(wpfChart.VisualDrawMargin);
             var y = location.Y + (float) Canvas.GetTop(wpfChart.VisualDrawMargin);
 
             location = new PointF(x, y);

@@ -53,6 +53,9 @@
     <Compile Include="Controls\ChartContent.cs" />
     <Compile Include="Controls\DialogContent.cs" />
     <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
+    <Compile Include="Converters\ContentMarginCorrectionConverter.cs" />
+    <Compile Include="Converters\GetHeightForDialog.cs" />
+    <Compile Include="Converters\GetWidthForDialog.cs" />
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
     <Compile Include="Controls\ChartTooltip.cs" />
     <Compile Include="Controls\ChartLegend.cs" />

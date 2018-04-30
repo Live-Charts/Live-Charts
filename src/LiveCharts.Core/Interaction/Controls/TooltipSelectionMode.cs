@@ -33,7 +33,7 @@ namespace LiveCharts.Core.Interaction.Controls
     /// <summary>
     /// Tooltip selection mode.
     /// </summary>
-    public enum TooltipSelectionMode
+    public enum ToolTipSelectionMode
     {
         /// <summary>
         /// LiveCharts will decide the selection mode based on the current data.

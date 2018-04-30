@@ -36,5 +36,5 @@ namespace LiveCharts.Core.Interaction.Events
     /// </summary>
     /// <param name="selectionMode">The selection mode.</param>
     /// <param name="pointerLocation">The pointer location.</param>
-    public delegate void PointerMovedHandler(TooltipSelectionMode selectionMode, PointF pointerLocation);
+    public delegate void PointerMovedHandler(ToolTipSelectionMode selectionMode, PointF pointerLocation);
 }

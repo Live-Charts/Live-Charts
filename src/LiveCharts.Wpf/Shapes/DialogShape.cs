@@ -73,8 +73,7 @@ namespace LiveCharts.Wpf.Shapes
             {
                 if (double.IsNaN(Height) || double.IsNaN(Width))
                 {
-                    throw new LiveChartsException(
-                        "The bubble size must be explicitly set", 600);
+                    return new RectangleGeometry();
                 }
 
                 var hyp = WedgeHypotenuse;
@@ -178,7 +177,7 @@ namespace LiveCharts.Wpf.Shapes
             return combined;
         }
 
-        private Geometry PlaceLeft()
+        private Geometry PlaceRight()
         {
             var combined = new GeometryGroup();
 
@@ -212,7 +211,7 @@ namespace LiveCharts.Wpf.Shapes
             return combined;
         }
 
-        private Geometry PlaceRight()
+        private Geometry PlaceLeft()
         {
             var combined = new GeometryGroup();
 

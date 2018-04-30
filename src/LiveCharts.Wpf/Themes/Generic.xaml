@@ -11,29 +11,79 @@
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
     <converters:GetWidthForDialog x:Key="GetWidthForDialog"></converters:GetWidthForDialog>
     <converters:GetHeightForDialog x:Key="GetHeightForDialog"></converters:GetHeightForDialog>
+    <converters:ContentMarginCorrectionConverter x:Key="MarginCorrectionConverter"></converters:ContentMarginCorrectionConverter>
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
 
     <Style TargetType="{x:Type controls:ChartToolTip}">
 
+        <Setter Property="BorderBrush" Value="#303030"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
         <Setter Property="Background" Value="White" />
-        <Setter Property="Padding" Value="16 12" />
+        <Setter Property="Foreground" Value="#303030"></Setter>
+        <Setter Property="Padding" Value="20" />
+        <!--only for the shadow to be visible-->
         <Setter Property="Margin" Value="3" />
         <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="Position" Value="Right"></Setter>
+        <Setter Property="Wedge" Value="75"></Setter>
+        <Setter Property="WedgeHypotenuse" Value="12"></Setter>
+        
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030"
+                                  Opacity=".35" RenderingBias="Performance" />
+            </Setter.Value>
+        </Setter>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ChartToolTip}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            Margin="{TemplateBinding Margin}"
-                            CornerRadius="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black"
-                                              Opacity=".42" RenderingBias="Performance" />
-                        </Border.Effect>
-                        <ItemsPresenter />
+                    <Border Name="Wrapper" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center">
+                        <Grid Name="Grid" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <shapes:DialogShape
+                                x:Name="DialogShape"
+                                Position="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Position}"
+                                Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Background}"
+                                Effect="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Effect}"
+                                Wedge="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Wedge}"
+                                WedgeHypotenuse="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=WedgeHypotenuse}">
+                                <shapes:DialogShape.Height>
+                                    <MultiBinding Converter="{StaticResource GetHeightForDialog}">
+                                        <Binding ElementName="ItemsPresenter" Path="ActualHeight" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" Path="Padding" />
+                                        <Binding RelativeSource="{RelativeSource Mode=Self}" />
+                                    </MultiBinding>
+                                </shapes:DialogShape.Height>
+                                <shapes:DialogShape.Width>
+                                    <MultiBinding Converter="{StaticResource GetWidthForDialog}">
+                                        <Binding ElementName="ItemsPresenter" Path="ActualWidth" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" Path="Padding" />
+                                        <Binding RelativeSource="{RelativeSource Mode=Self}" />
+                                    </MultiBinding>
+                                </shapes:DialogShape.Width>
+                            </shapes:DialogShape>
+                            <Border HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                <ItemsPresenter Name="ItemsPresenter">
+                                    <ItemsPresenter.Margin>
+                                        <MultiBinding Converter="{StaticResource MarginCorrectionConverter}">
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" 
+                                                     Path="Position"/>
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" 
+                                                     Path="Wedge"/>
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" 
+                                                     Path="WedgeHypotenuse"/>
+                                        </MultiBinding>
+                                    </ItemsPresenter.Margin>
+                                </ItemsPresenter>
+                            </Border>
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -59,10 +109,13 @@
                               Margin="0 0 6 0" />
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Series.Title}"
+                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Path=Foreground}"
                                    Visibility="{Binding Path=ShowSeriesNames, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                    VerticalAlignment="Center"
                                    Margin="0 0 6 0" />
-                        <TextBlock Grid.Column="2" Text="{Binding TooltipText}"/>
+                            <TextBlock Grid.Column="2" 
+                                       Text="{Binding TooltipText}" 
+                                       Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Path=Foreground}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
@@ -153,3 +206,4 @@
     </Style>
 
 </ResourceDictionary>
+    

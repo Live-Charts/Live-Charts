@@ -382,12 +382,12 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="pointerLocation">The dimensions.</param>
-        protected virtual void ViewOnPointerMoved(TooltipSelectionMode selectionMode, PointF pointerLocation)
+        protected virtual void ViewOnPointerMoved(ToolTipSelectionMode selectionMode, PointF pointerLocation)
         {
             if (Series == null) return;
             var query = GetHoveredPoints(pointerLocation).ToArray();
 
-            if (selectionMode == TooltipSelectionMode.Auto)
+            if (selectionMode == ToolTipSelectionMode.Auto)
             {
                 // ToDo: guess what the user meant here ...
             }
@@ -416,19 +416,43 @@ namespace LiveCharts.Core.Charts
             }
 
             ToolTipTimeoutTimer.Stop();
+            var size = View.DataToolTip.ShowAndMeasure(query, View);
 
-            View.DataToolTip.ShowAndMeasure(query, View);
+            var newToolTipLocation = GetToolTipLocationAndFireHovering(query);
 
-            var newTooltipLocation = GetToolTipLocationAndFireHovering(query);
+            var xCorrection = 0f;
+            var yCorrection = 0f;
 
-            if (_previousTooltipLocation != newTooltipLocation)
+            switch (ToolTip.Position)
             {
-                View.DataToolTip.Move(newTooltipLocation, View);
+                case ToolTipPosition.Top:
+                    xCorrection = -size.Width * .5f;
+                    yCorrection = -size.Height;
+                    break;
+                case ToolTipPosition.Bottom:
+                    xCorrection = -size.Width * .5f;
+                    break;
+                case ToolTipPosition.Left:
+                    xCorrection = -size.Width;
+                    yCorrection = -size.Height * .5f;
+                    break;
+                case ToolTipPosition.Right:
+                    yCorrection = -size.Height * .5f;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            newToolTipLocation = new PointF(newToolTipLocation.X + xCorrection, newToolTipLocation.Y + yCorrection);
+
+            if (_previousTooltipLocation != newToolTipLocation)
+            {
+                View.DataToolTip.Move(newToolTipLocation, View);
             }
 
             OnDataPointerEnter(query);
 
-            _previousTooltipLocation = newTooltipLocation;
+            _previousTooltipLocation = newToolTipLocation;
         }
 
         /// <summary>

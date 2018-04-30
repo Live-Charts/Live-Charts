@@ -32,6 +32,7 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Updating;
 
@@ -411,6 +412,14 @@ namespace LiveCharts.Core.Charts
         {
             float x = 0f, y = 0f;
 
+            var xDirection = 1;
+            if (ToolTip.Position == ToolTipPosition.Left) xDirection = -1;
+            if (ToolTip.Position == ToolTipPosition.Top || ToolTip.Position == ToolTipPosition.Bottom) xDirection = 0;
+
+            var yDirection = 1;
+            if (ToolTip.Position == ToolTipPosition.Top) yDirection = -1;
+            if (ToolTip.Position == ToolTipPosition.Right || ToolTip.Position == ToolTipPosition.Left) yDirection = 0;
+
             foreach (var point in points)
             {
                 var coordinate = point.Coordinate;
@@ -420,10 +429,15 @@ namespace LiveCharts.Core.Charts
                     Dimensions[0][cartesianSeries.ScalesAt[0]],
                     Dimensions[1][cartesianSeries.ScalesAt[1]]);
 
-                x += ScaleToUi(coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]) +
-                     uw[0] * .5f;
-                y += ScaleToUi(coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]) +
-                     cartesianSeries.PointMargin * .5f;
+                var xCorr = cartesianSeries.PointMargin * .5f * xDirection;
+                var yCorr = cartesianSeries.PointMargin * .5f * yDirection;
+
+                x += ScaleToUi(
+                         coordinate[0][0], Dimensions[0][cartesianSeries.ScalesAt[0]]) +
+                     uw[0] * .5f + xCorr ;
+                y += ScaleToUi(
+                         coordinate[1][0], Dimensions[1][cartesianSeries.ScalesAt[1]]) +
+                     uw[1] * .5f + yCorr;
 
                 if (View.Hoverable)
                 {
