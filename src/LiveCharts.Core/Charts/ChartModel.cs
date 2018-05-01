@@ -367,26 +367,23 @@ namespace LiveCharts.Core.Charts
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
         /// <returns></returns>
-        public IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest)
+        public IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode,
+            bool snapToClosest)
         {
-            if (snapToClosest)
+            if (!snapToClosest)
             {
-                var previousMin = float.MaxValue;
-                var bySeries = Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, true))
-                    .ToArray();
-                var min = bySeries.Aggregate(bySeries.FirstOrDefault(), (currentMin, current) =>
-                {
-                    var currentDistance = current.InteractionArea.DistanceTo(pointerLocation, selectionMode);
-
-                    if (!(currentDistance < previousMin)) return currentMin;
-
-                    previousMin = currentDistance;
-                    return current;
-                });
-                return new List<PackedPoint> {min};
+                return Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, false));
             }
 
-            return Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, snapToClosest));
+            var results = Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, true))
+                .Select(point => new
+                {
+                    Distance = point.InteractionArea.DistanceTo(pointerLocation, selectionMode),
+                    Point = point
+                }).ToArray();
+            var min = results.Min(x => x.Distance);
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            return results.Where(x => x.Distance == min).Select(x => x.Point);
         }
 
         /// <summary>

@@ -82,6 +82,11 @@
         "id": "Animations",
         "name": "Animations",
         "text": "Change all the animations with only one property."
+      },
+      {
+        "id": "ToolTipsAndLegends",
+        "name": "Tooltips and legends",
+        "text": "A dynamic sample customizing tooltips and legends properties."
       }
     ],
     "Testing": [

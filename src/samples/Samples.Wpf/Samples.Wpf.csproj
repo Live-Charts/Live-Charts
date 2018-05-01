@@ -113,6 +113,9 @@
     <Compile Include="Views\SharedAxes.xaml.cs">
       <DependentUpon>SharedAxes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TooltipsAndLegends.xaml.cs">
+      <DependentUpon>TooltipsAndLegends.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ZoomingAndPanning.xaml.cs">
       <DependentUpon>ZoomingAndPanning.xaml</DependentUpon>
     </Compile>
@@ -196,6 +199,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TooltipsAndLegends.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ZoomingAndPanning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -261,6 +268,7 @@
     <Resource Include="Images\Animations.png" />
     <Resource Include="Images\ScrollBar.png" />
     <Resource Include="Images\SharedAxes.png" />
+    <Resource Include="Images\ToolTipsAndLegends.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

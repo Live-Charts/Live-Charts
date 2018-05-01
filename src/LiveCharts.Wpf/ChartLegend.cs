@@ -32,11 +32,12 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Wpf.Controls;
 using Orientation = LiveCharts.Core.Drawing.Styles.Orientation;
 
 #endregion
 
-namespace LiveCharts.Wpf.Controls
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// Default legend class.

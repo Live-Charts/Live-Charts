@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="Samples.Wpf.Views.ToolTipsAndLegends"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:controls="clr-namespace:LiveCharts.Core.Interaction.Controls;assembly=LiveCharts.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+   <UserControl.DataContext>
+        <viewModels:ToolTipsAndLegends></viewModels:ToolTipsAndLegends>
+   </UserControl.DataContext>
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="LegendPositions" 
+                            MethodName="GetValues"
+                            ObjectType="{x:Type controls:LegendPosition}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="controls:LegendPosition"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="SelectionModes" 
+                            MethodName="GetValues"
+                            ObjectType="{x:Type controls:ToolTipSelectionMode}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="controls:ToolTipSelectionMode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="ToolTipPosition" 
+                            MethodName="GetValues"
+                            ObjectType="{x:Type controls:ToolTipPosition}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="controls:ToolTipPosition"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Legend Position</TextBlock>
+                <ComboBox ItemsSource="{Binding Source={StaticResource LegendPositions}}"
+                          SelectedValue="{Binding LegendPosition}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>ToolTip selection mode:</TextBlock>
+                <ComboBox ItemsSource="{Binding Source={StaticResource SelectionModes}}" 
+                          SelectedValue="{Binding Path=ToolTipSelectionMode}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>ToolTipPosition</TextBlock>
+                <ComboBox ItemsSource="{Binding Source={StaticResource ToolTipPosition}}" 
+                          SelectedValue="{Binding Path=ToolTipPosition}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Snap to closest</TextBlock>
+                <CheckBox IsChecked="{Binding SnapToClosest}"></CheckBox>
+            </StackPanel>
+        </StackPanel>
+        <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollection}"
+                            LegendPosition="{Binding LegendPosition}">
+            <lvc:CartesianChart.DataToolTip>
+                <lvc:ChartToolTip 
+                    SelectionMode="{Binding ToolTipSelectionMode}"
+                    Position="{Binding ToolTipPosition}"
+                    SnapToClosest="{Binding SnapToClosest}"/>
+            </lvc:CartesianChart.DataToolTip>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>
+
+
+

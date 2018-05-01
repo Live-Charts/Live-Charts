@@ -5,7 +5,8 @@
     xmlns:converters="clr-namespace:LiveCharts.Wpf.Converters"
     xmlns:points="clr-namespace:LiveCharts.Core.Interaction.Points;assembly=LiveCharts.Core"
     xmlns:series="clr-namespace:LiveCharts.Core.DataSeries;assembly=LiveCharts.Core"
-    xmlns:shapes="clr-namespace:LiveCharts.Wpf.Shapes">
+    xmlns:shapes="clr-namespace:LiveCharts.Wpf.Shapes"
+    xmlns:wpf="clr-namespace:LiveCharts.Wpf">
 
     <converters:CoreToWpfBrushConverter x:Key="AsSolidColorBrush" />
     <converters:SvgToGeometryDataConverter x:Key="AsGeometryData" />
@@ -15,7 +16,7 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
 
-    <Style TargetType="{x:Type controls:ChartToolTip}">
+    <Style TargetType="{x:Type wpf:ChartToolTip}">
 
         <Setter Property="BorderBrush" Value="#303030"></Setter>
         <Setter Property="BorderThickness" Value="1"></Setter>
@@ -26,7 +27,7 @@
         <Setter Property="Margin" Value="3" />
         <Setter Property="CornerRadius" Value="3" />
         <Setter Property="Position" Value="Top"></Setter>
-        <Setter Property="SnapToClosest" Value="True"></Setter>
+        <Setter Property="SnapToClosest" Value="False"></Setter>
         <Setter Property="SelectionMode" Value="SharedXy"></Setter>
         <Setter Property="Wedge" Value="75"></Setter>
         <Setter Property="WedgeHypotenuse" Value="15"></Setter>
@@ -40,7 +41,7 @@
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ChartToolTip}">
+                <ControlTemplate TargetType="{x:Type wpf:ChartToolTip}">
                     <Border Name="Wrapper" 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center">
@@ -50,22 +51,22 @@
                             </Grid.RowDefinitions>
                             <shapes:DialogShape
                                 x:Name="DialogShape"
-                                Position="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Position}"
-                                Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Background}"
-                                Effect="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Effect}"
-                                Wedge="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=Wedge}"
-                                WedgeHypotenuse="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:ChartToolTip}}, Path=WedgeHypotenuse}">
+                                Position="{Binding RelativeSource={RelativeSource AncestorType={x:Type wpf:ChartToolTip}}, Path=Position}"
+                                Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type wpf:ChartToolTip}}, Path=Background}"
+                                Effect="{Binding RelativeSource={RelativeSource AncestorType={x:Type wpf:ChartToolTip}}, Path=Effect}"
+                                Wedge="{Binding RelativeSource={RelativeSource AncestorType={x:Type wpf:ChartToolTip}}, Path=Wedge}"
+                                WedgeHypotenuse="{Binding RelativeSource={RelativeSource AncestorType={x:Type wpf:ChartToolTip}}, Path=WedgeHypotenuse}">
                                 <shapes:DialogShape.Height>
                                     <MultiBinding Converter="{StaticResource GetHeightForDialog}">
                                         <Binding ElementName="ItemsPresenter" Path="ActualHeight" />
-                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" Path="Padding" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:ChartToolTip}}" Path="Padding" />
                                         <Binding RelativeSource="{RelativeSource Mode=Self}" />
                                     </MultiBinding>
                                 </shapes:DialogShape.Height>
                                 <shapes:DialogShape.Width>
                                     <MultiBinding Converter="{StaticResource GetWidthForDialog}">
                                         <Binding ElementName="ItemsPresenter" Path="ActualWidth" />
-                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" Path="Padding" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:ChartToolTip}}" Path="Padding" />
                                         <Binding RelativeSource="{RelativeSource Mode=Self}" />
                                     </MultiBinding>
                                 </shapes:DialogShape.Width>
@@ -75,11 +76,11 @@
                                 <ItemsPresenter Name="ItemsPresenter">
                                     <ItemsPresenter.Margin>
                                         <MultiBinding Converter="{StaticResource MarginCorrectionConverter}">
-                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" 
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:ChartToolTip}}" 
                                                      Path="Position"/>
-                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" 
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:ChartToolTip}}" 
                                                      Path="Wedge"/>
-                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type controls:ChartToolTip}}" 
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:ChartToolTip}}" 
                                                      Path="WedgeHypotenuse"/>
                                         </MultiBinding>
                                     </ItemsPresenter.Margin>
@@ -101,34 +102,34 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                         </Grid.ColumnDefinitions>
                         <Path Grid.Column="0"
-                              Width="{Binding Path=GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
-                              Height="{Binding Path=GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}}"
+                              Width="{Binding Path=GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}}"
+                              Height="{Binding Path=GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}}"
                               StrokeThickness="{Binding Series.Style.StrokeThickness}"
                               Stroke="{Binding Series.Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                               Fill="{Binding Series.Style.Fill, Converter={StaticResource AsSolidColorBrush}}"
-                              Visibility="{Binding Path=ShowSeriesGeometry, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                              Visibility="{Binding Path=ShowSeriesGeometry, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                               Stretch="Fill"
                               Data="{Binding Path=Series.Geometry.Data}"
                               Margin="20" />
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Series.Title}"
-                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Path=Foreground}"
-                                   Visibility="{Binding Path=ShowSeriesNames, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}, Path=Foreground}"
+                                   Visibility="{Binding Path=ShowSeriesNames, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                    VerticalAlignment="Center"
                                    Margin="0 0 12 0" />
                             <TextBlock Grid.Column="2" 
                                        Text="{Binding TooltipText}" 
-                                       Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartToolTip}}, Path=Foreground}"/>
+                                       Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}, Path=Foreground}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type controls:ChartLegend}">
+    <Style TargetType="{x:Type wpf:ChartLegend}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ChartLegend}">
+                <ControlTemplate TargetType="{x:Type wpf:ChartLegend}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -143,7 +144,7 @@
             <Setter.Value>
                 <ItemsPanelTemplate>
                     <WrapPanel
-                        Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}" />
+                        Orientation="{Binding ActualOrientation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartLegend}}}" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -153,8 +154,8 @@
                 <DataTemplate DataType="{x:Type series:ISeries}">
                     <StackPanel Orientation="Horizontal">
                         <Path
-                            Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
-                            Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:ChartLegend}}}"
+                            Width="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartLegend}}}"
+                            Height="{Binding GeometrySize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartLegend}}}"
                             StrokeThickness="{Binding Style.StrokeThickness}"
                             Stroke="{Binding Style.Stroke, Converter={StaticResource AsSolidColorBrush}}"
                             Fill="{Binding Style.Fill, Converter={StaticResource AsSolidColorBrush}}"

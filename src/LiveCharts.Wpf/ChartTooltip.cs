@@ -24,23 +24,20 @@
 #endregion
 #region
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Wpf.Animations;
 
 #endregion
 
-namespace LiveCharts.Wpf.Controls
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// Default data tool tip class.

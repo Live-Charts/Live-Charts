@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 
 namespace LiveCharts.Wpf.Shapes

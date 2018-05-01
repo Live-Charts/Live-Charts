@@ -57,8 +57,8 @@
     <Compile Include="Converters\GetHeightForDialog.cs" />
     <Compile Include="Converters\GetWidthForDialog.cs" />
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
-    <Compile Include="Controls\ChartTooltip.cs" />
-    <Compile Include="Controls\ChartLegend.cs" />
+    <Compile Include="ChartTooltip.cs" />
+    <Compile Include="ChartLegend.cs" />
     <Compile Include="Controls\AxisLabel.cs" />
     <Compile Include="Interaction\DataInteractionEventArgs.cs" />
     <Compile Include="CorePlatformMapping.cs" />
