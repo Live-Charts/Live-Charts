@@ -36,13 +36,29 @@ namespace LiveCharts.Core.Charts
     public interface IChartContent
     {
         /// <summary>
+        /// Gets or sets the draw area.
+        /// </summary>
+        /// <value>
+        /// The draw area.
+        /// </value>
+        RectangleF DrawArea { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the control.
+        /// </summary>
+        /// <value>
+        /// The size of the control.
+        /// </value>
+        SizeF ControlSize { get; set; }
+
+        /// <summary>
         /// Adds a child child.
         /// </summary>
-        void AddChild(object child);
+        void AddChild(object child, bool isClipped);
 
         /// <summary>
         /// Removes the child.
         /// </summary>
-        void RemoveChild(object child);
+        void RemoveChild(object child, bool isClipped);
     }
 }

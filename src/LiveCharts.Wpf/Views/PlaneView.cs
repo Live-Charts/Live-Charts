@@ -24,17 +24,19 @@
 #endregion
 #region
 
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Wpf.Animations;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 #endregion
 
@@ -72,7 +74,7 @@ namespace LiveCharts.Wpf.Views
             if (isNewShape)
             {
                 Rectangle = new Rectangle();
-                args.ChartView.Content.AddChild(Rectangle);
+                args.ChartView.Content.AddChild(Rectangle, true);
                 Canvas.SetLeft(Rectangle, args.Rectangle.From.Left);
                 Canvas.SetTop(Rectangle, args.Rectangle.From.Top);
                 Rectangle.Width = args.Rectangle.From.Width;
@@ -127,26 +129,28 @@ namespace LiveCharts.Wpf.Views
         {
             var isNewLabel = Label == null;
 
+            var pos = Perform.Sum(args.Label.Position, args.ChartView.Content.DrawArea.Location);
+
             if (isNewLabel)
             {
                 Label = new TLabel();
-                args.ChartView.Content.AddChild(Label);
-                Canvas.SetLeft(Label, args.Label.Position.X);
-                Canvas.SetTop(Label, args.Label.Position.Y);
+                args.ChartView.Content.AddChild(Label, false);
+                Canvas.SetLeft(Label, pos.X);
+                Canvas.SetTop(Label, pos.Y);
             }
 
             Label.Measure(args.Label.Content, args.Label.LabelStyle);
 
             Label.Animate(timeLine)
-                .Property(Canvas.LeftProperty, Canvas.GetLeft(Label), args.Label.Position.X)
-                .Property(Canvas.TopProperty, Canvas.GetTop(Label), args.Label.Position.Y)
+                .Property(Canvas.LeftProperty, Canvas.GetLeft(Label), pos.X)
+                .Property(Canvas.TopProperty, Canvas.GetTop(Label), pos.Y)
                 .Begin();
         }
 
         void IPlaneSeparatorView.Dispose(IChartView view)
         {
-            view.Content.RemoveChild(Rectangle);
-            view.Content.RemoveChild(Label);
+            view.Content.RemoveChild(Rectangle, true);
+            view.Content.RemoveChild(Label, false);
             Rectangle = null;
             Label = null;
         }

@@ -31,6 +31,8 @@
         <Setter Property="SelectionMode" Value="SharedXy"></Setter>
         <Setter Property="Wedge" Value="75"></Setter>
         <Setter Property="WedgeHypotenuse" Value="15"></Setter>
+        <Setter Property="ShowSeriesNames" Value="False"></Setter>
+        <Setter Property="ShowSeriesGeometry" Value="True"></Setter>
         
         <Setter Property="Effect">
             <Setter.Value>
@@ -110,7 +112,7 @@
                               Visibility="{Binding Path=ShowSeriesGeometry, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                               Stretch="Fill"
                               Data="{Binding Path=Series.Geometry.Data}"
-                              Margin="20" />
+                              Margin="0 0 12 0" />
                         <TextBlock Grid.Column="1"
                                    Text="{Binding Series.Title}"
                                    Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wpf:ChartToolTip}}, Path=Foreground}"
@@ -127,13 +129,16 @@
     </Style>
 
     <Style TargetType="{x:Type wpf:ChartLegend}">
+        
+        <Setter Property="Padding" Value="10 6"></Setter>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wpf:ChartLegend}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="6">
+                            Padding="{TemplateBinding Padding}">
                         <ItemsPresenter />
                     </Border>
                 </ControlTemplate>

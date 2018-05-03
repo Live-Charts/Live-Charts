@@ -38,6 +38,11 @@
         "text": "Invert series using InvertAxes property."
       },
       {
+        "id": "AxisPositioning",
+        "name": "Axis positioning",
+        "text":  "Axis positioning tests"
+      },
+      {
         "id": "AxisSections",
         "name": "Axis sections",
         "text": "A chart that highlights a range in an axis."

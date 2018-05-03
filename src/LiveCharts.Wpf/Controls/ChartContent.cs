@@ -27,9 +27,11 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using LiveCharts.Core.Charts;
 using Brushes = System.Windows.Media.Brushes;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 #endregion
 
@@ -38,24 +40,80 @@ namespace LiveCharts.Wpf.Controls
     /// <inheritdoc cref="IChartContent" />
     public class ChartContent : Canvas, IChartContent
     {
+        private readonly Canvas _drawMargin = new Canvas();
+        private RectangleF _drawArea;
+        private SizeF _controlSize;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartContent"/> class.
         /// </summary>
         public ChartContent()
         {
             Background = Brushes.Transparent; // otherwise mouse move is not fired...
+            Children.Add(_drawMargin);
+            Background = Brushes.Blue;
+            _drawMargin.Background = Brushes.Red;
+        }
+
+        public RectangleF DrawArea
+        {
+            get => _drawArea;
+            set
+            {
+                _drawArea = value;
+                OnDrawAreaChanged();
+            }
+        }
+
+        public SizeF ControlSize
+        {
+            get => _controlSize;
+            set
+            {
+                _controlSize = value;
+                OnControlSizeChanged();
+            }
         }
 
         /// <inheritdoc />
-        public void AddChild(object child)
+        public void AddChild(object child, bool isClipped)
         {
+            if (isClipped)
+            {
+                _drawMargin.Children.Add((UIElement) child);
+                return;
+            }
+
             Children.Add((UIElement) child);
         }
 
         /// <inheritdoc />
-        public void RemoveChild(object child)
+        public void RemoveChild(object child, bool isClipped)
         {
+            if (isClipped)
+            {
+                _drawMargin.Children.Remove((UIElement) child);
+                return;
+            }
+
             Children.Remove((UIElement) child);
+        }
+
+        private void OnControlSizeChanged()
+        {
+            Width = _controlSize.Width;
+            Height = _controlSize.Height;
+        }
+
+        private void OnDrawAreaChanged()
+        {
+            SetTop(_drawMargin, _drawArea.Top);
+            SetLeft(_drawMargin, _drawArea.Left);
+            _drawMargin.Width = _drawArea.Width;
+            _drawMargin.Height = _drawArea.Height;
+            _drawMargin.Clip = new RectangleGeometry(
+                new Rect(new Point(0d, 0d),
+                new Size(_drawArea.Width, _drawArea.Height)));
         }
     }
 }

@@ -65,7 +65,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The square.
         /// </value>
-        public static Geometry Square = new Geometry("M 0,0 H 1 V -1 H -1 Z");
+        public static Geometry Square = new Geometry("M 0,0 h 1 v -1 h -1 Z");
 
         /// <summary>
         /// Gets the diamond.

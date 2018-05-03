@@ -335,7 +335,6 @@ namespace LiveCharts.Core.Charts
 
             // see docs/resources/chart.spacing.png
             var drawMargin = EvaluateAxisAndGetDrawMargin(context, this);
-            var v = View.DrawMargin;
 
             DrawAreaSize = new[]
             {
@@ -357,9 +356,9 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            View.SetDrawArea(new RectangleF(
+            View.Content.DrawArea = new RectangleF(
                 new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
-                new SizeF(DrawAreaSize[0], DrawAreaSize[1])));
+                new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 
             // draw separators
             // for each dimension (for a cartesian chart X and Y)

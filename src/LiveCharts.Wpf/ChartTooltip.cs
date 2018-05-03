@@ -271,8 +271,8 @@ namespace LiveCharts.Wpf
         {
             var wpfChart = (Chart) chart;
 
-            var x = location.X + (float) Canvas.GetLeft(wpfChart.VisualDrawMargin);
-            var y = location.Y + (float) Canvas.GetTop(wpfChart.VisualDrawMargin);
+            var x = location.X + chart.Content.DrawArea.X;
+            var y = location.Y + chart.Content.DrawArea.Y;
 
             location = new PointF(x, y);
 

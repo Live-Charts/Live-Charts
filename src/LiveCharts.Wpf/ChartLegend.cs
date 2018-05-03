@@ -149,7 +149,7 @@ namespace LiveCharts.Wpf
             if (Parent == null)
             {
                 var content = chart.Content;
-                content.AddChild(this);
+                content.AddChild(this, false);
             }
 
             ItemsSource = seriesCollection;
@@ -183,7 +183,7 @@ namespace LiveCharts.Wpf
         void IResource.Dispose(IChartView chart)
         {
             var content = (ChartContent)chart.Content;
-            content.RemoveChild(this);
+            content.RemoveChild(this, false);
             Disposed?.Invoke(chart, this);
         }
     }

@@ -65,6 +65,9 @@
     <Compile Include="Views\Animations.xaml.cs">
       <DependentUpon>Animations.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AxisPositioning.xaml.cs">
+      <DependentUpon>AxisPositioning.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AxisSections.xaml.cs">
       <DependentUpon>AxisSections.xaml</DependentUpon>
     </Compile>
@@ -132,6 +135,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Animations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AxisPositioning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,6 +276,7 @@
     <Resource Include="Images\ScrollBar.png" />
     <Resource Include="Images\SharedAxes.png" />
     <Resource Include="Images\ToolTipsAndLegends.png" />
+    <Resource Include="Images\AxisPositioning.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

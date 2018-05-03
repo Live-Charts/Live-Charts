@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf.Views
             if (isNewShape)
             {
                 Shape = new Rectangle();
-                chart.Content.AddChild(Shape);
+                chart.Content.AddChild(Shape, true);
                 Shape.Fill = new SolidColorBrush(Color.FromArgb(vm.From.A, vm.From.R, vm.From.G, vm.From.B));
             }
 
@@ -104,8 +104,8 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            chart.Content.RemoveChild(Shape);
-            chart.Content.RemoveChild(Label);
+            chart.Content.RemoveChild(Shape, true);
+            chart.Content.RemoveChild(Label, true);
             _lastTimeLine = null;
         }
     }

@@ -65,7 +65,7 @@ namespace LiveCharts.Wpf.Views
             if (isNewShape)
             {
                 Shape = new Slice();
-                chart.Content.AddChild(Shape);
+                chart.Content.AddChild(Shape, true);
                 Canvas.SetLeft(Shape, point.Chart.DrawAreaSize[0] / 2 - vm.To.OuterRadius);
                 Canvas.SetTop(Shape, point.Chart.DrawAreaSize[1] / 2 - vm.To.OuterRadius);
                 Shape.Rotation = 0d;
@@ -129,8 +129,8 @@ namespace LiveCharts.Wpf.Views
             sliceAnimation
                 .Then((sender, args) =>
                 {
-                    chart.Content.RemoveChild(Shape);
-                    chart.Content.RemoveChild(Label);
+                    chart.Content.RemoveChild(Shape, true);
+                    chart.Content.RemoveChild(Label, true);
                     sliceAnimation.Dispose();
                     sliceAnimation = null;
                 });

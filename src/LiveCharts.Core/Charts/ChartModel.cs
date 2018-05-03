@@ -501,6 +501,7 @@ namespace LiveCharts.Core.Charts
             }
 
             var chartSize = ControlSize;
+            View.Content.ControlSize = new SizeF(ControlSize[0], ControlSize[1]);
             float dax = 0f, day = 0f;
             float lw = 0f, lh = 0f;
 

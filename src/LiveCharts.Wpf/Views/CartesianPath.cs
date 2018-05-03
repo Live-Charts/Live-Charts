@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf.Views
         public void Initialize(IChartView view, TimeLine timeLine)
         {
             _timeLine = timeLine;
-            view.Content.AddChild(StrokePath);
+            view.Content.AddChild(StrokePath, true);
             _isNew = true;
         }
 
@@ -123,7 +123,7 @@ namespace LiveCharts.Wpf.Views
 
         public void Dispose(IChartView view)
         {
-            view.Content.RemoveChild(StrokePath);
+            view.Content.RemoveChild(StrokePath, true);
         }
     }
 }

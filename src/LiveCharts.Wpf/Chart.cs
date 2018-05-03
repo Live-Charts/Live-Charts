@@ -92,20 +92,14 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the visual draw margin.
-        /// </summary>
-        /// <value>
-        /// The visual draw margin.
-        /// </value>
-        public ContentPresenter VisualDrawMargin { get; protected set; }
-
-        /// <summary>
         /// Gets the tooltip popup.
         /// </summary>
         /// <value>
         /// The tooltip popup.
         /// </value>
         public Popup TooltipPopup { get; protected set; }
+
+        public ContentPresenter VisualDrawMargin { get; set; }
 
         #region Dependency properties
 
@@ -247,8 +241,8 @@ namespace LiveCharts.Wpf
             if (DataToolTip == null) return;
             var p = args.GetPosition(this);
             var c = new Point(
-                p.X - GetLeft(VisualDrawMargin),
-                p.Y - GetTop(VisualDrawMargin));
+                p.X - Content.DrawArea.X,
+                p.Y - Content.DrawArea.Y);
             PointerMovedOverPlot?.Invoke(DataToolTip.SelectionMode, new PointF((float) c.X, (float) c.Y));
         }
 
@@ -257,8 +251,8 @@ namespace LiveCharts.Wpf
             if (args.ClickCount != 2) return;
             var p = args.GetPosition(this);
             var c = new Point(
-                p.X + GetLeft(VisualDrawMargin),
-                p.Y + GetTop(VisualDrawMargin));
+                p.X + Content.DrawArea.X,
+                p.Y + Content.DrawArea.Y);
             var points = Model.GetPointsAt(new PointF((float) c.X, (float) c.Y), ToolTipSelectionMode.SharedXy, false);
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
@@ -271,8 +265,8 @@ namespace LiveCharts.Wpf
         {
             var p = args.GetPosition(this);
             var c = new Point(
-                p.X + GetLeft(VisualDrawMargin),
-                p.Y + GetTop(VisualDrawMargin));
+                p.X + Content.DrawArea.X,
+                p.Y + Content.DrawArea.Y);
             var points = Model.GetPointsAt(new PointF((float) c.X, (float) c.Y), ToolTipSelectionMode.SharedXy, false);
             var e = new DataInteractionEventArgs(args.MouseDevice, args.Timestamp, args.ChangedButton, points)
             {
@@ -341,10 +335,11 @@ namespace LiveCharts.Wpf
         /// <inheritdoc cref="IChartView.Model"/>
         public ChartModel Model { get; protected set; }
 
-        IChartContent IChartView.Content
+        public IChartContent Content
         {
             get => (IChartContent) VisualDrawMargin.Content;
-            set => VisualDrawMargin.Content = value;
+            set => 
+                VisualDrawMargin.Content = value;
         }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
@@ -427,14 +422,6 @@ namespace LiveCharts.Wpf
         public void Update(bool restartAnimations = false)
         {
             Model.Invalidate(restartAnimations, true);
-        }
-
-        void IChartView.SetDrawArea(RectangleF drawArea)
-        {
-            SetTop(VisualDrawMargin, drawArea.Top);
-            SetLeft(VisualDrawMargin, drawArea.Left);
-            VisualDrawMargin.Width = drawArea.Width;
-            VisualDrawMargin.Height = drawArea.Height;
         }
 
         void IChartView.InvokeOnUiThread(Action action)

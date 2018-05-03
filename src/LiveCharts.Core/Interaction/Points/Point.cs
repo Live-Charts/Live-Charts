@@ -166,7 +166,7 @@ namespace LiveCharts.Core.Interaction.Points
 
         void IResource.Dispose(IChartView view)
         {
-            View.Dispose(view);
+            View?.Dispose(view);
             Disposed?.Invoke(view, this);
         }
     }

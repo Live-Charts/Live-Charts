@@ -95,9 +95,9 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            View.SetDrawArea(new RectangleF(
+            View.Content.DrawArea = new RectangleF(
                 new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
-                new SizeF(DrawAreaSize[0], DrawAreaSize[1])));
+                new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 
             foreach (var series in Series.Where(x => x.IsVisible))
             {

@@ -74,7 +74,7 @@ namespace LiveCharts.Wpf.Views
             if (isNewShape)
             {
                 Shape = new TShape();
-                chart.Content.AddChild(Shape);
+                chart.Content.AddChild(Shape, true);
                 Canvas.SetLeft(Shape, vm.From.Left);
                 Canvas.SetTop(Shape, vm.From.Top);
                 Shape.Width = vm.From.Width;
@@ -136,8 +136,8 @@ namespace LiveCharts.Wpf.Views
 
             animation.Then((sender, args) =>
             {
-                chart.Content.RemoveChild(chart);
-                chart.Content.RemoveChild(Label);
+                chart.Content.RemoveChild(chart, true);
+                chart.Content.RemoveChild(Label, true);
                 animation.Dispose();
                 animation = null;
             }).Begin();

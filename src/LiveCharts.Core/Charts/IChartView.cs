@@ -199,12 +199,6 @@ namespace LiveCharts.Core.Charts
         void Update(bool restartAnimations = false);
 
         /// <summary>
-        /// Sets the draw area.
-        /// </summary>
-        /// <param name="drawArea">The draw area.</param>
-        void SetDrawArea(RectangleF drawArea);
-
-        /// <summary>
         /// Dispatchers the specified action.
         /// </summary>
         /// <param name="action">The action.</param>

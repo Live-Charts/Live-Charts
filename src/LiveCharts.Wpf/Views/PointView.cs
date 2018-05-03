@@ -95,7 +95,7 @@ namespace LiveCharts.Wpf.Views
             if (isNew)
             {
                 Label = new Label();
-                chart.Content.AddChild(Label);
+                chart.Content.AddChild(Label, true);
             }
 
             Label.Content = point.Series.GetDataLabel(point.Coordinate);

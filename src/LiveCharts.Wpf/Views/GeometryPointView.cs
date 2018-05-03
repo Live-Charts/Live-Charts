@@ -69,7 +69,7 @@ namespace LiveCharts.Wpf.Views
             if (isNew)
             {
                 Shape = new Path{Stretch = Stretch.Fill};
-                chart.Content.AddChild(Shape);
+                chart.Content.AddChild(Shape, true);
                 Canvas.SetLeft(Shape, vm.Location.X);
                 Canvas.SetTop(Shape, vm.Location.Y);
                 Shape.Width = 0;
@@ -123,8 +123,8 @@ namespace LiveCharts.Wpf.Views
 
             animation.Then((sender, args) =>
             {
-                chart.Content.RemoveChild(Shape);
-                chart.Content.RemoveChild(Label);
+                chart.Content.RemoveChild(Shape, true);
+                chart.Content.RemoveChild(Label, true);
                 animation.Dispose();
                 animation = null;
                 _lastTimeLine = null;
