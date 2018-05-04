@@ -659,37 +659,6 @@ namespace LiveCharts.Core.Charts
         private void InvalidatePropertyChanged(
             object sender, PropertyChangedEventArgs args)
         {
-            if (sender is ICartesianChartView && args.PropertyName == nameof(ICartesianChartView.InvertAxes))
-            {
-                //invert orientation
-                foreach (var dimension in View.Dimensions)
-                {
-                    foreach (var plane in dimension)
-                    {
-                        if (!(plane is Axis axis)) continue;
-                        switch (axis.ActualPosition)
-                        {
-                            case AxisPosition.Auto:
-                                break;
-                            case AxisPosition.Top:
-                                axis.ActualPosition = AxisPosition.Right;
-                                break;
-                            case AxisPosition.Left:
-                                axis.ActualPosition = AxisPosition.Bottom;
-                                break;
-                            case AxisPosition.Right:
-                                axis.ActualPosition = AxisPosition.Top;
-                                break;
-                            case AxisPosition.Bottom:
-                                axis.ActualPosition = AxisPosition.Left;
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }
-                }
-            }
-
             if (!IsViewInitialized) return;
             Invalidate();
         }

@@ -51,8 +51,6 @@ namespace LiveCharts.Wpf.Controls
         {
             Background = Brushes.Transparent; // otherwise mouse move is not fired...
             Children.Add(_drawMargin);
-            Background = Brushes.Blue;
-            _drawMargin.Background = Brushes.Red;
         }
 
         public RectangleF DrawArea

@@ -703,7 +703,7 @@ namespace LiveCharts.Core.Dimensions
 
             switch (Dimension)
             {
-                case 0 when ActualPosition == AxisPosition.Bottom:
+                case 0 when ActualPosition == AxisPosition.Bottom || ActualPosition == AxisPosition.Left:
                     // case 1
                     if (isSecondQuadrant)
                     {
@@ -723,7 +723,7 @@ namespace LiveCharts.Core.Dimensions
                     x = chart.ScaleToUi(value, this, drawMargin);
                     y = drawMargin[1];
                     break;
-                case 0 when ActualPosition == AxisPosition.Top:
+                case 0 when ActualPosition == AxisPosition.Top || ActualPosition == AxisPosition.Right:
                     // case 3
                     if (isSecondQuadrant)
                     {
@@ -743,7 +743,7 @@ namespace LiveCharts.Core.Dimensions
                     x = chart.ScaleToUi(value, this, drawMargin);
                     y = 0;
                     break;
-                case 1 when ActualPosition == AxisPosition.Left:
+                case 1 when ActualPosition == AxisPosition.Left || ActualPosition == AxisPosition.Bottom:
                     // case 6
                     if (isSecondQuadrant)
                     {
@@ -763,7 +763,7 @@ namespace LiveCharts.Core.Dimensions
                     x = 0;
                     y = chart.ScaleToUi(value, this, drawMargin);
                     break;
-                case 1 when ActualPosition == AxisPosition.Right:
+                case 1 when ActualPosition == AxisPosition.Right || ActualPosition == AxisPosition.Top:
                     // case 8
                     if (isSecondQuadrant)
                     {
