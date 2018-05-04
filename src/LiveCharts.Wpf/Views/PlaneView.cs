@@ -129,7 +129,7 @@ namespace LiveCharts.Wpf.Views
         {
             var isNewLabel = Label == null;
 
-            var pos = Perform.Sum(args.Label.Position, args.ChartView.Content.DrawArea.Location);
+            var pos = Perform.Sum(args.Label.UiPosition, args.ChartView.Content.DrawArea.Location);
 
             if (isNewLabel)
             {

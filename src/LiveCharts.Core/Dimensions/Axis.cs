@@ -352,16 +352,16 @@ namespace LiveCharts.Core.Dimensions
                     unit,
                     chart);
 
-                var li = label.Position.X;
-                if (li < 0 && l < -li) l = -li;
+                var li = label.Pointer.X - label.Margin.Left;
+                if (li < 0 && l > li) l = -li;
 
-                var ri = label.Position.X + label.Margin.Right;
+                var ri = label.Pointer.X + label.Margin.Right;
                 if (ri > space[0] && r < ri - space[0]) r = ri - space[0];
 
-                var ti = label.Position.Y - label.Margin.Top;
-                if (ti < 0 && t < ti) t = -ti;
+                var ti = label.Pointer.Y - label.Margin.Top;
+                if (ti < 0 && t > ti) t = -ti;
 
-                var bi = label.Position.Y + label.Margin.Bottom;
+                var bi = label.Pointer.Y + label.Margin.Bottom;
                 if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
@@ -571,7 +571,8 @@ namespace LiveCharts.Core.Dimensions
                         new Margin(0),
                         section.LabelContent,
                         labelSize,
-                        labelStyle),
+                        labelStyle,
+                        Position),
                     Disposing = false,
                     Style = new ShapeStyle(
                         section.Stroke,
@@ -693,8 +694,10 @@ namespace LiveCharts.Core.Dimensions
             var xh = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Height); // height's   horizontal    component
             var yh = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Height); // height's   vertical      component
 
+            var isSecondQuadrant = angle >= 270;
+
             // You can find more information about the cases at 
-            // appendix/labels.2.png
+            // docs/resources/labels.2.png
 
             double x, y, xo, yo, l, t;
 
@@ -702,7 +705,7 @@ namespace LiveCharts.Core.Dimensions
             {
                 case 0 when ActualPosition == AxisPosition.Bottom:
                     // case 1
-                    if (angle < 0)
+                    if (isSecondQuadrant)
                     {
                         xo = -xw - .5 * xh;
                         yo = -yw;
@@ -722,7 +725,7 @@ namespace LiveCharts.Core.Dimensions
                     break;
                 case 0 when ActualPosition == AxisPosition.Top:
                     // case 3
-                    if (angle < 0)
+                    if (isSecondQuadrant)
                     {
                         xo = -.5 * xh;
                         yo = yh;
@@ -742,7 +745,7 @@ namespace LiveCharts.Core.Dimensions
                     break;
                 case 1 when ActualPosition == AxisPosition.Left:
                     // case 6
-                    if (angle < 0)
+                    if (isSecondQuadrant)
                     {
                         xo = -xh - xw;
                         yo = -yw + .5 * yh;
@@ -753,7 +756,7 @@ namespace LiveCharts.Core.Dimensions
                     else
                     {
                         xo = -xw;
-                        yo = yw;
+                        yo = -yw;
                         l = xh + xw;
                         t = yw;
                     }
@@ -762,7 +765,7 @@ namespace LiveCharts.Core.Dimensions
                     break;
                 case 1 when ActualPosition == AxisPosition.Right:
                     // case 8
-                    if (angle < 0)
+                    if (isSecondQuadrant)
                     {
                         xo = 0;
                         yo = .5 * yh;
@@ -772,8 +775,8 @@ namespace LiveCharts.Core.Dimensions
                     // case 7
                     else
                     {
-                        xo = .5 * xh;
-                        yo = .5 * yh;
+                        xo = xh;
+                        yo = - .5 * yh;
                         l = 0;
                         t = yo;
                     }
@@ -808,7 +811,8 @@ namespace LiveCharts.Core.Dimensions
                 // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (Dimension == 0)
                 {
-                    xo = xo - xw * .5f;
+                    var direction = Position != AxisPosition.Top ? 1 : -1;
+                    xo = xo - xw * .5f * direction;
                 }
                 else if (Dimension == 1)
                 {
@@ -828,7 +832,8 @@ namespace LiveCharts.Core.Dimensions
                     (float) l),
                 text,
                 labelSize,
-                labelStyle);
+                labelStyle,
+                Position);
         }
     }
 }

@@ -18,16 +18,6 @@
         <wpf:NavigationHandler />
     </Window.DataContext>
     <Grid>
-        <!--<controls:DialogContent Background="WhiteSmoke"
-                                CornerRadius="20"
-                                Position="Bottom"
-                                Margin="20">
-            <controls:DialogContent.Effect>
-                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="Black"
-                                  Opacity="1" RenderingBias="Performance" />
-            </controls:DialogContent.Effect>
-            <TextBlock>hola</TextBlock>
-        </controls:DialogContent>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

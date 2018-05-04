@@ -47,11 +47,18 @@
         {
             get
             {
-                // we only allow angles from -90° to 90°
+                // we only use 2 quadrants...
                 // see appendix/labels.1.png
                 var alpha = LabelsRotation % 360;
-                if (alpha < -90) alpha += 360;
-                if (alpha > 90) alpha += 180;
+                if (alpha < 0) alpha += 360;
+                if (alpha >= 90 && alpha < 180)
+                {
+                    alpha += 180;
+                } else if (alpha >= 180 && alpha < 270)
+                {
+                    alpha -= 180;
+                }
+
                 return alpha;
             }
         }

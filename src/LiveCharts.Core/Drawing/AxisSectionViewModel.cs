@@ -25,6 +25,7 @@
 #region
 
 using System.Drawing;
+using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing.Styles;
 
 #endregion
@@ -40,21 +41,29 @@ namespace LiveCharts.Core.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisSectionViewModel"/> struct.
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="pointer"></param>
         /// <param name="offset">The offset.</param>
         /// <param name="margin">The margin.</param>
         /// <param name="content">The content.</param>
         /// <param name="size">The size.</param>
         /// <param name="labelStyle">The label style.</param>
+        /// <param name="position">The axis position</param>
         public AxisSectionViewModel(
-            PointF location,
+            PointF pointer,
             PointF offset,
             Margin margin,
             object content,
             SizeF size,
-            LabelStyle labelStyle)
+            LabelStyle labelStyle,
+            AxisPosition position)
         {
-            Position = Perform.Sum(location, offset);
+            Pointer = pointer;
+            Offset = offset;
+            if (labelStyle.ActualLabelsRotation > 90 || position == AxisPosition.Top)
+            {
+                offset = new PointF(offset.X, -offset.Y);
+            }
+            UiPosition = Perform.Sum(pointer, offset);
             Margin = margin;
             Content = content;
             Size = size;
@@ -70,12 +79,28 @@ namespace LiveCharts.Core.Drawing
         public object Content { get; set; }
 
         /// <summary>
+        /// Gets or sets the pointer, its the point where the separator is drawn in the chart, see the × in the diagram.
+        /// </summary>
+        /// <value>
+        /// The pointer.
+        /// </value>
+        public PointF Pointer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the offset.
+        /// </summary>
+        /// <value>
+        /// The offset.
+        /// </value>
+        public PointF Offset { get; set; }
+
+        /// <summary>
         /// Gets the actual location (Location + Offset)
         /// </summary>
         /// <value>
         /// The actual location.
         /// </value>
-        public PointF Position { get; }
+        public PointF UiPosition { get; }
 
         /// <summary>
         /// Gets the size of the label.

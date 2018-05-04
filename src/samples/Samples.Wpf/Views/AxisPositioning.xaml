@@ -27,7 +27,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>X Rotation (<TextBlock Text="{Binding XRotation}"></TextBlock>)</TextBlock>
-                <Slider Minimum="0" Maximum="360" Value="{Binding XRotation}" IsSnapToTickEnabled="True" TickFrequency="1" Width="150"></Slider>
+                <Slider Minimum="-360" Maximum="360" Value="{Binding XRotation}" IsSnapToTickEnabled="True" TickFrequency="1" Width="150"></Slider>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Y Position</TextBlock>
@@ -35,8 +35,8 @@
                           SelectedValue="{Binding YPosition}"></ComboBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock>X Rotation (<TextBlock Text="{Binding YRotation}"></TextBlock>)</TextBlock>
-                <Slider Minimum="0" Maximum="360" Value="{Binding YRotation}" IsSnapToTickEnabled="True" TickFrequency="1" Width="150"></Slider>
+                <TextBlock>Y Rotation (<TextBlock Text="{Binding YRotation}"></TextBlock>)</TextBlock>
+                <Slider Minimum="-360" Maximum="360" Value="{Binding YRotation}" IsSnapToTickEnabled="True" TickFrequency="1" Width="150"></Slider>
             </StackPanel>
         </StackPanel>
         <lvc:CartesianChart Grid.Row="1"

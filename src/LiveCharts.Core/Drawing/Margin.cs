@@ -121,6 +121,22 @@ namespace LiveCharts.Core.Drawing
         public float Bottom { get; }
 
         /// <summary>
+        /// Gets the height.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
+        public float Height => Top + Bottom;
+
+        /// <summary>
+        /// Gets the width.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        public float Width => Left + Right;
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
