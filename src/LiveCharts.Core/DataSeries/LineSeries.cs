@@ -96,8 +96,6 @@ namespace LiveCharts.Core.DataSeries
             var x = chart.Dimensions[0][ScalesAt[0]];
             var y = chart.Dimensions[1][ScalesAt[1]];
 
-            var uw = chart.Get2DUiUnitWidth(x, y);
-
             Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous = null;
             var timeLine = new TimeLine
             {
@@ -122,7 +120,7 @@ namespace LiveCharts.Core.DataSeries
             var isFist = true;
             float i = 0, j = 0;
 
-            foreach (var currentBezier in GetBeziers(new PointF(uw[0]*.5f, uw[1]*.5f), cartesianChart, x, y))
+            foreach (var currentBezier in GetBeziers(cartesianChart, x, y))
             {
                 var p = new[]
                 {
@@ -175,7 +173,7 @@ namespace LiveCharts.Core.DataSeries
             cartesianPath.Close(chart.View, (float) length, i, j);
         }
 
-        private IEnumerable<BezierData> GetBeziers(PointF offset, ChartModel chart, Plane x, Plane y)
+        private IEnumerable<BezierData> GetBeziers(ChartModel chart, Plane x, Plane y)
         {
             Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> pi, pn = null, pnn = null;
             PointF previous, current = new PointF(0,0), next = new  PointF(0,0), nextNext = new PointF(0, 0);
@@ -266,10 +264,8 @@ namespace LiveCharts.Core.DataSeries
                 previous = current;
                 current = next;
                 next = nextNext;
-                nextNext =
-                    Perform.Sum(
-                        new PointF(chart.ScaleToUi(pnn.Coordinate.X, x), chart.ScaleToUi(pnn.Coordinate.Y, y)),
-                        offset);
+                nextNext = new PointF(chart.ScaleToUi(pnn.Coordinate.X, x), chart.ScaleToUi(pnn.Coordinate.Y, y));
+
             }
 
             while (e.MoveNext())

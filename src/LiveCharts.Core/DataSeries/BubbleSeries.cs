@@ -93,8 +93,6 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.Dimensions[0][ScalesAt[0]];
             var y = cartesianChart.Dimensions[1][ScalesAt[1]];
 
-            var uw = chart.Get2DUiUnitWidth(x, y);
-
             var p1 = new PointF(context.Ranges[2][ScalesAt[2]][0], (float) MinGeometrySize);
             var p2 = new PointF(context.Ranges[2][ScalesAt[2]][1], (float) MaxGeometrySize);
 
@@ -133,7 +131,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new GeometryPointViewModel
                 {
-                    Location = Perform.Sum(new PointF(p[xi] - r, p[yi] - r), new PointF(uw[0] * .5f, uw[1] * .5f)),
+                    Location = new PointF(p[xi] - r, p[yi] - r),
                     Diameter = p[2]
                 };
 

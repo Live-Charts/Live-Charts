@@ -106,8 +106,6 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.Dimensions[0][ScalesAt[0]];
             var y = cartesianChart.Dimensions[1][ScalesAt[1]];
 
-            var uw = chart.Get2DUiUnitWidth(x, y);
-
             int xi = 0, yi = 1;
             if (chart.InvertXy)
             {
@@ -142,7 +140,7 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new GeometryPointViewModel
                 {
-                    Location = Perform.Sum(new PointF(p[xi] - r, p[yi] - r), new PointF(uw[0] * .5f, uw[1] * .5f)),
+                    Location = new PointF(p[xi] - r, p[yi] - r),
                     Diameter = (float) GeometrySize
                 };
 
