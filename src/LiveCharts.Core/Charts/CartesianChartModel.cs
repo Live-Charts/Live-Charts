@@ -69,9 +69,9 @@ namespace LiveCharts.Core.Charts
             // y = m * (x - x1) + y1 
             // where x is the Series.Values scale and y the UI scale
 
-            var x1 = plane.ActualMaxValue + plane.ActualPointLength?[plane.Dimension] ?? 0f;
+            var x1 = plane.InternalMaxValue;
             var y1 = chartSize[plane.Dimension];
-            var x2 = plane.ActualMinValue;
+            var x2 = plane.InternalMinValue;
             var y2 = 0f;
 
             if (plane.ActualReverse)
@@ -101,11 +101,9 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            var l = plane.ActualPointLength?[plane.Dimension] ?? 0f;
-
-            var x1 = plane.ActualMaxValue + l * .5f;
+            var x1 = plane.InternalMaxValue;
             var y1 = chartSize[plane.Dimension];
-            var x2 = plane.ActualMinValue - l * .5f;
+            var x2 = plane.InternalMinValue;
             var y2 = 0f;
 
             if (plane.ActualReverse)
@@ -166,8 +164,8 @@ namespace LiveCharts.Core.Charts
 
                     var px = ScaleFromUi(pivot.X, xPlane);
 
-                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.ActualMaxValue : xPlane.MaxValue;
-                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.ActualMinValue : xPlane.MinValue;
+                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue;
+                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue;
                     var l = max - min;
 
                     var rMin = (px - min) / l;
@@ -191,8 +189,8 @@ namespace LiveCharts.Core.Charts
 
                     var py = ScaleFromUi(pivot.Y, yPlane);
 
-                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.ActualMaxValue : yPlane.MaxValue;
-                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.ActualMinValue : yPlane.MinValue;
+                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue;
+                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue;
                     var l = max - min;
                     var rMin = (py - min) / l;
                     var rMax = 1 - rMin;
@@ -234,8 +232,8 @@ namespace LiveCharts.Core.Charts
 
                     var px = ScaleFromUi(pivot.X, xPlane);
 
-                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.ActualMaxValue : xPlane.MaxValue;
-                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.ActualMinValue : xPlane.MinValue;
+                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue;
+                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue;
                     var l = max - min;
                     var rMin = (px - min) / l;
                     var rMax = 1 - rMin;
@@ -257,8 +255,8 @@ namespace LiveCharts.Core.Charts
 
                     var py = ScaleFromUi(pivot.Y, yPlane);
 
-                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.ActualMaxValue : yPlane.MaxValue;
-                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.ActualMinValue : yPlane.MinValue;
+                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue;
+                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue;
                     var l = max - min;
                     var rMin = (py - min) / l;
                     var rMax = 1 - rMin;
@@ -301,8 +299,8 @@ namespace LiveCharts.Core.Charts
                     var dx = ScaleFromUi(delta.X, xPlane) - ScaleFromUi(0f, xPlane);
 
                     xPlane.SetRange(
-                        (double.IsNaN(xPlane.MinValue) ? xPlane.ActualMinValue : xPlane.MinValue) + dx,
-                        (double.IsNaN(xPlane.MaxValue) ? xPlane.ActualMaxValue : xPlane.MaxValue) + dx);
+                        (double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue) + dx,
+                        (double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue) + dx);
                 }
             }
 
@@ -320,8 +318,8 @@ namespace LiveCharts.Core.Charts
                     var dy = ScaleFromUi(delta.Y, yPlane) - ScaleFromUi(0f, yPlane);
 
                     yPlane.SetRange(
-                        (double.IsNaN(yPlane.MinValue) ? yPlane.ActualMinValue : yPlane.MinValue) + dy,
-                        (double.IsNaN(yPlane.MaxValue) ? yPlane.ActualMaxValue : yPlane.MaxValue) + dy);
+                        (double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue) + dy,
+                        (double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue) + dy);
                 }
             }
         }
@@ -431,19 +429,11 @@ namespace LiveCharts.Core.Charts
                 var coordinate = point.Coordinate;
                 var cartesianSeries = (ICartesianSeries) point.Series;
 
-                var uw = Get2DUiUnitWidth(
-                    Dimensions[0][cartesianSeries.ScalesAt[0]],
-                    Dimensions[1][cartesianSeries.ScalesAt[1]]);
-
                 var xCorr = cartesianSeries.PointMargin * .5f * xDirection;
                 var yCorr = cartesianSeries.PointMargin * .5f * yDirection;
 
-                x += ScaleToUi(
-                         coordinate[xi][0], Dimensions[xi][cartesianSeries.ScalesAt[0]]) +
-                     uw[0] * .5f + xCorr ;
-                y += ScaleToUi(
-                         coordinate[yi][0], Dimensions[yi][cartesianSeries.ScalesAt[1]]) +
-                     uw[1] * .5f + yCorr;
+                x += ScaleToUi(coordinate[xi][0], Dimensions[xi][cartesianSeries.ScalesAt[0]]) + xCorr;
+                y += ScaleToUi(coordinate[yi][0], Dimensions[yi][cartesianSeries.ScalesAt[1]]) + yCorr;
 
                 if (View.Hoverable)
                 {
@@ -503,18 +493,26 @@ namespace LiveCharts.Core.Charts
                         ? context.PointMargin
                         : plane.PointMargin;
 
+                    plane.ActualReverse = plane.Dimension == 1;
+                    if (plane.Reverse) plane.ActualReverse = !plane.ActualReverse;
+
+                    plane.ActualPointLength = plane.PointLength ?? context.PointLength;
+                    if (InvertXy)
+                    {
+                        plane.ActualPointLength = new[] { plane.ActualPointLength[1], plane.ActualPointLength[0] };
+                    }
+
                     if (dimensionIndex < 2 && (double.IsNaN(plane.MinValue) || double.IsNaN(plane.MaxValue)))
                     {
-                        plane.ActualMinValue = context.Ranges[dimensionIndex][planeIndex][0];
-                        plane.ActualMaxValue = context.Ranges[dimensionIndex][planeIndex][1];
+                        plane.InternalMinValue = context.Ranges[dimensionIndex][planeIndex][0];
+                        plane.InternalMaxValue = context.Ranges[dimensionIndex][planeIndex][1];
                         uiPointMargin = Math.Abs(
                             ScaleFromUi((float) plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane));
                     }
 
-                    if (plane.Dimension == 1)
-                    {
-                        var a = 2;
-                    }
+                    var length = plane.ActualPointLength.Length > plane.Dimension
+                        ? plane.ActualPointLength[plane.Dimension]
+                        : 0;
 
                     plane.ActualMinValue = double.IsNaN(plane.MinValue)
                         ? context.Ranges[dimensionIndex][planeIndex][0] - uiPointMargin
@@ -523,10 +521,8 @@ namespace LiveCharts.Core.Charts
                         ? context.Ranges[dimensionIndex][planeIndex][1] + uiPointMargin
                         : plane.MaxValue;
 
-                    plane.ActualPointLength = plane.PointLength ?? context.PointLength;
-
-                    plane.ActualReverse = plane.Dimension == 1;
-                    if (plane.Reverse) plane.ActualReverse = !plane.ActualReverse;
+                    plane.InternalMinValue = plane.ActualMinValue - 0.5f * length;
+                    plane.InternalMaxValue = plane.ActualMaxValue + 0.5F * length;
 
                     if (!(plane is Axis axis)) continue;
 

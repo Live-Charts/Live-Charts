@@ -294,7 +294,7 @@ namespace LiveCharts.Core.Dimensions
         public override string ToString()
         {
             var d = Dimension == 0 ? "X" : "Y";
-            return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
+            return "hola"; // $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
         internal Margin CalculateAxisMargin(ChartModel chart, Axis axis)
@@ -349,7 +349,6 @@ namespace LiveCharts.Core.Dimensions
                     labelsStyle,
                     (float) chart.ScaleFromUi(i, axis, space),
                     space,
-                    unit,
                     chart);
 
                 var li = label.Pointer.X - label.Margin.Left;
@@ -372,10 +371,8 @@ namespace LiveCharts.Core.Dimensions
         {
             ActualStep = GetActualAxisStep(chart);
             ActualStepStart = GetActualStepStart();
-
-            var unit = ActualPointLength?[Dimension] ?? 0;
-            var from = Math.Ceiling((ActualMinValue - unit * .5f) / ActualStep) * ActualStep;
-            var to = Math.Floor((ActualMaxValue + unit * .5f) / ActualStep) * ActualStep;
+            var from = Math.Ceiling(ActualStepStart / ActualStep) * ActualStep;
+            var to = Math.Floor(InternalMaxValue / ActualStep) * ActualStep;
 
             var tolerance = ActualStep * .1f;
             var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
@@ -414,7 +411,7 @@ namespace LiveCharts.Core.Dimensions
                     AnimationLine = AnimationLine ?? chart.View.AnimationLine
                 };
 
-                var labelModel = EvaluateAxisLabel(dummyControl, labelStyle, i, chart.DrawAreaSize, unit, chart);
+                var labelModel = EvaluateAxisLabel(dummyControl, labelStyle, i, chart.DrawAreaSize, chart);
 
                 if (Dimension == 0)
                 {
@@ -615,28 +612,33 @@ namespace LiveCharts.Core.Dimensions
             return Charting.Current.UiProvider.GetNewPlane();
         }
 
-        private float GetActualStepStart()
+        /// <summary>
+        /// Gets the actual step start.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual float GetActualStepStart()
         {
             if (!double.IsNaN(StepStart))
             {
                 return (float) StepStart;
             }
 
-            var unit = ActualPointLength?[Dimension] ?? 0;
-
-            return (float) (ActualMinValue + unit / 2);
+            return (float) InternalMinValue;
         }
 
-        private float GetActualAxisStep(ChartModel chart)
+        /// <summary>
+        /// Gets the actual axis step.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <returns></returns>
+        protected virtual float GetActualAxisStep(ChartModel chart)
         {
             if (!double.IsNaN(Step))
             {
                 return (float) Step;
             }
 
-            var unit = ActualPointLength?[Dimension] ?? 0;
-
-            var range = ActualMaxValue + unit - ActualMinValue;
+            var range = InternalMaxValue - InternalMinValue;
             range = range <= 0 ? 1 : range;
 
             const double cleanFactor = 50d;
@@ -680,8 +682,7 @@ namespace LiveCharts.Core.Dimensions
             IMeasurableLabel control, 
             LabelStyle labelStyle, 
             float value, 
-            float[] drawMargin, 
-            float axisPointWidth, 
+            float[] drawMargin,
             ChartModel chart)
         {
             const double toRadians = Math.PI / 180;
@@ -787,21 +788,6 @@ namespace LiveCharts.Core.Dimensions
                     var d = Dimension == 0 ? "X" : "Y";
                     throw new LiveChartsException(
                         $"An axis at dimension '{d}' can not be positioned at '{Position}'", 120);
-            }
-
-            // correction by axis point unit
-            if (axisPointWidth > 0f)
-            {
-                var uiPw = Math.Abs(chart.ScaleToUi(axisPointWidth, this) - chart.ScaleToUi(0, this));
-
-                if (Dimension == 0)
-                {
-                    xo += uiPw *.5f;
-                }
-                else
-                {
-                    yo += uiPw * .5f;
-                }
             }
 
             // correction by rotation

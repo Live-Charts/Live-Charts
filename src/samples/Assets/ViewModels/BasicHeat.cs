@@ -33,6 +33,8 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Styles;
+using Brushes = LiveCharts.Core.Drawing.Brushes;
 
 #endregion
 
@@ -120,6 +122,7 @@ namespace Assets.ViewModels
             {
                 new Axis
                 {
+                    LabelsRotation = -35,
                     Labels = new[]
                     {
                         "Jeremy Swanson",
@@ -127,8 +130,7 @@ namespace Assets.ViewModels
                         "Robyn Williamson",
                         "Carole Haynes",
                         "Essie Nelson"
-                    }, 
-                    
+                    }
                 }
             }; 
 

@@ -84,6 +84,8 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         public double ActualMaxValue { get; internal set; }
 
+        internal double InternalMaxValue { get; set; }
+
         /// <summary>
         /// Gets or sets the maximum value to display in this plane, use double.NaN to let the library 
         /// calculate it automatically.
@@ -109,6 +111,8 @@ namespace LiveCharts.Core.Dimensions
         /// </summary>
         public double ActualMinValue { get; internal set; }
 
+        internal double InternalMinValue { get; set; }
+
         /// <summary>
         /// Gets or sets the minimum value to display.
         /// </summary>
@@ -133,7 +137,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The actual range.
         /// </value>
-        public double ActualRange => ActualMaxValue - ActualMinValue;
+        public double ActualRange => InternalMaxValue - InternalMinValue;
 
         /// <summary>
         /// Gets the used <see cref="PointLength"/>, if <see cref="PointLength"/> is null, 
@@ -373,7 +377,7 @@ namespace LiveCharts.Core.Dimensions
         /// </returns>
         public bool IsInRange(double value)
         {
-            return value >= ActualMinValue && value <= ActualMaxValue;
+            return value >= InternalMinValue && value <= InternalMaxValue;
         }
 
         /// <summary>

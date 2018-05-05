@@ -135,7 +135,7 @@ namespace LiveCharts.Core.DataSeries
 
             var byBarOffset = new[]
             {
-                -cw * .5f + uw[0] * .5f,
+                -cw * .5f,
                 0f
             };
 
@@ -147,7 +147,7 @@ namespace LiveCharts.Core.DataSeries
                 h = 0;
                 orientation = Orientation.Vertical;
                 byBarOffset[0] = 0;
-                byBarOffset[1] = cw * .5f - uw[0] * .5f;
+                byBarOffset[1] = -cw * .5f;
             }
 
             positionOffset[w] = (bp + cw) * position - (bp + cw) * ((barsCount - 1) * .5f);

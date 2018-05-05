@@ -111,20 +111,20 @@ namespace LiveCharts.Core.DataSeries
 
             // ReSharper disable CompareOfFloatsByEqualityOperator
 
-            var d = new []
+            var d = new[]
             {
-                x.ActualMaxValue - x.ActualMinValue == 0
+                x.InternalMaxValue - x.InternalMinValue == 0
                     ? float.MaxValue
-                    : x.ActualMaxValue - x.ActualMinValue,
-                y.ActualMaxValue - y.ActualMinValue == 0
+                    : x.InternalMaxValue - x.InternalMinValue,
+                y.InternalMaxValue - y.InternalMinValue == 0
                     ? float.MaxValue
-                    : y.ActualMaxValue - y.ActualMinValue
+                    : y.InternalMaxValue - y.InternalMinValue
             };
 
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var wp = (float) (cartesianChart.DrawAreaSize[0] / (d[xi] + 1));
-            var hp = (float) (cartesianChart.DrawAreaSize[1] / (d[yi] + 1));
+            var wp = (float) (cartesianChart.DrawAreaSize[0] / d[xi]);
+            var hp = (float) (cartesianChart.DrawAreaSize[1] / d[yi]);
 
             var minW = context.Ranges[2][ScalesAt[2]][0];
             var maxW = context.Ranges[2][ScalesAt[2]][1];
@@ -152,13 +152,13 @@ namespace LiveCharts.Core.DataSeries
 
                 var p = new[]
                 {
-                    chart.ScaleToUi(current.Coordinate[0][0], x),
-                    chart.ScaleToUi(current.Coordinate[1][0], y)
+                    chart.ScaleToUi(current.Coordinate[0][0], x) - uw[0] *.5f,
+                    chart.ScaleToUi(current.Coordinate[1][0], y) - uw[1] *.5f
                 };
 
                 var vm = new HeatViewModel
                 {
-                    Rectangle = new RectangleF(p[xi], p[yi] - uw[yi], wp, hp),
+                    Rectangle = new RectangleF(p[xi], p[yi], wp, hp),
                     From = current.ViewModel.To,
                     To = ColorInterpolation(minW, maxW, current.Coordinate.Weight)
                 };

@@ -10,5 +10,5 @@
     <UserControl.DataContext>
         <viewModels:BasicBar />
     </UserControl.DataContext>
-    <lvc:CartesianChart Series="{Binding SeriesCollection}" />
+    <lvc:CartesianChart Series="{Binding SeriesCollection}" InvertAxes="true" />
 </UserControl>
