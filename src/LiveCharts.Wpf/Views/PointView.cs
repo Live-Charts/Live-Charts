@@ -69,27 +69,27 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc cref="IPointView{TModel,TCoordinate,TViewModel,TSeries}.DrawShape"/>
         protected abstract void OnDraw(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point,
-            Point<TModel, TCoordinate, TViewModel, TSeries> previous,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> previous,
             TimeLine timeLine);
 
         /// <summary>
         /// Places the label.
         /// </summary>
-        /// <param name="point">The point.</param>
+        /// <param name="chartPoint">The point.</param>
         /// <param name="labelSize">The label size.</param>
         protected abstract void PlaceLabel(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
             SizeF labelSize);
 
         /// <inheritdoc cref="IPointView{TModel,TCoordinate,TViewModel,TSeries}.DrawLabel" />
         protected virtual void OnDrawLabel(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
             DataLabelsPosition position,
             LabelStyle style,
             TimeLine timeLine)
         {
-            var chart = point.Chart.View;
+            var chart = chartPoint.Chart;
             var isNew = Label == null;
 
             if (isNew)
@@ -98,7 +98,7 @@ namespace LiveCharts.Wpf.Views
                 chart.Content.AddChild(Label, true);
             }
 
-            Label.Content = point.Series.GetDataLabel(point.Coordinate);
+            Label.Content = chartPoint.Series.GetDataLabel(chartPoint.Coordinate);
 
             Label.Foreground = style.Foreground.AsWpf();
             Label.FontFamily = new FontFamily(style.Font.FamilyName);
@@ -114,7 +114,7 @@ namespace LiveCharts.Wpf.Views
                 Label.FontSize,
                 Label.Foreground);
 
-            PlaceLabel(point, new SizeF((float) ft.Width, (float) ft.Height));
+            PlaceLabel(chartPoint, new SizeF((float) ft.Width, (float) ft.Height));
         }
 
         /// <inheritdoc cref="Dispose"/>
@@ -130,19 +130,19 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawShape(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point,
-            Point<TModel, TCoordinate, TViewModel, TSeries> previous, TimeLine timeLine)
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> previous, TimeLine timeLine)
         {
-            OnDraw(point, previous, timeLine);
+            OnDraw(chartPoint, previous, timeLine);
         }
 
         /// <inheritdoc />
         void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawLabel(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
             DataLabelsPosition position,
             LabelStyle style, TimeLine timeLine)
         {
-            OnDrawLabel(point, position, style, timeLine);
+            OnDrawLabel(chartPoint, position, style, timeLine);
         }
         
         public event DisposingResourceHandler Disposed;

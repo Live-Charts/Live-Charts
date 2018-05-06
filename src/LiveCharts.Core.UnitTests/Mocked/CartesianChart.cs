@@ -70,7 +70,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
             remove => Model.UpdatePreview -= value;
         }
 
-        /// <inheritdoc cref="IChartView.UpdatePreview" />
+        /// <inheritdoc cref="IChartView.ChartUpdatePreview" />
         public ICommand UpdatePreviewCommand
         {
             get => Model.UpdatePreviewCommand;
@@ -84,7 +84,7 @@ namespace LiveCharts.Core.UnitTests.Mocked
             remove => Model.Updated -= value;
         }
 
-        /// <inheritdoc cref="IChartView.Updated" />
+        /// <inheritdoc cref="IChartView.ChartUpdated" />
         public ICommand UpdatedCommand
         {
             get => Model.UpdatedCommand;

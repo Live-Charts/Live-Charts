@@ -244,7 +244,7 @@ namespace LiveCharts.Wpf
 
         ToolTipSelectionMode IDataToolTip.SelectionMode => SelectionMode;
 
-        SizeF IDataToolTip.ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart)
+        SizeF IDataToolTip.ShowAndMeasure(IEnumerable<IChartPoint> selected, IChartView chart)
         {
             var wpfChart = (Chart) chart;
 

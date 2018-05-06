@@ -32,7 +32,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
+        public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
             var view = (BezierPointView<TModel, TextBlock>)point.View;
             view.Shape.RenderTransformOrigin = new Point(0.5, 0.5);
@@ -40,7 +40,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void RemovePointHighlight(PackedPoint point, TimeLine timeLine)
+        public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
             var view = (BezierPointView<TModel, TextBlock>)point.View;
             view.Shape.RenderTransformOrigin = new Point();

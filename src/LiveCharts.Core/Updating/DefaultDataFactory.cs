@@ -42,17 +42,17 @@ namespace LiveCharts.Core.Updating
     public class DataFactory : IDataFactory
     {
         /// <inheritdoc />
-        public Point<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+        public ChartPoint<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
             DataFactoryContext<TModel, TCoordinate, TSeries> context, out int count)
             where TCoordinate : ICoordinate
             where TSeries : ISeries
         {
-            var results = new List<Point<TModel, TCoordinate, TViewModel, TSeries>>();
+            var results = new List<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>();
             var mapper = context.Mapper;
             var notifiesChange = context.Series.Metadata.IsObservable;
             var collection = context.Collection;
             var isValueType = context.Series.Metadata.IsValueType;
-            var pointTracker = (Dictionary<object, Point<TModel, TCoordinate, TViewModel, TSeries>>)
+            var pointTracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
                 context.Series.Content[context.Chart][Config.TrackerKey];
 
             void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -68,7 +68,7 @@ namespace LiveCharts.Core.Updating
 
                 if (!pointTracker.TryGetValue(key, out var chartPoint))
                 {
-                    chartPoint = new Point<TModel, TCoordinate, TViewModel, TSeries>();
+                    chartPoint = new ChartPoint<TModel, TCoordinate, TViewModel, TSeries>();
                     pointTracker.Add(key, chartPoint);
                     if (notifiesChange)
                     {
@@ -89,7 +89,7 @@ namespace LiveCharts.Core.Updating
                 chartPoint.Model = instance;
                 chartPoint.Key = index;
                 chartPoint.Series = context.Series;
-                chartPoint.Chart = context.Chart;
+                chartPoint.Chart = context.Chart.View;
                 chartPoint.Coordinate = mapper.PointPredicate.Invoke(instance, index);
 
                 // compare the dimensions to scale the chart.

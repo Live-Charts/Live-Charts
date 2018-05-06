@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Linq;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Updating;
 

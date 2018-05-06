@@ -64,23 +64,23 @@ namespace LiveCharts.Core.Interaction.Points
         /// <summary>
         /// Draws the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
+        /// <param name="chartPoint">The point.</param>
         /// <param name="previous">The previous.</param>
         /// <param name="timeLine">The animation.</param>
         void DrawShape(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point,
-            Point<TModel, TCoordinate, TViewModel, TSeries> previous,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> previous,
             TimeLine timeLine);
 
         /// <summary>
         /// Draws the label.
         /// </summary>
-        /// <param name="point">The point.</param>
+        /// <param name="chartPoint">The point.</param>
         /// <param name="position">The labels position.</param>
         /// <param name="style">The data label style.</param>
         /// <param name="timeLine">The animation.</param>
         void DrawLabel(
-            Point<TModel, TCoordinate, TViewModel, TSeries> point, 
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint, 
             DataLabelsPosition position, 
             LabelStyle style,
             TimeLine timeLine);

@@ -247,7 +247,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; private set; }
+        public IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> Points { get; private set; }
 
         /// <inheritdoc />
         public int PointsCount { get; private set; }
@@ -325,7 +325,7 @@ namespace LiveCharts.Core.DataSeries
         {
             if (Content.ContainsKey(chart)) return;
             var defaultDictionary = new Dictionary<string, object> {[Config.TrackerKey] = 
-                new Dictionary<object, Point<TModel, TCoordinate, TViewModel, TSeries>>()};
+                new Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>()};
             Content[chart] = defaultDictionary;
         }
 
@@ -385,10 +385,10 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<PackedPoint> GetPointsAt(
+        public virtual IEnumerable<IChartPoint> GetPointsAt(
             PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest)
         {
-            IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> query;
+            IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> query;
 
             if (!snapToClosest)
             {
@@ -407,20 +407,10 @@ namespace LiveCharts.Core.DataSeries
                 query = results.Where(x => x.Distance == min).Select(x => x.Point);
             }
 
-            return query.Select(point => new PackedPoint(point)
-            {
-                Key = point.Key,
-                Model = point.Model,
-                Chart = point.Chart,
-                Coordinate = point.Coordinate,
-                Series = point.Series,
-                View = point.View,
-                ViewModel = point.ViewModel,
-                InteractionArea = point.InteractionArea
-            });
+            return query;
         }
 
-        void ISeries.OnPointHighlight(PackedPoint point, IChartView chart)
+        void ISeries.OnPointHighlight(IChartPoint point, IChartView chart)
         {
             var timeLine = new TimeLine
             {
@@ -431,7 +421,7 @@ namespace LiveCharts.Core.DataSeries
             ViewProvider.OnPointHighlight(point, timeLine);
         }
 
-        void ISeries.RemovePointHighlight(PackedPoint point, IChartView chart)
+        void ISeries.RemovePointHighlight(IChartPoint point, IChartView chart)
         {
             var timeLine = new TimeLine
             {

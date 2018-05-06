@@ -115,7 +115,7 @@ namespace LiveCharts.Core.DataSeries
 
             var r = (float) GeometrySize * .5f;
 
-            Point<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> previous = null;
+            ChartPoint<TModel, PointCoordinate, GeometryPointViewModel, IScatterSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,

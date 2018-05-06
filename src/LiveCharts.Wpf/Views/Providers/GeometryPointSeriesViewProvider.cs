@@ -65,7 +65,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnPointHighlight(PackedPoint point, TimeLine timeLine)
+        public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
             var view = (GeometryPointView<TModel, TCoordinate, TSeries>) point.View;
 
@@ -74,7 +74,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void RemovePointHighlight(PackedPoint point, TimeLine timeLine)
+        public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
             var view = (GeometryPointView<TModel, TCoordinate, TSeries>) point.View;
             view.Shape.RenderTransformOrigin = new Point();

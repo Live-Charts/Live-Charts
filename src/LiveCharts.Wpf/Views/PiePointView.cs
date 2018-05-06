@@ -53,12 +53,12 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         protected override void OnDraw(
-            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point,
-            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous,
+            ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> chartPoint,
+            ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous,
             TimeLine timeLine)
         {
-            var chart = point.Chart.View;
-            var vm = point.ViewModel;
+            var chart = chartPoint.Chart;
+            var vm = chartPoint.ViewModel;
             var isNewShape = Shape == null;
 
             // initialize shape
@@ -66,8 +66,8 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape = new Slice();
                 chart.Content.AddChild(Shape, true);
-                Canvas.SetLeft(Shape, point.Chart.DrawAreaSize[0] / 2 - vm.To.OuterRadius);
-                Canvas.SetTop(Shape, point.Chart.DrawAreaSize[1] / 2 - vm.To.OuterRadius);
+                Canvas.SetLeft(Shape, chartPoint.Chart.Model.DrawAreaSize[0] / 2 - vm.To.OuterRadius);
+                Canvas.SetTop(Shape, chartPoint.Chart.Model.DrawAreaSize[1] / 2 - vm.To.OuterRadius);
                 Shape.Rotation = 0d;
                 Shape.Wedge = 0d;
                 Shape.Width = vm.To.OuterRadius * 2;
@@ -75,18 +75,18 @@ namespace LiveCharts.Wpf.Views
             }
 
             // map properties
-            Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Fill = point.Series.Fill.AsWpf();
-            Shape.StrokeThickness = point.Series.StrokeThickness;
-            if (point.Series.StrokeDashArray != null)
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
+            Shape.Fill = chartPoint.Series.Fill.AsWpf();
+            Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
+            if (chartPoint.Series.StrokeDashArray != null)
             {
-                Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
+                Shape.StrokeDashArray = new DoubleCollection(chartPoint.Series.StrokeDashArray);
             }
             Shape.InnerRadius = vm.To.InnerRadius;
             Shape.Radius = vm.To.OuterRadius;
             Shape.ForceAngle = true;
-            Shape.CornerRadius = point.Series.CornerRadius;
-            Shape.PushOut = point.Series.PushOut;
+            Shape.CornerRadius = chartPoint.Series.CornerRadius;
+            Shape.PushOut = chartPoint.Series.PushOut;
 
             // animate
 
@@ -113,7 +113,7 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         protected override void PlaceLabel(
-            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> point,
+            ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> chartPoint,
             SizeF labelSize)
         {
             // this one could be a complex task...

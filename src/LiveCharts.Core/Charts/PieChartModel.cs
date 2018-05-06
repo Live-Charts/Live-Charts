@@ -42,8 +42,6 @@ namespace LiveCharts.Core.Charts
     /// <inheritdoc />
     public class PieChartModel : ChartModel
     {
-        private PointF _previousTooltipLocation = PointF.Empty;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PieChartModel"/> class.
         /// </summary>
@@ -66,7 +64,7 @@ namespace LiveCharts.Core.Charts
             throw new NotImplementedException();
         }
 
-        protected override PointF GetToolTipLocationAndFireHovering(PackedPoint[] points)
+        protected override PointF GetTooltipLocation(IChartPoint[] points)
         {
             var p = points[0];
 

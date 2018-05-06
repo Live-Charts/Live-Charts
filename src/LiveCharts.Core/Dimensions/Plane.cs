@@ -77,6 +77,11 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
+        /// Occurs when the user zooms or pans the plane.
+        /// </summary>
+        public event RangeChangedEventHandler RangeChanged;
+
+        /// <summary>
         /// Gets the used <see cref="MaxValue"/>, if <see cref="MaxValue"/> is double.NaN, 
         /// the library will calculate this property and will expose the calculated value here,
         /// if <see cref="MaxValue"/> is not double.NaN, <see cref="ActualMaxValue"/> is equals
@@ -409,14 +414,27 @@ namespace LiveCharts.Core.Dimensions
                 $"A {nameof(IPlaneViewProvider)} was not found when trying to draw {this} in the UI", 115);
         }
 
+        /// <summary>
+        /// Called when [range changed].
+        /// </summary>
+        /// <param name="plane">The plane.</param>
+        /// <param name="previousMin">The previousMin.</param>
+        /// <param name="previousMax">The previousMax.</param>
+        protected virtual void OnRangeChanged(Plane plane, double previousMin, double previousMax)
+        {
+            RangeChanged?.Invoke(plane, previousMin, previousMax);
+        }
+
         internal void SetRange(double min, double max)
         {
+            var minCopy = _minValue;
+            var maxCopy = _maxValue;
+
             _minValue = min;
             _maxValue = max;
 
             OnPropertyChanged(nameof(ActualRange));
-
-            // ToDo: raise event!
+            OnRangeChanged(this, minCopy, maxCopy);
         }
 
         #region IResource implementation

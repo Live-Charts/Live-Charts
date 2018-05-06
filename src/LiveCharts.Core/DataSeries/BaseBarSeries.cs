@@ -154,7 +154,7 @@ namespace LiveCharts.Core.DataSeries
             
             var pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
+            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
@@ -198,7 +198,7 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         /// <returns></returns>
         protected abstract void BuildModel(
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> current, UpdateContext context, ChartModel chart, Plane directionAxis, Plane scaleAxis,
+            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> current, UpdateContext context, ChartModel chart, Plane directionAxis, Plane scaleAxis,
             float cw, float columnStart, float[] byBarOffset, float[] positionOffset, Orientation orientation,
             int h, int w);
 

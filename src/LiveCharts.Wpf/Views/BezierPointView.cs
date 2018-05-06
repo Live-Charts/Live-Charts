@@ -67,12 +67,12 @@ namespace LiveCharts.Wpf.Views
         private bool IsMiddlePoint => _next != null && _previous != null;
 
         protected override void OnDraw(
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous,
+            ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> chartPoint, 
+            ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous,
             TimeLine timeLine)
         {
-            var chart = point.Chart.View;
-            _vm = point.ViewModel;
+            var chart = chartPoint.Chart;
+            _vm = chartPoint.ViewModel;
             var isNew = Shape == null;
             var speed = chart.AnimationsSpeed;
             _previous = (BezierPointView<TModel, TLabel>) previous?.View;
@@ -82,8 +82,8 @@ namespace LiveCharts.Wpf.Views
             {
                 Shape = new Path {Stretch = Stretch.Fill};
                 chart.Content.AddChild(Shape, true);
-                Canvas.SetLeft(Shape, point.ViewModel.Location.X);
-                Canvas.SetTop(Shape, point.ViewModel.Location.Y);
+                Canvas.SetLeft(Shape, chartPoint.ViewModel.Location.X);
+                Canvas.SetTop(Shape, chartPoint.ViewModel.Location.Y);
                 Shape.Width = 0;
                 Shape.Height = 0;
                 _path = _vm.Path;
@@ -105,11 +105,11 @@ namespace LiveCharts.Wpf.Views
                     .Begin();
             }
 
-            Shape.StrokeThickness = point.Series.StrokeThickness;
-            Shape.Stroke = point.Series.Stroke.AsWpf();
+            Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
             Shape.Fill = Brushes.White;
-            Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
-            Panel.SetZIndex(Shape, point.Series.ZIndex);
+            Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
+            Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
 
             if (!isNew)
             {
@@ -129,11 +129,11 @@ namespace LiveCharts.Wpf.Views
         }
 
         protected override void PlaceLabel(
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> point, 
+            ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> chartPoint, 
             SizeF labelSize)
         {
-            Canvas.SetTop(Label, point.ViewModel.Location.Y);
-            Canvas.SetLeft(Label, point.ViewModel.Location.X);
+            Canvas.SetTop(Label, chartPoint.ViewModel.Location.Y);
+            Canvas.SetLeft(Label, chartPoint.ViewModel.Location.X);
         }
 
         protected override void OnDispose(IChartView chart)

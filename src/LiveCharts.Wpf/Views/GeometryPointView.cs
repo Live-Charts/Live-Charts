@@ -58,12 +58,12 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         protected override void OnDraw(
-            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point,
-            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> previous,
+            ChartPoint<TModel, TCoordinate, GeometryPointViewModel, TSeries> chartPoint,
+            ChartPoint<TModel, TCoordinate, GeometryPointViewModel, TSeries> previous,
             TimeLine timeLine)
         {
-            var chart = point.Chart.View;
-            var vm = point.ViewModel;
+            var chart = chartPoint.Chart;
+            var vm = chartPoint.ViewModel;
             var isNew = Shape == null;
 
             if (isNew)
@@ -76,12 +76,12 @@ namespace LiveCharts.Wpf.Views
                 Shape.Height = 0;
             }
 
-            Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Fill = point.Series.Fill.AsWpf();
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
+            Shape.Fill = chartPoint.Series.Fill.AsWpf();
             Shape.StrokeThickness = 3.5;
-            Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Data = Geometry.Parse(point.Series.Geometry.Data);
-            Panel.SetZIndex(Shape, point.Series.ZIndex);
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
+            Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
+            Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
 
             var r = vm.Diameter * .5f;
 
@@ -107,11 +107,11 @@ namespace LiveCharts.Wpf.Views
 
         /// <inheritdoc />
         protected override void PlaceLabel(
-            Point<TModel, TCoordinate, GeometryPointViewModel, TSeries> point,
+            ChartPoint<TModel, TCoordinate, GeometryPointViewModel, TSeries> chartPoint,
             SizeF labelSize)
         {
-            Canvas.SetTop(Label, point.ViewModel.Location.Y);
-            Canvas.SetLeft(Label, point.ViewModel.Location.X);
+            Canvas.SetTop(Label, chartPoint.ViewModel.Location.Y);
+            Canvas.SetLeft(Label, chartPoint.ViewModel.Location.X);
         }
 
         /// <inheritdoc />

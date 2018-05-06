@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Input;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.DataSeries;
@@ -46,6 +47,11 @@ namespace LiveCharts.Core.Charts
     /// </summary>
     public interface IChartView : INotifyPropertyChanged, IDisposable
     {
+        // as a suggestion do a Explicit implementation
+        // of the following events, this events are used by the core
+        // of the library and they are not really necessary for the user.
+        #region Explicit Implementation
+
         /// <summary>
         /// Occurs when the charts is initialized.
         /// </summary>
@@ -57,29 +63,77 @@ namespace LiveCharts.Core.Charts
         event ChartEventHandler ChartViewResized;
 
         /// <summary>
-        /// Occurs when pointer moves.
+        /// Occurs when the pointer moves.
         /// </summary>
-        event PointerMovedHandler PointerMoved;
+        event PointerHandler PointerMoved;
+
+        /// <summary>
+        /// Occurs when the pointer goes down.
+        /// </summary>
+        event PointerHandler PointerDown;
+
+        #endregion
 
         /// <summary>
         /// Occurs before a chart update is called.
         /// </summary>
-        event ChartEventHandler UpdatePreview;
+        event ChartEventHandler ChartUpdatePreview;
 
         /// <summary>
         /// Occurs before a chart update is called.
         /// </summary>
-        ICommand UpdatePreviewCommand { get; set; }
+        ICommand ChartUpdatePreviewCommand { get; set; }
 
         /// <summary>
         /// Occurs after a chart update was called.
         /// </summary>
-        event ChartEventHandler Updated;
+        event ChartEventHandler ChartUpdated;
 
         /// <summary>
         /// Occurs after a chart update was called.
         /// </summary>
-        ICommand UpdatedCommand { get; set; }
+        ICommand ChartUpdatedCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when a user places the pointer over a point.
+        /// </summary>
+        event DataInteractionHandler DataPointerEntered;
+
+        /// <summary>
+        /// Gets or sets the data mouse enter command, this command will try to be executed 
+        /// when  the user places the pointer over a point.
+        /// </summary>
+        /// <value>
+        /// The data mouse enter command.
+        /// </value>
+        ICommand DataPointerEnteredCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when the user moves the pointer away from a data point.
+        /// </summary>
+        event DataInteractionHandler DataPointerLeft;
+
+        /// <summary>
+        /// Gets or sets the data mouse leave command, this command will try to be executed
+        /// when the user leaves moves the pointer away from a data point.
+        /// </summary>
+        /// <value>
+        /// The data mouse leave.
+        /// </value>
+        ICommand DataPointerLeftCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when the user moves the pointer down in a point.
+        /// </summary>
+        event DataInteractionHandler DataPointerDown;
+
+        /// <summary>
+        /// Gets or sets the data pointer down command.
+        /// </summary>
+        /// <value>
+        /// The data pointer down command.
+        /// </value>
+        ICommand DataPointerDownCommand { get; set; }
 
         /// <summary>
         /// Gets the chart model.
@@ -106,7 +160,8 @@ namespace LiveCharts.Core.Charts
         float[] ControlSize { get; }
 
         /// <summary>
-        /// Gets the draw margin, this margin indicates the distance every axis has to display its labels.
+        /// Gets the draw margin, this margin indicates the distance every axis has to display 
+        /// its labels.
         /// </summary>
         /// <value>
         /// The draw margin.
@@ -152,14 +207,6 @@ namespace LiveCharts.Core.Charts
         /// The animation line.
         /// </value>
         IEnumerable<Frame> AnimationLine { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="IChartView"/> is hoverable.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if hoverable; otherwise, <c>false</c>.
-        /// </value>
-        bool Hoverable { get; set; }
 
         /// <summary>
         /// Gets or sets the tooltip time out.

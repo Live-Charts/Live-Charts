@@ -94,7 +94,7 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         protected override void BuildModel(
-            Point<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> current, UpdateContext context, 
+            ChartPoint<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> current, UpdateContext context, 
             ChartModel chart, Plane directionAxis, Plane scaleAxis, float cw, float columnStart, 
             float[] byBarOffset, float[] positionOffset, Orientation orientation, int h, int w)
         {

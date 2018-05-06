@@ -73,7 +73,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The points.
         /// </value>
-        IEnumerable<Point<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
+        IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
 
         /// <summary>
         /// Gets the points count.
@@ -301,21 +301,21 @@ namespace LiveCharts.Core.DataSeries
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
         /// <returns></returns>
-        IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest);
+        IEnumerable<IChartPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest);
 
         /// <summary>
         /// Highlights a point.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="chart">The chart view.</param>
-        void OnPointHighlight(PackedPoint point, IChartView chart);
+        void OnPointHighlight(IChartPoint point, IChartView chart);
 
         /// <summary>
         /// Removes the highlight of a point.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="chart">The chart view.</param>
-        void RemovePointHighlight(PackedPoint point, IChartView chart);
+        void RemovePointHighlight(IChartPoint point, IChartView chart);
 
         /// <summary>
         /// Gets the label for.

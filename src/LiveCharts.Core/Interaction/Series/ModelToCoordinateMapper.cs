@@ -87,7 +87,7 @@ namespace LiveCharts.Core.Interaction.Series
         internal void EvaluateModelDependentActions<TViewModel, TSeries>(
             TModel model, 
             object visual, 
-            Point<TModel, TCoordinate, TViewModel, TSeries> point)
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint)
             where TSeries : ISeries
         {
             if (_modelDependentActions == null) return;
@@ -100,7 +100,7 @@ namespace LiveCharts.Core.Interaction.Series
                         model,
                         new ModelStateEventArgs<TModel, TCoordinate>(
                             visual,
-                            point.Pack()));
+                            chartPoint));
                 }
             }
         }

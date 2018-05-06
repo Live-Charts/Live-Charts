@@ -123,7 +123,7 @@ namespace LiveCharts.Core.DataSeries
                     ? 0f
                     : (float) pieChart.StartingRotationAngle);
 
-            Point<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous = null;
+            ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,

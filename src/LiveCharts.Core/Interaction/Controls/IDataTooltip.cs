@@ -67,7 +67,7 @@ namespace LiveCharts.Core.Interaction.Controls
         /// Measures this instance with the selected points.
         /// </summary>
         /// <returns></returns>
-        SizeF ShowAndMeasure(IEnumerable<PackedPoint> selected, IChartView chart);
+        SizeF ShowAndMeasure(IEnumerable<IChartPoint> selected, IChartView chart);
 
         /// <summary>
         ///  Moves to the specified location.

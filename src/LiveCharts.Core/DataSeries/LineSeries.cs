@@ -96,7 +96,7 @@ namespace LiveCharts.Core.DataSeries
             var x = chart.Dimensions[0][ScalesAt[0]];
             var y = chart.Dimensions[1][ScalesAt[1]];
 
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous = null;
+            ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
@@ -124,8 +124,8 @@ namespace LiveCharts.Core.DataSeries
             {
                 var p = new[]
                 {
-                    chart.ScaleToUi(currentBezier.Point.Coordinate.X, x),
-                    chart.ScaleToUi(currentBezier.Point.Coordinate.Y, y)
+                    chart.ScaleToUi(currentBezier.ChartPoint.Coordinate.X, x),
+                    chart.ScaleToUi(currentBezier.ChartPoint.Coordinate.Y, y)
                 };
 
                 if (chart.InvertXy) currentBezier.Invert();
@@ -137,9 +137,9 @@ namespace LiveCharts.Core.DataSeries
                     i = p[0];
                 }
 
-                if (currentBezier.Point.View == null)
+                if (currentBezier.ChartPoint.View == null)
                 {
-                    currentBezier.Point.View = ViewProvider.GetNewPoint();
+                    currentBezier.ChartPoint.View = ViewProvider.GetNewPoint();
                 }
 
                 if (DelayRule != DelayRules.None)
@@ -150,21 +150,21 @@ namespace LiveCharts.Core.DataSeries
                 }
 
                 currentBezier.ViewModel.Path = cartesianPath;
-                currentBezier.Point.ViewModel = currentBezier.ViewModel;
-                currentBezier.Point.InteractionArea = new RectangleInteractionArea(
+                currentBezier.ChartPoint.ViewModel = currentBezier.ViewModel;
+                currentBezier.ChartPoint.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
                         currentBezier.ViewModel.Location.X,
                         currentBezier.ViewModel.Location.Y,
                         (float) GeometrySize,
                         (float) GeometrySize));
-                currentBezier.Point.View.DrawShape(currentBezier.Point, previous, timeLine);
+                currentBezier.ChartPoint.View.DrawShape(currentBezier.ChartPoint, previous, timeLine);
                 if (DataLabels)
-                    currentBezier.Point.View.DrawLabel(
-                        currentBezier.Point, DataLabelsPosition, LabelsStyle, timeLine);
+                    currentBezier.ChartPoint.View.DrawLabel(
+                        currentBezier.ChartPoint, DataLabelsPosition, LabelsStyle, timeLine);
                 Mapper.EvaluateModelDependentActions(
-                    currentBezier.Point.Model, currentBezier.Point.View.VisualElement, currentBezier.Point);
+                    currentBezier.ChartPoint.Model, currentBezier.ChartPoint.View.VisualElement, currentBezier.ChartPoint);
 
-                previous = currentBezier.Point;
+                previous = currentBezier.ChartPoint;
                 length += currentBezier.ViewModel.AproxLength;
                 j = p[0];
                 itl++;
@@ -175,7 +175,7 @@ namespace LiveCharts.Core.DataSeries
 
         private IEnumerable<BezierData> GetBeziers(ChartModel chart, Plane x, Plane y)
         {
-            Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> pi, pn = null, pnn = null;
+            ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> pi, pn = null, pnn = null;
             PointF previous, current = new PointF(0,0), next = new  PointF(0,0), nextNext = new PointF(0, 0);
             var i = 0;
 
@@ -255,7 +255,7 @@ namespace LiveCharts.Core.DataSeries
             }
 
             // ReSharper disable once ImplicitlyCapturedClosure
-            void Next(Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> item)
+            void Next(ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> item)
             {
                 pi = pn;
                 pn = pnn;
@@ -279,7 +279,7 @@ namespace LiveCharts.Core.DataSeries
 
                 yield return new BezierData
                 {
-                    Point = pi,
+                    ChartPoint = pi,
                     ViewModel = BuildModel()
                 };
 
@@ -289,14 +289,14 @@ namespace LiveCharts.Core.DataSeries
             Next(pnn);
             yield return new BezierData
             {
-                Point = pi,
+                ChartPoint = pi,
                 ViewModel = BuildModel()
             };
 
             Next(pnn);
             yield return new BezierData
             {
-                Point = pi,
+                ChartPoint = pi,
                 ViewModel = BuildModel()
             };
 
@@ -305,7 +305,7 @@ namespace LiveCharts.Core.DataSeries
 
         private struct BezierData
         {
-            public Point<TModel, PointCoordinate, BezierViewModel, ILineSeries> Point { get; set; }
+            public ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> ChartPoint { get; set; }
             public BezierViewModel ViewModel { get; set; }
 
             public void Invert()

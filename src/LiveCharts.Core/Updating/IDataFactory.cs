@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Updating
         /// <param name="context">The arguments.</param>
         /// <param name="count">The points count.</param>
         /// <returns></returns>
-        Point<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+        ChartPoint<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
             DataFactoryContext<TModel, TCoordinate, TSeries> context, out int count)
             where TCoordinate : ICoordinate
             where TSeries : ISeries;

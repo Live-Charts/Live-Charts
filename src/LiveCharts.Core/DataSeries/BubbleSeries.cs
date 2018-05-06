@@ -103,7 +103,7 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            Point<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> previous = null;
+            ChartPoint<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,

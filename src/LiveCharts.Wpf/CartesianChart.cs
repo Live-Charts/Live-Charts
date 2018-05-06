@@ -63,10 +63,10 @@ namespace LiveCharts.Wpf
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            MouseWheel += OnMouseWheel;
-            MouseDown += OnMouseDown;
-            MouseMove += OnMouseMove;
-            MouseUp += OnMouseUp;
+            MouseWheel += OnCartesianChartMouseWheelMoved;
+            MouseDown += OnCartesianChartMouseDown;
+            MouseMove += OnCartesianChartMouseMove;
+            MouseUp += OnCartesianChartMouseUp;
             SetValue(SeriesProperty, new ChartingCollection<ISeries>());
             SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
             SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
@@ -203,7 +203,12 @@ namespace LiveCharts.Wpf
             };
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        /// <summary>
+        /// Called when [cartesian chart mouse wheel moved].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseWheelEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseWheelMoved(object sender, MouseWheelEventArgs e)
         {
             if (Zooming == Zooming.None) return;
 
@@ -226,7 +231,12 @@ namespace LiveCharts.Wpf
         private bool _isDragging;
         private Point _previous;
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Called when [cartesian chart mouse down].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Panning == Panning.None) return;
             _previous = e.GetPosition(VisualDrawMargin);
@@ -234,7 +244,12 @@ namespace LiveCharts.Wpf
             CaptureMouse();
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Called when [cartesian chart mouse move].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseMove(object sender, MouseEventArgs e)
         {
             if (!_isDragging) return;
 
@@ -251,7 +266,12 @@ namespace LiveCharts.Wpf
             _previous = current;
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Called when [cartesian chart mouse up].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (Panning == Panning.None) return;
             _isDragging = false;

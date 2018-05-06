@@ -27,7 +27,6 @@
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Events;
 
@@ -43,116 +42,52 @@ namespace LiveCharts.Core.Interaction.Points
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="T:System.IDisposable" />
-    public class Point<TModel, TCoordinate, TViewModel, TSeries> : IResource
+    public class ChartPoint<TModel, TCoordinate, TViewModel, TSeries> : IResource, IChartPoint<TModel, TCoordinate>
         where TCoordinate : ICoordinate
         where TSeries : ISeries
     {
-        /// <summary>
-        /// Gets the key of the point, a key is used internally as a unique identifier in 
-        /// in a <see cref="Series"/> 
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
+        /// <inheritdoc />
         public int Key { get; internal set; }
 
-        /// <summary>
-        /// Gets the instance represented by this point.
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
+        /// <inheritdoc />
         public TModel Model { get; internal set; }
 
-        /// <summary>
-        /// Gets the view model,the model to drawn in the user interface.
-        /// </summary>
-        /// <value>
-        /// The view model.
-        /// </value>
+        object IChartPoint.Model => Model;
+
+        /// <inheritdoc cref="IChartPoint.ViewModel" />
         public TViewModel ViewModel { get; internal set; }
 
-        /// <summary>
-        /// Gets the view.
-        /// </summary>
-        /// <value>
-        /// The view.
-        /// </value>
+        object IChartPoint.ViewModel => ViewModel;
+
+        /// <inheritdoc cref="IChartPoint.View" />
         public IPointView<TModel, TCoordinate, TViewModel, TSeries> View { get; internal set; }
 
-        /// <summary>
-        /// Gets the point coordinate.
-        /// </summary>
-        /// <value>
-        /// The point.
-        /// </value>
+        object IChartPoint.View => View;
+
+        /// <inheritdoc />
         public TCoordinate Coordinate { get; internal set; }
 
-        /// <summary>
-        /// Gets the hover area.
-        /// </summary>
-        /// <value>
-        /// The hover area.
-        /// </value>
+        ICoordinate IChartPoint.Coordinate => Coordinate;
+
+        /// <inheritdoc />
         public InteractionArea InteractionArea { get; internal set; }
 
-        /// <summary>
-        /// Gets the series that owns the point.
-        /// </summary>
-        /// <value>
-        /// The series.
-        /// </value>
+        /// <inheritdoc cref="IChartView.Series" />
         public TSeries Series { get; internal set; }
 
-        /// <summary>
-        /// Gets the chart that owns the point.
-        /// </summary>
-        /// <value>
-        /// The chart.
-        /// </value>
-        public ChartModel Chart { get; internal set; }
+        ISeries IChartPoint.Series => Series;
+
+        /// <inheritdoc />
+        public IChartView Chart { get; internal set; }
+
+        /// <inheritdoc />
+        public string ToolTipText => Series.GetTooltipLabel(Coordinate);
 
         /// <summary>
-        /// returns a point with an unknown.
-        /// </summary>
-        /// <returns></returns>
-        public PackedPoint<TModel, TCoordinate> Pack()
-        {
-            return new PackedPoint<TModel, TCoordinate>(this)
-            {
-                Chart = Chart,
-                Coordinate = Coordinate,
-                Key = Key,
-                Model = Model,
-                Series = Series,
-                View = null,
-                ViewModel = ViewModel
-            };
-        }
-
-        /// <summary>
-        /// Packs all.
-        /// </summary>
-        /// <returns></returns>
-        public PackedPoint PackAll()
-        {
-            return new PackedPoint(this)
-            {
-                Chart = Chart,
-                Coordinate = Coordinate,
-                Key = Key,
-                Model = Model,
-                Series = Series,
-                View = null,
-                ViewModel = ViewModel
-            };
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="string" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

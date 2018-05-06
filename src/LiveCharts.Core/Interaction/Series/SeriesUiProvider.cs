@@ -61,14 +61,14 @@ namespace LiveCharts.Core.Interaction.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="timeLine">The animation.</param>
-        void OnPointHighlight(PackedPoint point, TimeLine timeLine);
+        void OnPointHighlight(IChartPoint point, TimeLine timeLine);
 
         /// <summary>
         /// Resets the point style.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="timeLine">The animation.</param>
-        void RemovePointHighlight(PackedPoint point, TimeLine timeLine);
+        void RemovePointHighlight(IChartPoint point, TimeLine timeLine);
 
         /// <summary>the series update finishes.
         /// </summary>

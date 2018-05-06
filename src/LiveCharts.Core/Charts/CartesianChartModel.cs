@@ -27,6 +27,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -276,10 +277,15 @@ namespace LiveCharts.Core.Charts
         /// <param name="delta">The delta.</param>
         public void Drag(PointF delta)
         {
+            if (Math.Abs(delta.X) < 0.1 || Math.Abs(delta.Y) < 0.1)
+            {
+                return;
+            }
+
             var cartesianView = (ICartesianChartView) View;
 
-            if ((cartesianView.Panning == Panning.Unset &&
-                 cartesianView.Zooming == Zooming.None) ||
+            if (cartesianView.Panning == Panning.Unset &&
+                cartesianView.Zooming == Zooming.None ||
                 cartesianView.Panning == Panning.None)
             {
                 return;
@@ -404,8 +410,8 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override PointF GetToolTipLocationAndFireHovering(
-            PackedPoint[] points)
+        protected override PointF GetTooltipLocation(
+            IChartPoint[] points)
         {
             float x = 0f, y = 0f;
 
@@ -432,12 +438,25 @@ namespace LiveCharts.Core.Charts
                 var xCorr = cartesianSeries.PointMargin * .5f * xDirection;
                 var yCorr = cartesianSeries.PointMargin * .5f * yDirection;
 
-                x += ScaleToUi(coordinate[xi][0], Dimensions[xi][cartesianSeries.ScalesAt[0]]) + xCorr;
-                y += ScaleToUi(coordinate[yi][0], Dimensions[yi][cartesianSeries.ScalesAt[1]]) + yCorr;
-
-                if (View.Hoverable)
+                if (coordinate is StackedPointCoordinate stacked)
                 {
-                    cartesianSeries.OnPointHighlight(point, View);
+                    var xc = stacked.Key;
+                    var yc = stacked.TotalStack;
+                    if (InvertXy)
+                    {
+                        y += ScaleToUi(xc, Dimensions[0][cartesianSeries.ScalesAt[0]]);
+                        x += ScaleToUi(yc, Dimensions[1][cartesianSeries.ScalesAt[1]]);
+                    }
+                    else
+                    {
+                        x += ScaleToUi(xc, Dimensions[0][cartesianSeries.ScalesAt[0]]);
+                        y += ScaleToUi(yc, Dimensions[1][cartesianSeries.ScalesAt[1]]);
+                    }
+                }
+                else
+                {
+                    x += ScaleToUi(coordinate[xi][0], Dimensions[xi][cartesianSeries.ScalesAt[0]]) + xCorr;
+                    y += ScaleToUi(coordinate[yi][0], Dimensions[yi][cartesianSeries.ScalesAt[1]]) + yCorr;
                 }
             }
 

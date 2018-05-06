@@ -22,11 +22,14 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+
+using LiveCharts.Core.Charts;
+
 namespace LiveCharts.Core.Interaction.Events
 {
     /// <summary>
     /// The Chart event handler.
     /// </summary>
-    /// <param name="sender">The sender.</param>
-    public delegate void ChartEventHandler(object sender);
+    /// <param name="chart">The sender chart.</param>
+    public delegate void ChartEventHandler(IChartView chart);
 }

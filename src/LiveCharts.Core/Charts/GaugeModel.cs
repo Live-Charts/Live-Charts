@@ -62,11 +62,11 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(ToolTipSelectionMode selectionMode, PointF pointerLocation)
+        protected override void ViewOnPointerMoved(PointF pointerLocation)
         {
         }
 
-        protected override PointF GetToolTipLocationAndFireHovering(PackedPoint[] points)
+        protected override PointF GetTooltipLocation(IChartPoint[] points)
         {
             throw new NotImplementedException();
         }

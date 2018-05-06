@@ -129,7 +129,7 @@ namespace LiveCharts.Core.DataSeries
             var minW = context.Ranges[2][ScalesAt[2]][0];
             var maxW = context.Ranges[2][ScalesAt[2]][1];
 
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous = null;
+            ChartPoint<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,

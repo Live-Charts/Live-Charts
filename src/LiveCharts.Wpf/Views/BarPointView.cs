@@ -57,17 +57,17 @@ namespace LiveCharts.Wpf.Views
         where TSeries : IStrokeSeries, ICartesianSeries
         where TShape : Shape, new()
     {
-        private Point<TModel, TCoordinate, RectangleViewModel, TSeries> _point;
+        private ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> _chartPoint;
         private TimeLine _lastTimeLine;
 
         /// <inheritdoc />
         protected override void OnDraw(
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> point, 
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> previous,
+            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> chartPoint, 
+            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> previous,
             TimeLine timeLine)
         {
-            var chart = point.Chart.View;
-            var vm = point.ViewModel;
+            var chart = chartPoint.Chart;
+            var vm = chartPoint.ViewModel;
             var isNewShape = Shape == null;
 
             // initialize shape
@@ -82,13 +82,13 @@ namespace LiveCharts.Wpf.Views
             }
 
             // map properties
-            Shape.Stroke = point.Series.Stroke.AsWpf();
-            Shape.Fill = point.Series.Fill.AsWpf();
-            Shape.StrokeThickness = point.Series.StrokeThickness;
-            Panel.SetZIndex(Shape, ((ICartesianSeries) point.Series).ZIndex);
-            if (point.Series.StrokeDashArray != null)
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
+            Shape.Fill = chartPoint.Series.Fill.AsWpf();
+            Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
+            Panel.SetZIndex(Shape, ((ICartesianSeries) chartPoint.Series).ZIndex);
+            if (chartPoint.Series.StrokeDashArray != null)
             {
-                Shape.StrokeDashArray = new DoubleCollection(point.Series.StrokeDashArray);
+                Shape.StrokeDashArray = new DoubleCollection(chartPoint.Series.StrokeDashArray);
             }
             
             // special case
@@ -111,23 +111,23 @@ namespace LiveCharts.Wpf.Views
                     FrameworkElement.HeightProperty, !isNewShape ? Shape.Height : vm.From.Height, vm.To.Height)
                 .Begin();
 
-            _point = point;
+            _chartPoint = chartPoint;
             _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
         protected override void PlaceLabel(
-            Point<TModel, TCoordinate, RectangleViewModel, TSeries> point, 
+            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> chartPoint, 
             SizeF labelSize)
         {
-            Canvas.SetTop(Label, point.ViewModel.To.Y);
-            Canvas.SetLeft(Label, point.ViewModel.To.X);
+            Canvas.SetTop(Label, chartPoint.ViewModel.To.Y);
+            Canvas.SetLeft(Label, chartPoint.ViewModel.To.X);
         }
 
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart)
         {
-            var barSeries = (IBarSeries) _point.Series;
+            var barSeries = (IBarSeries) _chartPoint.Series;
             var pivot = chart.Model.ScaleToUi(barSeries.Pivot, chart.Dimensions[1][barSeries.ScalesAt[1]]);
 
             var animation = Shape.Animate(_lastTimeLine)

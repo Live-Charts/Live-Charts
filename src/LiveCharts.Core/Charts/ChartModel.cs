@@ -57,9 +57,13 @@ namespace LiveCharts.Core.Charts
         private Task _delayer;
         private IList<Color> _colors;
         private HashSet<IResource> _resources = new HashSet<IResource>();
-        private Dictionary<IEnumerable, EnumerableResource> _enumerableResources = new Dictionary<IEnumerable, EnumerableResource>();
+
+        private Dictionary<IEnumerable, EnumerableResource> _enumerableResources =
+            new Dictionary<IEnumerable, EnumerableResource>();
+
         private PointF _previousTooltipLocation = PointF.Empty;
-        private IEnumerable<PackedPoint> _previousHovered;
+        private IEnumerable<IChartPoint> _previousHovered;
+        private HashSet<IChartPoint> _previousEntered = new HashSet<IChartPoint>(Enumerable.Empty<IChartPoint>());
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartModel"/> class.
@@ -74,11 +78,9 @@ namespace LiveCharts.Core.Charts
                 IsViewInitialized = true;
                 Invalidate();
             };
-            view.ChartViewResized += sender =>
-            {
-                Invalidate();
-            };
+            view.ChartViewResized += sender => { Invalidate(); };
             view.PointerMoved += ViewOnPointerMoved;
+            view.PointerDown += ViewOnPointerDown;
             view.PropertyChanged += InvalidatePropertyChanged;
             ToolTipTimeoutTimer = new Timer();
             ToolTipTimeoutTimer.Elapsed += (sender, args) =>
@@ -174,9 +176,23 @@ namespace LiveCharts.Core.Charts
         public ICommand UpdatedCommand { get; set; }
 
         /// <summary>
+        /// Occurs when the users pointer goes down over a data point.
+        /// </summary>
+        public event DataInteractionHandler DataPointerDown;
+
+        /// <summary>
+        /// Gets or sets the data pointer down command., the command will be executed when the user pointer
+        /// goes down over a data point.
+        /// </summary>
+        /// <value>
+        /// The data pointer down command.
+        /// </value>
+        public ICommand DataPointerDownCommand { get; set; }
+
+        /// <summary>
         /// Occurs when [data pointer enter].
         /// </summary>
-        public event DataInteractionHandler DataPointerEnter;
+        public event DataInteractionHandler DataPointerEntered;
 
         /// <summary>
         /// Gets or sets the data pointer enter.
@@ -184,12 +200,12 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The data pointer enter.
         /// </value>
-        public ICommand DataPointerEnterCommand { get; set; }
+        public ICommand DataPointerEnteredCommand { get; set; }
 
         /// <summary>
         /// Occurs when [data pointer leave].
         /// </summary>
-        public event DataInteractionHandler DataPointerLeave;
+        public event DataInteractionHandler DataPointerLeft;
 
         /// <summary>
         /// Gets or sets the data pointer leave command.
@@ -197,7 +213,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The data pointer leave command.
         /// </value>
-        public ICommand DataPointerLeaveCommand { get; set; }
+        public ICommand DataPointerLeftCommand { get; set; }
 
         /// <summary>
         /// Gets the series.
@@ -290,6 +306,7 @@ namespace LiveCharts.Core.Charts
                 {
                     return;
                 }
+
                 if (_delayer != null && !_delayer.IsCompleted)
                 {
                     return;
@@ -367,7 +384,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
         /// <returns></returns>
-        public IEnumerable<PackedPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode,
+        public IEnumerable<IChartPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode,
             bool snapToClosest)
         {
             if (!snapToClosest)
@@ -389,78 +406,53 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Called when the pointer moves over a chart and there is a tooltip in the view.
         /// </summary>
-        /// <param name="selectionMode">The selection mode.</param>
         /// <param name="pointerLocation">The dimensions.</param>
-        protected virtual void ViewOnPointerMoved(ToolTipSelectionMode selectionMode, PointF pointerLocation)
+        protected virtual void ViewOnPointerMoved(PointF pointerLocation)
         {
             if (Series == null) return;
             if (!IsViewInitialized) return;
-            if (View.DataToolTip == null) return;
+            var requiresDataLeft = DataPointerLeft != null && DataPointerLeftCommand != null;
+            var requiresDataEnter = DataPointerEntered != null && DataPointerEnteredCommand != null;
+            var requiresTooltip = View.DataToolTip != null;
+            if (!requiresTooltip && !requiresDataEnter && !requiresDataLeft) return;
 
-            var query = GetPointsAt(pointerLocation, selectionMode, View.DataToolTip.SnapToClosest).ToArray();
-
-            View.DataToolTip = View.DataToolTip;
-
-            if (View.Hoverable)
+            if (requiresTooltip)
             {
-                var pts = _previousHovered?.Where(x =>
-                              !x.InteractionArea.Contains(pointerLocation, selectionMode))
-                          ?? Enumerable.Empty<PackedPoint>();
-
-                foreach (var leftPoint in pts)
-                {
-                    leftPoint.Series.RemovePointHighlight(leftPoint, View);
-                    OnDataPointerLeave(query);
-                }
-
-                _previousHovered = query;
+                EvaluateTooltip(pointerLocation);
             }
 
-            if (!query.Any())
+            if (!requiresDataEnter && !requiresDataLeft) return;
+
+            EvaluateEnterLeftPoints(pointerLocation);
+        }
+
+        /// <summary>
+        /// Called when the pointer goes down in the tooltip
+        /// </summary>
+        /// <param name="pointerLocation">The pointer location.</param>
+        protected virtual void ViewOnPointerDown(PointF pointerLocation)
+        {
+            if (Series == null) return;
+            if (!IsViewInitialized) return;
+            if (DataPointerDown == null && DataPointerDownCommand == null && View.DataToolTip == null)
+            {
+                return;
+            }
+            
+            var query = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
+
+            if (query.Length < 1)
             {
                 ToolTipTimeoutTimer.Start();
-                _previousHovered = null;
                 return;
             }
 
-            ToolTipTimeoutTimer.Stop();
-            var size = View.DataToolTip.ShowAndMeasure(query, View);
+            OnDataPointerDown(query);
 
-            var newToolTipLocation = GetToolTipLocationAndFireHovering(query);
-
-            var xCorrection = 0f;
-            var yCorrection = 0f;
-
-            switch (View.DataToolTip.Position)
+            if (View.DataToolTip != null)
             {
-                case ToolTipPosition.Top:
-                    xCorrection = -size.Width * .5f;
-                    yCorrection = -size.Height;
-                    break;
-                case ToolTipPosition.Bottom:
-                    xCorrection = -size.Width * .5f;
-                    break;
-                case ToolTipPosition.Left:
-                    xCorrection = -size.Width;
-                    yCorrection = -size.Height * .5f;
-                    break;
-                case ToolTipPosition.Right:
-                    yCorrection = -size.Height * .5f;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                ShowTooltip(query);
             }
-
-            newToolTipLocation = new PointF(newToolTipLocation.X + xCorrection, newToolTipLocation.Y + yCorrection);
-
-            if (_previousTooltipLocation != newToolTipLocation)
-            {
-                View.DataToolTip.Move(newToolTipLocation, View);
-            }
-
-            OnDataPointerEnter(query);
-
-            _previousTooltipLocation = newToolTipLocation;
         }
 
         /// <summary>
@@ -468,8 +460,8 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="points">The points.</param>
         /// <returns></returns>
-        protected abstract PointF GetToolTipLocationAndFireHovering(
-            PackedPoint[] points);
+        protected abstract PointF GetTooltipLocation(
+            IChartPoint[] points);
 
         /// <summary>
         /// Updates the chart.
@@ -669,6 +661,106 @@ namespace LiveCharts.Core.Charts
             Invalidate();
         }
 
+        private void EvaluateTooltip(PointF pointerLocation)
+        {
+            var selectionMode = View.DataToolTip.SelectionMode;
+            var query = GetPointsAt(pointerLocation, selectionMode, View.DataToolTip.SnapToClosest).ToArray();
+
+            var notHoveredAnymore = _previousHovered?.Where(x =>
+                                        !x.InteractionArea.Contains(pointerLocation, selectionMode))
+                                    ?? Enumerable.Empty<IChartPoint>();
+
+            foreach (var leftHoveredPoint in notHoveredAnymore)
+            {
+                leftHoveredPoint.Series.RemovePointHighlight(leftHoveredPoint, View);
+            }
+
+            if (!query.Any())
+            {
+                ToolTipTimeoutTimer.Start();
+                _previousHovered = null;
+                return;
+            }
+
+            ToolTipTimeoutTimer.Stop();
+            ShowTooltip(query);
+
+            _previousHovered = query;
+        }
+
+        private void EvaluateEnterLeftPoints(PointF pointerLocation)
+        {
+            var q = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
+
+            var leftPoints = _previousEntered
+                .Where(x => !x.InteractionArea.Contains(pointerLocation, ToolTipSelectionMode.SharedXy)).ToArray();
+            if (leftPoints.Any())
+            {
+                OnDataPointerLeft(leftPoints);
+            }
+
+            if (!q.Any())
+            {
+                _previousEntered = new HashSet<IChartPoint>(Enumerable.Empty<IChartPoint>());
+                return;
+            }
+
+            var enteredPoints = q.Where(x => !_previousEntered.Contains(x)).ToArray();
+
+            if (enteredPoints.Any())
+            {
+                OnDataPointerEnter(enteredPoints);
+                _previousEntered = new HashSet<IChartPoint>(enteredPoints);
+            }
+        }
+
+        private void ShowTooltip(IChartPoint[] points)
+        {
+            var newToolTipLocation = CorrectTooltipLocationByPosition(
+                View.DataToolTip.ShowAndMeasure(points, View),
+                GetTooltipLocation(points));
+
+            foreach (var chartPoint in points)
+            {
+                chartPoint.Series.OnPointHighlight(chartPoint, View);
+            }
+
+            if (_previousTooltipLocation != newToolTipLocation)
+            {
+                View.DataToolTip.Move(newToolTipLocation, View);
+            }
+
+            _previousTooltipLocation = newToolTipLocation;
+        }
+
+        private PointF CorrectTooltipLocationByPosition(SizeF tooltipSize, PointF toolTipLocation)
+        {
+            var xCorrection = 0f;
+            var yCorrection = 0f;
+
+            switch (View.DataToolTip.Position)
+            {
+                case ToolTipPosition.Top:
+                    xCorrection = -tooltipSize.Width * .5f;
+                    yCorrection = -tooltipSize.Height;
+                    break;
+                case ToolTipPosition.Bottom:
+                    xCorrection = -tooltipSize.Width * .5f;
+                    break;
+                case ToolTipPosition.Left:
+                    xCorrection = -tooltipSize.Width;
+                    yCorrection = -tooltipSize.Height * .5f;
+                    break;
+                case ToolTipPosition.Right:
+                    yCorrection = -tooltipSize.Height * .5f;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return new PointF(toolTipLocation.X + xCorrection, toolTipLocation.Y + yCorrection);
+        }
+
         /// <inheritdoc />
         public virtual void Dispose()
         {
@@ -709,7 +801,7 @@ namespace LiveCharts.Core.Charts
             UpdatePreview?.Invoke(View);
             if (UpdatePreviewCommand != null && UpdatePreviewCommand.CanExecute(View))
             {
-                UpdatePreviewCommand.Execute(null);
+                UpdatePreviewCommand.Execute(View);
             }
         }
 
@@ -721,7 +813,7 @@ namespace LiveCharts.Core.Charts
             Updated?.Invoke(View);
             if (UpdatedCommand != null && UpdatedCommand.CanExecute(View))
             {
-                UpdatedCommand.Execute(null);
+                UpdatedCommand.Execute(View);
             }
         }
 
@@ -729,12 +821,12 @@ namespace LiveCharts.Core.Charts
         /// Called when [data pointer enter].
         /// </summary>
         /// <param name="points">The points.</param>
-        protected virtual void OnDataPointerEnter(IEnumerable<PackedPoint> points)
+        protected virtual void OnDataPointerEnter(IChartPoint[] points)
         {
-            DataPointerEnter?.Invoke(this, points);
-            if (DataPointerEnterCommand != null && DataPointerEnterCommand.CanExecute(points))
+            DataPointerEntered?.Invoke(View, points);
+            if (DataPointerEnteredCommand != null && DataPointerEnteredCommand.CanExecute(points))
             {
-                DataPointerEnterCommand.Execute(points);
+                DataPointerEnteredCommand.Execute(points);
             }
         }
 
@@ -742,12 +834,25 @@ namespace LiveCharts.Core.Charts
         /// Called when [data pointer leave].
         /// </summary>
         /// <param name="points">The points.</param>
-        protected virtual void OnDataPointerLeave(IEnumerable<PackedPoint> points)
+        protected virtual void OnDataPointerLeft(IChartPoint[] points)
         {
-            DataPointerLeave?.Invoke(this, points);
-            if (DataPointerLeaveCommand != null && DataPointerLeaveCommand.CanExecute(points))
+            DataPointerLeft?.Invoke(View, points);
+            if (DataPointerLeftCommand != null && DataPointerLeftCommand.CanExecute(points))
             {
-                DataPointerLeaveCommand.Execute(points);
+                DataPointerLeftCommand.Execute(points);
+            }
+        }
+
+        /// <summary>
+        /// Called when [data pointer down].
+        /// </summary>
+        /// <param name="points">The points.</param>
+        protected virtual void OnDataPointerDown(IChartPoint[] points)
+        {
+            DataPointerDown?.Invoke(View, points);
+            if (DataPointerDownCommand != null && DataPointerDownCommand.CanExecute(points))
+            {
+                DataPointerDownCommand.Execute(points);
             }
         }
     }

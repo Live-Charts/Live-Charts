@@ -54,17 +54,17 @@ namespace LiveCharts.Wpf.Views
 
         /// <summary>
         /// </summary>
-        /// <param name="point"></param>
+        /// <param name="chartPoint"></param>
         /// <param name="previous"></param>
         /// <param name="timeLine"></param>
         /// <inheritdoc />
         protected override void OnDraw(
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point,
-            Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous,
+            ChartPoint<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> chartPoint,
+            ChartPoint<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous,
             TimeLine timeLine)
         {
-            var chart = point.Chart.View;
-            var vm = point.ViewModel;
+            var chart = chartPoint.Chart;
+            var vm = chartPoint.ViewModel;
             var isNewShape = Shape == null;
 
             // initialize shape
@@ -80,7 +80,7 @@ namespace LiveCharts.Wpf.Views
             Canvas.SetTop(Shape, vm.Rectangle.Top);
             Shape.Width = vm.Rectangle.Width;
             Shape.Height = vm.Rectangle.Height;
-            Panel.SetZIndex(Shape, point.Series.ZIndex);
+            Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
 
             // animate
 
@@ -95,10 +95,10 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void PlaceLabel(Point<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> point, SizeF labelSize)
+        protected override void PlaceLabel(ChartPoint<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> chartPoint, SizeF labelSize)
         {
-            Canvas.SetTop(Label, point.ViewModel.Rectangle.Y);
-            Canvas.SetLeft(Label, point.ViewModel.Rectangle.X);
+            Canvas.SetTop(Label, chartPoint.ViewModel.Rectangle.Y);
+            Canvas.SetLeft(Label, chartPoint.ViewModel.Rectangle.X);
         }
 
         /// <inheritdoc />
