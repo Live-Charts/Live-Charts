@@ -31,7 +31,8 @@ namespace LiveCharts.Core.DataSeries
     public interface IStackedBarSeries : IBarSeries
     {
         /// <summary>
-        /// Gets or sets the index of the stack.
+        /// Gets or sets the stack index, bars that shares the same indexes will be stacked together, 
+        /// if set to -1 the series won't be stacked with any other series.
         /// </summary>
         /// <value>
         /// The index of the stack.

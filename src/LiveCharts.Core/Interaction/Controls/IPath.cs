@@ -49,12 +49,18 @@ namespace LiveCharts.Core.Interaction.Controls
         /// Sets the style.
         /// </summary>
         /// <param name="startPoint">The start point of the path.</param>
+        /// <param name="toPivot">The location of the pivot at the start point.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="strokeDashArray">The stroke dash array.</param>
         void SetStyle(
-            PointF startPoint, Drawing.Brush stroke, Drawing.Brush fill, double strokeThickness, IEnumerable<double> strokeDashArray);
+            PointF startPoint,
+            PointF toPivot,
+            Drawing.Brush stroke,
+            Drawing.Brush fill,
+            double strokeThickness,
+            IEnumerable<double> strokeDashArray);
 
         /// <summary>
         /// Adds the bezier segment and returns the instance added.
@@ -73,9 +79,19 @@ namespace LiveCharts.Core.Interaction.Controls
         void RemoveSegment(object segment);
 
         /// <summary>
-        /// Closes this instance.
+        /// Closes the path.
         /// </summary>
-        void Close(IChartView view, float length, float i, float j);
+        /// <param name="view">The view.</param>
+        /// <param name="pivot">The location of pivot at the end point.</param>
+        /// <param name="length">The length.</param>
+        /// <param name="i">The i.</param>
+        /// <param name="j">The j.</param>
+        void Close(
+            IChartView view,
+            PointF pivot,
+            float length,
+            float i,
+            float j);
 
         /// <summary>
         /// Disposes the specified view.

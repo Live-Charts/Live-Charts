@@ -109,7 +109,7 @@ namespace LiveCharts.Core.Themes
                     lineSeries.Geometry = Geometry.Circle;
                     lineSeries.GeometrySize = 15f;
                     lineSeries.StrokeThickness = 3.5f;
-                    lineSeries.DefaultFillOpacity = .25f;
+                    lineSeries.DefaultFillOpacity = .8f;
                     lineSeries.LineSmoothness = .6f;
                 })
 

@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf.Views
         private BezierViewModel _vm;
         private TimeLine _lastTimeLine;
 
-        public SelfDrawnPath Path => (SelfDrawnPath) _path;
+        public SelfDrawnCartesianPath CartesianPath => (SelfDrawnCartesianPath) _path;
 
         private bool IsMiddlePoint => _next != null && _previous != null;
 

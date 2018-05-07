@@ -61,7 +61,7 @@ namespace LiveCharts.Core.DataSeries
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
     /// <typeparam name="TSeries">The type of the series.</typeparam>
     /// <seealso cref="IResource" />
-    public abstract class Series<TModel, TCoordinate, TViewModel, TSeries> 
+    public abstract class Series<TModel, TCoordinate, TViewModel, TSeries>
         : ISeries<TModel, TCoordinate, TViewModel, TSeries>
         where TCoordinate : ICoordinate
         where TSeries : class, ISeries
@@ -359,7 +359,7 @@ namespace LiveCharts.Core.DataSeries
             // call the factory to fetch our data.
             // Fetch() has 2 main tasks.
             // 1. Calculate each ChartPoint required by the series, and count the points.
-            // 2. Evaluate every dimension in the case of a cartesian chart, get Max and Min limits, 
+            // 2. Compare every coordinate in the case of a cartesian chart, to get Max and Min limits, 
             // if stacked, then also do the stacking...
 
             var tSeries = this as TSeries;
@@ -378,8 +378,9 @@ namespace LiveCharts.Core.DataSeries
                 Collection = Values.ToArray()
             })
             {
-                Points = Charting.Current.DataFactory.Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-                    factoryContext, out var count);
+                Points = Charting.Current.DataFactory
+                    .Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+                        factoryContext, out var count);
                 PointsCount = count;
             }
         }

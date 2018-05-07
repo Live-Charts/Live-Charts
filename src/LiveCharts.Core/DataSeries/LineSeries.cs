@@ -51,6 +51,9 @@ namespace LiveCharts.Core.DataSeries
         : CartesianStrokeSeries<TModel, PointCoordinate, BezierViewModel, ILineSeries>, ILineSeries
     {
         private ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> _provider;
+        private double _lineSmoothness;
+        private double _geometrySize;
+        private double _pivot;
         private const string Path = "path";
 
         /// <summary>
@@ -60,6 +63,7 @@ namespace LiveCharts.Core.DataSeries
         {
             Geometry = Geometry.Circle;
             GeometrySize = 12f;
+            DefaultFillOpacity = .8;
             LineSmoothness = .8f;
             DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Y);
             TooltipFormatter = DataLabelFormatter;
@@ -68,10 +72,37 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public double LineSmoothness { get; set; }
+        public double LineSmoothness
+        {
+            get => _lineSmoothness;
+            set
+            {
+                _lineSmoothness = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <inheritdoc />
-        public double GeometrySize { get; set; }
+        public double GeometrySize
+        {
+            get => _geometrySize;
+            set
+            {
+                _geometrySize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public double Pivot
+        {
+            get => _pivot;
+            set
+            {
+                _pivot = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <inheritdoc />
         public override Type ThemeKey => typeof(ILineSeries);
@@ -132,7 +163,10 @@ namespace LiveCharts.Core.DataSeries
 
                 if (isFist)
                 {
-                    cartesianPath.SetStyle(currentBezier.ViewModel.Point1, Stroke, Fill, StrokeThickness, StrokeDashArray);
+                    var pivot = chart.InvertXy
+                        ? new PointF(chart.ScaleToUi(Pivot, y), currentBezier.ViewModel.Point1.Y)
+                        : new PointF(currentBezier.ViewModel.Point1.X, chart.ScaleToUi(Pivot, y));
+                    cartesianPath.SetStyle(currentBezier.ViewModel.Point1, pivot, Stroke, Fill, StrokeThickness, StrokeDashArray);
                     isFist = false;
                     i = p[0];
                 }
@@ -170,7 +204,20 @@ namespace LiveCharts.Core.DataSeries
                 itl++;
             }
 
-            cartesianPath.Close(chart.View, (float) length, i, j);
+            if (previous == null)
+            {
+                previous = new ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries>
+                {
+                    ViewModel = new BezierViewModel
+                    {
+                        Point1 = new PointF()
+                    }
+                };
+            }
+            var closePivot = chart.InvertXy
+                ? new PointF(chart.ScaleToUi(Pivot, y), previous.ViewModel.Point1.Y)
+                : new PointF(previous.ViewModel.Point1.X, chart.ScaleToUi(Pivot, y));
+            cartesianPath.Close(chart.View, closePivot, (float) length, i, j);
         }
 
         private IEnumerable<BezierData> GetBeziers(ChartModel chart, Plane x, Plane y)

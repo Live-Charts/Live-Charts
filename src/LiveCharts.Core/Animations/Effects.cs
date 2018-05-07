@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Core.Animations
 {
     /// <summary>
     /// Effects class.

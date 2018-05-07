@@ -47,6 +47,8 @@ namespace LiveCharts.Core.DataSeries
         : CartesianStrokeSeries<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>, IBubbleSeries
     {
         private ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> _provider;
+        private double _maxGeometrySize;
+        private double _minGeometrySize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BubbleSeries{TModel}"/> class.
@@ -66,10 +68,26 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public double MaxGeometrySize { get; set; }
+        public double MaxGeometrySize
+        {
+            get => _maxGeometrySize;
+            set
+            {
+                _maxGeometrySize = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <inheritdoc />
-        public double MinGeometrySize { get; set; }
+        public double MinGeometrySize
+        {
+            get => _minGeometrySize;
+            set
+            {
+                _minGeometrySize = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <inheritdoc />
         public override Type ThemeKey => typeof(IBubbleSeries);

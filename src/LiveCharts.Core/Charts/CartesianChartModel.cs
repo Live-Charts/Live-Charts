@@ -277,7 +277,7 @@ namespace LiveCharts.Core.Charts
         /// <param name="delta">The delta.</param>
         public void Drag(PointF delta)
         {
-            if (Math.Abs(delta.X) < 0.1 || Math.Abs(delta.Y) < 0.1)
+            if (Math.Abs(delta.X) < 0.1 && Math.Abs(delta.Y) < 0.1)
             {
                 return;
             }

@@ -36,8 +36,12 @@
         
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="#303030"
-                                  Opacity=".35" RenderingBias="Performance" />
+                <DropShadowEffect BlurRadius="5" 
+                                  ShadowDepth="1" 
+                                  Direction="270" 
+                                  Color="#303030"
+                                  Opacity=".35" 
+                                  RenderingBias="Performance" />
             </Setter.Value>
         </Setter>
 
@@ -188,8 +192,7 @@
                             WedgeHypotenuse="{Binding Path=WedgeHypotenuse, RelativeSource={RelativeSource TemplatedParent}}" 
                             Position="{Binding Path=Position, RelativeSource={RelativeSource TemplatedParent}}"
                             CornerRadius="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
-                            Effect="{TemplateBinding Effect}"
-                            Fill="Red">
+                            Effect="{TemplateBinding Effect}">
                             <shapes:DialogShape.Width>
                                 <MultiBinding Converter="{StaticResource GetWidthForDialog}">
                                     <Binding Path="Content" RelativeSource="{RelativeSource TemplatedParent}"/>

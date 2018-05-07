@@ -48,5 +48,13 @@ namespace LiveCharts.Core.DataSeries
         /// The size of the geometry.
         /// </value>
         double GeometrySize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the pivot, the value where the area changes direction, default is 0.
+        /// </summary>
+        /// <value>
+        /// The pivot.
+        /// </value>
+        double Pivot { get; set; }
     }
 }

@@ -84,7 +84,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public ICartesianPath GetNewPath()
         {
-            return new SelfDrawnPath();
+            return new SelfDrawnCartesianPath();
         }
     }
 }

@@ -41,16 +41,10 @@ namespace LiveCharts.Wpf.Views
 {
     public class CartesianPath : ICartesianPath
     {
-        private readonly PathFigure _figure;
-        protected IEnumerable<double> StrokeDashArray;
-        protected double PreviousLength;
-        private TimeLine _timeLine;
-        private bool _isNew;
-
         public CartesianPath()
         {
             StrokePath = new Path();
-            _figure = new PathFigure
+            StrokePathFigure = new PathFigure
             {
                 Segments = new PathSegmentCollection()
             };
@@ -58,72 +52,101 @@ namespace LiveCharts.Wpf.Views
             {
                 Figures = new PathFigureCollection(1)
                 {
-                    _figure
+                    StrokePathFigure
+                }
+            };
+
+            FillPath = new Path();
+            FillPathFigure = new PathFigure
+            {
+                Segments = new PathSegmentCollection()
+            };
+            FillPath.Data = new PathGeometry
+            {
+                Figures = new PathFigureCollection(1)
+                {
+                    FillPathFigure
                 }
             };
         }
 
+        /// <summary>
+        /// Gets the stroke path.
+        /// </summary>
+        /// <value>
+        /// The stroke path.
+        /// </value>
         public Path StrokePath { get; }
 
-        public Path FillPath => null;
+        /// <summary>
+        /// Gets the fill path.
+        /// </summary>
+        /// <value>
+        /// The fill path.
+        /// </value>
+        public Path FillPath { get; }
+
+        protected TimeLine TimeLine { get; set; }
+        protected bool IsNew { get; set; }
+        protected PathFigure StrokePathFigure { get; set; }
+        protected PathFigure FillPathFigure { get; set; }
+        protected IEnumerable<double> StrokeDashArray { get; set; }
+        protected double PreviousLength { get; set; }
 
         /// <inheritdoc />
         public void Initialize(IChartView view, TimeLine timeLine)
         {
-            _timeLine = timeLine;
+            TimeLine = timeLine;
             view.Content.AddChild(StrokePath, true);
-            _isNew = true;
+            view.Content.AddChild(FillPath, true);
+            IsNew = true;
         }
 
         /// <inheritdoc />
-        public void SetStyle(
-            PointF startPoint, Brush stroke, Brush fill,
-            double strokeThickness, IEnumerable<double> strokeDashArray)
+        public virtual void SetStyle(
+            PointF startPoint,
+            PointF pivot,
+            Brush stroke,
+            Brush fill,
+            double strokeThickness,
+            IEnumerable<double> strokeDashArray)
         {
-            if (_isNew)
-            {
-                // To self drawn animation.
-                _figure.StartPoint = startPoint.AsWpf();
-                _isNew = false;
-            }
-            else
-            {
-                _figure.Animate(_timeLine)
-                    .Property(PathFigure.StartPointProperty, _figure.StartPoint, startPoint.AsWpf())
-                    .Begin();
-            }
-
-            StrokePath.Stroke = stroke.AsWpf();
-            StrokePath.Fill = null;
-            StrokePath.StrokeThickness = strokeThickness;
-            StrokeDashArray = strokeDashArray;
-            StrokePath.StrokeDashOffset = 0;
         }
 
         /// <inheritdoc />
         public object InsertSegment(object segment, int index, PointF p1, PointF p2, PointF p3)
         {
-            var s = (BezierSegment)segment ?? new BezierSegment(p1.AsWpf(), p2.AsWpf(), p3.AsWpf(), true);
+            var s = (BezierSegment) segment ?? new BezierSegment(p1.AsWpf(), p2.AsWpf(), p3.AsWpf(), true);
 
-            _figure.Segments.Remove(s);
-            _figure.Segments.Insert(index, s);
+            StrokePathFigure.Segments.Remove(s);
+            StrokePathFigure.Segments.Insert(index, s);
+
+            FillPathFigure.Segments.Remove(s);
+            FillPathFigure.Segments.Insert(index + 1, s);
 
             return s;
         }
 
         public void RemoveSegment(object segment)
         {
-            _figure.Segments.Remove((PathSegment)segment);
+            var pathSegment = (PathSegment) segment;
+            StrokePathFigure.Segments.Remove(pathSegment);
+            FillPathFigure.Segments.Remove(pathSegment);
         }
 
-        public virtual void Close(IChartView view, float length, float i, float j)
+        public virtual void Close(
+            IChartView view,
+            PointF pivot,
+            float length,
+            float i,
+            float j)
         {
-            
         }
 
-        public void Dispose(IChartView view)
+        public virtual void Dispose(IChartView view)
         {
             view.Content.RemoveChild(StrokePath, true);
+            view.Content.RemoveChild(FillPath, true);
         }
     }
 }

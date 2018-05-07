@@ -48,8 +48,8 @@ namespace LiveCharts.Core.Charts
     public interface IChartView : INotifyPropertyChanged, IDisposable
     {
         // as a suggestion do a Explicit implementation
-        // of the following events, this events are used by the core
-        // of the library and they are not really necessary for the user.
+        // of the following events, these events are used by the core
+        // of the library and they are not necessary for the user.
         #region Explicit Implementation
 
         /// <summary>
