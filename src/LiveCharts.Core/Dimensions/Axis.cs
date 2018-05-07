@@ -587,19 +587,19 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <inheritdoc cref="Plane.OnDispose"/>
-        protected override void OnDispose(IChartView chart)
+        protected override void OnDispose(IChartView chart, bool force)
         {
             foreach (var holder in DependentCharts)
             {
                 foreach (var separator in holder.Value)
                 {
-                    separator.Value.Dispose(chart);
+                    separator.Value.Dispose(chart, force);
                 }
             }
 
             foreach (var section in Sections ?? Enumerable.Empty<Section>())
             {
-                section.View.Dispose(chart);
+                section.View.Dispose(chart, force);
             }
 
             DependentCharts.Clear();

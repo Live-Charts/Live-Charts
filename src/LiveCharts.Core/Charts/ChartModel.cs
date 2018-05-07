@@ -101,6 +101,14 @@ namespace LiveCharts.Core.Charts
         public object UpdateId { get; private set; } = new object();
 
         /// <summary>
+        /// Gets a value indicating whether this instance is disposing.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is disposing; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDisposing { get; private set; }
+
+        /// <summary>
         /// Gets or sets the draw area location.
         /// </summary>
         /// <value>
@@ -295,7 +303,7 @@ namespace LiveCharts.Core.Charts
         /// <returns></returns>
         public async void Invalidate(bool restart = false, bool force = false)
         {
-            if (!IsViewInitialized)
+            if (!IsViewInitialized || IsDisposing)
             {
                 return;
             }
@@ -477,7 +485,7 @@ namespace LiveCharts.Core.Charts
             {
                 foreach (var resource in _resources)
                 {
-                    resource.Dispose(View);
+                    resource.Dispose(View, true);
                 }
 
                 _resources.Clear();
@@ -631,13 +639,13 @@ namespace LiveCharts.Core.Charts
             resource.UpdateId = UpdateId;
         }
 
-        internal void CollectResources(bool collectAll = false)
+        internal void CollectResources(bool collectAll = false, bool wasChartDisposed = false)
         {
             foreach (var resource in _resources.ToArray())
             {
                 if (!collectAll && Equals(resource.UpdateId, UpdateId)) continue;
                 _resources.Remove(resource);
-                resource.Dispose(View);
+                resource.Dispose(View, wasChartDisposed);
             }
 
             foreach (var resource in _enumerableResources.ToArray())
@@ -764,10 +772,7 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         public virtual void Dispose()
         {
-            foreach (var resource in _resources)
-            {
-                resource.Dispose(View);
-            }
+            IsDisposing = true;
 
             foreach (var resourceCollection in _enumerableResources.Values)
             {
@@ -776,6 +781,11 @@ namespace LiveCharts.Core.Charts
                 {
                     incc.CollectionChanged -= InvalidateOnCollectionChanged;
                 }
+            }
+
+            foreach (var resource in _resources)
+            {
+                resource.Dispose(View, true);
             }
 
             UpdateId = null;

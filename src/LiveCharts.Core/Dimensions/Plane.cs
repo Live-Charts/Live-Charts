@@ -400,7 +400,7 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
-        protected virtual void OnDispose(IChartView view)
+        protected virtual void OnDispose(IChartView view, bool force)
         {
         }
 
@@ -445,9 +445,9 @@ namespace LiveCharts.Core.Dimensions
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
-        void IResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view, bool force)
         {
-            OnDispose(view);
+            OnDispose(view, force);
             Disposed?.Invoke(view, this);
         }
 

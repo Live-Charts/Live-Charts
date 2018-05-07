@@ -11,9 +11,9 @@ namespace LiveCharts.Core.Dimensions
 
         public object UpdateId { get; set; }
 
-        public void Dispose(IChartView view)
+        public void Dispose(IChartView view, bool force)
         {
-            View?.Dispose(view);
+            View?.Dispose(view, force);
             View = null;
         }
     }

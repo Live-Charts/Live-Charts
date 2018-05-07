@@ -180,7 +180,7 @@ namespace LiveCharts.Wpf
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
-        void IResource.Dispose(IChartView chart)
+        void IResource.Dispose(IChartView chart, bool force)
         {
             var content = (ChartContent)chart.Content;
             content.RemoveChild(this, false);

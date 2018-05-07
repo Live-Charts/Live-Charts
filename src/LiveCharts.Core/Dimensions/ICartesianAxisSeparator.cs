@@ -73,6 +73,7 @@ namespace LiveCharts.Core.Dimensions
         /// Disposes the specified view.
         /// </summary>
         /// <param name="view">The view.</param>
-        void Dispose(IChartView view);
+        /// <param name="force">The force</param>
+        void Dispose(IChartView view, bool force);
     }
 }

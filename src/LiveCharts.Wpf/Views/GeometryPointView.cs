@@ -115,16 +115,24 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDispose(IChartView chart)
+        protected override void OnDispose(IChartView chart, bool force)
         {
+            if (force)
+            {
+                chart.Content.RemoveChild(Shape, true);
+                chart.Content.RemoveChild(Label, true);
+                _lastTimeLine = null;
+                return;
+            }
+
             var animation = Shape.Animate(_lastTimeLine)
                 .Property(FrameworkElement.HeightProperty, Shape.Height, 0)
                 .Property(FrameworkElement.WidthProperty, Shape.Width, 0);
 
             animation.Then((sender, args) =>
             {
-                chart.Content.RemoveChild(Shape, true);
-                chart.Content.RemoveChild(Label, true);
+                chart.Content?.RemoveChild(Shape, true);
+                chart.Content?.RemoveChild(Label, true);
                 animation.Dispose();
                 animation = null;
                 _lastTimeLine = null;

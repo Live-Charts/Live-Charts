@@ -121,18 +121,27 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDispose(IChartView chart)
+        protected override void OnDispose(IChartView chart, bool force)
         {
+            if (force)
+            {
+                chart.Content.RemoveChild(Shape, true);
+                chart.Content.RemoveChild(Label, true);
+                _lastTimeLine = null;
+                return;
+            }
+
             var sliceAnimation = Shape.Animate(_lastTimeLine)
                 .Property(Slice.WedgeProperty, Shape.Wedge, 0);
 
             sliceAnimation
                 .Then((sender, args) =>
                 {
-                    chart.Content.RemoveChild(Shape, true);
-                    chart.Content.RemoveChild(Label, true);
+                    chart.Content?.RemoveChild(Shape, true);
+                    chart.Content?.RemoveChild(Label, true);
                     sliceAnimation.Dispose();
                     sliceAnimation = null;
+                    _lastTimeLine = null;
                 });
         }
     }

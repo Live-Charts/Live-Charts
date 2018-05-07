@@ -363,5 +363,14 @@ namespace LiveCharts.Core.DataSeries
                 ViewModel.Point3 = new PointF(ViewModel.Point3.Y, ViewModel.Point3.X);
             }
         }
+
+        protected override void OnDisposing(IChartView view, bool force)
+        {
+            Content[view.Model].TryGetValue(Path, out var path);
+            var cartesianPath = path as ICartesianPath;
+            cartesianPath?.Dispose(view);
+            Content.Remove(view.Model);
+            base.OnDisposing(view, force);
+        }
     }
 }

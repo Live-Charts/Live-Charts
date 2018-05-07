@@ -116,7 +116,7 @@ namespace LiveCharts.Wpf.Views
                     .Property(UIElement.OpacityProperty, 1, 0)
                     .Then((sender, e) =>
                     {
-                        ((IPlaneSeparatorView) this).Dispose(args.ChartView);
+                        ((IPlaneSeparatorView) this).Dispose(args.ChartView, false);
                         rectangleAnimation = null;
                     });
             }
@@ -147,10 +147,10 @@ namespace LiveCharts.Wpf.Views
                 .Begin();
         }
 
-        void IPlaneSeparatorView.Dispose(IChartView view)
+        void IPlaneSeparatorView.Dispose(IChartView view, bool force)
         {
-            view.Content.RemoveChild(Rectangle, true);
-            view.Content.RemoveChild(Label, false);
+            view.Content?.RemoveChild(Rectangle, true);
+            view.Content?.RemoveChild(Label, false);
             Rectangle = null;
             Label = null;
         }

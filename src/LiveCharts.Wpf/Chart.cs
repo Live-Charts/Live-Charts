@@ -77,6 +77,7 @@ namespace LiveCharts.Wpf
             SizeChanged += OnSizeChanged;
             MouseMove += OnMouseMove;
             MouseLeftButtonDown += OnLeftButtonDown;
+            Unloaded += OnUnloaded;
             TooltipPopup = new Popup
             {
                 AllowsTransparency = true,
@@ -244,6 +245,11 @@ namespace LiveCharts.Wpf
         private void OnLoaded(object sender, EventArgs eventArgs)
         {
             ChartViewLoaded?.Invoke(this);
+        }
+
+        private void OnUnloaded(object sender1, RoutedEventArgs routedEventArgs)
+        {
+            Dispose();
         }
 
         private void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
@@ -496,7 +502,6 @@ namespace LiveCharts.Wpf
             Children.Remove(TooltipPopup);
             Children.Remove(VisualDrawMargin);
             Loaded -= OnLoaded;
-            VisualDrawMargin = null;
             DrawMargin = Core.Drawing.Margin.Empty;
             SetValue(LegendProperty, null);
             SetValue(DataTooltipProperty, null);
@@ -505,6 +510,7 @@ namespace LiveCharts.Wpf
             MouseMove -= OnMouseMove;
             MouseLeftButtonDown -= OnLeftButtonDown;
             TooltipPopup = null;
+            VisualDrawMargin = null;
         }
     }
 }

@@ -542,16 +542,16 @@ namespace LiveCharts.Core.DataSeries
 
         object IResource.UpdateId { get; set; }
 
-        void IResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view, bool force)
         {
-            OnDisposing(view);
+            OnDisposing(view, force);
             Disposed?.Invoke(view, this);
         }
 
         /// <summary>get
         /// Called when the series is disposed.
         /// </summary>
-        protected virtual void OnDisposing(IChartView view)
+        protected virtual void OnDisposing(IChartView view, bool force)
         {
             _usedBy = null;
             if (!Content.ContainsKey(view.Model)) return;

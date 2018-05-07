@@ -118,7 +118,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc cref="Dispose"/>
-        protected abstract void OnDispose(IChartView chart);
+        protected abstract void OnDispose(IChartView chart, bool force);
 
         #region ResourceViewImplementation
         
@@ -150,9 +150,9 @@ namespace LiveCharts.Wpf.Views
         object IResource.UpdateId { get; set; }
 
         /// <inheritdoc />
-        public void Dispose(IChartView view)
+        public void Dispose(IChartView view, bool force)
         {
-            OnDispose(view);
+            OnDispose(view, force);
             Disposed?.Invoke(view, this);
         }
 

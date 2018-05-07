@@ -99,9 +99,9 @@ namespace LiveCharts.Core.Interaction.Points
 
         object IResource.UpdateId { get; set; }
 
-        void IResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view, bool force)
         {
-            View?.Dispose(view);
+            View?.Dispose(view, force);
             Disposed?.Invoke(view, this);
         }
     }

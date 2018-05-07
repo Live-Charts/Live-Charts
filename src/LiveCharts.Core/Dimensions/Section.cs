@@ -172,9 +172,9 @@ namespace LiveCharts.Core.Dimensions
 
         object IResource.UpdateId { get; set; }
 
-        void IResource.Dispose(IChartView view)
+        void IResource.Dispose(IChartView view, bool force)
         {
-            View.Dispose(view);
+            View.Dispose(view, force);
         }
 
         #endregion

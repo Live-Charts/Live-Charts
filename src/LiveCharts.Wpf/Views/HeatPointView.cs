@@ -102,7 +102,7 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDispose(IChartView chart)
+        protected override void OnDispose(IChartView chart, bool force)
         {
             chart.Content.RemoveChild(Shape, true);
             chart.Content.RemoveChild(Label, true);

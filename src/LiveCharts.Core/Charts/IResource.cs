@@ -52,6 +52,7 @@ namespace LiveCharts.Core.Charts
         /// Disposes from specified view.
         /// </summary>
         /// <param name="view">The view.</param>
-        void Dispose(IChartView view);
+        /// <param name="force"></param>
+        void Dispose(IChartView view, bool force);
     }
 }

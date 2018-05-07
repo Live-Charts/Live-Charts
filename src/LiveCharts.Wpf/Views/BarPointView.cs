@@ -125,8 +125,18 @@ namespace LiveCharts.Wpf.Views
         }
 
         /// <inheritdoc />
-        protected override void OnDispose(IChartView chart)
+        protected override void OnDispose(IChartView chart, bool force)
         {
+            if (force)
+            {
+                chart.Content.RemoveChild(Shape, true);
+                chart.Content.RemoveChild(Label, true);
+                _lastTimeLine = null;
+                return;
+            }
+
+            // if not forced, animate the exit...
+
             var barSeries = (IBarSeries) _chartPoint.Series;
             var pivot = chart.Model.ScaleToUi(barSeries.Pivot, chart.Dimensions[1][barSeries.ScalesAt[1]]);
 
@@ -136,10 +146,11 @@ namespace LiveCharts.Wpf.Views
 
             animation.Then((sender, args) =>
             {
-                chart.Content.RemoveChild(chart, true);
-                chart.Content.RemoveChild(Label, true);
+                chart.Content?.RemoveChild(Shape, true);
+                chart.Content?.RemoveChild(Label, true);
                 animation.Dispose();
                 animation = null;
+                _lastTimeLine = null;
             }).Begin();
         }
     }

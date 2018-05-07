@@ -66,6 +66,7 @@ namespace LiveCharts.Wpf.Views
 
         private bool IsMiddlePoint => _next != null && _previous != null;
 
+        /// <inheritdoc />
         protected override void OnDraw(
             ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> chartPoint, 
             ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> previous,
@@ -128,6 +129,7 @@ namespace LiveCharts.Wpf.Views
             _lastTimeLine = timeLine;
         }
 
+        /// <inheritdoc />
         protected override void PlaceLabel(
             ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> chartPoint, 
             SizeF labelSize)
@@ -136,8 +138,19 @@ namespace LiveCharts.Wpf.Views
             Canvas.SetLeft(Label, chartPoint.ViewModel.Location.X);
         }
 
-        protected override void OnDispose(IChartView chart)
+        /// <inheritdoc />
+        protected override void OnDispose(IChartView chart, bool force)
         {
+            if (force)
+            {
+                chart.Content.RemoveChild(Shape, true);
+                chart.Content.RemoveChild(Label, true);
+                _segment = null;
+                _path = null;
+                _lastTimeLine = null;
+                return;
+            }
+
             var t = _next ?? _previous ?? this;
 
             var shapeAnimation = Shape.Animate(_lastTimeLine)
@@ -150,6 +163,7 @@ namespace LiveCharts.Wpf.Views
                 .Then((sender, args) =>
                 {
                     chart.Content.RemoveChild(Shape, true);
+                    chart.Content.RemoveChild(Label, true);
                 })
                 .Begin();
 
