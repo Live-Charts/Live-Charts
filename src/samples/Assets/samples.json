@@ -40,7 +40,7 @@
       {
         "id": "AxisPositioning",
         "name": "Axis positioning",
-        "text":  "Axis positioning tests"
+        "text": "Axis positioning tests"
       },
       {
         "id": "AxisSections",
@@ -69,6 +69,10 @@
         "extraFiles": [
           "Models/Player.cs"
         ]
+      }, {
+        "id": "UserInteractiveData",
+        "name": "User Interactive Data",
+        "text": "The user modifies the chart clicking over the it."
       },
       {
         "id": "ZoomingAndPanning",
@@ -96,7 +100,7 @@
       {
         "id": "EventsTests",
         "name": "Events Tests",
-        "text":  "Basic sample to illustrate chartt events." 
+        "text": "Basic sample to illustrate chartt events."
       }
     ],
     "Testing": [

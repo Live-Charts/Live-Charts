@@ -64,7 +64,7 @@ namespace LiveCharts.Core
             charting.LearnType<float, PointCoordinate>((value, index) => new PointCoordinate(index, value));
             charting.LearnType<decimal, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
             charting.LearnType<ObservableModel, PointCoordinate>((om, index) => new PointCoordinate(index, om.Value));
-            charting.LearnType<PointModel, PointCoordinate>((opm, index) => new PointCoordinate(opm.X, opm.Y));
+            charting.LearnType<PointModel, PointCoordinate>((opm, index) => new PointCoordinate((float) opm.X, (float) opm.Y));
 
             // Stacked Coordinates
 
@@ -82,12 +82,12 @@ namespace LiveCharts.Core
             charting.LearnType<ObservableModel, StackedPointCoordinate>(
                 (om, index) => new StackedPointCoordinate(index, om.Value));
             charting.LearnType<PointModel, StackedPointCoordinate>(
-                (opm, index) => new StackedPointCoordinate(opm.X, opm.Y));
+                (opm, index) => new StackedPointCoordinate((float) opm.X, (float) opm.Y));
 
             // weighted coordinates
 
             charting.LearnType<WeightedModel, WeightedCoordinate>((model, index) =>
-                new WeightedCoordinate(model.X, model.Y, model.Weight));
+                new WeightedCoordinate((float) model.X, (float) model.Y, model.Weight));
             
             // financial coordinates
 

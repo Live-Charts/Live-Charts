@@ -448,7 +448,7 @@ namespace LiveCharts.Core.DataSeries
         /// vertical - null
         /// </exception>
         protected PointF GetLabelPosition(
-            Point pointLocation,
+            PointF pointLocation,
             Margin pointMargin,
             float betweenBottomLimit,
             Size labelModel,

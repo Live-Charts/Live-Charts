@@ -33,6 +33,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using Point = System.Windows.Point;
 
@@ -191,6 +192,35 @@ namespace LiveCharts.Wpf
         }
 
         #endregion
+
+        /// <summary>
+        /// Scales a point in the target planes units to the chart UI coordinates.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="xPlaneIndex">Index of the x plane.</param>
+        /// <param name="yPlaneIndex">Index of the y plane.</param>
+        /// <returns></returns>
+        public Point ScaleToUi(Point point, int xPlaneIndex = 0, int yPlaneIndex = 0)
+        {
+            return new Point(
+                Content.DrawArea.X + Model.ScaleToUi(point.X, XAxis[xPlaneIndex]),
+                Content.DrawArea.Y + Model.ScaleToUi(point.Y, YAxis[yPlaneIndex]));
+        }
+
+        /// <summary>
+        /// Scales a point in the chart Ui coordinates to the target planes units.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="xPlaneIndex">Index of the x plane.</param>
+        /// <param name="yPlaneIndex">Index of the y plane.</param>
+        /// <returns></returns>
+        public Point ScaleFromUi(Point point, int xPlaneIndex = 0, int yPlaneIndex = 0)
+        {
+            var corrected = new Point(point.X - Content.DrawArea.X, point.Y - Content.DrawArea.Y);
+            return new Point(
+                Model.ScaleFromUi((float) corrected.X, XAxis[xPlaneIndex]),
+                Model.ScaleFromUi((float) corrected.Y, YAxis[yPlaneIndex]));
+        }
 
         /// <inheritdoc cref="Chart.GetOrderedDimensions"/>
         protected override IList<IList<Plane>> GetOrderedDimensions()
