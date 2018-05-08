@@ -25,14 +25,14 @@
                             ChartUpdated="OnChartUpdated"
                             ChartUpdatedCommand="{Binding UpdateFinishedCommand}"
 
-                            DataPointerDown="Chart_OnChartPointPointerDown"
-                            DataPointerDownCommand="{Binding PointerDataDownCommand}"
+                            DataMouseDown="Chart_OnChartPointPointerDown"
+                            DataMouseDownCommand="{Binding PointerDataDownCommand}"
 
-                            DataPointerEntered="Chart_OnChartPointPointerEntered"
-                            DataPointerEnteredCommand="{Binding PointerDataEnteredCommand}"
+                            DataMouseEntered="Chart_OnChartPointPointerEntered"
+                            DataMouseEnteredCommand="{Binding PointerDataEnteredCommand}"
 
-                            DataPointerLeft="Chart_OnChartPointPointerLeft"
-                            DataPointerLeftCommand="{Binding PointerDataLeftCommand}" />
+                            DataMouseLeft="Chart_OnChartPointPointerLeft"
+                            DataMouseLeftCommand="{Binding PointerDataLeftCommand}" />
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible" MaxHeight="{Binding ElementName=Grid, Path=ActualHeight}">
             <ItemsControl ItemsSource="{Binding Log}" Background="#303030" Padding="15">
                 <ItemsControl.ItemTemplate>

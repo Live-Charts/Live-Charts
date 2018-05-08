@@ -95,47 +95,6 @@ namespace LiveCharts.Core.Charts
         ICommand ChartUpdatedCommand { get; set; }
 
         /// <summary>
-        /// Occurs when a user places the pointer over a point.
-        /// </summary>
-        event DataInteractionHandler DataPointerEntered;
-
-        /// <summary>
-        /// Gets or sets the data mouse enter command, this command will try to be executed 
-        /// when  the user places the pointer over a point.
-        /// </summary>
-        /// <value>
-        /// The data mouse enter command.
-        /// </value>
-        ICommand DataPointerEnteredCommand { get; set; }
-
-        /// <summary>
-        /// Occurs when the user moves the pointer away from a data point.
-        /// </summary>
-        event DataInteractionHandler DataPointerLeft;
-
-        /// <summary>
-        /// Gets or sets the data mouse leave command, this command will try to be executed
-        /// when the user leaves moves the pointer away from a data point.
-        /// </summary>
-        /// <value>
-        /// The data mouse leave.
-        /// </value>
-        ICommand DataPointerLeftCommand { get; set; }
-
-        /// <summary>
-        /// Occurs when the user moves the pointer down in a point.
-        /// </summary>
-        event DataInteractionHandler DataPointerDown;
-
-        /// <summary>
-        /// Gets or sets the data pointer down command.
-        /// </summary>
-        /// <value>
-        /// The data pointer down command.
-        /// </value>
-        ICommand DataPointerDownCommand { get; set; }
-
-        /// <summary>
         /// Gets the chart model.
         /// </summary>
         /// <value>

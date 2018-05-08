@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace LiveCharts.Core.Interaction.Events
 {
@@ -6,5 +7,6 @@ namespace LiveCharts.Core.Interaction.Events
     /// The pointer handler.
     /// </summary>
     /// <param name="pointerLocation">The pointer location.</param>
-    public delegate void PointerHandler(PointF pointerLocation);
+    /// <param name="eventArgs">The event args.</param>
+    public delegate void PointerHandler(PointF pointerLocation, EventArgs eventArgs);
 }

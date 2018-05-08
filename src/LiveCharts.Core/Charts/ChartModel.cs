@@ -415,7 +415,8 @@ namespace LiveCharts.Core.Charts
         /// Called when the pointer moves over a chart and there is a tooltip in the view.
         /// </summary>
         /// <param name="pointerLocation">The dimensions.</param>
-        protected virtual void ViewOnPointerMoved(PointF pointerLocation)
+        /// <param name="args">The args.</param>
+        protected virtual void ViewOnPointerMoved(PointF pointerLocation, EventArgs args)
         {
             if (Series == null) return;
             if (!IsViewInitialized) return;
@@ -431,14 +432,15 @@ namespace LiveCharts.Core.Charts
 
             if (!requiresDataEnter && !requiresDataLeft) return;
 
-            EvaluateEnterLeftPoints(pointerLocation);
+            EvaluateEnterLeftPoints(pointerLocation, args);
         }
 
         /// <summary>
         /// Called when the pointer goes down in the tooltip
         /// </summary>
         /// <param name="pointerLocation">The pointer location.</param>
-        protected virtual void ViewOnPointerDown(PointF pointerLocation)
+        /// /// <param name="args">The event args.</param>
+        protected virtual void ViewOnPointerDown(PointF pointerLocation, EventArgs args)
         {
             if (Series == null) return;
             if (!IsViewInitialized) return;
@@ -455,7 +457,7 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            OnDataPointerDown(query);
+            OnDataPointerDown(query, args);
 
             if (View.DataToolTip != null)
             {
@@ -696,7 +698,7 @@ namespace LiveCharts.Core.Charts
             _previousHovered = query;
         }
 
-        private void EvaluateEnterLeftPoints(PointF pointerLocation)
+        private void EvaluateEnterLeftPoints(PointF pointerLocation, EventArgs args)
         {
             var q = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
 
@@ -704,7 +706,7 @@ namespace LiveCharts.Core.Charts
                 .Where(x => !x.InteractionArea.Contains(pointerLocation, ToolTipSelectionMode.SharedXy)).ToArray();
             if (leftPoints.Any())
             {
-                OnDataPointerLeft(leftPoints);
+                OnDataPointerLeft(leftPoints, args);
             }
 
             if (!q.Any())
@@ -717,7 +719,7 @@ namespace LiveCharts.Core.Charts
 
             if (enteredPoints.Any())
             {
-                OnDataPointerEnter(enteredPoints);
+                OnDataPointerEnter(enteredPoints, args);
                 _previousEntered = new HashSet<IChartPoint>(enteredPoints);
             }
         }
@@ -831,9 +833,10 @@ namespace LiveCharts.Core.Charts
         /// Called when [data pointer enter].
         /// </summary>
         /// <param name="points">The points.</param>
-        protected virtual void OnDataPointerEnter(IChartPoint[] points)
+        /// <param name="args">The event args.</param>
+        protected virtual void OnDataPointerEnter(IChartPoint[] points, EventArgs args)
         {
-            DataPointerEntered?.Invoke(View, points);
+            DataPointerEntered?.Invoke(View, points, args);
             if (DataPointerEnteredCommand != null && DataPointerEnteredCommand.CanExecute(points))
             {
                 DataPointerEnteredCommand.Execute(points);
@@ -844,9 +847,10 @@ namespace LiveCharts.Core.Charts
         /// Called when [data pointer leave].
         /// </summary>
         /// <param name="points">The points.</param>
-        protected virtual void OnDataPointerLeft(IChartPoint[] points)
+        /// <param name="args">The event args.</param>
+        protected virtual void OnDataPointerLeft(IChartPoint[] points, EventArgs args)
         {
-            DataPointerLeft?.Invoke(View, points);
+            DataPointerLeft?.Invoke(View, points, args);
             if (DataPointerLeftCommand != null && DataPointerLeftCommand.CanExecute(points))
             {
                 DataPointerLeftCommand.Execute(points);
@@ -857,9 +861,10 @@ namespace LiveCharts.Core.Charts
         /// Called when [data pointer down].
         /// </summary>
         /// <param name="points">The points.</param>
-        protected virtual void OnDataPointerDown(IChartPoint[] points)
+        /// /// <param name="args">The event args.</param>
+        protected virtual void OnDataPointerDown(IChartPoint[] points, EventArgs args)
         {
-            DataPointerDown?.Invoke(View, points);
+            DataPointerDown?.Invoke(View, points, args);
             if (DataPointerDownCommand != null && DataPointerDownCommand.CanExecute(points))
             {
                 DataPointerDownCommand.Execute(points);

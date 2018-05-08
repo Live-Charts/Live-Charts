@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Interaction.Points;
@@ -36,6 +37,7 @@ namespace LiveCharts.Core.Interaction.Events
     /// A handler related with user interaction with a chart point.
     /// </summary>
     /// <param name="chart">The sender chart.</param>
-    /// <param name="points">The points the user is interacting with.</param>
-    public delegate void DataInteractionHandler(IChartView chart, IChartPoint[] points);
+    /// <param name="interactedPoints">The points the user is interacting with.</param>
+    /// <param name="args">The event args.</param>
+    public delegate void DataInteractionHandler(IChartView chart, IChartPoint[] interactedPoints, EventArgs args);
 }

@@ -62,7 +62,7 @@ namespace LiveCharts.Core.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(PointF pointerLocation)
+        protected override void ViewOnPointerMoved(PointF pointerLocation, EventArgs args)
         {
         }
 

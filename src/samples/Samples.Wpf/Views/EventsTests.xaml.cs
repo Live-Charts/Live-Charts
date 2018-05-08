@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Interaction.Points;
@@ -29,8 +31,12 @@ namespace Samples.Wpf.Views
             context.Log.Insert(0,"Updated");
         }
 
-        private void Chart_OnChartPointPointerDown(IChartView chart, IEnumerable<IChartPoint> points)
+        private void Chart_OnChartPointPointerDown(
+            IChartView chart, IEnumerable<IChartPoint> points, MouseButtonEventArgs args)
         {
+            // the event is handled, so panning will be disabled while we click on a data point.
+            args.Handled = true;
+
             var context = (Assets.ViewModels.EventsTests) DataContext;
 
             // points contains all the elements that were clicked by the users
@@ -57,7 +63,8 @@ namespace Samples.Wpf.Views
             // context.Log.Add($"chart point clicked with coordinates {x}, {y}");
         }
 
-        private void Chart_OnChartPointPointerEntered(IChartView chart, IEnumerable<IChartPoint> points)
+        private void Chart_OnChartPointPointerEntered(
+            IChartView chart, IEnumerable<IChartPoint> points, MouseEventArgs args)
         {
             var context = (Assets.ViewModels.EventsTests) DataContext;
             var point = points.FirstOrDefault();
@@ -66,7 +73,8 @@ namespace Samples.Wpf.Views
             context.Log.Insert(0,$"PointerEntered @ {pointCoordinate.X}, {pointCoordinate.Y}");
         }
 
-        private void Chart_OnChartPointPointerLeft(IChartView chart, IEnumerable<IChartPoint> points)
+        private void Chart_OnChartPointPointerLeft(
+            IChartView chart, IEnumerable<IChartPoint> points, MouseEventArgs args)
         {
             var context = (Assets.ViewModels.EventsTests) DataContext;
             var point = points.FirstOrDefault();

@@ -40,6 +40,8 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Wpf.Events;
 using DataInteractionHandler = LiveCharts.Core.Interaction.Events.DataInteractionHandler;
 using Point = System.Windows.Point;
 
@@ -52,7 +54,7 @@ namespace LiveCharts.Wpf
     /// </summary>
     /// <seealso cref="Canvas" />
     /// <seealso cref="IChartView" />
-    public abstract class Chart : Canvas, IChartView
+    public abstract class Chart : Canvas, IChartView, IWpfChart
     {
         /// <summary>
         /// Initializes the <see cref="Chart"/> class.
@@ -187,35 +189,37 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// The data pointer entered command property
         /// </summary>
-        public static readonly DependencyProperty DataPointerEnteredCommandProperty = DependencyProperty.Register(
-            nameof(DataPointerEnteredCommand), typeof(ICommand), typeof(Chart),
+        public static readonly DependencyProperty DataMouseEnteredCommandProperty = DependencyProperty.Register(
+            nameof(DataMouseEnteredCommand), typeof(ICommand), typeof(Chart),
             new PropertyMetadata(default(ICommand), (o, args) =>
             {
                 var chart = (Chart) o;
-                chart.Model.DataPointerEnteredCommand = chart.DataPointerEnteredCommand;
+                chart.Model.DataPointerEnteredCommand = chart.DataMouseEnteredCommand;
             }));
 
         /// <summary>
         /// The data pointer left command property
         /// </summary>
-        public static readonly DependencyProperty DataPointerLeftCommandProperty = DependencyProperty.Register(
-            nameof(DataPointerLeftCommand), typeof(ICommand), typeof(Chart),
+        public static readonly DependencyProperty DataMouseLeftCommandProperty = DependencyProperty.Register(
+            nameof(DataMouseLeftCommand), typeof(ICommand), typeof(Chart),
             new PropertyMetadata(default(ICommand), (o, args) =>
             {
                 var chart = (Chart) o;
-                chart.Model.DataPointerLeftCommand = chart.DataPointerLeftCommand;
+                chart.Model.DataPointerLeftCommand = chart.DataMouseLeftCommand;
             }));
 
         /// <summary>
         /// The data pointer down command property
         /// </summary>
-        public static readonly DependencyProperty DataPointerDownCommandProperty = DependencyProperty.Register(
-            nameof(DataPointerDownCommand), typeof(ICommand), typeof(Chart),
+        public static readonly DependencyProperty DataMouseDownCommandProperty = DependencyProperty.Register(
+            nameof(DataMouseDownCommand), typeof(ICommand), typeof(Chart),
             new PropertyMetadata(default(ICommand), (o, args) =>
             {
                 var chart = (Chart) o;
-                chart.Model.DataPointerDownCommand = chart.DataPointerDownCommand;
+                chart.Model.DataPointerDownCommand = chart.DataMouseDownCommand;
             }));
+
+        private ChartModel _model;
 
         #endregion
 
@@ -242,28 +246,34 @@ namespace LiveCharts.Wpf
             };
         }
 
-        private void OnLoaded(object sender, EventArgs eventArgs)
+        /// <summary>
+        /// Called when [loaded].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="eventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected virtual void OnLoaded(object sender, EventArgs eventArgs)
         {
             ChartViewLoaded?.Invoke(this);
         }
 
-        private void OnUnloaded(object sender1, RoutedEventArgs routedEventArgs)
+        /// <summary>
+        /// Called when [unloaded].
+        /// </summary>
+        /// <param name="sender1">The sender1.</param>
+        /// <param name="routedEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnUnloaded(object sender1, RoutedEventArgs routedEventArgs)
         {
             Dispose();
         }
 
-        private void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
+        /// <summary>
+        /// Called when [size changed].
+        /// </summary>
+        /// <param name="o">The o.</param>
+        /// <param name="sizeChangedEventArgs">The <see cref="SizeChangedEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
         {
             ChartViewResized?.Invoke(this);
-        }
-
-        private PointF GetDrawAreaLocation(MouseEventArgs args)
-        {
-            var p = args.GetPosition(this);
-            var c = new Point(
-                p.X - Content.DrawArea.X,
-                p.Y - Content.DrawArea.Y);
-            return new PointF((float) c.X, (float) c.Y);
         }
 
         /// <summary>
@@ -273,12 +283,45 @@ namespace LiveCharts.Wpf
         /// <param name="args">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         protected virtual void OnMouseMove(object o, MouseEventArgs args)
         {
-            PointerMovedOverPlot?.Invoke(GetDrawAreaLocation(args));
+            PointerMovedOverPlot?.Invoke(GetDrawAreaLocation(args), args);
         }
 
-        private void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
+        /// <summary>
+        /// Called when [left button down].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
         {
-            PointerDownOverPlot?.Invoke(GetDrawAreaLocation(args));
+            PointerDownOverPlot?.Invoke(GetDrawAreaLocation(args), args);
+        }
+
+        /// <summary>
+        /// Called when [model set].
+        /// </summary>
+        protected virtual void OnModelSet()
+        {
+            Model.DataPointerDown += (chart, points, args) =>
+            {
+                DataMouseDown?.Invoke(chart, points, (MouseButtonEventArgs)args);
+            };
+            Model.DataPointerEntered += (chart, points, args) =>
+            {
+                DataMouseEntered?.Invoke(chart, points, (MouseEventArgs)args);
+            };
+            Model.DataPointerLeft += (chart, points, args) =>
+            {
+                DataMouseLeft?.Invoke(chart, points, (MouseEventArgs)args);
+            };
+        }
+
+        private PointF GetDrawAreaLocation(MouseEventArgs args)
+        {
+            var p = args.GetPosition(this);
+            var c = new Point(
+                p.X - Content.DrawArea.X,
+                p.Y - Content.DrawArea.Y);
+            return new PointF((float)c.X, (float)c.Y);
         }
 
         #endregion
@@ -345,50 +388,16 @@ namespace LiveCharts.Wpf
             set => SetValue(ChartUpdatedCommandProperty, value);
         }
 
-        /// <inheritdoc />
-        public event DataInteractionHandler DataPointerEntered
-        {
-            add => Model.DataPointerEntered += value;
-            remove => Model.DataPointerLeft -= value;
-        }
-
-        /// <inheritdoc />
-        public ICommand DataPointerEnteredCommand
-        {
-            get => (ICommand) GetValue(DataPointerEnteredCommandProperty);
-            set => SetValue(DataPointerEnteredCommandProperty, value);
-        }
-
-        /// <inheritdoc />
-        public event DataInteractionHandler DataPointerLeft
-        {
-            add => Model.DataPointerLeft += value;
-            remove => Model.DataPointerLeft -= value;
-        }
-
-        /// <inheritdoc />
-        public ICommand DataPointerLeftCommand
-        {
-            get => (ICommand) GetValue(DataPointerLeftCommandProperty);
-            set => SetValue(DataPointerLeftCommandProperty, value);
-        }
-
-        /// <inheritdoc />
-        public event DataInteractionHandler DataPointerDown
-        {
-            add => Model.DataPointerDown += value;
-            remove => Model.DataPointerDown -= value;
-        }
-
-        /// <inheritdoc />
-        public ICommand DataPointerDownCommand
-        {
-            get => (ICommand) GetValue(DataPointerDownCommandProperty);
-            set => SetValue(DataPointerDownCommandProperty, value);
-        }
-
         /// <inheritdoc cref="IChartView.Model"/>
-        public ChartModel Model { get; protected set; }
+        public ChartModel Model
+        {
+            get => _model;
+            protected set
+            {
+                _model = value;
+                OnModelSet();
+            }
+        }
 
         public IChartContent Content
         {
@@ -475,6 +484,40 @@ namespace LiveCharts.Wpf
         void IChartView.InvokeOnUiThread(Action action)
         {
             Dispatcher.Invoke(action);
+        }
+
+        #endregion
+
+        #region IWPFChart implementation
+
+        /// <inheritdoc />
+        public event MouseDataInteractionHandler DataMouseEntered;
+
+        /// <inheritdoc />
+        public ICommand DataMouseEnteredCommand
+        {
+            get => (ICommand) GetValue(DataMouseEnteredCommandProperty);
+            set => SetValue(DataMouseEnteredCommandProperty, value);
+        }
+
+        /// <inheritdoc />
+        public event MouseDataInteractionHandler DataMouseLeft;
+
+        /// <inheritdoc />
+        public ICommand DataMouseLeftCommand
+        {
+            get => (ICommand) GetValue(DataMouseLeftCommandProperty);
+            set => SetValue(DataMouseLeftCommandProperty, value);
+        }
+
+        /// <inheritdoc />
+        public event MouseButtonDataInteractionHandler DataMouseDown;
+
+        /// <inheritdoc />
+        public ICommand DataMouseDownCommand
+        {
+            get => (ICommand) GetValue(DataMouseDownCommandProperty);
+            set => SetValue(DataMouseDownCommandProperty, value);
         }
 
         #endregion
