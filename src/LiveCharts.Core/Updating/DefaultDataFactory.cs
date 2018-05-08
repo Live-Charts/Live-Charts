@@ -55,11 +55,6 @@ namespace LiveCharts.Core.Updating
             var pointTracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
                 context.Series.Content[context.Chart][Config.TrackerKey];
 
-            void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-            {
-                context.Chart.Invalidate();
-            }
-            
             for (var index = 0; index < collection.Count; index++)
             {
                 var instance = collection[index];
@@ -73,6 +68,12 @@ namespace LiveCharts.Core.Updating
                     if (notifiesChange)
                     {
                         var npc = (INotifyPropertyChanged) instance;
+
+                        // ToDo: Evaluate memory consumption with and without observers...
+                        void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+                        {
+                            chartPoint.Chart.Model.Invalidate();
+                        }
 
                         void DisposeByValPoint(IChartView view, object sender)
                         {

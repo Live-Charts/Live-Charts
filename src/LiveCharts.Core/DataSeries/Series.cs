@@ -368,7 +368,7 @@ namespace LiveCharts.Core.DataSeries
                 throw new LiveChartsException(
                     $"The series type {GetType().Name} is not assignable to {typeof(TSeries).Name}", 220);
             }
-
+            
             using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TSeries>
             {
                 Series = tSeries,

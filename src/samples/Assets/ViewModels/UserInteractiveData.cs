@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
 
@@ -8,22 +10,14 @@ namespace Assets.ViewModels
     {
         public UserInteractiveData()
         {
+            var r = new Random();
+            var generator = new int[35];
+
             SeriesCollection = new ObservableCollection<ISeries>
             {
-                new BarSeries<double>
-                {
-                    Values = new ObservableCollection<double> {3, 8, 2, 6, 8}
-                },
                 new ScatterSeries<PointModel>
                 {
-                    Values = new ObservableCollection<PointModel>
-                    {
-                        new PointModel(0, 4),
-                        new PointModel(1, 8),
-                        new PointModel(2, 6),
-                        new PointModel(3, 2),
-                        new PointModel(4, 9)
-                    }
+                    Values = new ObservableCollection<PointModel> (generator.Select(x => new PointModel(r.Next(0,50), r.Next(0,50))))
                 }
             };
         }

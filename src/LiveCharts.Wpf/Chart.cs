@@ -40,9 +40,7 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
-using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Wpf.Events;
-using DataInteractionHandler = LiveCharts.Core.Interaction.Events.DataInteractionHandler;
 using Point = System.Windows.Point;
 
 #endregion
@@ -303,15 +301,15 @@ namespace LiveCharts.Wpf
         {
             Model.DataPointerDown += (chart, points, args) =>
             {
-                DataMouseDown?.Invoke(chart, points, (MouseButtonEventArgs)args);
+                DataMouseDown?.Invoke(chart, points, (MouseButtonEventArgs) args);
             };
             Model.DataPointerEntered += (chart, points, args) =>
             {
-                DataMouseEntered?.Invoke(chart, points, (MouseEventArgs)args);
+                DataMouseEntered?.Invoke(chart, points, (MouseEventArgs) args);
             };
             Model.DataPointerLeft += (chart, points, args) =>
             {
-                DataMouseLeft?.Invoke(chart, points, (MouseEventArgs)args);
+                DataMouseLeft?.Invoke(chart, points, (MouseEventArgs) args);
             };
         }
 
