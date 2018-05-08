@@ -28,7 +28,6 @@ namespace LiveCharts.Wpf.Views
             if (IsNew)
             {
                 StrokePathFigure.StartPoint = startPoint.AsWpf();
-                IsNew = false;
             }
             else
             {
@@ -91,6 +90,7 @@ namespace LiveCharts.Wpf.Views
             if (IsNew)
             {
                 FillPath.BeginAnimation(UIElement.OpacityProperty, opacityAnimation);
+                IsNew = false;
             }
 
             StrokePath.StrokeDashOffset = 0;

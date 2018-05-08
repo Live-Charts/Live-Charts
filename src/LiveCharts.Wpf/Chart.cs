@@ -467,7 +467,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public void Update(bool restartAnimations = false)
+        public void ForceUpdate(bool restartAnimations = false)
         {
             Model.Invalidate(restartAnimations, true);
         }

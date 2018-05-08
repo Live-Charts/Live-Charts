@@ -92,6 +92,9 @@
     <Compile Include="Views\BasicStackedBar.xaml.cs">
       <DependentUpon>BasicStackedBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ByPointDelay.xaml.cs">
+      <DependentUpon>ByPointDelay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataLabels.xaml.cs">
       <DependentUpon>DataLabels.xaml</DependentUpon>
     </Compile>
@@ -177,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BasicStackedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ByPointDelay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -294,6 +301,7 @@
     <Resource Include="Images\EventsTests.png" />
     <Resource Include="Images\ObservableSeries.png" />
     <Resource Include="Images\UserInteractiveData.png" />
+    <Resource Include="Images\ByPointDelay.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -589,7 +589,7 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc cref="Plane.OnDispose"/>
         protected override void OnDispose(IChartView chart, bool force)
         {
-            foreach (var holder in DependentCharts)
+            foreach (var holder in DependentCharts ?? new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>())
             {
                 foreach (var separator in holder.Value)
                 {
@@ -602,7 +602,7 @@ namespace LiveCharts.Core.Dimensions
                 section.View.Dispose(chart, force);
             }
 
-            DependentCharts.Clear();
+            DependentCharts?.Clear();
             DependentCharts = null;
         }
         

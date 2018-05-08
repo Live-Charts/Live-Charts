@@ -243,7 +243,7 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Updates the chart manually.
         /// </summary>
-        void Update(bool restartAnimations = false);
+        void ForceUpdate(bool restartAnimations = false);
 
         /// <summary>
         /// Dispatchers the specified action.
