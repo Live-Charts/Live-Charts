@@ -51,6 +51,10 @@
         "id": "MultipleAxes",
         "name": "Multiple axes",
         "text": "A chart that scales its series in multiple axes."
+      }, {
+        "id": "ReverseAxes",
+        "name": "Reverse Axes",
+        "text": "Use the Plane.Reverse property to invert any plane/Axis."
       },
       {
         "id": "DataLabels",

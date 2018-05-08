@@ -116,6 +116,9 @@
     <Compile Include="Views\ObservableSeries.xaml.cs">
       <DependentUpon>ObservableSeries.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReverseAxes.xaml.cs">
+      <DependentUpon>ReverseAxes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScrollBar.xaml.cs">
       <DependentUpon>ScrollBar.xaml</DependentUpon>
     </Compile>
@@ -215,6 +218,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ReverseAxes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ScrollBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -302,6 +309,7 @@
     <Resource Include="Images\ObservableSeries.png" />
     <Resource Include="Images\UserInteractiveData.png" />
     <Resource Include="Images\ByPointDelay.png" />
+    <Resource Include="Images\ReverseAxes.png" />
     <Content Include="propertyAndInstanceChanged.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

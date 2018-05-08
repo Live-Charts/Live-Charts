@@ -30,6 +30,7 @@ using System.Drawing;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing;
+using Brushes = LiveCharts.Core.Drawing.Brushes;
 
 #endregion
 
@@ -54,7 +55,7 @@ namespace Assets.ViewModels
             // a custom fill and stroke, if we don't set these properties
             // LiveCharts will set them for us according to our theme.
             lineSeries.Stroke = LiveCharts.Core.Drawing.Brushes.Purple;
-            lineSeries.Fill = new LiveCharts.Core.Drawing.SolidColorBrush(Color.FromArgb(200, 80, 00, 80));
+            lineSeries.Fill = Brushes.Transparent;
 
             // the beziers in the drawn line are calculated based on
             // the line smoothness property, the value goes from 

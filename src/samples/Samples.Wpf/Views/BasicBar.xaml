@@ -10,5 +10,10 @@
     <UserControl.DataContext>
         <viewModels:BasicBar />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style TargetType="lvc:ChartToolTip">
+            <Setter Property="Position" Value="Right"></Setter>
+        </Style>
+    </UserControl.Resources>
     <lvc:CartesianChart Series="{Binding SeriesCollection}" InvertAxes="true" />
 </UserControl>
