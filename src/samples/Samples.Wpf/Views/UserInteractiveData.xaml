@@ -19,6 +19,7 @@
         <TextBlock Grid.Row="0">Click anywhere to add a new point to the chart, click hold and drag a point to move it.</TextBlock>
         <lvc:CartesianChart Grid.Row="1" 
                             Name="Chart"
+                            AnimationsSpeed="0:0:0"
                             Series="{Binding SeriesCollection}"
                             MouseDown="Chart_OnMouseDown"
                             MouseMove="Chart_OnMouseMove"

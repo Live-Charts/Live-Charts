@@ -61,6 +61,9 @@ namespace LiveCharts.Core.Dimensions
         private Brush _labelsForeground;
         private Margin _labelsPadding;
         private double _pointMargin;
+        private bool _showLabels;
+        private double _actualMinValue;
+        private double _actualMaxValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
@@ -70,6 +73,7 @@ namespace LiveCharts.Core.Dimensions
             _minValue = double.NaN;
             _maxValue = double.NaN;
             _pointMargin = double.NaN;
+            _showLabels = true;
             _labelFormatter = Format.AsMetricNumber;
             _labelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
             _labelsForeground = new SolidColorBrush(Color.FromArgb(255, 30, 30, 30));
@@ -82,12 +86,25 @@ namespace LiveCharts.Core.Dimensions
         public event RangeChangedEventHandler RangeChanged;
 
         /// <summary>
+        /// Occurs when <see cref="ActualMinValue"/> or <see cref="ActualMaxValue"/> are solved.
+        /// </summary>
+        public event RangeSolvedEventHandler RangeSolved;
+
+        /// <summary>
         /// Gets the used <see cref="MaxValue"/>, if <see cref="MaxValue"/> is double.NaN, 
         /// the library will calculate this property and will expose the calculated value here,
         /// if <see cref="MaxValue"/> is not double.NaN, <see cref="ActualMaxValue"/> is equals
         /// to <see cref="MaxValue"/> property.
         /// </summary>
-        public double ActualMaxValue { get; internal set; }
+        public double ActualMaxValue
+        {
+            get => _actualMaxValue;
+            internal set
+            {
+                _actualMaxValue = value; 
+                OnRangeSolved();
+            }
+        }
 
         internal double InternalMaxValue { get; set; }
 
@@ -114,7 +131,15 @@ namespace LiveCharts.Core.Dimensions
         /// if <see cref="MinValue"/> is not double.NaN, <see cref="ActualMinValue"/> is equals
         /// to <see cref="MinValue"/> property.
         /// </summary>
-        public double ActualMinValue { get; internal set; }
+        public double ActualMinValue
+        {
+            get => _actualMinValue;
+            internal set
+            {
+                _actualMinValue = value;
+                OnRangeSolved();
+            }
+        }
 
         internal double InternalMinValue { get; set; }
 
@@ -210,6 +235,22 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _title = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the labels are shown.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if labels are visible; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowLabels
+        {
+            get => _showLabels;
+            set
+            {
+                _showLabels = value;
                 OnPropertyChanged();
             }
         }
@@ -423,6 +464,12 @@ namespace LiveCharts.Core.Dimensions
         protected virtual void OnRangeChanged(Plane plane, double previousMin, double previousMax)
         {
             RangeChanged?.Invoke(plane, previousMin, previousMax);
+        }
+
+
+        protected virtual void OnRangeSolved()
+        {
+            RangeSolved?.Invoke(this);
         }
 
         internal void SetRange(double min, double max)

@@ -53,6 +53,7 @@ namespace LiveCharts.Wpf.Controls
             Children.Add(_drawMargin);
         }
 
+        /// <inheritdoc />
         public RectangleF DrawArea
         {
             get => _drawArea;
@@ -63,6 +64,7 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
+        /// <inheritdoc />
         public SizeF ControlSize
         {
             get => _controlSize;

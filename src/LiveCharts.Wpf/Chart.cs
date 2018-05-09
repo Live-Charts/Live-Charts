@@ -536,7 +536,7 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Model.Dispose();
             Series = null;

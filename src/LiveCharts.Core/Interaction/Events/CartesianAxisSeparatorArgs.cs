@@ -44,7 +44,15 @@ namespace LiveCharts.Core.Interaction.Events
         /// <value>
         /// The index of the z.
         /// </value>
-        public int ZIndex { get; set; }
+        public int ZIndex { get; internal set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="CartesianAxisSectionArgs"/> is draggable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if draggable; otherwise, <c>false</c>.
+        /// </value>
+        public bool Draggable { get; internal set; }
 
         /// <summary>
         /// Gets or sets from.
@@ -85,6 +93,14 @@ namespace LiveCharts.Core.Interaction.Events
         /// The plane.
         /// </value>
         public ShapeStyle Style { get; internal set; }
+
+        /// <summary>
+        /// Gets the section.
+        /// </summary>
+        /// <value>
+        /// The section.
+        /// </value>
+        public Section Section { get; internal set; }
 
         /// <summary>
         /// Gets the chart view.

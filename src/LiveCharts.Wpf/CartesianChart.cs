@@ -24,9 +24,12 @@
 #endregion
 #region
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using LiveCharts.Core;
 using LiveCharts.Core.Charts;
@@ -35,6 +38,7 @@ using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Wpf.Controls;
 using Point = System.Windows.Point;
 
 #endregion
@@ -44,6 +48,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// The Cartesian chart class supports X,Y based plots.
     /// </summary>
+    /// <seealso cref="LiveCharts.Core.Charts.ICartesianChartView" />
     /// <seealso cref="LiveCharts.Wpf.Chart" />
     /// <seealso cref="ICartesianChartView" />
     public class CartesianChart : Chart, ICartesianChartView
@@ -69,11 +74,178 @@ namespace LiveCharts.Wpf
             MouseMove += OnCartesianChartMouseMove;
             MouseUp += OnCartesianChartMouseUp;
             SetValue(SeriesProperty, new ChartingCollection<ISeries>());
-            SetValue(XAxisProperty, new ChartingCollection<Plane> {new Axis()});
-            SetValue(YAxisProperty, new ChartingCollection<Plane> {new Axis()});
-            SetValue(WeightPlaneProperty, new ChartingCollection<Plane> {new Plane()});
+            SetValue(XAxisProperty, new ChartingCollection<Plane> { new Axis() });
+            SetValue(YAxisProperty, new ChartingCollection<Plane> { new Axis() });
+            SetValue(WeightPlaneProperty, new ChartingCollection<Plane> { new Plane() });
             Charting.BuildFromTheme(this);
+            InitializeScrolling();
         }
+
+        #region ScrollBar behavior
+
+        private void InitializeScrolling()
+        {
+            XFrom = new HorizontalDraggable();
+            XTo = new HorizontalDraggable();
+            XThumb = new HorizontalDraggableThumb();
+            YFrom = new VerticalDraggable();
+            YTo = new VerticalDraggable();
+            YThumb = new VerticalDraggableThumb();
+
+            XFrom.Dragging += args =>
+            {
+                if (args.Point.X >= XTo.Left) return;
+
+                if (args.Point.X < Content.DrawArea.X)
+                {
+                    args.Point = new Point(Content.DrawArea.X, args.Point.Y);
+                }
+                if (args.Point.X > Content.DrawArea.Width + Content.DrawArea.X)
+                {
+                    args.Point = new Point(Content.DrawArea.Width + Content.DrawArea.X, args.Point.Y);
+                }
+
+                for (var index = 0; index < ScrollsX.Count; index++)
+                {
+                    ScrollsX[index].MinValue = Model.ScaleFromUi((float)args.Point.X - Content.DrawArea.X, XAxis[index]);
+                }
+
+                XFrom.Left = args.Point.X;
+                XThumb.Left = args.Point.X;
+                XThumb.Width = XTo.Left - XFrom.Left;
+            };
+
+            XTo.Dragging += args =>
+            {
+                if (XFrom.Left + XFrom.ActualWidth >= args.Point.X) return;
+
+                if (args.Point.X < Content.DrawArea.X)
+                {
+                    args.Point = new Point(Content.DrawArea.X, args.Point.Y);
+                }
+                if (args.Point.X > Content.DrawArea.Width + Content.DrawArea.X)
+                {
+                    args.Point = new Point(Content.DrawArea.Width + Content.DrawArea.X, args.Point.Y);
+                }
+
+                for (var index = 0; index < ScrollsX.Count; index++)
+                {
+                    ScrollsX[index].MaxValue = Model.ScaleFromUi((float) args.Point.X, XAxis[index]);
+                }
+
+                XTo.Left = args.Point.X;
+                XThumb.Width = XTo.Left - XFrom.Left;
+            };
+
+            XThumb.Dragging += args =>
+            {
+                var i = args.Point.X - XThumb.StartLeftOffset;
+                var j = i + XThumb.Width;
+                if (i <= Content.DrawArea.X) return;
+                if (j >= Content.DrawArea.Width) return;
+
+                for (var index = 0; index < ScrollsX.Count; index++)
+                {
+                    ScrollsX[index].MinValue = Model.ScaleFromUi((float) args.Point.X, XAxis[index]);
+                    ScrollsX[index].MaxValue = Model.ScaleFromUi((float) args.Point.X, XAxis[index]) +
+                                               ScrollsX[index].ActualRange;
+                }
+                XThumb.Left = i;
+                XFrom.Left = i;
+                XTo.Left = i + XThumb.Width;
+            };
+        }
+
+        private void AttachUpdateFromSourceHandlers()
+        {
+            if (ScrollsX != null)
+            {
+                if (ScrollsX.Count > 1)
+                {
+                    throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
+                }
+
+                OnScrollsXRangeSolved(ScrollsX[0]);
+                ScrollsX[0].RangeSolved += OnScrollsXRangeSolved;
+            }
+
+            if (ScrollsY != null)
+            {
+                if (ScrollsY.Count > 1)
+                {
+                    throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
+                }
+
+                OnScrollsYRangeSolved(ScrollsY[0]);
+                ScrollsY[0].RangeSolved += OnScrollsYRangeSolved;
+            }
+        }
+
+        private void UpdateScrollingView()
+        {
+            if (ScrollsX == null && ScrollsY == null) return;
+
+            if (ScrollsX != null)
+            {
+                if (XFrom.Parent == null)
+                {
+                    Children.Add(XThumb);
+                    Children.Add(XFrom);
+                    Children.Add(XTo);
+                }
+            }
+            else
+            {
+                if (XFrom.Parent != null)
+                {
+                    Children.Remove(XFrom);
+                    Children.Remove(XTo);
+                    Children.Remove(XThumb);
+                }
+            }
+
+            if (ScrollsY != null)
+            {
+                if (YFrom.Parent == null)
+                {
+                    Children.Add(YThumb);
+                    Children.Add(YFrom);
+                    Children.Add(YTo);
+                }
+            }
+            else
+            {
+                if (YFrom.Parent != null)
+                {
+                    Children.Remove(YFrom);
+                    Children.Remove(YTo);
+                    Children.Remove(YThumb);
+                }
+            }
+
+            SetTop(XFrom, Content.DrawArea.Y + Content.DrawArea.Height * .5 - XFrom.ActualHeight * .5);
+            SetTop(XTo, Content.DrawArea.Y + Content.DrawArea.Height * .5 - XTo.ActualHeight * .5);
+            XThumb.Height = ActualHeight;
+
+            SetLeft(YFrom, Content.DrawArea.X + Content.DrawArea.Width * .5 - YFrom.ActualWidth * .5);
+            SetLeft(YTo, Content.DrawArea.X + Content.DrawArea.Width * .5 - YTo.ActualWidth * .5);
+
+            AttachUpdateFromSourceHandlers();
+        }
+
+        private Draggable XFrom { get; set; }
+
+        private Draggable XTo { get; set; }
+
+        private Draggable XThumb { get; set; }
+
+        private Draggable YFrom { get; set; }
+
+        private Draggable YTo { get; set; }
+
+        private Draggable YThumb { get; set; }
+
+        #endregion
 
         #region Dependency properties
 
@@ -123,6 +295,18 @@ namespace LiveCharts.Wpf
         public static readonly DependencyProperty PanningProperty = DependencyProperty.Register(
             nameof(Panning), typeof(Panning), typeof(CartesianChart), new PropertyMetadata(Panning.Unset));
 
+        /// <summary>
+        /// The scrolls x property
+        /// </summary>
+        public static readonly DependencyProperty ScrollsXProperty = DependencyProperty.Register(
+            nameof(ScrollsX), typeof(IList<Plane>), typeof(CartesianChart), new PropertyMetadata(default(IList<Plane>)));
+
+        /// <summary>
+        /// The scrolls y property
+        /// </summary>
+        public static readonly DependencyProperty ScrollsYProperty = DependencyProperty.Register(
+            nameof(ScrollsY), typeof(IList<Plane>), typeof(CartesianChart), new PropertyMetadata(default(IList<Plane>)));
+
         #endregion
 
         #region Properties
@@ -135,7 +319,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public IList<Plane> XAxis
         {
-            get => (IList<Plane>) GetValue(XAxisProperty);
+            get => (IList<Plane>)GetValue(XAxisProperty);
             set => SetValue(XAxisProperty, value);
         }
 
@@ -147,7 +331,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public IList<Plane> YAxis
         {
-            get => (IList<Plane>) GetValue(YAxisProperty);
+            get => (IList<Plane>)GetValue(YAxisProperty);
             set => SetValue(YAxisProperty, value);
         }
 
@@ -159,7 +343,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public IList<Plane> WeightPlane
         {
-            get => (IList<Plane>) GetValue(WeightPlaneProperty);
+            get => (IList<Plane>)GetValue(WeightPlaneProperty);
             set => SetValue(WeightPlaneProperty, value);
         }
 
@@ -191,6 +375,31 @@ namespace LiveCharts.Wpf
             set => SetValue(ZoomingSpeedProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the axes to scroll when the scroll bar of this chart is moved in the X direction.
+        /// </summary>
+        /// <value>
+        /// The scrolls x.
+        /// </value>
+        public IList<Plane> ScrollsX
+        {
+            get => (IList<Plane>)GetValue(ScrollsXProperty);
+            set => SetValue(ScrollsXProperty, value);
+        }
+
+
+        /// <summary>
+        /// Gets or sets the axes to scroll when the scroll bar of this chart is moved in the Y direction.
+        /// </summary>
+        /// <value>
+        /// The scrolls y.
+        /// </value>
+        public IList<Plane> ScrollsY
+        {
+            get => (IList<Plane>)GetValue(ScrollsYProperty);
+            set => SetValue(ScrollsYProperty, value);
+        }
+
         #endregion
 
         /// <summary>
@@ -218,8 +427,8 @@ namespace LiveCharts.Wpf
         {
             var corrected = new Point(point.X - Content.DrawArea.X, point.Y - Content.DrawArea.Y);
             return new Point(
-                Model.ScaleFromUi((float) corrected.X, XAxis[xPlaneIndex]),
-                Model.ScaleFromUi((float) corrected.Y, YAxis[yPlaneIndex]));
+                Model.ScaleFromUi((float)corrected.X, XAxis[xPlaneIndex]),
+                Model.ScaleFromUi((float)corrected.Y, YAxis[yPlaneIndex]));
         }
 
         /// <inheritdoc cref="Chart.GetOrderedDimensions"/>
@@ -246,15 +455,15 @@ namespace LiveCharts.Wpf
 
             e.Handled = true;
 
-            var cartesianModel = (CartesianChartModel) Model;
+            var cartesianModel = (CartesianChartModel)Model;
 
             if (e.Delta > 0)
             {
-                cartesianModel.ZoomIn(new PointF((float) pivot.X, (float) pivot.Y));
+                cartesianModel.ZoomIn(new PointF((float)pivot.X, (float)pivot.Y));
             }
             else
             {
-                cartesianModel.ZoomOut(new PointF((float) pivot.X, (float) pivot.Y));
+                cartesianModel.ZoomOut(new PointF((float)pivot.X, (float)pivot.Y));
             }
         }
 
@@ -283,14 +492,14 @@ namespace LiveCharts.Wpf
         {
             if (!_isDragging) return;
 
-            var cartesianModel = (CartesianChartModel) Model;
+            var cartesianModel = (CartesianChartModel)Model;
 
             var current = e.GetPosition(VisualDrawMargin);
 
             cartesianModel.Drag(
                 new PointF(
-                    (float) (_previous.X - current.X),
-                    (float) (_previous.Y - current.Y)
+                    (float)(_previous.X - current.X),
+                    (float)(_previous.Y - current.Y)
                 ));
 
             _previous = current;
@@ -306,6 +515,51 @@ namespace LiveCharts.Wpf
             if (Panning == Panning.None) return;
             _isDragging = false;
             ReleaseMouseCapture();
+        }
+
+        /// <inheritdoc />
+        protected override void OnModelSet()
+        {
+            base.OnModelSet();
+            ChartUpdated += chart =>
+            {
+                UpdateScrollingView();
+            };
+        }
+
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            if (ScrollsX != null)
+            {
+                ScrollsX[0].RangeSolved -= OnScrollsXRangeSolved;
+                ScrollsX = null;
+            }
+
+            if (ScrollsY != null)
+            {
+                ScrollsY[0].RangeSolved -= OnScrollsYRangeSolved;
+                ScrollsY = null;
+            }
+        }
+
+        private void OnScrollsYRangeSolved(Plane sender)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnScrollsXRangeSolved(Plane sender)
+        {
+            if (XFrom.IsDragging || XTo.IsDragging || XThumb.IsDragging) return;
+
+            var i = Model.ScaleToUi(ScrollsX[0].ActualMinValue, XAxis[0]);
+            var j = Model.ScaleToUi(ScrollsX[0].ActualMaxValue, XAxis[0]);
+            XFrom.Left = i;
+            XTo.Left = j;
+            XThumb.Left = i;
+            XThumb.Width = Math.Abs(j - i);
         }
     }
 }

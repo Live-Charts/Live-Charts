@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:Samples.Wpf.Views"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:dimensions="clr-namespace:LiveCharts.Core.Dimensions;assembly=LiveCharts.Core"
+             xmlns:collections="clr-namespace:LiveCharts.Core.Collections;assembly=LiveCharts.Core"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
@@ -15,13 +17,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <lvc:CartesianChart Grid.Row="0"
-                            Series="{Binding SeriesCollection}"
+                            Name="TargetChart"
+                            Series="{Binding ZoomedSeriesCollection}"
                             XAxis="{Binding XAxisCollection}"/>
         <StackPanel Grid.Row="1" Margin="20" >
             <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MinValue}" />
             <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MaxValue}" />
         </StackPanel>
+        <lvc:CartesianChart Grid.Row="2" Name="ScrollChart" 
+                            Series="{Binding ScrollBarSeriesCollection}"
+                            Height="150"
+                            ScrollsX="{Binding XAxisCollection}">
+            <lvc:CartesianChart.YAxis>
+                <dimensions:PlaneCollection>
+                    <dimensions:Axis ShowLabels="False"></dimensions:Axis>
+                </dimensions:PlaneCollection>
+            </lvc:CartesianChart.YAxis>
+        </lvc:CartesianChart>
     </Grid>
 </UserControl>
+

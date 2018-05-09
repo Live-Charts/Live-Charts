@@ -36,7 +36,7 @@ namespace Samples.Wpf.Views
         private void Chart_OnDataMouseDown(IChartView chart, IChartPoint[] interactedPoints, MouseButtonEventArgs args)
         {
             // if the user clicked over a data point
-            // prevent the chart mouse down event.
+            // handle the event so Chart_OnMouseDown is not called.
             args.Handled = true;
 
             // let save a reference to the point model that was clicked.

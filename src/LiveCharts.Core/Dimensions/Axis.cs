@@ -294,7 +294,7 @@ namespace LiveCharts.Core.Dimensions
         public override string ToString()
         {
             var d = Dimension == 0 ? "X" : "Y";
-            return "hola"; // $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
+            return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
         internal Margin CalculateAxisMargin(ChartModel chart, Axis axis)
@@ -328,8 +328,6 @@ namespace LiveCharts.Core.Dimensions
             }
             var dimension = space[axis.Dimension];
             var step = (float) (double.IsNaN(Step) ? 5d : Step);
-
-            var unit = axis.ActualPointLength?[axis.Dimension] ?? 0f;
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
@@ -431,7 +429,7 @@ namespace LiveCharts.Core.Dimensions
                     };
 
                     separator.View.DrawShape(args, animation);
-                    separator.View.DrawLabel(args, animation);
+                    if (ShowLabels) separator.View.DrawLabel(args, animation);
                 }
                 else
                 {
@@ -450,7 +448,7 @@ namespace LiveCharts.Core.Dimensions
                     };
 
                     separator.View.DrawShape(args, animation);
-                    separator.View.DrawLabel(args, animation);
+                    if (ShowLabels) separator.View.DrawLabel(args, animation);
                 }
 
                 chart.RegisterINotifyPropertyChanged(separator);
@@ -685,6 +683,11 @@ namespace LiveCharts.Core.Dimensions
             float[] drawMargin,
             ChartModel chart)
         {
+            if (!ShowLabels)
+            {
+                return new AxisSectionViewModel();
+            }
+
             const double toRadians = Math.PI / 180;
             var angle = labelStyle.ActualLabelsRotation;
             var text = FormatValue(value);
