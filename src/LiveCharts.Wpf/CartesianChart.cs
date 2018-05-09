@@ -107,7 +107,10 @@ namespace LiveCharts.Wpf
 
                 for (var index = 0; index < ScrollsX.Count; index++)
                 {
-                    ScrollsX[index].MinValue = Model.ScaleFromUi((float)args.Point.X - Content.DrawArea.X, XAxis[index]);
+
+                    ScrollsX[index].SetRange(
+                        Model.ScaleFromUi((float) args.Point.X - Content.DrawArea.X, XAxis[index]),
+                        ScrollsX[index].ActualMaxValue);
                 }
 
                 XFrom.Left = args.Point.X;
@@ -130,7 +133,9 @@ namespace LiveCharts.Wpf
 
                 for (var index = 0; index < ScrollsX.Count; index++)
                 {
-                    ScrollsX[index].MaxValue = Model.ScaleFromUi((float) args.Point.X, XAxis[index]);
+                    ScrollsX[index].SetRange(
+                        ScrollsX[index].ActualMinValue,
+                        Model.ScaleFromUi((float) args.Point.X, XAxis[index]));
                 }
 
                 XTo.Left = args.Point.X;
@@ -146,9 +151,8 @@ namespace LiveCharts.Wpf
 
                 for (var index = 0; index < ScrollsX.Count; index++)
                 {
-                    ScrollsX[index].MinValue = Model.ScaleFromUi((float) args.Point.X, XAxis[index]);
-                    ScrollsX[index].MaxValue = Model.ScaleFromUi((float) args.Point.X, XAxis[index]) +
-                                               ScrollsX[index].ActualRange;
+                    var xi = Model.ScaleFromUi((float) (args.Point.X - XThumb.StartLeftOffset), XAxis[index]);
+                    ScrollsX[index].SetRange(xi, xi + ScrollsX[index].ActualRange);
                 }
                 XThumb.Left = i;
                 XFrom.Left = i;
@@ -165,8 +169,8 @@ namespace LiveCharts.Wpf
                     throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
                 }
 
-                OnScrollsXRangeSolved(ScrollsX[0]);
-                ScrollsX[0].RangeSolved += OnScrollsXRangeSolved;
+                OnScrollsXRangeSolved(ScrollsX[0], 0, 0);
+                ScrollsX[0].RangeChanged += OnScrollsXRangeSolved;
             }
 
             if (ScrollsY != null)
@@ -176,8 +180,8 @@ namespace LiveCharts.Wpf
                     throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
                 }
 
-                OnScrollsYRangeSolved(ScrollsY[0]);
-                ScrollsY[0].RangeSolved += OnScrollsYRangeSolved;
+                OnScrollsYRangeSolved(ScrollsY[0], 0, 0);
+                ScrollsY[0].RangeChanged += OnScrollsYRangeSolved;
             }
         }
 
@@ -534,23 +538,23 @@ namespace LiveCharts.Wpf
 
             if (ScrollsX != null)
             {
-                ScrollsX[0].RangeSolved -= OnScrollsXRangeSolved;
+                ScrollsX[0].RangeChanged -= OnScrollsXRangeSolved;
                 ScrollsX = null;
             }
 
             if (ScrollsY != null)
             {
-                ScrollsY[0].RangeSolved -= OnScrollsYRangeSolved;
+                ScrollsY[0].RangeChanged -= OnScrollsYRangeSolved;
                 ScrollsY = null;
             }
         }
 
-        private void OnScrollsYRangeSolved(Plane sender)
+        private void OnScrollsYRangeSolved(Plane sender, double min, double max)
         {
             throw new NotImplementedException();
         }
 
-        private void OnScrollsXRangeSolved(Plane sender)
+        private void OnScrollsXRangeSolved(Plane sender, double min, double max)
         {
             if (XFrom.IsDragging || XTo.IsDragging || XThumb.IsDragging) return;
 

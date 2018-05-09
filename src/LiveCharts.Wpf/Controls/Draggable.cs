@@ -164,6 +164,9 @@ namespace LiveCharts.Wpf.Controls
                 mouseButtonEventArgs.Handled = true;
                 ReleaseMouseCapture();
             }
+
+            StartLeftOffset = 0;
+            StartTopOffset = 0;
             IsDragging = false;
         }
 

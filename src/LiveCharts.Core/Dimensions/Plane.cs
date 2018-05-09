@@ -86,11 +86,6 @@ namespace LiveCharts.Core.Dimensions
         public event RangeChangedEventHandler RangeChanged;
 
         /// <summary>
-        /// Occurs when <see cref="ActualMinValue"/> or <see cref="ActualMaxValue"/> are solved.
-        /// </summary>
-        public event RangeSolvedEventHandler RangeSolved;
-
-        /// <summary>
         /// Gets the used <see cref="MaxValue"/>, if <see cref="MaxValue"/> is double.NaN, 
         /// the library will calculate this property and will expose the calculated value here,
         /// if <see cref="MaxValue"/> is not double.NaN, <see cref="ActualMaxValue"/> is equals
@@ -469,10 +464,15 @@ namespace LiveCharts.Core.Dimensions
 
         protected virtual void OnRangeSolved()
         {
-            RangeSolved?.Invoke(this);
+            RangeChanged?.Invoke(this, ActualMinValue, ActualMaxValue);
         }
 
-        internal void SetRange(double min, double max)
+        /// <summary>
+        /// Sets the range.
+        /// </summary>
+        /// <param name="min">The minimum.</param>
+        /// <param name="max">The maximum.</param>
+        public void SetRange(double min, double max)
         {
             var minCopy = _minValue;
             var maxCopy = _maxValue;
