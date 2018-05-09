@@ -130,7 +130,7 @@ namespace LiveCharts.Wpf
             XThumb.Dragging += args =>
             {
                 var i = args.Point.X - XThumb.StartLeftOffset;
-                var j = i + XThumb.Width;
+                var j = i + XThumb.ActualWidth;
                 if (i <= Content.DrawArea.X) return;
                 if (j >= Content.DrawArea.Width) return;
 
@@ -183,6 +183,9 @@ namespace LiveCharts.Wpf
             YThumb.Dragging += args =>
             {
                 var i = args.Point.Y - YThumb.StartTopOffset;
+                var j = i + YThumb.ActualHeight;
+                if (i < Content.DrawArea.Y) return;
+                if (j > Content.DrawArea.Y + Content.DrawArea.Height) return;
 
                 for (var index = 0; index < ScrollsY.Count; index++)
                 {
