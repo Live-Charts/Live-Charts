@@ -14,7 +14,7 @@ namespace Assets.ViewModels
             var values = new ObservableCollection<double>();
             var trend = 0;
 
-            for (var i = 0; i < 15; i++)
+            for (var i = 0; i < 50; i++)
             {
                 values.Add(trend += random.Next(-5, 10));
             }
@@ -36,21 +36,28 @@ namespace Assets.ViewModels
                 }
             };
 
-            ScrollableAxis = new Axis
+            X = new ObservableCollection<Plane>
             {
-                MinValue = 0,
-                MaxValue = 10
+                new Axis
+                {
+                    MinValue = 0,
+                    MaxValue = 5
+                }
             };
-
-            XAxisCollection = new ObservableCollection<Plane>
+            Y = new ObservableCollection<Plane>
             {
-                ScrollableAxis
+                new Axis
+                {
+                    MinValue = 0,
+                    MaxValue = 20
+                }
             };
         }
 
         public ObservableCollection<ISeries> ZoomedSeriesCollection { get; set; }
         public ObservableCollection<ISeries> ScrollBarSeriesCollection { get; set; }
-        public ObservableCollection<Plane> XAxisCollection { get; set; }
+        public ObservableCollection<Plane> X { get; set; }
+        public ObservableCollection<Plane> Y { get; set; }
         public Axis ScrollableAxis { get; set; }
     }
 }

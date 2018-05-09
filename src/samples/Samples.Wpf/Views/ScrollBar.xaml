@@ -2,12 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Samples.Wpf.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:dimensions="clr-namespace:LiveCharts.Core.Dimensions;assembly=LiveCharts.Core"
-             xmlns:collections="clr-namespace:LiveCharts.Core.Collections;assembly=LiveCharts.Core"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
@@ -22,7 +20,8 @@
         <lvc:CartesianChart Grid.Row="0"
                             Name="TargetChart"
                             Series="{Binding ZoomedSeriesCollection}"
-                            XAxis="{Binding XAxisCollection}"/>
+                            XAxis="{Binding X}"
+                            YAxis="{Binding Y}"/>
         <StackPanel Grid.Row="1" Margin="20" >
             <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MinValue}" />
             <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MaxValue}" />
@@ -30,7 +29,8 @@
         <lvc:CartesianChart Grid.Row="2" Name="ScrollChart" 
                             Series="{Binding ScrollBarSeriesCollection}"
                             Height="150"
-                            ScrollsX="{Binding XAxisCollection}">
+                            ScrollsX="{Binding X}"
+                            ScrollsY="{Binding Y}">
             <lvc:CartesianChart.YAxis>
                 <dimensions:PlaneCollection>
                     <dimensions:Axis ShowLabels="False"></dimensions:Axis>

@@ -146,7 +146,7 @@ namespace LiveCharts.Wpf.Controls
         private void OnMouseMove(object sender, MouseEventArgs mouseEventArgs)
         {
             if (!IsDragging) return;
-            mouseEventArgs.Handled = true;
+           mouseEventArgs.Handled = true;
             var position = mouseEventArgs.GetPosition((IInputElement) Parent);
 
             var args = new DraggableArgs
@@ -154,7 +154,7 @@ namespace LiveCharts.Wpf.Controls
                 Point = position
             };
 
-            OnDraggingEvent(args);
+            OnDragging(args);
         }
 
         private void OnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
@@ -174,7 +174,7 @@ namespace LiveCharts.Wpf.Controls
         /// Called when [dragging event].
         /// </summary>
         /// <param name="args">The object.</param>
-        protected virtual void OnDraggingEvent(DraggableArgs args)
+        protected virtual void OnDragging(DraggableArgs args)
         {
             Dragging?.Invoke(args);
         }

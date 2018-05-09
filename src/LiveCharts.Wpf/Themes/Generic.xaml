@@ -234,6 +234,7 @@
         <Setter Property="BorderThickness" Value="1"></Setter>
         <Setter Property="BorderBrush" Value="#40303030"></Setter>
         <Setter Property="Cursor" Value="SizeNS"></Setter>
+        <Setter Property="Panel.ZIndex" Value="10001"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -243,10 +244,11 @@
                             Effect="{TemplateBinding Effect}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}">
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}"
+                            Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
                         <Grid Height="12" Width="15">
-                            <Line StrokeThickness="1.2" Stroke="#40303030" X1="0" X2="15" Y1="3.5" Y2="3.5"></Line>
-                            <Line StrokeThickness="1.2" Stroke="#40303030" X1="0" X2="15" Y1="7" Y2="7"></Line>
+                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="0" X2="15" Y1="3.5" Y2="3.5"></Line>
+                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="0" X2="15" Y1="7" Y2="7"></Line>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -262,6 +264,7 @@
         <Setter Property="BorderThickness" Value="1"></Setter>
         <Setter Property="BorderBrush" Value="#40303030"></Setter>
         <Setter Property="Cursor" Value="SizeWE"></Setter>
+        <Setter Property="Panel.ZIndex" Value="10001"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -271,10 +274,11 @@
                             Effect="{TemplateBinding Effect}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}">
+                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}"
+                            Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
                         <Grid Height="15" Width="12">
-                            <Line StrokeThickness="1.2" Stroke="#CD303030" X1="3.5" X2="3.5" Y1="0" Y2="15"></Line>
-                            <Line StrokeThickness="1.2" Stroke="#CD303030" X1="7" X2="7" Y1="0" Y2="15"></Line>
+                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="3.5" X2="3.5" Y1="0" Y2="15"></Line>
+                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="7" X2="7" Y1="0" Y2="15"></Line>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -287,12 +291,14 @@
         <Setter Property="BorderBrush" Value="#40303030"></Setter>
         <Setter Property="BorderThickness" Value="1"></Setter>
         <Setter Property="Cursor" Value="SizeAll"></Setter>
+        <Setter Property="Panel.ZIndex" Value="10000"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
 
                     </Border>
                 </ControlTemplate>
@@ -305,12 +311,14 @@
         <Setter Property="BorderBrush" Value="#40303030"></Setter>
         <Setter Property="BorderThickness" Value="2"></Setter>
         <Setter Property="Cursor" Value="SizeAll"></Setter>
+        <Setter Property="Panel.ZIndex" Value="10000"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
 
                     </Border>
                 </ControlTemplate>
