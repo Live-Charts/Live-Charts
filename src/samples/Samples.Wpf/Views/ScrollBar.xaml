@@ -15,18 +15,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <lvc:CartesianChart Grid.Row="0"
                             Name="TargetChart"
+                            Zooming="Xy"
+                            Panning="Xy"
                             Series="{Binding ZoomedSeriesCollection}"
                             XAxis="{Binding X}"
                             YAxis="{Binding Y}"/>
-        <StackPanel Grid.Row="1" Margin="20" >
-            <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MinValue}" />
-            <Slider Width="300" Minimum="0" Maximum="100" Value="{Binding ScrollableAxis.MaxValue}" />
-        </StackPanel>
-        <lvc:CartesianChart Grid.Row="2" Name="ScrollChart" 
+        <lvc:CartesianChart Grid.Row="1" Name="ScrollChart" 
                             Series="{Binding ScrollBarSeriesCollection}"
                             Height="150"
                             ScrollsX="{Binding X}"

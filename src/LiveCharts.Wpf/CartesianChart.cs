@@ -231,8 +231,10 @@ namespace LiveCharts.Wpf
                     throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
                 }
 
-                OnScrollsXRangeSolved(ScrollsX[0], 0, 0);
-                ScrollsX[0].RangeChanged += OnScrollsXRangeSolved;
+                XTo.UpdateLayout();
+                XFrom.UpdateLayout();
+                UpdateScrollXFromDataSourceChange(ScrollsX[0], 0, 0);
+                ScrollsX[0].RangeChanged += UpdateScrollXFromDataSourceChange;
             }
 
             if (ScrollsY != null)
@@ -242,8 +244,10 @@ namespace LiveCharts.Wpf
                     throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
                 }
 
-                OnScrollsYRangeSolved(ScrollsY[0], 0, 0);
-                ScrollsY[0].RangeChanged += OnScrollsYRangeSolved;
+                YTo.UpdateLayout();
+                YFrom.UpdateLayout();
+                UpdateScrollYFromDataSourceChange(ScrollsY[0], 0, 0);
+                ScrollsY[0].RangeChanged += UpdateScrollYFromDataSourceChange;
             }
         }
 
@@ -298,6 +302,48 @@ namespace LiveCharts.Wpf
             YThumb.Width = ActualWidth;
 
             AttachUpdateFromSourceHandlers();
+        }
+
+        private void UpdateScrollYFromDataSourceChange(Plane sender, double min, double max)
+        {
+            if (YFrom.IsDragging || YTo.IsDragging || YThumb.IsDragging) return;
+
+            var i = Model.ScaleToUi(ScrollsY[0].ActualMinValue, YAxis[0]);
+            var j = Model.ScaleToUi(ScrollsY[0].ActualMaxValue, YAxis[0]);
+
+            var tolerance = 10;
+
+            if (j < Content.DrawArea.Y) j = Content.DrawArea.Y;
+            if (i < Content.DrawArea.Y) i = Content.DrawArea.Y + tolerance;
+            if (i > Content.DrawArea.Y + Content.DrawArea.Height) i = Content.DrawArea.Y + Content.DrawArea.Height + tolerance;
+            if (j > Content.DrawArea.Y + Content.DrawArea.Height) j = Content.DrawArea.Y + Content.DrawArea.Height;
+
+            // ToDo: Animate???
+
+            YFrom.Top = i;
+            YTo.Top = j;
+            YThumb.Top = j;
+            YThumb.Height = Math.Abs(i - j);
+        }
+
+        private void UpdateScrollXFromDataSourceChange(Plane sender, double min, double max)
+        {
+            if (XFrom.IsDragging || XTo.IsDragging || XThumb.IsDragging) return;
+
+            var i = Model.ScaleToUi(ScrollsX[0].ActualMinValue, XAxis[0]);
+            var j = Model.ScaleToUi(ScrollsX[0].ActualMaxValue, XAxis[0]);
+
+            var tolerance = 10;
+
+            if (i < Content.DrawArea.X) i = Content.DrawArea.X;
+            if (j < Content.DrawArea.X) j = Content.DrawArea.X + tolerance;
+            if (i > Content.DrawArea.X + Content.DrawArea.Width) i = Content.DrawArea.X + Content.DrawArea.Width;
+            if (j > Content.DrawArea.X + Content.DrawArea.Width) j = Content.DrawArea.X + Content.DrawArea.Width + tolerance;
+
+            XFrom.Left = i;
+            XTo.Left = j;
+            XThumb.Left = i;
+            XThumb.Width = Math.Abs(j - i);
         }
 
         private Draggable XFrom { get; set; }
@@ -601,39 +647,15 @@ namespace LiveCharts.Wpf
 
             if (ScrollsX != null)
             {
-                ScrollsX[0].RangeChanged -= OnScrollsXRangeSolved;
+                ScrollsX[0].RangeChanged -= UpdateScrollXFromDataSourceChange;
                 ScrollsX = null;
             }
 
             if (ScrollsY != null)
             {
-                ScrollsY[0].RangeChanged -= OnScrollsYRangeSolved;
+                ScrollsY[0].RangeChanged -= UpdateScrollYFromDataSourceChange;
                 ScrollsY = null;
             }
-        }
-
-        private void OnScrollsYRangeSolved(Plane sender, double min, double max)
-        {
-            if (YFrom.IsDragging || YTo.IsDragging || YThumb.IsDragging) return;
-
-            var i = Model.ScaleToUi(ScrollsY[0].ActualMinValue, YAxis[0]);
-            var j = Model.ScaleToUi(ScrollsY[0].ActualMaxValue, YAxis[0]);
-            YFrom.Top = i;
-            YTo.Top = j;
-            YThumb.Top = j;
-            YThumb.Height = Math.Abs(i - j);
-        }
-
-        private void OnScrollsXRangeSolved(Plane sender, double min, double max)
-        {
-            if (XFrom.IsDragging || XTo.IsDragging || XThumb.IsDragging) return;
-
-            var i = Model.ScaleToUi(ScrollsX[0].ActualMinValue, XAxis[0]);
-            var j = Model.ScaleToUi(ScrollsX[0].ActualMaxValue, XAxis[0]);
-            XFrom.Left = i;
-            XTo.Left = j;
-            XThumb.Left = i;
-            XThumb.Width = Math.Abs(j - i);
         }
     }
 }
