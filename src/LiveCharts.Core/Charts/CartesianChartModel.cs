@@ -389,8 +389,7 @@ namespace LiveCharts.Core.Charts
             {
                 if (!(series is ICartesianSeries))
                 {
-                    throw new LiveChartsException(
-                        $"{series.ThemeKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                    throw new LiveChartsException(102, series.ThemeKey.Name, nameof(CartesianChartModel));
                 }
 
                 series.UpdateStarted(View);
@@ -498,9 +497,7 @@ namespace LiveCharts.Core.Charts
                                 plane.Dimension = 2;
                                 break;
                             default:
-                                throw new LiveChartsException(
-                                    "A cartesian chart is not able to handle more than 3 dimensions (X, Y, Weight).",
-                                    130);
+                                throw new LiveChartsException(103, null);
                         }
                     }
 

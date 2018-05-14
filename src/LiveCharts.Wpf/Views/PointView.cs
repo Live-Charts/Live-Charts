@@ -39,7 +39,6 @@ using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
 using FontFamily = System.Windows.Media.FontFamily;
-using Frame = LiveCharts.Core.Animations.Frame;
 
 #endregion
 
@@ -131,7 +130,8 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawShape(
             ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
-            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> previous, TimeLine timeLine)
+            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> previous, 
+            TimeLine timeLine)
         {
             OnDraw(chartPoint, previous, timeLine);
         }
@@ -140,11 +140,13 @@ namespace LiveCharts.Wpf.Views
         void IPointView<TModel, TCoordinate, TViewModel, TSeries>.DrawLabel(
             ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint,
             DataLabelsPosition position,
-            LabelStyle style, TimeLine timeLine)
+            LabelStyle style, 
+            TimeLine timeLine)
         {
             OnDrawLabel(chartPoint, position, style, timeLine);
         }
-        
+
+        /// <inheritdoc />
         public event DisposingResourceHandler Disposed;
 
         object IResource.UpdateId { get; set; }

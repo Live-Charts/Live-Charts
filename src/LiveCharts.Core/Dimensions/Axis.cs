@@ -283,7 +283,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The animation line.
         /// </value>
-        public IEnumerable<Frame> AnimationLine { get; set; }
+        public IEnumerable<KeyFrame> AnimationLine { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -324,7 +324,7 @@ namespace LiveCharts.Core.Dimensions
             if (!(axis.Dimension == 0 || axis.Dimension == 1))
             {
                 throw new LiveChartsException(
-                    $"A Cartesian chart is not able to handle dimension {axis.Dimension}.", 130);
+                    103, (object) axis.Dimension);
             }
             var dimension = space[axis.Dimension];
             var step = (float) (double.IsNaN(Step) ? 5d : Step);
@@ -789,8 +789,7 @@ namespace LiveCharts.Core.Dimensions
                     break;
                 default:
                     var d = Dimension == 0 ? "X" : "Y";
-                    throw new LiveChartsException(
-                        $"An axis at dimension '{d}' can not be positioned at '{Position}'", 120);
+                    throw new LiveChartsException(106, d, Position);
             }
 
             // correction by rotation

@@ -78,7 +78,7 @@ namespace LiveCharts.Wpf.Views
 
             Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
             Shape.Fill = chartPoint.Series.Fill.AsWpf();
-            Shape.StrokeThickness = 3.5;
+            Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
             Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
             Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
             Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
@@ -119,8 +119,8 @@ namespace LiveCharts.Wpf.Views
         {
             if (force)
             {
-                chart.Content.RemoveChild(Shape, true);
-                chart.Content.RemoveChild(Label, true);
+                chart.Content.DisposeChild(Shape, true);
+                chart.Content.DisposeChild(Label, true);
                 _lastTimeLine = null;
                 return;
             }
@@ -131,8 +131,8 @@ namespace LiveCharts.Wpf.Views
 
             animation.Then((sender, args) =>
             {
-                chart.Content?.RemoveChild(Shape, true);
-                chart.Content?.RemoveChild(Label, true);
+                chart.Content?.DisposeChild(Shape, true);
+                chart.Content?.DisposeChild(Label, true);
                 animation.Dispose();
                 animation = null;
                 _lastTimeLine = null;

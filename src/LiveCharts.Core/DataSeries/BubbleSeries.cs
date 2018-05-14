@@ -127,7 +127,7 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalDuration = (float) timeLine.Duration.TotalMilliseconds;
             var originalAnimationLine = timeLine.AnimationLine;
             var i = 0;
 
@@ -157,7 +157,7 @@ namespace LiveCharts.Core.DataSeries
                 {
                     timeLine = AnimationExtensions.Delay(
                         // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (double)PointsCount, DelayRule);
+                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
                 }
 
                 current.ViewModel = vm;

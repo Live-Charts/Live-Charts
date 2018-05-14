@@ -125,8 +125,8 @@ namespace LiveCharts.Wpf.Views
         {
             if (force)
             {
-                chart.Content.RemoveChild(Shape, true);
-                chart.Content.RemoveChild(Label, true);
+                chart.Content.DisposeChild(Shape, true);
+                chart.Content.DisposeChild(Label, true);
                 _lastTimeLine = null;
                 return;
             }
@@ -137,8 +137,8 @@ namespace LiveCharts.Wpf.Views
             sliceAnimation
                 .Then((sender, args) =>
                 {
-                    chart.Content?.RemoveChild(Shape, true);
-                    chart.Content?.RemoveChild(Label, true);
+                    chart.Content?.DisposeChild(Shape, true);
+                    chart.Content?.DisposeChild(Label, true);
                     sliceAnimation.Dispose();
                     sliceAnimation = null;
                     _lastTimeLine = null;

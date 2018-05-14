@@ -62,8 +62,6 @@ namespace LiveCharts.Core.Dimensions
         private Margin _labelsPadding;
         private double _pointMargin;
         private bool _showLabels;
-        private double _actualMinValue;
-        private double _actualMaxValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
@@ -91,15 +89,7 @@ namespace LiveCharts.Core.Dimensions
         /// if <see cref="MaxValue"/> is not double.NaN, <see cref="ActualMaxValue"/> is equals
         /// to <see cref="MaxValue"/> property.
         /// </summary>
-        public double ActualMaxValue
-        {
-            get => _actualMaxValue;
-            internal set
-            {
-                _actualMaxValue = value; 
-                OnRangeSolved();
-            }
-        }
+        public double ActualMaxValue { get; internal set; }
 
         internal double InternalMaxValue { get; set; }
 
@@ -126,15 +116,7 @@ namespace LiveCharts.Core.Dimensions
         /// if <see cref="MinValue"/> is not double.NaN, <see cref="ActualMinValue"/> is equals
         /// to <see cref="MinValue"/> property.
         /// </summary>
-        public double ActualMinValue
-        {
-            get => _actualMinValue;
-            internal set
-            {
-                _actualMinValue = value;
-                OnRangeSolved();
-            }
-        }
+        public double ActualMinValue { get; internal set; }
 
         internal double InternalMinValue { get; set; }
 
@@ -341,8 +323,7 @@ namespace LiveCharts.Core.Dimensions
             get => _labelFormatter;
             set
             {
-                _labelFormatter = value ?? throw new LiveChartsException(
-                                      $"{nameof(Axis)}.{nameof(LabelFormatter)} property can not be null.", 0);
+                _labelFormatter = value ?? throw new LiveChartsException(105);
                 OnPropertyChanged();
             }
         }
@@ -446,8 +427,7 @@ namespace LiveCharts.Core.Dimensions
         /// <returns></returns>
         protected virtual IPlaneViewProvider DefaultViewProvider()
         {
-            throw new LiveChartsException(
-                $"A {nameof(IPlaneViewProvider)} was not found when trying to draw {this} in the UI", 115);
+            throw new LiveChartsException(140 ,ToString());
         }
 
         /// <summary>
@@ -459,12 +439,6 @@ namespace LiveCharts.Core.Dimensions
         protected virtual void OnRangeChanged(Plane plane, double previousMin, double previousMax)
         {
             RangeChanged?.Invoke(plane, previousMin, previousMax);
-        }
-
-
-        protected virtual void OnRangeSolved()
-        {
-            RangeChanged?.Invoke(this, ActualMinValue, ActualMaxValue);
         }
 
         /// <summary>

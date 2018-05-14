@@ -159,7 +159,7 @@ namespace LiveCharts.Wpf
         /// The animation line property, default is bounce medium.
         /// </summary>
         public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
-            nameof(AnimationLine), typeof(IEnumerable<Core.Animations.Frame>), typeof(Chart),
+            nameof(AnimationLine), typeof(IEnumerable<Core.Animations.KeyFrame>), typeof(Chart),
             new PropertyMetadata(TimeLines.Ease));
 
         /// <summary>
@@ -439,9 +439,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IEnumerable<Core.Animations.Frame> AnimationLine
+        public IEnumerable<Core.Animations.KeyFrame> AnimationLine
         {
-            get => (IEnumerable<Core.Animations.Frame>) GetValue(AnimationLineProperty);
+            get => (IEnumerable<Core.Animations.KeyFrame>) GetValue(AnimationLineProperty);
             set => SetValue(AnimationLineProperty, value);
         }
 

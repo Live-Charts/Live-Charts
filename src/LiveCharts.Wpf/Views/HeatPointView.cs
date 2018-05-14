@@ -50,8 +50,6 @@ namespace LiveCharts.Wpf.Views
     public class HeatPointView<TModel>
         : PointView<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries, Rectangle>
     {
-        private TimeLine _lastTimeLine;
-
         /// <summary>
         /// </summary>
         /// <param name="chartPoint"></param>
@@ -90,8 +88,6 @@ namespace LiveCharts.Wpf.Views
                     ((SolidColorBrush) (Shape.Fill)).Color,
                     Color.FromArgb(vm.To.A, vm.To.R, vm.To.G, vm.To.B))
                 .Begin();
-
-            _lastTimeLine = timeLine;
         }
 
         /// <inheritdoc />
@@ -104,9 +100,8 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart, bool force)
         {
-            chart.Content.RemoveChild(Shape, true);
-            chart.Content.RemoveChild(Label, true);
-            _lastTimeLine = null;
+            chart.Content.DisposeChild(Shape, true);
+            chart.Content.DisposeChild(Label, true);
         }
     }
 }

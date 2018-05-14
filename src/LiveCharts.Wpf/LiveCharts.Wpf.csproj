@@ -67,7 +67,7 @@
     <Compile Include="ChartTooltip.cs" />
     <Compile Include="ChartLegend.cs" />
     <Compile Include="Controls\AxisLabel.cs" />
-    <Compile Include="CorePlatformMapping.cs" />
+    <Compile Include="CoreToPlatform.cs" />
     <Compile Include="Events\IWpfChart.cs" />
     <Compile Include="Events\MouseButtonDataInteractionHandler.cs" />
     <Compile Include="Events\MouseDataInteractionHandler.cs" />

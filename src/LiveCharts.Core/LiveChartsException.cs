@@ -25,6 +25,8 @@
 #region
 
 using System;
+using System.IO;
+using System.Linq;
 
 #endregion
 
@@ -34,19 +36,46 @@ namespace LiveCharts.Core
     /// An Exception thrown when there is an error related with LiveCharts.
     /// </summary>
     /// <seealso cref="System.Exception" />
-    public sealed class LiveChartsException : Exception
+    public sealed class LiveChartsException: Exception
     {
         private static readonly string _baseErrorUri = "http://lvcharts.net/error/";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LiveChartsException"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
         /// <param name="code">the error code</param>
-        public LiveChartsException(string message, int code)
-            : base(message)
-        {
+        /// <param name="parameters">The parameters to inject.</param>
+        public LiveChartsException(int code, params object[] parameters)
+            :base(GetMessage(code, parameters))
+        { 
             HelpLink = _baseErrorUri + code;
+        }
+
+        private static string GetMessage(int code, object[] parameters)
+        {
+            string message;
+
+            using (var reader = new StreamReader("exceptions.txt"))
+            {
+                var content = reader.ReadToEnd();
+                var byLine = content.Split(
+                    new[] {Environment.NewLine},
+                    StringSplitOptions.None);
+
+                var error = byLine
+                    .Select(x =>
+                    {
+                        var byField = x.Split(',');
+                        return new {code = int.Parse(byField[0]), message = byField[1]};
+                    })
+                    .FirstOrDefault(x => x.code == code);
+
+                message = error == null
+                    ? "An unknown exception was thrown."
+                    : string.Format(error.message, parameters);
+            }
+
+            return message;
         }
     }
 }

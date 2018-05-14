@@ -88,7 +88,8 @@ namespace LiveCharts.Wpf.Views
                 Shape.Width = 0;
                 Shape.Height = 0;
                 _path = _vm.Path;
-                _segment = (BezierSegment) _path.InsertSegment(_segment, _vm.Index, _vm.Point1, _vm.Point2, _vm.Point3);
+                _segment = (BezierSegment) _path.InsertSegment(
+                    _segment, _vm.Index, _vm.Point1, _vm.Point2, _vm.Point3);
 
                 var geometryAnimation = new TimeLine
                 {
@@ -96,7 +97,7 @@ namespace LiveCharts.Wpf.Views
                     Duration = TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2)
                 };
 
-                var r = _vm.GeometrySize * .5;
+                var r = _vm.GeometrySize * .5f;
 
                 Shape.Animate(geometryAnimation)
                     .Property(Canvas.LeftProperty, _vm.Location.X + r, _vm.Location.X, 0.5)
@@ -108,7 +109,7 @@ namespace LiveCharts.Wpf.Views
 
             Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
             Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
-            Shape.Fill = Brushes.White;
+            Shape.Fill = Brushes.White; // ToDo: use user defined color.
             Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
             Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
 
@@ -143,8 +144,8 @@ namespace LiveCharts.Wpf.Views
         {
             if (force)
             {
-                chart.Content.RemoveChild(Shape, true);
-                chart.Content.RemoveChild(Label, true);
+                chart.Content.DisposeChild(Shape, true);
+                chart.Content.DisposeChild(Label, true);
                 _segment = null;
                 _path = null;
                 _lastTimeLine = null;
@@ -162,8 +163,8 @@ namespace LiveCharts.Wpf.Views
             shapeAnimation
                 .Then((sender, args) =>
                 {
-                    chart.Content.RemoveChild(Shape, true);
-                    chart.Content.RemoveChild(Label, true);
+                    chart.Content.DisposeChild(Shape, true);
+                    chart.Content.DisposeChild(Label, true);
                 })
                 .Begin();
 

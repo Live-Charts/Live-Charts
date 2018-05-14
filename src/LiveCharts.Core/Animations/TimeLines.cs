@@ -7,10 +7,10 @@ namespace LiveCharts.Core.Animations
     /// </summary>
     public static class TimeLines
     {
-        private static Frame[] _ease;
-        private static Frame[] _easeIn;
-        private static Frame[] _easeOut;
-        private static Frame[] _easeInOut;
+        private static KeyFrame[] _ease;
+        private static KeyFrame[] _easeIn;
+        private static KeyFrame[] _easeOut;
+        private static KeyFrame[] _easeInOut;
 
         /// <summary>
         /// Gets the disable animations vector.
@@ -18,9 +18,9 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The disable animations.
         /// </value>
-        public static IEnumerable<Frame> DisableAnimations => new[]
+        public static IEnumerable<KeyFrame> DisableAnimations => new[]
         {
-            new Frame(1, 1)
+            new KeyFrame(1, 1)
         };
 
         /// <summary>
@@ -29,10 +29,10 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The lineal animation.
         /// </value>
-        public static IEnumerable<Frame> Lineal => new[]
+        public static IEnumerable<KeyFrame> Lineal => new[]
         {
-            new Frame(0, 0),
-            new Frame(1, 1)
+            new KeyFrame(0, 0),
+            new KeyFrame(1, 1)
         };
 
         /// <summary>
@@ -41,23 +41,23 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The ease.
         /// </value>
-        public static IEnumerable<Frame> Ease
+        public static IEnumerable<KeyFrame> Ease
         {
             get
             {
                 if (_ease != null) return _ease;
 
-                var bezier = new KeySpline(0.25, 0.1, 0.25, 1.0);
+                var bezier = new KeySpline(0.25f, 0.1f, 0.25f, 1.0f);
 
                 _ease = new[]
                 {
-                    bezier.GetFrame(0),
-                    bezier.GetFrame(0.125),
-                    bezier.GetFrame(0.25),
-                    bezier.GetFrame(0.5),
-                    bezier.GetFrame(0.625),
-                    bezier.GetFrame(0.75),
-                    bezier.GetFrame(1)
+                    bezier.GetFrame(0f),
+                    bezier.GetFrame(0.125f),
+                    bezier.GetFrame(0.25f),
+                    bezier.GetFrame(0.5f),
+                    bezier.GetFrame(0.625f),
+                    bezier.GetFrame(0.75f),
+                    bezier.GetFrame(1f)
                 };
 
                 return _ease;
@@ -70,25 +70,25 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The ease in.
         /// </value>
-        public static IEnumerable<Frame> EaseIn
+        public static IEnumerable<KeyFrame> EaseIn
         {
             get
             {
                 if (_easeIn != null) return _easeIn;
 
-                var bezier = new KeySpline(0.42, 0, 1, 1);
+                var bezier = new KeySpline(0.42f, 0f, 1f, 1f);
 
                 _easeIn = new[]
                 {
-                    bezier.GetFrame(0),
-                    bezier.GetFrame(0.25),
-                    bezier.GetFrame(0.42),
-                    bezier.GetFrame(0.5),
-                    bezier.GetFrame(0.6),
-                    bezier.GetFrame(0.7),
-                    bezier.GetFrame(0.8),
-                    bezier.GetFrame(0.9),
-                    bezier.GetFrame(1)
+                    bezier.GetFrame(0f),
+                    bezier.GetFrame(0.25f),
+                    bezier.GetFrame(0.42f),
+                    bezier.GetFrame(0.5f),
+                    bezier.GetFrame(0.6f),
+                    bezier.GetFrame(0.7f),
+                    bezier.GetFrame(0.8f),
+                    bezier.GetFrame(0.9f),
+                    bezier.GetFrame(1f)
                 };
 
                 return _easeIn;
@@ -101,23 +101,23 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The ease out.
         /// </value>
-        public static IEnumerable<Frame> EaseOut
+        public static IEnumerable<KeyFrame> EaseOut
         {
             get
             {
                 if (_easeOut != null) return _easeOut;
 
-                var bezier = new KeySpline(0, 0, 0.58, 1);
+                var bezier = new KeySpline(0f, 0f, 0.58f, 1f);
 
                 _easeOut = new[]
                 {
-                    bezier.GetFrame(0),
-                    bezier.GetFrame(0.3),
-                    bezier.GetFrame(0.58),
-                    bezier.GetFrame(0.7),
-                    bezier.GetFrame(0.8),
-                    bezier.GetFrame(0.9),
-                    bezier.GetFrame(1)
+                    bezier.GetFrame(0f),
+                    bezier.GetFrame(0.3f),
+                    bezier.GetFrame(0.58f),
+                    bezier.GetFrame(0.7f),
+                    bezier.GetFrame(0.8f),
+                    bezier.GetFrame(0.9f),
+                    bezier.GetFrame(1f)
                 };
 
                 return _easeOut;
@@ -130,24 +130,24 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The ease in out.
         /// </value>
-        public static IEnumerable<Frame> EaseInOut
+        public static IEnumerable<KeyFrame> EaseInOut
         {
             get
             {
                 if (_easeInOut != null) return _easeInOut;
 
-                var bezier = new KeySpline(0.42, 0, 0.58, 1);
+                var bezier = new KeySpline(0.42f, 0f, 0.58f, 1f);
 
                 _easeInOut = new[]
                 {
-                    bezier.GetFrame(0),
-                    bezier.GetFrame(0.125),
-                    bezier.GetFrame(0.25),
-                    bezier.GetFrame(0.375),
-                    bezier.GetFrame(0.5),
-                    bezier.GetFrame(0.75),
-                    bezier.GetFrame(0.875),
-                    bezier.GetFrame(1)
+                    bezier.GetFrame(0f),
+                    bezier.GetFrame(0.125f),
+                    bezier.GetFrame(0.25f),
+                    bezier.GetFrame(0.375f),
+                    bezier.GetFrame(0.5f),
+                    bezier.GetFrame(0.75f),
+                    bezier.GetFrame(0.875f),
+                    bezier.GetFrame(1f)
                 };
 
                 return _easeInOut;
@@ -160,19 +160,19 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The bounce small.
         /// </value>
-        public static IEnumerable<Frame> BounceSmall => new[]
+        public static IEnumerable<KeyFrame> BounceSmall => new[]
         {
             // http://bouncejs.com#%7Bs%3A%5B%7BT%3A%22c%22%2Ce%3A%22b%22%2Cd%3A1000%2CD%3A0%2Cf%3A%7Bx%3A0%2Cy%3A0%7D%2Ct%3A%7Bx%3A1%2Cy%3A1%7D%2Cs%3A1%2Cb%3A2%7D%5D%7D
-            new Frame(0d, 0d),
-            new Frame(0.0761, 0.536),
-            new Frame(0.1141, 0.738),
-            new Frame(0.1512, 0.881),
-            new Frame(0.1892, 0.98),
-            new Frame(0.2272, 1.038),
-            new Frame(0.3023, 1.072),
-            new Frame(0.5025, 1.015),
-            new Frame(0.7027, 0.997),
-            new Frame(1d, 1d)
+            new KeyFrame(0f, 0f),
+            new KeyFrame(0.0761f, 0.536f),
+            new KeyFrame(0.1141f, 0.738f),
+            new KeyFrame(0.1512f, 0.881f),
+            new KeyFrame(0.1892f, 0.98f),
+            new KeyFrame(0.2272f, 1.038f),
+            new KeyFrame(0.3023f, 1.072f),
+            new KeyFrame(0.5025f, 1.015f),
+            new KeyFrame(0.7027f, 0.997f),
+            new KeyFrame(1f, 1f)
         };
 
         /// <summary>
@@ -181,22 +181,22 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The bounce medium.
         /// </value>
-        public static IEnumerable<Frame> BounceMedium => new[]
+        public static IEnumerable<KeyFrame> BounceMedium => new[]
         {
             // http://bouncejs.com#%7Bs%3A%5B%7BT%3A%22c%22%2Ce%3A%22b%22%2Cd%3A1000%2CD%3A0%2Cf%3A%7Bx%3A0%2Cy%3A0%7D%2Ct%3A%7Bx%3A1%2Cy%3A1%7D%2Cs%3A1%2Cb%3A4%7D%5D%7D 
-            new Frame(0d, 0d),
-            new Frame(0.047d, .45d),
-            new Frame(0.0941d, .883d),
-            new Frame(0.1411d, 1.141d),
-            new Frame(0.1872d, 1.212d),
-            new Frame(0.2432d, 1.151d),
-            new Frame(0.2993d, 1.048d),
-            new Frame(0.3554d, 0.979d),
-            new Frame(0.4104d, 0.961d),
-            new Frame(0.5215d, 0.991d),
-            new Frame(0.6326d, 1.007d),
-            new Frame(0.8549d, 0.999d),
-            new Frame(1d, 1d)
+            new KeyFrame(0f, 0f),
+            new KeyFrame(0.047f, .45f),
+            new KeyFrame(0.0941f, .883f),
+            new KeyFrame(0.1411f, 1.141f),
+            new KeyFrame(0.1872f, 1.212f),
+            new KeyFrame(0.2432f, 1.151f),
+            new KeyFrame(0.2993f, 1.048f),
+            new KeyFrame(0.3554f, 0.979f),
+            new KeyFrame(0.4104f, 0.961f),
+            new KeyFrame(0.5215f, 0.991f),
+            new KeyFrame(0.6326f, 1.007f),
+            new KeyFrame(0.8549f, 0.999f),
+            new KeyFrame(1f, 1f)
         };
 
         /// <summary>
@@ -205,24 +205,24 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The bounce large.
         /// </value>
-        public static IEnumerable<Frame> BounceLarge => new[]
+        public static IEnumerable<KeyFrame> BounceLarge => new[]
         {
             // http://bouncejs.com#%7Bs%3A%5B%7BT%3A%22c%22%2Ce%3A%22b%22%2Cd%3A1000%2CD%3A0%2Cf%3A%7Bx%3A0%2Cy%3A0%7D%2Ct%3A%7Bx%3A1%2Cy%3A1%7D%2Cs%3A1%2Cb%3A6%7D%5D%7D
-            new Frame(0d, 0d),
-            new Frame(0.034, .407),
-            new Frame(0.0681, .893),
-            new Frame(0.1021, 1.226),
-            new Frame(0.1361, 1.332),
-            new Frame(0.1752, 1.239),
-            new Frame(0.2132, 1.069),
-            new Frame(0.2523, 0.938),
-            new Frame(0.2903, 0.897),
-            new Frame(0.3674, 0.979),
-            new Frame(0.4444, 1.032),
-            new Frame(0.5986, 0.99),
-            new Frame(0.7528, 1.003),
-            new Frame(0.9069, 0.999),
-            new Frame(1d, 1d)
+            new KeyFrame(0f, 0f),
+            new KeyFrame(0.034f, .407f),
+            new KeyFrame(0.0681f, 0.893f),
+            new KeyFrame(0.1021f, 1.226f),
+            new KeyFrame(0.1361f, 1.332f),
+            new KeyFrame(0.1752f, 1.239f),
+            new KeyFrame(0.2132f, 1.069f),
+            new KeyFrame(0.2523f, 0.938f),
+            new KeyFrame(0.2903f, 0.897f),
+            new KeyFrame(0.3674f, 0.979f),
+            new KeyFrame(0.4444f, 1.032f),
+            new KeyFrame(0.5986f, 0.99f),
+            new KeyFrame(0.7528f, 1.003f),
+            new KeyFrame(0.9069f, 0.999f),
+            new KeyFrame(1f, 1f)
         };
 
         /// <summary>
@@ -231,30 +231,30 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The bounce extra large.
         /// </value>
-        public static IEnumerable<Frame> BounceExtraLarge => new[]
+        public static IEnumerable<KeyFrame> BounceExtraLarge => new[]
         {
             // http://bouncejs.com#%7Bs%3A%5B%7BT%3A%22c%22%2Ce%3A%22b%22%2Cd%3A1000%2CD%3A0%2Cf%3A%7Bx%3A0%2Cy%3A0%7D%2Ct%3A%7Bx%3A1%2Cy%3A1%7D%2Cs%3A1%2Cb%3A10%7D%5D%7D
-            new Frame(0d, 0d),
-            new Frame(0.022, 0.368),
-            new Frame(0.044, 0.916),
-            new Frame(0.0661, 1.346),
-            new Frame(0.0881, 1.498),
-            new Frame(0.1121, 1.362),
-            new Frame(0.1361, 1.078),
-            new Frame(0.1602, 0.84),
-            new Frame(0.1842, 0.759),
-            new Frame(0.2082, 0.829),
-            new Frame(0.2322, 0.967),
-            new Frame(0.2563, 1.08),
-            new Frame(0.2793, 1.117),
-            new Frame(0.3273, 1.016),
-            new Frame(0.3744, 0.943),
-            new Frame(0.4695, 1.028),
-            new Frame(0.5656, 0.987),
-            new Frame(0.6607, 1.006),
-            new Frame(0.7558, 0.997),
-            new Frame(0.8509, 1.002),
-            new Frame(0.9469, 1)
+            new KeyFrame(0f, 0f),
+            new KeyFrame(0.022f, 0.368f),
+            new KeyFrame(0.044f, 0.916f),
+            new KeyFrame(0.0661f, 1.346f),
+            new KeyFrame(0.0881f, 1.498f),
+            new KeyFrame(0.1121f, 1.362f),
+            new KeyFrame(0.1361f, 1.078f),
+            new KeyFrame(0.1602f, 0.84f),
+            new KeyFrame(0.1842f, 0.759f),
+            new KeyFrame(0.2082f, 0.829f),
+            new KeyFrame(0.2322f, 0.967f),
+            new KeyFrame(0.2563f, 1.08f),
+            new KeyFrame(0.2793f, 1.117f),
+            new KeyFrame(0.3273f, 1.016f),
+            new KeyFrame(0.3744f, 0.943f),
+            new KeyFrame(0.4695f, 1.028f),
+            new KeyFrame(0.5656f, 0.987f),
+            new KeyFrame(0.6607f, 1.006f),
+            new KeyFrame(0.7558f, 0.997f),
+            new KeyFrame(0.8509f, 1.002f),
+            new KeyFrame(0.9469f, 1f)
         };
     }
 }

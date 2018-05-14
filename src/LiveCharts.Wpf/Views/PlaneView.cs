@@ -149,8 +149,8 @@ namespace LiveCharts.Wpf.Views
 
         void IPlaneSeparatorView.Dispose(IChartView view, bool force)
         {
-            view.Content?.RemoveChild(Rectangle, true);
-            view.Content?.RemoveChild(Label, false);
+            view.Content?.DisposeChild(Rectangle, true);
+            view.Content?.DisposeChild(Label, false);
             Rectangle = null;
             Label = null;
         }

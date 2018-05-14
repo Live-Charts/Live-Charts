@@ -22,6 +22,6 @@ namespace LiveCharts.Core.Animations
         /// <value>
         /// The time line.
         /// </value>
-        public IEnumerable<Frame> AnimationLine { get; set; }
+        public IEnumerable<KeyFrame> AnimationLine { get; set; }
     }
 }

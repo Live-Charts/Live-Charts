@@ -89,9 +89,7 @@ namespace LiveCharts.Core.Updating
 
                 if (!(Series is ICartesianSeries cartesianSeries))
                 {
-                    throw new LiveChartsException(
-                        "It was not possible to determine the plane of the series.",
-                        155);
+                    throw new LiveChartsException(101, null);
                 }
 
                 _scalesAt = cartesianSeries.ScalesAt;

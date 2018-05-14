@@ -88,7 +88,7 @@ namespace LiveCharts.Wpf.Controls
         }
 
         /// <inheritdoc />
-        public void RemoveChild(object child, bool isClipped)
+        public void DisposeChild(object child, bool isClipped)
         {
             if (isClipped)
             {

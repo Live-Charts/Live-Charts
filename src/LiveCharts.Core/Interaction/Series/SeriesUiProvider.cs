@@ -48,7 +48,8 @@ namespace LiveCharts.Core.Interaction.Series
         /// </summary>
         /// <param name="chart">The chart.</param>
         /// <param name="series">The series.</param>
-        void OnUpdateStarted(IChartView chart, TSeries series);
+        /// <param name="timeLine">The time line.</param>
+        void OnUpdateStarted(IChartView chart, TSeries series, TimeLine timeLine);
 
         /// <summary>
         /// Called when LiveCharts requires a new visual point in the UI.
@@ -74,6 +75,7 @@ namespace LiveCharts.Core.Interaction.Series
         /// </summary>
         /// <param name="chart">The chart.</param>
         /// <param name="series">The series.</param>
-        void OnUpdateFinished(IChartView chart, TSeries series);
+        /// <param name="timeLine">The time line.</param>
+        void OnUpdateFinished(IChartView chart, TSeries series, TimeLine timeLine);
     }
 }

@@ -93,7 +93,7 @@ namespace LiveCharts.Core.Charts
                 if (!(series is IPieSeries))
                 {
                     throw new LiveChartsException(
-                        $"{series.ThemeKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                        102, series.ThemeKey.Name, nameof(GaugeModel));
                 }
 
                 series.UpdateStarted(View);

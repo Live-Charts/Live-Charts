@@ -5,14 +5,14 @@
     /// the total time in the animation and <see cref="Value"/> is the value the 
     /// animation should have at the respective time.
     /// </summary>
-    public struct Frame
+    public struct KeyFrame
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Frame"/> struct.
+        /// Initializes a new instance of the <see cref="KeyFrame"/> struct.
         /// </summary>
-        /// <param name="time">The time.</param>
-        /// <param name="value">The value.</param>
-        public Frame(double time, double value)
+        /// <param name="time">The time elapsed nin percentage.</param>
+        /// <param name="value">The value elapsed in percentage.</param>
+        public KeyFrame(float time, float value)
         {
             Time = time;
             Value = value;
@@ -24,7 +24,7 @@
         /// <value>
         /// The elapsed time.
         /// </value>
-        public double Time { get; set; }
+        public float Time { get; set; }
 
         /// <summary>
         /// Gets or sets the value in percentage.
@@ -32,6 +32,6 @@
         /// <value>
         /// The value.
         /// </value>
-        public double Value { get; set; }
+        public float Value { get; set; }
     }
 }

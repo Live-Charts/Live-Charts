@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf.Views.Providers
         : ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries>
     {
         /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, IHeatSeries series)
+        public void OnUpdateStarted(IChartView chart, IHeatSeries series, TimeLine timeLine)
         { 
         }
 
@@ -72,7 +72,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, IHeatSeries series)
+        public void OnUpdateFinished(IChartView chart, IHeatSeries series, TimeLine timeLine)
         {
         }
     }

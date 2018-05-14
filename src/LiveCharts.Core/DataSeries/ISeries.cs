@@ -246,7 +246,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The animation line.
         /// </value>
-        IEnumerable<Frame> AnimationLine { get; set; }
+        IEnumerable<KeyFrame> AnimationLine { get; set; }
 
         /// <summary>
         /// Gets or sets the delay rule.

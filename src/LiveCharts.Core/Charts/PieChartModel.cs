@@ -101,8 +101,7 @@ namespace LiveCharts.Core.Charts
             {
                 if (!(series is IPieSeries))
                 {
-                    throw new LiveChartsException(
-                        $"{series.ThemeKey.Name} is not supported at a {nameof(ICartesianChartView)}", 110);
+                    throw new LiveChartsException(102, series.ThemeKey.Name, nameof(PieChartModel));
                 }
 
                 series.UpdateStarted(View);

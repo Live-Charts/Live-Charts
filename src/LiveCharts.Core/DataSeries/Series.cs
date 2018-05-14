@@ -197,7 +197,7 @@ namespace LiveCharts.Core.DataSeries
         public TimeSpan AnimationsSpeed { get; set; }
 
         /// <inheritdoc />
-        public IEnumerable<Frame> AnimationLine { get; set; }
+        public IEnumerable<KeyFrame> AnimationLine { get; set; }
 
         /// <inheritdoc />
         public DelayRules DelayRule { get; set; }
@@ -308,13 +308,25 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
         {
-            ViewProvider.OnUpdateStarted(chart, this as TSeries);
+            var timeLine = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.AnimationLine
+            };
+
+            ViewProvider.OnUpdateStarted(chart, this as TSeries, timeLine);
         }
 
         /// <inheritdoc />
         void ISeries.UpdateFinished(IChartView chart)
         {
-            ViewProvider.OnUpdateFinished(chart, this as TSeries);
+            var timeLine = new TimeLine
+            {
+                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                AnimationLine = AnimationLine ?? chart.AnimationLine
+            };
+
+            ViewProvider.OnUpdateFinished(chart, this as TSeries, timeLine);
         }
 
         /// <inheritdoc />
@@ -365,8 +377,7 @@ namespace LiveCharts.Core.DataSeries
             var tSeries = this as TSeries;
             if (tSeries == null)
             {
-                throw new LiveChartsException(
-                    $"The series type {GetType().Name} is not assignable to {typeof(TSeries).Name}", 220);
+                throw new LiveChartsException(122, GetType().Name, typeof(TSeries).Name);
             }
             
             using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TSeries>

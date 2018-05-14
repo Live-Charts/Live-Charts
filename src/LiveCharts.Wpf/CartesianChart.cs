@@ -231,7 +231,7 @@ namespace LiveCharts.Wpf
             {
                 if (ScrollsX.Count > 1)
                 {
-                    throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
+                    throw new LiveChartsException(142);
                 }
 
                 XTo.UpdateLayout();
@@ -244,7 +244,7 @@ namespace LiveCharts.Wpf
             {
                 if (ScrollsY.Count > 1)
                 {
-                    throw new LiveChartsException("The source to scroll could only contain 1 plane.", 950);
+                    throw new LiveChartsException(142);
                 }
 
                 YTo.UpdateLayout();

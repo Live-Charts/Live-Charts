@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf.Views.Providers
         : ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>
     {
         /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, IPieSeries series)
+        public void OnUpdateStarted(IChartView chart, IPieSeries series, TimeLine timeLine)
         {
         }
 
@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, IPieSeries series)
+        public void OnUpdateFinished(IChartView chart, IPieSeries series, TimeLine timeLine)
         {
         }
     }

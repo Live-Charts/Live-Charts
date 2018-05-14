@@ -165,7 +165,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The animation line.
         /// </value>
-        IEnumerable<Frame> AnimationLine { get; set; }
+        IEnumerable<KeyFrame> AnimationLine { get; set; }
 
         /// <summary>
         /// Gets or sets the tooltip time out.

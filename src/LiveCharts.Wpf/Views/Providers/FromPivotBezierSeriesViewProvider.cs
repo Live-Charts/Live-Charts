@@ -21,7 +21,7 @@ namespace LiveCharts.Wpf.Views.Providers
         : IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries>
     {
         /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, ILineSeries series)
+        public void OnUpdateStarted(IChartView chart, ILineSeries series, TimeLine timeLine)
         {
         }
 
@@ -48,7 +48,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, ILineSeries series)
+        public void OnUpdateFinished(IChartView chart, ILineSeries series, TimeLine timeLine)
         {
         }
 

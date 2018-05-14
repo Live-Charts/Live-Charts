@@ -59,6 +59,6 @@ namespace LiveCharts.Core.Charts
         /// <summary>
         /// Removes the child.
         /// </summary>
-        void RemoveChild(object child, bool isClipped);
+        void DisposeChild(object child, bool isClipped);
     }
 }

@@ -8,7 +8,7 @@ namespace LiveCharts.Core.Animations
     /// </summary>
     public static class AnimationExtensions
     {
-        private static readonly KeySpline DelaySpline = new KeySpline(0.25, 0.1, 0.25, 1.0);
+        private static readonly KeySpline DelaySpline = new KeySpline(0.25f, 0.1f, 0.25f, 1.0f);
         private static readonly Random Random = new Random();
 
         /// <summary>
@@ -17,20 +17,19 @@ namespace LiveCharts.Core.Animations
         /// <param name="animation">The animation to delay.</param>
         /// <param name="delay">The delay.</param>
         /// <returns></returns>
-        public static IEnumerable<Frame> Delay(this IEnumerable<Frame> animation, double delay)
+        public static IEnumerable<KeyFrame> Delay(this IEnumerable<KeyFrame> animation, float delay)
         {
             if (delay > 0)
             {
-                yield return new Frame(0d, 0d);
-                yield return new Frame(delay, 0d);
+                yield return new KeyFrame(0f, 0);
+                yield return new KeyFrame(delay, 0);
             }
 
-            var remaining = 1 - delay;
-
+            var remaining = 1f - delay;
 
             foreach (var curve in animation)
             {
-                yield return new Frame(delay + remaining * curve.Time, curve.Value);
+                yield return new KeyFrame(delay + remaining * curve.Time, curve.Value);
             }
         }
 
@@ -42,9 +41,9 @@ namespace LiveCharts.Core.Animations
         /// <param name="x">The x to interpolate.</param>
         /// <param name="rule">the delay rule.</param>
         /// <returns></returns>
-        public static TimeLine Delay(double duration, IEnumerable<Frame> animationLine, double x, DelayRules rule)
+        public static TimeLine Delay(float duration, IEnumerable<KeyFrame> animationLine, float x, DelayRules rule)
         {
-            double delayTime;
+            float delayTime;
 
             switch (rule)
             {
@@ -56,7 +55,7 @@ namespace LiveCharts.Core.Animations
                     delayTime = DelaySpline.GetY(x) * duration;
                     break;
                 case DelayRules.Random:
-                    x = Random.NextDouble();
+                    x = (float) Random.NextDouble();
                     delayTime = x * duration;
                     break;
                 case DelayRules.None:

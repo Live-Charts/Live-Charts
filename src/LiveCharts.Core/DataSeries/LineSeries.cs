@@ -133,7 +133,7 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalDuration = (float)timeLine.Duration.TotalMilliseconds;
             var originalAnimationLine = timeLine.AnimationLine;
             var itl = 0;
 
@@ -180,7 +180,7 @@ namespace LiveCharts.Core.DataSeries
                 {
                     timeLine = AnimationExtensions.Delay(
                         // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, itl / (double)PointsCount, DelayRule);
+                        originalDuration, originalAnimationLine, itl / (float) PointsCount, DelayRule);
                 }
 
                 currentBezier.ViewModel.Path = cartesianPath;

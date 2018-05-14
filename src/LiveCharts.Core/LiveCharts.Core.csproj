@@ -13,10 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="exceptions.txt" />
     <None Remove="solidbrushes.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="exceptions.txt" />
     <EmbeddedResource Include="solidbrushes.txt" />
   </ItemGroup>
 

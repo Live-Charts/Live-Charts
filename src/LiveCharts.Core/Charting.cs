@@ -149,9 +149,7 @@ namespace LiveCharts.Core
             var coordinateType = typeof(TCoordinate);
             var key = new Tuple<Type, Type>(modelType, coordinateType);
             if (DefaultMappers.TryGetValue(key, out var mapper)) return (ModelToCoordinateMapper<TModel, TCoordinate>) mapper;
-            throw new LiveChartsException(
-                $"LiveCharts was not able to map from '{modelType.Name}' to " +
-                $"'{coordinateType.Name}' ensure you configured properly the type you are trying to plot.", 100);
+            throw new LiveChartsException(100, modelType.Name, coordinateType.Name);
         }
 
         /// <summary>

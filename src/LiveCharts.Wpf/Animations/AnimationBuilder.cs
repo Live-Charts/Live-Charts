@@ -42,7 +42,7 @@ namespace LiveCharts.Wpf.Animations
     public class AnimationBuilder
     {
         private readonly bool _isFrameworkElement;
-        private readonly IEnumerable<Frame> _animationLine;
+        private readonly IEnumerable<KeyFrame> _animationLine;
         private List<Tuple<DependencyProperty, Timeline>> _animations = new List<Tuple<DependencyProperty, Timeline>>();
 
         /// <summary>
@@ -53,7 +53,10 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="animationLine">The animation vector.</param>
         /// <param name="isFrameworkElement">if set to <c>true</c> [is framework element].</param>
         public AnimationBuilder(
-            DependencyObject target, TimeSpan duration, IEnumerable<Frame> animationLine, bool isFrameworkElement)
+            DependencyObject target, 
+            TimeSpan duration, 
+            IEnumerable<KeyFrame> animationLine, 
+            bool isFrameworkElement)
         {
             Target = target;
             Duration = duration;
@@ -101,7 +104,10 @@ namespace LiveCharts.Wpf.Animations
                 // I think this in an error in the WPF framework design
                 // this is just a work around.
                 // storyboards do not work on all Animatable objects, only in FrameworkElements.
-                if (_animations.Count > 0) _animations[0].Item2.Completed += OnFinished;
+                if (_animations.Count > 0)
+                {
+                    _animations[0].Item2.Completed += OnFinished;
+                }
                 foreach (var x in _animations)
                 {
                     ((Animatable) Target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
@@ -110,7 +116,6 @@ namespace LiveCharts.Wpf.Animations
         }
 
         /// <summary>
-        /// Animates the specified property.
         /// Animates the specified property.
         /// </summary>
         /// <param name="property">The property.</param>
@@ -127,7 +132,7 @@ namespace LiveCharts.Wpf.Animations
                 Duration = Duration
             };
 
-            var frames = delay > 0 ? _animationLine.Delay(delay) : _animationLine;
+            var frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
 
             foreach (var frame in frames)
             {
@@ -168,7 +173,7 @@ namespace LiveCharts.Wpf.Animations
                 Duration = Duration
             };
 
-            var frames = delay > 0 ? _animationLine.Delay(delay) : _animationLine;
+            var frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
 
             foreach (var frame in frames)
             {
@@ -211,7 +216,7 @@ namespace LiveCharts.Wpf.Animations
                 Duration = Duration
             };
 
-            var frames = delay > 0 ? _animationLine.Delay(delay) : _animationLine;
+            var frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
 
             foreach (var frame in frames)
             {
@@ -250,9 +255,7 @@ namespace LiveCharts.Wpf.Animations
             {
                 if (_animations.Count < 1)
                 {
-                    throw new LiveChartsException(
-                        "No animation was found, therefore it is not possible to listen for animation completion.",
-                        155);
+                    throw new LiveChartsException(141);
                 }
                 _animations[0].Item2.Completed += callback;
             }

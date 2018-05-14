@@ -9,7 +9,7 @@ namespace Assets.ViewModels
 {
     public class Animations : INotifyPropertyChanged
     {
-        private IEnumerable<Frame> _timeLine;
+        private IEnumerable<KeyFrame> _timeLine;
 
         public Animations()
         {
@@ -56,7 +56,7 @@ namespace Assets.ViewModels
 
         public ObservableCollection<ISeries> SeriesCollection { get; set; }
 
-        public IEnumerable<Frame> TimeLine
+        public IEnumerable<KeyFrame> TimeLine
         {
             get => _timeLine;
             set
@@ -66,7 +66,7 @@ namespace Assets.ViewModels
             }
         }
 
-        public IEnumerable<Frame>[] PredefinedTimeLines { get; set; }
+        public IEnumerable<KeyFrame>[] PredefinedTimeLines { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

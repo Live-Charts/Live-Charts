@@ -145,8 +145,8 @@ namespace LiveCharts.Wpf.Views
 
         public virtual void Dispose(IChartView view)
         {
-            view.Content.RemoveChild(StrokePath, true);
-            view.Content.RemoveChild(FillPath, true);
+            view.Content.DisposeChild(StrokePath, true);
+            view.Content.DisposeChild(FillPath, true);
         }
     }
 }

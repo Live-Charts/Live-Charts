@@ -54,7 +54,7 @@ namespace LiveCharts.Wpf.Views.Providers
         where TSeries : IStrokeSeries, ICartesianSeries
     {
         /// <inheritdoc />
-        public void OnUpdateStarted(IChartView chart, TSeries series)
+        public void OnUpdateStarted(IChartView chart, TSeries series, TimeLine timeLine)
         {
         }
 
@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public void OnUpdateFinished(IChartView chart, TSeries series)
+        public void OnUpdateFinished(IChartView chart, TSeries series, TimeLine timeLine)
         {
         }
     }

@@ -135,7 +135,7 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = timeLine.Duration.TotalMilliseconds;
+            var originalDuration = (float)timeLine.Duration.TotalMilliseconds;
             var originalAnimationLine = timeLine.AnimationLine;
             var i = 0;
 
@@ -167,7 +167,7 @@ namespace LiveCharts.Core.DataSeries
                 {
                     timeLine = AnimationExtensions.Delay(
                         // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (double)PointsCount, DelayRule);
+                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
                 }
 
                 current.ViewModel = vm;
@@ -210,9 +210,7 @@ namespace LiveCharts.Core.DataSeries
 
             if (!enumerator.MoveNext())
             {
-                throw new LiveChartsException(
-                    $"At least 2 elements must be present at the property {nameof(IHeatSeries)}.{nameof(Gradient)}.",
-                    220);
+                throw new LiveChartsException(120, null);
             }
 
             var from = enumerator.Current;
@@ -238,10 +236,7 @@ namespace LiveCharts.Core.DataSeries
                 from = to;
             }
 
-            throw new LiveChartsException(
-                $"The property {nameof(IHeatSeries)}.{nameof(Gradient)} must contain at " +
-                "least 2 elements and at the offset range should explicitly go from 0 to 1.",
-                220);
+            throw new LiveChartsException(121, null);
         }
     }
 }

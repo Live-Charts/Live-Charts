@@ -67,9 +67,7 @@ namespace LiveCharts.Wpf.Converters
                         scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B));
             }
 
-            throw new LiveChartsException(
-                "It was not possible to map a core brush to WPF, probably the brush type is not already supported.",
-                120);
+            throw new LiveChartsException(143, "WPF");
         }
 
         /// <summary>
