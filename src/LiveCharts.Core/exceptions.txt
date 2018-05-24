@@ -28,3 +28,7 @@
 
 160, Error parsing Path Markup Syntax. The Mini Language command '{0}' is not supported.
 161, Error parsing the Path Markup Syntax '{0}'. {1}
+162, The PlotElement already belongs to another plot, please ensure any visual is unique at every plot.
+164, The property '{0}' is already registered by the '{1}' class.
+165, The properety '{0} is not an animatable or not a member of the animation target type.
+166, The Label size can not be calculated because the label must belong to a PlotRenderer first.

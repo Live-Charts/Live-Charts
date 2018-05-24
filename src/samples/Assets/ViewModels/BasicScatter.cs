@@ -25,6 +25,7 @@
 
 #region
 
+using System;
 using System.Collections.ObjectModel;
 using LiveCharts.Core.Collections;
 using LiveCharts.Core.DataSeries;
@@ -48,6 +49,13 @@ namespace Assets.ViewModels
             values2017.Add(new PointModel(4, 3));
             values2017.Add(new PointModel(3, 9));
             values2017.Add(new PointModel(6, 2));
+
+            var r = new Random();
+            for (int i = 0; i < 5000; i++)
+            {
+                values2017.Add(
+                    new PointModel(r.NextDouble() * 10, r.NextDouble() * 10));
+            }
 
             var values2018 = new ObservableCollection<PointModel>();
 

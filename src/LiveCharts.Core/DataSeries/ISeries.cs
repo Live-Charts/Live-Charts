@@ -68,14 +68,6 @@ namespace LiveCharts.Core.DataSeries
         ModelToCoordinateMapper<TModel, TCoordinate> Mapper { get; set; }
 
         /// <summary>
-        /// Gets the points.
-        /// </summary>
-        /// <value>
-        /// The points.
-        /// </value>
-        IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> Points { get; }
-
-        /// <summary>
         /// Gets the points count.
         /// </summary>
         /// <value>
@@ -90,8 +82,14 @@ namespace LiveCharts.Core.DataSeries
         /// The view provider.
         /// </value>
         ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> ViewProvider { get; set; }
-
         
+        /// <summary>
+        /// Gets the points for the given view.
+        /// </summary>
+        /// <value>
+        /// The points.
+        /// </value>
+        IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> GetPoints(IChartView chart);
     }
 
     /// <summary>
@@ -300,8 +298,9 @@ namespace LiveCharts.Core.DataSeries
         /// <param name="pointerLocation">The pointer location.</param>
         /// <param name="selectionMode">The selection mode.</param>
         /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
+        /// <param name="chart">The chart view.</param>
         /// <returns></returns>
-        IEnumerable<IChartPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest);
+        IEnumerable<IChartPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest, IChartView chart);
 
         /// <summary>
         /// Highlights a point.

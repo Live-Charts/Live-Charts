@@ -397,10 +397,10 @@ namespace LiveCharts.Core.Charts
         {
             if (!snapToClosest)
             {
-                return Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, false));
+                return Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, false, View));
             }
 
-            var results = Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, true))
+            var results = Series.SelectMany(series => series.GetPointsAt(pointerLocation, selectionMode, true, View))
                 .Select(point => new
                 {
                     Distance = point.InteractionArea.DistanceTo(pointerLocation, selectionMode),

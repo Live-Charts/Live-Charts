@@ -28,6 +28,7 @@ using System.Windows;
 using LiveCharts.Core;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
+using LiveCharts.Wpf.Geared;
 using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
 using FontWeight = LiveCharts.Core.Drawing.Styles.FontWeight;
 
@@ -47,7 +48,8 @@ namespace Samples.Wpf
                 charting
                     .LearnPrimitiveAndDefaultTypes()
                     .SetTheme(Themes.MaterialDesign)
-                    .TargetsWpf();
+                    .UsingWpf();
+                //.UsingWpfGeared();
             });
         }
     }

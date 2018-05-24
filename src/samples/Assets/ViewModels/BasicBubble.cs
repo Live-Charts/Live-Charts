@@ -42,7 +42,7 @@ namespace Assets.ViewModels
             var values = new ObservableCollection<WeightedModel>();
 
             // add some values to the series...
-            //                                 x, y, weight
+            //                              x, y, weight
             values.Add(new WeightedModel(0, 4, 23));
             values.Add(new WeightedModel(3, 2, 55));
             values.Add(new WeightedModel(2, 0, 17));

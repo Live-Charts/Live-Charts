@@ -139,7 +139,7 @@ namespace LiveCharts.Core.DataSeries
             var originalAnimationLine = timeLine.AnimationLine;
             var i = 0;
 
-            foreach (var current in Points)
+            foreach (var current in GetPoints(chart.View))
             {
                 if (current.View == null)
                 {

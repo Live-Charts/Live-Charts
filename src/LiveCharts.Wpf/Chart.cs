@@ -118,7 +118,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty AnimationsSpeedProperty = DependencyProperty.Register(
             nameof(AnimationsSpeed), typeof(TimeSpan), typeof(Chart),
-            new PropertyMetadata(TimeSpan.FromMilliseconds(550), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
+            new PropertyMetadata(TimeSpan.FromMilliseconds(1000), RaiseOnPropertyChanged(nameof(AnimationsSpeed))));
 
         /// <summary>
         /// The tooltip timeout property, default is 150 ms.
@@ -552,6 +552,7 @@ namespace LiveCharts.Wpf
             MouseLeftButtonDown -= OnLeftButtonDown;
             TooltipPopup = null;
             VisualDrawMargin = null;
+            GC.Collect();
         }
     }
 }

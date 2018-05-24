@@ -27,6 +27,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 #endregion
 
@@ -55,24 +56,37 @@ namespace LiveCharts.Core
         {
             string message;
 
-            using (var reader = new StreamReader("exceptions.txt"))
+            var assembly = Assembly.GetExecutingAssembly();
+            const string resourceName = "LiveCharts.Core.exceptions.txt";
+
+            try
             {
-                var content = reader.ReadToEnd();
-                var byLine = content.Split(
-                    new[] {Environment.NewLine},
-                    StringSplitOptions.None);
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
+                {
+                    var content = reader.ReadToEnd();
 
-                var error = byLine
-                    .Select(x =>
-                    {
-                        var byField = x.Split(',');
-                        return new {code = int.Parse(byField[0]), message = byField[1]};
-                    })
-                    .FirstOrDefault(x => x.code == code);
+                    var byLine = content.Split(
+                        new[] { Environment.NewLine },
+                        StringSplitOptions.None);
 
-                message = error == null
-                    ? "An unknown exception was thrown."
-                    : string.Format(error.message, parameters);
+                    var error = byLine
+                        .Select(x =>
+                        {
+                            if (string.IsNullOrWhiteSpace(x)) return new {code = 0, message = ""};
+                            var byField = x.Split(',');
+                            return new { code = int.Parse(byField[0]), message = byField[1] };
+                        })
+                        .FirstOrDefault(x => x.code == code);
+
+                    message = error == null
+                        ? $"An unknown exception was thrown, exception code {code}."
+                        : string.Format(error.message, parameters);
+                }
+            }
+            catch
+            {
+                message = $"Oops! something went wrong when trying to build a LiveCharts exception, exception code {code}.";
             }
 
             return message;

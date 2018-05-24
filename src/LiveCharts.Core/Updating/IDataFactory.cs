@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System.Collections.Generic;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction.Points;
@@ -45,10 +46,13 @@ namespace LiveCharts.Core.Updating
         /// <typeparam name="TViewModel">The type of the view model.</typeparam>
         /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <param name="context">The arguments.</param>
+        /// <param name="tracker">The tracker instance.</param>
         /// <param name="count">The points count.</param>
         /// <returns></returns>
-        ChartPoint<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-            DataFactoryContext<TModel, TCoordinate, TSeries> context, out int count)
+        void Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+            DataFactoryContext<TModel, TCoordinate, TSeries> context,
+            Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> tracker,
+            out int count)
             where TCoordinate : ICoordinate
             where TSeries : ISeries;
     }

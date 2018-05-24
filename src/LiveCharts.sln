@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assets", "samples\Assets\As
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Wpf", "samples\Samples.Wpf\Samples.Wpf.csproj", "{CC5D03FB-99BB-4FD0-A2CA-ECCE983454CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveCharts.Wpf.HA", "..\..\..\..\dev\livecharts.wpf.direct\src\LiveCharts.Wpf.Flash\LiveCharts.Wpf.HA\LiveCharts.Wpf.HA.csproj", "{A1A5D617-53F2-4DFC-9B72-05ACE8C2C08C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveCharts.Wpf.Geared", "..\..\..\..\dev\livecharts.wpf.direct\src\LiveCharts.Wpf.Flash\LiveCharts.Wpf.HA\LiveCharts.Wpf.Geared.csproj", "{A1A5D617-53F2-4DFC-9B72-05ACE8C2C08C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

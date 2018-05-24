@@ -74,7 +74,8 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> BezierViewProvider<TModel>()
+        public IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> 
+            BezierViewProvider<TModel>()
         {
             return new SelfDrawnBezierSeriesViewProvider<TModel>();
         }
@@ -89,13 +90,15 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> PieViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> 
+            PieViewProvider<TModel>()
         {
             return new PieSeriesViewProvider<TModel>();
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> HeatViewProvider<TModel>()
+        public ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> 
+            HeatViewProvider<TModel>()
         {
             return new HeatViewSeriesProvider<TModel>();
         }

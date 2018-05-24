@@ -42,18 +42,17 @@ namespace LiveCharts.Core.Updating
     public class DataFactory : IDataFactory
     {
         /// <inheritdoc />
-        public ChartPoint<TModel, TCoordinate, TViewModel, TSeries>[] Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-            DataFactoryContext<TModel, TCoordinate, TSeries> context, out int count)
+        public void Fetch<TModel, TCoordinate, TViewModel, TSeries>(
+            DataFactoryContext<TModel, TCoordinate, TSeries> context, 
+            Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> tracker, 
+            out int count)
             where TCoordinate : ICoordinate
             where TSeries : ISeries
         {
-            var results = new List<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>();
             var mapper = context.Mapper;
             var notifiesChange = context.Series.Metadata.IsObservable;
             var collection = context.Collection;
             var isValueType = context.Series.Metadata.IsValueType;
-            var pointTracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
-                context.Series.Content[context.Chart][Config.TrackerKey];
 
             for (var index = 0; index < collection.Count; index++)
             {
@@ -61,10 +60,10 @@ namespace LiveCharts.Core.Updating
 
                 var key = isValueType ? index : (object) instance;
 
-                if (!pointTracker.TryGetValue(key, out var chartPoint))
+                if (!tracker.TryGetValue(key, out var chartPoint))
                 {
                     chartPoint = new ChartPoint<TModel, TCoordinate, TViewModel, TSeries>();
-                    pointTracker.Add(key, chartPoint);
+                    tracker.Add(key, chartPoint);
                     if (notifiesChange)
                     {
                         var npc = (INotifyPropertyChanged) instance;
@@ -78,7 +77,7 @@ namespace LiveCharts.Core.Updating
                         void DisposeByValPoint(IChartView view, object sender)
                         {
                             npc.PropertyChanged -= InvalidateOnPropertyChanged;
-                            pointTracker.Remove(key);
+                            tracker.Remove(key);
                         }
 
                         npc.PropertyChanged += InvalidateOnPropertyChanged;
@@ -98,12 +97,9 @@ namespace LiveCharts.Core.Updating
 
                 // register our chart point at the resource collector
                 context.Chart.RegisterINotifyPropertyChanged(chartPoint);
-
-                results.Add(chartPoint);
             }
 
             count = collection.Count;
-            return results.ToArray();
         }
     }
 }

@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -70,7 +69,6 @@ namespace LiveCharts.Core.DataSeries
         private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
         private ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> _viewProvider;
         private object _chartPointsUpdateId;
-        private List<ChartModel> _usedBy = new List<ChartModel>();
         private bool _isVisible;
         private bool _dataLabels;
         private string _title;
@@ -246,12 +244,6 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
-        /// <inheritdoc />
-        public IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> Points { get; private set; }
-
-        /// <inheritdoc />
-        public int PointsCount { get; private set; }
-
         /// <summary>
         /// Gets or sets the point builder.
         /// </summary>
@@ -259,6 +251,9 @@ namespace LiveCharts.Core.DataSeries
         /// The point builder.
         /// </value>
         public Func<TModel, TViewModel> PointBuilder { get; set; }
+
+        /// <inheritdoc />
+        public int PointsCount { get; private set; }
 
         /// <summary>
         /// Gets or sets the point view provider.
@@ -341,12 +336,6 @@ namespace LiveCharts.Core.DataSeries
             Content[chart] = defaultDictionary;
         }
 
-        internal void AddChart(ChartModel chart)
-        {
-            if (_usedBy.Contains(chart)) return;
-            _usedBy.Add(chart);
-        }
-
         /// <summary>
         /// Defaults the point view provider.
         /// </summary>
@@ -357,6 +346,15 @@ namespace LiveCharts.Core.DataSeries
         /// Sets the default colors.
         /// </summary>
         protected abstract void SetDefaultColors(ChartModel chart);
+
+        /// <inheritdoc />
+        public IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> 
+            GetPoints(IChartView chart)
+        {
+            var tracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
+                Content[chart.Model][Config.TrackerKey];
+            return tracker.Values;
+        }
 
         /// <inheritdoc />
         public void Fetch(ChartModel chart, UpdateContext context)
@@ -389,26 +387,26 @@ namespace LiveCharts.Core.DataSeries
                 Collection = Values.ToArray()
             })
             {
-                Points = Charting.Current.DataFactory
-                    .Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-                        factoryContext, out var count);
+                var tracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
+                    Content[chart][Config.TrackerKey];
+                Charting.Current.DataFactory.Fetch(factoryContext, tracker, out var count);
                 PointsCount = count;
             }
         }
 
         /// <inheritdoc />
         public virtual IEnumerable<IChartPoint> GetPointsAt(
-            PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest)
+            PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest, IChartView chart)
         {
             IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> query;
 
             if (!snapToClosest)
             {
-                query = Points.Where(point => point.InteractionArea.Contains(pointerLocation, selectionMode));
+                query = GetPoints(chart).Where(point => point.InteractionArea.Contains(pointerLocation, selectionMode));
             }
             else
             {
-                var results = Points
+                var results = GetPoints(chart)
                     .Select(point => new
                     {
                         Distance = point.InteractionArea.DistanceTo(pointerLocation, selectionMode),
@@ -562,12 +560,10 @@ namespace LiveCharts.Core.DataSeries
         /// <summary>get
         /// Called when the series is disposed.
         /// </summary>
-        protected virtual void OnDisposing(IChartView view, bool force)
+        protected virtual void OnDisposing(IChartView chart, bool force)
         {
-            _usedBy = null;
-            if (!Content.ContainsKey(view.Model)) return;
-            Content[view.Model] = null;
-            Content.Remove(view.Model);
+            var viewContent = Content[chart.Model];
+            viewContent.Remove(Config.TrackerKey);
         }
 
 #endregion

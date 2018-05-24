@@ -54,7 +54,7 @@ namespace LiveCharts.Core.DataSeries
         private double _lineSmoothness;
         private double _geometrySize;
         private double _pivot;
-        private const string Path = "path";
+        private const string PathKey = "path";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineSeries{TModel}"/> class.
@@ -137,14 +137,14 @@ namespace LiveCharts.Core.DataSeries
             var originalAnimationLine = timeLine.AnimationLine;
             var itl = 0;
 
-            Content[chart].TryGetValue(Path, out var path);
+            Content[chart].TryGetValue(PathKey, out var path);
             var cartesianPath = (ICartesianPath) path;
 
             if (cartesianPath == null)
             {
                 cartesianPath = bezierViewProvider.GetNewPath();
                 cartesianPath.Initialize(chart.View, timeLine);
-                Content[chart][Path] = cartesianPath;
+                Content[chart][PathKey] = cartesianPath;
             }
 
             double length = 0;
@@ -229,7 +229,7 @@ namespace LiveCharts.Core.DataSeries
             var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
             var r = (float) (GeometrySize * .5);
 
-            var e = Points.GetEnumerator();
+            var e = GetPoints(chart.View).GetEnumerator();
             var isFirstPoint = true;
 
             double GetDistance(PointF p1, PointF p2)
@@ -364,12 +364,16 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
+        /// <inheritdoc />
         protected override void OnDisposing(IChartView view, bool force)
         {
-            Content[view.Model].TryGetValue(Path, out var path);
+            var viewContent = Content[view.Model];
+
+            viewContent.TryGetValue(PathKey, out var path);
+            if (path == null) return;
             var cartesianPath = path as ICartesianPath;
             cartesianPath?.Dispose(view);
-            Content.Remove(view.Model);
+            viewContent.Remove(PathKey);
             base.OnDisposing(view, force);
         }
     }

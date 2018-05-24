@@ -33,7 +33,7 @@ namespace LiveCharts.Wpf
 {
     public static class Config
     {
-        public static Charting TargetsWpf(this Charting settings)
+        public static Charting UsingWpf(this Charting settings)
         {
             settings.DataFactory = new DataFactory();
             settings.UiProvider = new UiProvider();

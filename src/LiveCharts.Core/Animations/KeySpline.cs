@@ -65,7 +65,7 @@
 
         private float GetTForX(float aX)
         {
-            // Newton raphson iteration
+            // Newton-Raphson iteration
             var aGuessT = aX;
             for (var i = 0; i < 4; ++i)
             {
