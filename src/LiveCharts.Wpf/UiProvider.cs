@@ -47,9 +47,9 @@ namespace LiveCharts.Wpf
     public class UiProvider : IUiProvider
     {
         /// <inheritdoc />
-        public IChartContent GetChartContent()
+        public IChartContent GetChartContent(IChartView view)
         {
-            return new ChartContent();
+            return new ChartContent(view);
         }
 
         /// <inheritdoc />

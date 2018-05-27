@@ -48,8 +48,9 @@ namespace Samples.Wpf
                 charting
                     .LearnPrimitiveAndDefaultTypes()
                     .SetTheme(Themes.MaterialDesign)
-                    .UsingWpf();
-                //.UsingWpfGeared();
+                    .UsingWpf()
+                    .UsingWpfGeared()
+                    ;
             });
         }
     }

@@ -30,6 +30,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Events;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
@@ -42,20 +43,38 @@ namespace LiveCharts.Wpf.Controls
     /// <inheritdoc cref="IChartContent" />
     public class ChartContent : Canvas, IChartContent
     {
+        #region fields
+
         private readonly Canvas _drawMargin = new Canvas();
         private RectangleF _drawArea;
         private SizeF _controlSize;
 
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartContent"/> class.
         /// </summary>
-        public ChartContent()
+        public ChartContent(IChartView view)
         {
+            View = view;
             Background = Brushes.Transparent; // otherwise mouse move is not fired...
             Children.Add(_drawMargin);
+
             MouseMove += OnMouseMove;
             MouseLeftButtonDown += OnLeftButtonDown;
+
+            if (view is ICartesianChartView)
+            {
+                MouseWheel += OnCartesianChartMouseWheelMoved;
+                MouseDown += OnCartesianChartMouseDown;
+                MouseMove += OnCartesianChartMouseMove;
+                MouseUp += OnCartesianChartMouseUp;
+            }
         }
+
+        #region Properties
+
+        public IChartView View { get; }
 
         /// <inheritdoc />
         public RectangleF DrawArea
@@ -79,6 +98,10 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
+        #endregion
+
+        #region Events
+
         private event PointerHandler PointerMovedOverPlot;
 
         event PointerHandler IChartContent.PointerMoved
@@ -94,6 +117,8 @@ namespace LiveCharts.Wpf.Controls
             add => PointerDownOverPlot += value;
             remove => PointerDownOverPlot -= value;
         }
+
+        #endregion
 
         /// <inheritdoc />
         public void AddChild(object child, bool isClipped)
@@ -125,6 +150,14 @@ namespace LiveCharts.Wpf.Controls
             PointerDownOverPlot = null;
             MouseMove -= OnMouseMove;
             MouseLeftButtonDown -= OnLeftButtonDown;
+
+            if (View is ICartesianChartView)
+            {
+                MouseWheel -= OnCartesianChartMouseWheelMoved;
+                MouseDown -= OnCartesianChartMouseDown;
+                MouseMove -= OnCartesianChartMouseMove;
+                MouseUp -= OnCartesianChartMouseUp;
+            }
         }
 
         /// <summary>
@@ -146,6 +179,94 @@ namespace LiveCharts.Wpf.Controls
         {
             PointerDownOverPlot?.Invoke(GetDrawAreaLocation(args), args);
         }
+
+        #region Zooming and panning
+
+        /// <summary>
+        /// Called when [cartesian chart mouse wheel moved].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseWheelEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseWheelMoved(object sender, MouseWheelEventArgs e)
+        {
+            var cartesianView = (ICartesianChartView) View;
+            if (cartesianView == null) return;
+
+            if (cartesianView.Zooming == Zooming.None) return;
+
+            var pivot = e.GetPosition(_drawMargin);
+
+            e.Handled = true;
+
+            var cartesianModel = (CartesianChartModel) View.Model;
+
+            if (e.Delta > 0)
+            {
+                cartesianModel.ZoomIn(new PointF((float)pivot.X, (float)pivot.Y));
+            }
+            else
+            {
+                cartesianModel.ZoomOut(new PointF((float) pivot.X, (float) pivot.Y));
+            }
+        }
+
+        private bool _isDragging;
+        private Point _previous;
+
+        /// <summary>
+        /// Called when [cartesian chart mouse down].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var cartesianView = (ICartesianChartView)View;
+            if (cartesianView == null) return;
+
+            if (cartesianView.Panning == Panning.None) return;
+            _previous = e.GetPosition(_drawMargin);
+            _isDragging = true;
+            CaptureMouse();
+        }
+
+        /// <summary>
+        /// Called when [cartesian chart mouse move].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isDragging) return;
+
+            var cartesianModel = (CartesianChartModel)View.Model;
+
+            var current = e.GetPosition(_drawMargin);
+
+            cartesianModel.Drag(
+                new PointF(
+                    (float)(_previous.X - current.X),
+                    (float)(_previous.Y - current.Y)
+                ));
+
+            _previous = current;
+        }
+
+        /// <summary>
+        /// Called when [cartesian chart mouse up].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnCartesianChartMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var cartesianView = (ICartesianChartView)View;
+            if (cartesianView == null) return;
+
+            if (cartesianView.Panning == Panning.None) return;
+            _isDragging = false;
+            ReleaseMouseCapture();
+        }
+
+        #endregion
 
         private PointF GetDrawAreaLocation(MouseEventArgs args)
         {

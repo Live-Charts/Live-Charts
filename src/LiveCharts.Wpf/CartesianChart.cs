@@ -69,10 +69,6 @@ namespace LiveCharts.Wpf
         public CartesianChart()
         {
             Model = new CartesianChartModel(this);
-            MouseWheel += OnCartesianChartMouseWheelMoved;
-            MouseDown += OnCartesianChartMouseDown;
-            MouseMove += OnCartesianChartMouseMove;
-            MouseUp += OnCartesianChartMouseUp;
             SetValue(SeriesProperty, new ChartingCollection<ISeries>());
             SetValue(XAxisProperty, new ChartingCollection<Plane> { new Axis() });
             SetValue(YAxisProperty, new ChartingCollection<Plane> { new Axis() });
@@ -556,81 +552,6 @@ namespace LiveCharts.Wpf
                 YAxis,
                 WeightPlane
             };
-        }
-
-        /// <summary>
-        /// Called when [cartesian chart mouse wheel moved].
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="MouseWheelEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnCartesianChartMouseWheelMoved(object sender, MouseWheelEventArgs e)
-        {
-            if (Zooming == Zooming.None) return;
-
-            var pivot = e.GetPosition(VisualDrawMargin);
-
-            e.Handled = true;
-
-            var cartesianModel = (CartesianChartModel)Model;
-
-            if (e.Delta > 0)
-            {
-                cartesianModel.ZoomIn(new PointF((float)pivot.X, (float)pivot.Y));
-            }
-            else
-            {
-                cartesianModel.ZoomOut(new PointF((float)pivot.X, (float)pivot.Y));
-            }
-        }
-
-        private bool _isDragging;
-        private Point _previous;
-
-        /// <summary>
-        /// Called when [cartesian chart mouse down].
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnCartesianChartMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (Panning == Panning.None) return;
-            _previous = e.GetPosition(VisualDrawMargin);
-            _isDragging = true;
-            CaptureMouse();
-        }
-
-        /// <summary>
-        /// Called when [cartesian chart mouse move].
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnCartesianChartMouseMove(object sender, MouseEventArgs e)
-        {
-            if (!_isDragging) return;
-
-            var cartesianModel = (CartesianChartModel)Model;
-
-            var current = e.GetPosition(VisualDrawMargin);
-
-            cartesianModel.Drag(
-                new PointF(
-                    (float)(_previous.X - current.X),
-                    (float)(_previous.Y - current.Y)
-                ));
-
-            _previous = current;
-        }
-
-        /// <summary>
-        /// Called when [cartesian chart mouse up].
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnCartesianChartMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (Panning == Panning.None) return;
-            _isDragging = false;
-            ReleaseMouseCapture();
         }
 
         /// <inheritdoc />

@@ -72,7 +72,7 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            View.Content = Charting.Current.UiProvider.GetChartContent();
+            View.Content = Charting.Current.UiProvider.GetChartContent(view);
             view.ChartViewLoaded += sender =>
             {
                 IsViewInitialized = true;

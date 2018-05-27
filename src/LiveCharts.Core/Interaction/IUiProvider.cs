@@ -46,7 +46,7 @@ namespace LiveCharts.Core.Interaction
         /// Gets the content of the chart.
         /// </summary>
         /// <returns></returns>
-        IChartContent GetChartContent();
+        IChartContent GetChartContent(IChartView chart);
 
         /// <summary>
         /// The axis separator provider.

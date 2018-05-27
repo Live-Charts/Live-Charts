@@ -54,6 +54,14 @@ namespace LiveCharts.Core.Charts
         #endregion
 
         /// <summary>
+        /// Gets the chart view.
+        /// </summary>
+        /// <value>
+        /// The view.
+        /// </value>
+        IChartView View { get; }
+
+        /// <summary>
         /// Gets or sets the draw area.
         /// </summary>
         /// <value>
