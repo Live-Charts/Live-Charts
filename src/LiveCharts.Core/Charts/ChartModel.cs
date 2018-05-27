@@ -78,16 +78,12 @@ namespace LiveCharts.Core.Charts
                 IsViewInitialized = true;
                 Invalidate();
             };
-            view.ChartViewResized += sender => { Invalidate(); };
-            view.PointerMoved += ViewOnPointerMoved;
-            view.PointerDown += ViewOnPointerDown;
+            view.ChartViewResized += OnViewOnChartViewResized;
+            view.Content.PointerMoved += ViewOnPointerMoved;
+            view.Content.PointerDown += ViewOnPointerDown;
             view.PropertyChanged += InvalidatePropertyChanged;
             ToolTipTimeoutTimer = new Timer();
-            ToolTipTimeoutTimer.Elapsed += (sender, args) =>
-            {
-                View.InvokeOnUiThread(() => { view.DataToolTip.Hide(View); });
-                ToolTipTimeoutTimer.Stop();
-            };
+            ToolTipTimeoutTimer.Elapsed += OnToolTipTimeoutTimerOnElapsed;
 
             Charting.BuildFromTheme(view);
         }
@@ -130,7 +126,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The chart view.
         /// </value>
-        public IChartView View { get; }
+        public IChartView View { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance view is initialized.
@@ -771,6 +767,17 @@ namespace LiveCharts.Core.Charts
             return new PointF(toolTipLocation.X + xCorrection, toolTipLocation.Y + yCorrection);
         }
 
+        private void OnToolTipTimeoutTimerOnElapsed(object sender, ElapsedEventArgs args)
+        {
+            View.InvokeOnUiThread(() => { View.DataToolTip.Hide(View); });
+            ToolTipTimeoutTimer.Stop();
+        }
+
+        private void OnViewOnChartViewResized(IChartView sender)
+        {
+            Invalidate();
+        }
+
         /// <inheritdoc />
         public virtual void Dispose()
         {
@@ -803,6 +810,20 @@ namespace LiveCharts.Core.Charts
             Legend = null;
 
             _previousHovered = null;
+
+            View.ChartViewLoaded += sender =>
+            {
+                IsViewInitialized = true;
+                Invalidate();
+            };
+            View.ChartViewResized += OnViewOnChartViewResized;
+            View.Content.PointerMoved -= ViewOnPointerMoved;
+            View.Content.PointerDown -= ViewOnPointerDown;
+            ToolTipTimeoutTimer.Elapsed -= OnToolTipTimeoutTimerOnElapsed;
+            ToolTipTimeoutTimer = null;
+
+            View.Content.Dispose();
+            View = null;
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -23,6 +24,7 @@ namespace LiveCharts.Wpf.Views
             Brush stroke,
             Brush fill,
             double strokeThickness,
+            int zIndex,
             IEnumerable<double> strokeDashArray)
         {
             if (IsNew)
@@ -41,6 +43,7 @@ namespace LiveCharts.Wpf.Views
             StrokePath.StrokeThickness = strokeThickness;
             StrokeDashArray = strokeDashArray;
             StrokePath.StrokeDashOffset = 0;
+            Panel.SetZIndex(StrokePath, zIndex);
 
             FillPathFigure.StartPoint = pivot.AsWpf();
             _startSegment.Point = startPoint.AsWpf();
@@ -48,6 +51,7 @@ namespace LiveCharts.Wpf.Views
             FillPathFigure.Segments.Insert(0, _startSegment);
             FillPath.Fill = fill.AsWpf();
             FillPath.StrokeThickness = 0;
+            Panel.SetZIndex(FillPath, zIndex);
         }
 
         public override void Close(

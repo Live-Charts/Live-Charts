@@ -25,6 +25,7 @@
 #region
 
 using System.Drawing;
+using LiveCharts.Core.Interaction.Events;
 
 #endregion
 
@@ -35,6 +36,23 @@ namespace LiveCharts.Core.Charts
     /// </summary>
     public interface IChartContent
     {
+        // as a suggestion do a Explicit implementation
+        // of the following events, these events are used by the core
+        // of the library and they are not necessary for the user.
+        #region Explicit implementation events
+
+        /// <summary>
+        /// Occurs when the pointer moves.
+        /// </summary>
+        event PointerHandler PointerMoved;
+
+        /// <summary>
+        /// Occurs when the pointer goes down.
+        /// </summary>
+        event PointerHandler PointerDown;
+
+        #endregion
+
         /// <summary>
         /// Gets or sets the draw area.
         /// </summary>
@@ -60,5 +78,10 @@ namespace LiveCharts.Core.Charts
         /// Removes the child.
         /// </summary>
         void DisposeChild(object child, bool isClipped);
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        void Dispose();
     }
 }

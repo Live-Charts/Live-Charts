@@ -109,6 +109,7 @@ namespace LiveCharts.Wpf.Views
             Brush stroke,
             Brush fill,
             double strokeThickness,
+            int zIndex,
             IEnumerable<double> strokeDashArray)
         {
         }

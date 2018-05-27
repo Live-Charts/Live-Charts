@@ -24,7 +24,6 @@
 #endregion
 #region
 
-using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -80,7 +79,7 @@ namespace LiveCharts.Wpf.Views
                 Rectangle.Width = args.Rectangle.From.Width;
                 Rectangle.Height = args.Rectangle.From.Height;
                 Panel.SetZIndex(Rectangle, args.ZIndex);
-                
+
                 Rectangle.Animate(timeLine)
                     .Property(UIElement.OpacityProperty, 0, 1)
                     .Begin();

@@ -50,7 +50,7 @@ namespace LiveCharts.Core.Charts
         // as a suggestion do a Explicit implementation
         // of the following events, these events are used by the core
         // of the library and they are not necessary for the user.
-        #region Explicit Implementation
+        #region Explicit Implementation events
 
         /// <summary>
         /// Occurs when the charts is initialized.
@@ -61,16 +61,6 @@ namespace LiveCharts.Core.Charts
         /// Occurs when the chart is resized.
         /// </summary>
         event ChartEventHandler ChartViewResized;
-
-        /// <summary>
-        /// Occurs when the pointer moves.
-        /// </summary>
-        event PointerHandler PointerMoved;
-
-        /// <summary>
-        /// Occurs when the pointer goes down.
-        /// </summary>
-        event PointerHandler PointerDown;
 
         #endregion
 

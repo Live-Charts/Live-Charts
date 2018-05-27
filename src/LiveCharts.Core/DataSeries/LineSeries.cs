@@ -166,7 +166,8 @@ namespace LiveCharts.Core.DataSeries
                     var pivot = chart.InvertXy
                         ? new PointF(chart.ScaleToUi(Pivot, y), currentBezier.ViewModel.Point1.Y)
                         : new PointF(currentBezier.ViewModel.Point1.X, chart.ScaleToUi(Pivot, y));
-                    cartesianPath.SetStyle(currentBezier.ViewModel.Point1, pivot, Stroke, Fill, StrokeThickness, StrokeDashArray);
+                    cartesianPath.SetStyle(
+                        currentBezier.ViewModel.Point1, pivot, Stroke, Fill, StrokeThickness, ZIndex, StrokeDashArray);
                     isFist = false;
                     i = p[0];
                 }

@@ -53,6 +53,7 @@ namespace LiveCharts.Core.Interaction.Controls
         /// <param name="stroke">The stroke.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="zIndex">The z index.</param>
         /// <param name="strokeDashArray">The stroke dash array.</param>
         void SetStyle(
             PointF startPoint,
@@ -60,6 +61,7 @@ namespace LiveCharts.Core.Interaction.Controls
             Drawing.Brush stroke,
             Drawing.Brush fill,
             double strokeThickness,
+            int zIndex,
             IEnumerable<double> strokeDashArray);
 
         /// <summary>

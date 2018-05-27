@@ -27,8 +27,10 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Interaction.Events;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
@@ -51,6 +53,8 @@ namespace LiveCharts.Wpf.Controls
         {
             Background = Brushes.Transparent; // otherwise mouse move is not fired...
             Children.Add(_drawMargin);
+            MouseMove += OnMouseMove;
+            MouseLeftButtonDown += OnLeftButtonDown;
         }
 
         /// <inheritdoc />
@@ -75,6 +79,22 @@ namespace LiveCharts.Wpf.Controls
             }
         }
 
+        private event PointerHandler PointerMovedOverPlot;
+
+        event PointerHandler IChartContent.PointerMoved
+        {
+            add => PointerMovedOverPlot += value;
+            remove => PointerMovedOverPlot -= value;
+        }
+
+        private event PointerHandler PointerDownOverPlot;
+
+        event PointerHandler IChartContent.PointerDown
+        {
+            add => PointerDownOverPlot += value;
+            remove => PointerDownOverPlot -= value;
+        }
+
         /// <inheritdoc />
         public void AddChild(object child, bool isClipped)
         {
@@ -97,6 +117,43 @@ namespace LiveCharts.Wpf.Controls
             }
 
             Children.Remove((UIElement) child);
+        }
+
+        public void Dispose()
+        {
+            PointerMovedOverPlot = null;
+            PointerDownOverPlot = null;
+            MouseMove -= OnMouseMove;
+            MouseLeftButtonDown -= OnLeftButtonDown;
+        }
+
+        /// <summary>
+        /// Called when [mouse move].
+        /// </summary>
+        /// <param name="o">The o.</param>
+        /// <param name="args">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnMouseMove(object o, MouseEventArgs args)
+        {
+            PointerMovedOverPlot?.Invoke(GetDrawAreaLocation(args), args);
+        }
+
+        /// <summary>
+        /// Called when [left button down].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
+        {
+            PointerDownOverPlot?.Invoke(GetDrawAreaLocation(args), args);
+        }
+
+        private PointF GetDrawAreaLocation(MouseEventArgs args)
+        {
+            var p = args.GetPosition(this);
+            var c = new Point(
+                p.X - DrawArea.X,
+                p.Y - DrawArea.Y);
+            return new PointF((float) c.X, (float) c.Y);
         }
 
         private void OnControlSizeChanged()

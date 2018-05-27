@@ -75,8 +75,6 @@ namespace LiveCharts.Wpf
             SetValue(DataTooltipProperty, new ChartToolTip());
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
-            MouseMove += OnMouseMove;
-            MouseLeftButtonDown += OnLeftButtonDown;
             Unloaded += OnUnloaded;
             TooltipPopup = new Popup
             {
@@ -275,26 +273,6 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Called when [mouse move].
-        /// </summary>
-        /// <param name="o">The o.</param>
-        /// <param name="args">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnMouseMove(object o, MouseEventArgs args)
-        {
-            PointerMovedOverPlot?.Invoke(GetDrawAreaLocation(args), args);
-        }
-
-        /// <summary>
-        /// Called when [left button down].
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
-        {
-            PointerDownOverPlot?.Invoke(GetDrawAreaLocation(args), args);
-        }
-
-        /// <summary>
         /// Called when [model set].
         /// </summary>
         protected virtual void OnModelSet()
@@ -311,15 +289,6 @@ namespace LiveCharts.Wpf
             {
                 DataMouseLeft?.Invoke(chart, points, (MouseEventArgs) args);
             };
-        }
-
-        private PointF GetDrawAreaLocation(MouseEventArgs args)
-        {
-            var p = args.GetPosition(this);
-            var c = new Point(
-                p.X - Content.DrawArea.X,
-                p.Y - Content.DrawArea.Y);
-            return new PointF((float)c.X, (float)c.Y);
         }
 
         #endregion
@@ -340,22 +309,6 @@ namespace LiveCharts.Wpf
         {
             add => ChartViewResized += value;
             remove => ChartViewResized -= value;
-        }
-
-        private event PointerHandler PointerMovedOverPlot;
-
-        event PointerHandler IChartView.PointerMoved
-        {
-            add => PointerMovedOverPlot += value;
-            remove => PointerMovedOverPlot -= value;
-        }
-
-        private event PointerHandler PointerDownOverPlot;
-
-        event PointerHandler IChartView.PointerDown
-        {
-            add => PointerDownOverPlot += value;
-            remove => PointerDownOverPlot -= value;
         }
 
         /// <inheritdoc />
@@ -548,8 +501,6 @@ namespace LiveCharts.Wpf
             SetValue(DataTooltipProperty, null);
             Loaded -= OnLoaded;
             SizeChanged -= OnSizeChanged;
-            MouseMove -= OnMouseMove;
-            MouseLeftButtonDown -= OnLeftButtonDown;
             TooltipPopup = null;
             VisualDrawMargin = null;
             GC.Collect();
