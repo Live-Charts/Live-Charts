@@ -228,11 +228,11 @@
 
     <Style TargetType="{x:Type controls:VerticalDraggable}">
         <Setter Property="Width" Value="25"></Setter>
-        <Setter Property="Height" Value="12"></Setter>
+        <Setter Property="Height" Value="9"></Setter>
         <Setter Property="Background" Value="WhiteSmoke"></Setter>
         <Setter Property="CornerRadius" Value="2"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="BorderBrush" Value="#40303030"></Setter>
+        <Setter Property="BorderThickness" Value=".8"></Setter>
+        <Setter Property="BorderBrush" Value="#78909C"></Setter>
         <Setter Property="Cursor" Value="SizeNS"></Setter>
         <Setter Property="Panel.ZIndex" Value="10001"></Setter>
         <Setter Property="Template">
@@ -246,9 +246,9 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}"
                             Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
-                        <Grid Height="12" Width="15">
-                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="0" X2="15" Y1="3.5" Y2="3.5"></Line>
-                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="0" X2="15" Y1="7" Y2="7"></Line>
+                        <Grid Height="9" Width="15">
+                            <Line StrokeThickness="1.2" Stroke="#78909C" X1="0" X2="15" Y1="3" Y2="3"></Line>
+                            <Line StrokeThickness="1.2" Stroke="#78909C" X1="0" X2="15" Y1="5" Y2="5"></Line>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -257,12 +257,12 @@
     </Style>
 
     <Style TargetType="{x:Type controls:HorizontalDraggable}">
-        <Setter Property="Width" Value="12"></Setter>
+        <Setter Property="Width" Value="9"></Setter>
         <Setter Property="Height" Value="25"></Setter>
         <Setter Property="Background" Value="WhiteSmoke"></Setter>
         <Setter Property="CornerRadius" Value="2"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="BorderBrush" Value="#40303030"></Setter>
+        <Setter Property="BorderThickness" Value=".8"></Setter>
+        <Setter Property="BorderBrush" Value="#78909C"></Setter>
         <Setter Property="Cursor" Value="SizeWE"></Setter>
         <Setter Property="Panel.ZIndex" Value="10001"></Setter>
         <Setter Property="Template">
@@ -276,9 +276,9 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius}"
                             Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
-                        <Grid Height="15" Width="12">
-                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="3.5" X2="3.5" Y1="0" Y2="15"></Line>
-                            <Line StrokeThickness="1.2" Stroke="#50303030" X1="7" X2="7" Y1="0" Y2="15"></Line>
+                        <Grid Height="15" Width="9">
+                            <Line StrokeThickness="1.2" Stroke="#78909C" X1="3" X2="3" Y1="0" Y2="15"></Line>
+                            <Line StrokeThickness="1.2" Stroke="#78909C" X1="5" X2="5" Y1="0" Y2="15"></Line>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -287,9 +287,9 @@
     </Style>
     
     <Style TargetType="{x:Type controls:HorizontalDraggableThumb}">
-        <Setter Property="Background" Value="#20303030"></Setter>
-        <Setter Property="BorderBrush" Value="#40303030"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="Background" Value="#15607D8B"></Setter>
+        <Setter Property="BorderBrush" Value="#40607D8B"></Setter>
+        <Setter Property="BorderThickness" Value=".8"></Setter>
         <Setter Property="Cursor" Value="SizeAll"></Setter>
         <Setter Property="Panel.ZIndex" Value="10000"></Setter>
         <Setter Property="Template">
@@ -299,7 +299,6 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
-
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -307,9 +306,9 @@
     </Style>
 
     <Style TargetType="{x:Type controls:VerticalDraggableThumb}">
-        <Setter Property="Background" Value="#20303030"></Setter>
-        <Setter Property="BorderBrush" Value="#40303030"></Setter>
-        <Setter Property="BorderThickness" Value="2"></Setter>
+        <Setter Property="Background" Value="#15607D8B"></Setter>
+        <Setter Property="BorderBrush" Value="#40607D8B"></Setter>
+        <Setter Property="BorderThickness" Value=".8"></Setter>
         <Setter Property="Cursor" Value="SizeAll"></Setter>
         <Setter Property="Panel.ZIndex" Value="10000"></Setter>
         <Setter Property="Template">
@@ -319,7 +318,6 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Panel.ZIndex="{TemplateBinding Panel.ZIndex}">
-
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

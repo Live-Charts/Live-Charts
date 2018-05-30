@@ -27,9 +27,7 @@
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Series;
 
@@ -42,6 +40,22 @@ namespace LiveCharts.Core.Interaction
     /// </summary>
     public interface IUiProvider
     {
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; }
+
+        /// <summary>
+        /// Gets the version.
+        /// </summary>
+        /// <value>
+        /// The version.
+        /// </value>
+        string Version { get; }
+
         /// <summary>
         /// Gets the content of the chart.
         /// </summary>

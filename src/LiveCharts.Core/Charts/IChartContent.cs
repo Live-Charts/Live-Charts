@@ -42,6 +42,11 @@ namespace LiveCharts.Core.Charts
         #region Explicit implementation events
 
         /// <summary>
+        /// Occurs when the charts is initialized.
+        /// </summary>
+        event ChartEventHandler ContentLoaded;
+
+        /// <summary>
         /// Occurs when the pointer moves.
         /// </summary>
         event PointerHandler PointerMoved;

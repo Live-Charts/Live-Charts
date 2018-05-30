@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +63,8 @@ namespace LiveCharts.Wpf.Controls
 
             MouseMove += OnMouseMove;
             MouseLeftButtonDown += OnLeftButtonDown;
+
+            Loaded += OnLoaded;
 
             if (view is ICartesianChartView)
             {
@@ -118,6 +121,14 @@ namespace LiveCharts.Wpf.Controls
             remove => PointerDownOverPlot -= value;
         }
 
+        private event ChartEventHandler ChartViewLoaded;
+
+        event ChartEventHandler IChartContent.ContentLoaded
+        {
+            add => ChartViewLoaded += value;
+            remove => ChartViewLoaded -= value;
+        }
+
         #endregion
 
         /// <inheritdoc />
@@ -150,6 +161,7 @@ namespace LiveCharts.Wpf.Controls
             PointerDownOverPlot = null;
             MouseMove -= OnMouseMove;
             MouseLeftButtonDown -= OnLeftButtonDown;
+            Loaded -= OnLoaded;
 
             if (View is ICartesianChartView)
             {
@@ -178,6 +190,16 @@ namespace LiveCharts.Wpf.Controls
         protected virtual void OnLeftButtonDown(object sender, MouseButtonEventArgs args)
         {
             PointerDownOverPlot?.Invoke(GetDrawAreaLocation(args), args);
+        }
+
+        /// <summary>
+        /// Called when [loaded].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="eventArgs">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        protected virtual void OnLoaded(object sender, EventArgs eventArgs)
+        {
+            ChartViewLoaded?.Invoke(View);
         }
 
         #region Zooming and panning

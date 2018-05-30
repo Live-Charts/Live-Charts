@@ -24,7 +24,7 @@
                             MouseDown="Chart_OnMouseDown"
                             MouseMove="Chart_OnMouseMove"
                             MouseUp="Chart_OnMouseUp"
-                            DataMouseDown="Chart_OnDataMouseDown"/>
+                            DataPointerDown="Chart_OnDataMouseDown"/>
     </Grid>
 </UserControl>
 

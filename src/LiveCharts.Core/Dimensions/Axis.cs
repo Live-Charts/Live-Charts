@@ -332,6 +332,8 @@ namespace LiveCharts.Core.Dimensions
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
             var dummyControl = axis.ViewProvider.GetMeasurableLabel();
+            chart.View.Content.AddChild(dummyControl, false);
+
             var labelsStyle = new LabelStyle
             {
                 Font = axis.LabelsFont,
@@ -362,6 +364,8 @@ namespace LiveCharts.Core.Dimensions
                 if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
+            chart.View.Content.DisposeChild(dummyControl, false);
+
             return new Margin(t, r, b, l);
         }
 
@@ -377,6 +381,7 @@ namespace LiveCharts.Core.Dimensions
             var alternate = false;
 
             var dummyControl = ViewProvider.GetMeasurableLabel();
+            chart.View.Content.AddChild(dummyControl, false);
 
             var delta = (float) ActualStep;
 
@@ -454,6 +459,8 @@ namespace LiveCharts.Core.Dimensions
                 chart.RegisterINotifyPropertyChanged(separator);
             }
 
+            chart.View.Content.DisposeChild(dummyControl, false);
+
             // remove unnecessary elements from cache
             // the visual element will be removed by the chart's resource collector
             foreach (var holder in DependentCharts.ToArray())
@@ -507,7 +514,7 @@ namespace LiveCharts.Core.Dimensions
                     : new RectangleF(new PointF(0, t), new SizeF(chart.DrawAreaSize[0], h));
 
                 var dummyLabel = section.ViewProvider.GetMeasurableLabel();
-                var labelSize = dummyLabel.Measure(section.LabelContent, labelStyle);
+                var labelSize = dummyLabel.Update(section.LabelContent, labelStyle);
 
                 float x;
                 float y;
@@ -691,7 +698,7 @@ namespace LiveCharts.Core.Dimensions
             const double toRadians = Math.PI / 180;
             var angle = labelStyle.ActualLabelsRotation;
             var text = FormatValue(value);
-            var labelSize = control.Measure(text, labelStyle);
+            var labelSize = control.Update(text, labelStyle);
 
             var xw = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Width);  // width's    horizontal    component
             var yw = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Width);  // width's    vertical      component

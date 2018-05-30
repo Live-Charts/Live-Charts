@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,11 +34,14 @@ namespace Samples.Wpf.Views
 
         private PointModel _draggingModel;
 
-        private void Chart_OnDataMouseDown(IChartView chart, IChartPoint[] interactedPoints, MouseButtonEventArgs args)
+        private void Chart_OnDataMouseDown(
+            IChartView chart, IChartPoint[] interactedPoints, EventArgs args)
         {
+            var mbea = (MouseButtonEventArgs) args;
+
             // if the user clicked over a data point
             // handle the event so Chart_OnMouseDown is not called.
-            args.Handled = true;
+            mbea.Handled = true;
 
             // let save a reference to the point model that was clicked.
             _draggingModel = (PointModel) interactedPoints.FirstOrDefault()?.Model;

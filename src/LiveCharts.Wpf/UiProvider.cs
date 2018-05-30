@@ -24,6 +24,8 @@
 #endregion
 #region
 
+using System.Diagnostics;
+using System.Reflection;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -46,6 +48,33 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class UiProvider : IUiProvider
     {
+        private string _name;
+        private string _version;
+
+        /// <inheritdoc />
+        public string Name
+        {
+            get
+            {
+                if (_name != null) return _name;
+                _name = Assembly.GetExecutingAssembly().GetName().Name;
+                return _name;
+            }
+        }
+
+        /// <inheritdoc />
+        public string Version
+        {
+            get
+            {
+                if (_version != null) return _version;
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                _version = fvi.FileVersion;
+                return _version;
+            }
+        }
+
         /// <inheritdoc />
         public IChartContent GetChartContent(IChartView view)
         {

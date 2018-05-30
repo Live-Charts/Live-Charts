@@ -47,22 +47,12 @@ namespace LiveCharts.Core.Charts
     /// </summary>
     public interface IChartView : INotifyPropertyChanged, IDisposable
     {
-        // as a suggestion do a Explicit implementation
-        // of the following events, these events are used by the core
-        // of the library and they are not necessary for the user.
-        #region Explicit Implementation events
-
-        /// <summary>
-        /// Occurs when the charts is initialized.
-        /// </summary>
-        event ChartEventHandler ChartViewLoaded;
+        #region Events and Commands
 
         /// <summary>
         /// Occurs when the chart is resized.
         /// </summary>
-        event ChartEventHandler ChartViewResized;
-
-        #endregion
+        event ChartEventHandler ViewResized;
 
         /// <summary>
         /// Occurs before a chart update is called.
@@ -83,6 +73,51 @@ namespace LiveCharts.Core.Charts
         /// Occurs after a chart update was called.
         /// </summary>
         ICommand ChartUpdatedCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when a user places the mouse over a point.
+        /// </summary>
+        event DataInteractionHandler DataPointerEntered;
+
+        /// <summary>
+        /// Gets or sets the data mouse enter command, this command will try to be executed 
+        /// when  the user places the pointer over a point.
+        /// </summary>
+        /// <value>
+        /// The data mouse enter command.
+        /// </value>
+        ICommand DataPointerEnteredCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when the user moves the mouse away from a data point.
+        /// </summary>
+        event DataInteractionHandler DataPointerLeft;
+
+        /// <summary>
+        /// Gets or sets the data mouse leave command, this command will try to be executed
+        /// when the user leaves moves the pointer away from a data point.
+        /// </summary>
+        /// <value>
+        /// The data mouse leave.
+        /// </value>
+        ICommand DataPointerLeftCommand { get; set; }
+
+        /// <summary>
+        /// Occurs when the user moves the pointer down in a point.
+        /// </summary>
+        event DataInteractionHandler DataPointerDown;
+
+        /// <summary>
+        /// Gets or sets the data pointer down command.
+        /// </summary>
+        /// <value>
+        /// The data pointer down command.
+        /// </value>
+        ICommand DataPointerDownCommand { get; set; }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets the chart model.
@@ -189,6 +224,10 @@ namespace LiveCharts.Core.Charts
         /// </value>
         IDataToolTip DataToolTip { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Updates the chart manually.
         /// </summary>
@@ -199,5 +238,7 @@ namespace LiveCharts.Core.Charts
         /// </summary>
         /// <param name="action">The action.</param>
         void InvokeOnUiThread(Action action);
+
+        #endregion
     }
 }

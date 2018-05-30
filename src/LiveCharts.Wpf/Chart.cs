@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,8 +39,6 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
-using LiveCharts.Wpf.Events;
-using Point = System.Windows.Point;
 
 #endregion
 
@@ -52,7 +49,7 @@ namespace LiveCharts.Wpf
     /// </summary>
     /// <seealso cref="Canvas" />
     /// <seealso cref="IChartView" />
-    public abstract class Chart : Canvas, IChartView, IWpfChart
+    public abstract class Chart : Canvas, IChartView
     {
         /// <summary>
         /// Initializes the <see cref="Chart"/> class.
@@ -73,9 +70,8 @@ namespace LiveCharts.Wpf
             DrawMargin = Core.Drawing.Margin.Empty;
             SetValue(LegendProperty, new ChartLegend());
             SetValue(DataTooltipProperty, new ChartToolTip());
-            Loaded += OnLoaded;
-            SizeChanged += OnSizeChanged;
             Unloaded += OnUnloaded;
+            SizeChanged += OnSizeChanged;
             TooltipPopup = new Popup
             {
                 AllowsTransparency = true,
@@ -157,7 +153,7 @@ namespace LiveCharts.Wpf
         /// The animation line property, default is bounce medium.
         /// </summary>
         public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
-            nameof(AnimationLine), typeof(IEnumerable<Core.Animations.KeyFrame>), typeof(Chart),
+            nameof(AnimationLine), typeof(IEnumerable<KeyFrame>), typeof(Chart),
             new PropertyMetadata(TimeLines.Ease));
 
         /// <summary>
@@ -185,34 +181,34 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// The data pointer entered command property
         /// </summary>
-        public static readonly DependencyProperty DataMouseEnteredCommandProperty = DependencyProperty.Register(
-            nameof(DataMouseEnteredCommand), typeof(ICommand), typeof(Chart),
+        public static readonly DependencyProperty DataPointerEnteredCommandProperty = DependencyProperty.Register(
+            nameof(DataPointerEnteredCommand), typeof(ICommand), typeof(Chart),
             new PropertyMetadata(default(ICommand), (o, args) =>
             {
                 var chart = (Chart) o;
-                chart.Model.DataPointerEnteredCommand = chart.DataMouseEnteredCommand;
+                chart.Model.DataPointerEnteredCommand = chart.DataPointerEnteredCommand;
             }));
 
         /// <summary>
         /// The data pointer left command property
         /// </summary>
-        public static readonly DependencyProperty DataMouseLeftCommandProperty = DependencyProperty.Register(
-            nameof(DataMouseLeftCommand), typeof(ICommand), typeof(Chart),
+        public static readonly DependencyProperty DataPointerLeftCommandProperty = DependencyProperty.Register(
+            nameof(DataPointerLeftCommand), typeof(ICommand), typeof(Chart),
             new PropertyMetadata(default(ICommand), (o, args) =>
             {
                 var chart = (Chart) o;
-                chart.Model.DataPointerLeftCommand = chart.DataMouseLeftCommand;
+                chart.Model.DataPointerLeftCommand = chart.DataPointerLeftCommand;
             }));
 
         /// <summary>
         /// The data pointer down command property
         /// </summary>
-        public static readonly DependencyProperty DataMouseDownCommandProperty = DependencyProperty.Register(
-            nameof(DataMouseDownCommand), typeof(ICommand), typeof(Chart),
+        public static readonly DependencyProperty DataPointerDownCommandProperty = DependencyProperty.Register(
+            nameof(DataPointerDownCommand), typeof(ICommand), typeof(Chart),
             new PropertyMetadata(default(ICommand), (o, args) =>
             {
                 var chart = (Chart) o;
-                chart.Model.DataPointerDownCommand = chart.DataMouseDownCommand;
+                chart.Model.DataPointerDownCommand = chart.DataPointerDownCommand;
             }));
 
         private ChartModel _model;
@@ -243,16 +239,6 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Called when [loaded].
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="eventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
-        protected virtual void OnLoaded(object sender, EventArgs eventArgs)
-        {
-            ChartViewLoaded?.Invoke(this);
-        }
-
-        /// <summary>
         /// Called when [unloaded].
         /// </summary>
         /// <param name="sender1">The sender1.</param>
@@ -263,49 +249,36 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Called when [size changed].
-        /// </summary>
-        /// <param name="o">The o.</param>
-        /// <param name="sizeChangedEventArgs">The <see cref="SizeChangedEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnSizeChanged(object o, SizeChangedEventArgs sizeChangedEventArgs)
-        {
-            ChartViewResized?.Invoke(this);
-        }
-
-        /// <summary>
         /// Called when [model set].
         /// </summary>
         protected virtual void OnModelSet()
         {
             Model.DataPointerDown += (chart, points, args) =>
             {
-                DataMouseDown?.Invoke(chart, points, (MouseButtonEventArgs) args);
+                DataPointerDown?.Invoke(chart, points, args);
             };
             Model.DataPointerEntered += (chart, points, args) =>
             {
-                DataMouseEntered?.Invoke(chart, points, (MouseEventArgs) args);
+                DataPointerEntered?.Invoke(chart, points, args);
             };
             Model.DataPointerLeft += (chart, points, args) =>
             {
-                DataMouseLeft?.Invoke(chart, points, (MouseEventArgs) args);
+                DataPointerLeft?.Invoke(chart, points, args);
             };
+        }
+
+        private void OnSizeChanged(object sender1, SizeChangedEventArgs sizeChangedEventArgs)
+        {
+            ChartViewResized?.Invoke(this);
         }
 
         #endregion
 
         #region IChartView implementation
 
-        private event ChartEventHandler ChartViewLoaded;
-
-        event ChartEventHandler IChartView.ChartViewLoaded
-        {
-            add => ChartViewLoaded += value;
-            remove => ChartViewLoaded -= value;
-        }
-
         private event ChartEventHandler ChartViewResized;
 
-        event ChartEventHandler IChartView.ChartViewResized
+        event ChartEventHandler IChartView.ViewResized
         {
             add => ChartViewResized += value;
             remove => ChartViewResized -= value;
@@ -339,6 +312,36 @@ namespace LiveCharts.Wpf
             set => SetValue(ChartUpdatedCommandProperty, value);
         }
 
+        /// <inheritdoc />
+        public event DataInteractionHandler DataPointerEntered;
+
+        /// <inheritdoc />
+        public ICommand DataPointerEnteredCommand
+        {
+            get => (ICommand)GetValue(DataPointerEnteredCommandProperty);
+            set => SetValue(DataPointerEnteredCommandProperty, value);
+        }
+
+        /// <inheritdoc />
+        public event DataInteractionHandler DataPointerLeft;
+
+        /// <inheritdoc />
+        public ICommand DataPointerLeftCommand
+        {
+            get => (ICommand)GetValue(DataPointerLeftCommandProperty);
+            set => SetValue(DataPointerLeftCommandProperty, value);
+        }
+
+        /// <inheritdoc />
+        public event DataInteractionHandler DataPointerDown;
+
+        /// <inheritdoc />
+        public ICommand DataPointerDownCommand
+        {
+            get => (ICommand)GetValue(DataPointerDownCommandProperty);
+            set => SetValue(DataPointerDownCommandProperty, value);
+        }
+
         /// <inheritdoc cref="IChartView.Model"/>
         public ChartModel Model
         {
@@ -352,9 +355,8 @@ namespace LiveCharts.Wpf
 
         public IChartContent Content
         {
-            get => (IChartContent) VisualDrawMargin.Content;
-            set => 
-                VisualDrawMargin.Content = value;
+            get => (IChartContent)VisualDrawMargin.Content;
+            set => VisualDrawMargin.Content = value;
         }
 
         /// <inheritdoc cref="IChartView.ControlSize"/>
@@ -439,40 +441,6 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        #region IWPFChart implementation
-
-        /// <inheritdoc />
-        public event MouseDataInteractionHandler DataMouseEntered;
-
-        /// <inheritdoc />
-        public ICommand DataMouseEnteredCommand
-        {
-            get => (ICommand) GetValue(DataMouseEnteredCommandProperty);
-            set => SetValue(DataMouseEnteredCommandProperty, value);
-        }
-
-        /// <inheritdoc />
-        public event MouseDataInteractionHandler DataMouseLeft;
-
-        /// <inheritdoc />
-        public ICommand DataMouseLeftCommand
-        {
-            get => (ICommand) GetValue(DataMouseLeftCommandProperty);
-            set => SetValue(DataMouseLeftCommandProperty, value);
-        }
-
-        /// <inheritdoc />
-        public event MouseButtonDataInteractionHandler DataMouseDown;
-
-        /// <inheritdoc />
-        public ICommand DataMouseDownCommand
-        {
-            get => (ICommand) GetValue(DataMouseDownCommandProperty);
-            set => SetValue(DataMouseDownCommandProperty, value);
-        }
-
-        #endregion
-
         #region INPC implementation
 
         /// <inheritdoc />
@@ -495,14 +463,13 @@ namespace LiveCharts.Wpf
             Series = null;
             Children.Remove(TooltipPopup);
             Children.Remove(VisualDrawMargin);
-            Loaded -= OnLoaded;
             DrawMargin = Core.Drawing.Margin.Empty;
             SetValue(LegendProperty, null);
             SetValue(DataTooltipProperty, null);
-            Loaded -= OnLoaded;
-            SizeChanged -= OnSizeChanged;
             TooltipPopup = null;
             VisualDrawMargin = null;
+            Unloaded -= OnUnloaded;
+            SizeChanged -= OnSizeChanged;
             GC.Collect();
         }
     }

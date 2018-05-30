@@ -138,7 +138,7 @@ namespace LiveCharts.Wpf.Views
                 Canvas.SetTop(Label, pos.Y);
             }
 
-            Label.Measure(args.Label.Content, args.Label.LabelStyle);
+            Label.Update(args.Label.Content, args.Label.LabelStyle);
 
             Label.Animate(timeLine)
                 .Property(Canvas.LeftProperty, Canvas.GetLeft(Label), pos.X)

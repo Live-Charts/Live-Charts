@@ -42,6 +42,6 @@ namespace LiveCharts.Core.Interaction.Controls
         /// <param name="content">The content.</param>
         /// <param name="labelStyle">The label style.</param>
         /// <returns></returns>
-        SizeF Measure(object content, LabelStyle labelStyle);
+        SizeF Update(object content, LabelStyle labelStyle);
     }
 }

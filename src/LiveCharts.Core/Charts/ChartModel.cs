@@ -34,7 +34,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
-using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
@@ -73,12 +72,8 @@ namespace LiveCharts.Core.Charts
         {
             View = view;
             View.Content = Charting.Current.UiProvider.GetChartContent(view);
-            view.ChartViewLoaded += sender =>
-            {
-                IsViewInitialized = true;
-                Invalidate();
-            };
-            view.ChartViewResized += OnViewOnChartViewResized;
+            view.Content.ContentLoaded += OnContentOnContentLoaded;
+            view.ViewResized += OnViewOnChartViewResized;
             view.Content.PointerMoved += ViewOnPointerMoved;
             view.Content.PointerDown += ViewOnPointerDown;
             view.PropertyChanged += InvalidatePropertyChanged;
@@ -778,6 +773,12 @@ namespace LiveCharts.Core.Charts
             Invalidate();
         }
 
+        private void OnContentOnContentLoaded(IChartView sender)
+        {
+            IsViewInitialized = true;
+            Invalidate();
+        }
+
         /// <inheritdoc />
         public virtual void Dispose()
         {
@@ -811,12 +812,8 @@ namespace LiveCharts.Core.Charts
 
             _previousHovered = null;
 
-            View.ChartViewLoaded += sender =>
-            {
-                IsViewInitialized = true;
-                Invalidate();
-            };
-            View.ChartViewResized += OnViewOnChartViewResized;
+            View.Content.ContentLoaded -= OnContentOnContentLoaded;
+            View.ViewResized -= OnViewOnChartViewResized;
             View.Content.PointerMoved -= ViewOnPointerMoved;
             View.Content.PointerDown -= ViewOnPointerDown;
             ToolTipTimeoutTimer.Elapsed -= OnToolTipTimeoutTimerOnElapsed;

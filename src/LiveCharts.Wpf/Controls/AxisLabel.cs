@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf.Controls
         }
 
         /// <inheritdoc />
-        SizeF IMeasurableLabel.Measure(object content, LabelStyle labelStyle)
+        SizeF IMeasurableLabel.Update(object content, LabelStyle labelStyle)
         {
             var font = labelStyle.Font;
 

@@ -39,5 +39,6 @@ namespace LiveCharts.Core.Interaction.Events
     /// <param name="chart">The sender chart.</param>
     /// <param name="interactedPoints">The points the user is interacting with.</param>
     /// <param name="args">The event args.</param>
-    public delegate void DataInteractionHandler(IChartView chart, IChartPoint[] interactedPoints, EventArgs args);
+    public delegate void DataInteractionHandler(
+        IChartView chart, IChartPoint[] interactedPoints, EventArgs args);
 }
