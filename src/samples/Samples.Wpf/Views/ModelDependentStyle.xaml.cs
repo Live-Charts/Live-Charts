@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using Assets.Models;
 using LiveCharts.Core;
 using LiveCharts.Core.Coordinates;
+using LiveCharts.Wpf;
+using LiveCharts.Wpf.Geared;
 
 namespace Samples.Wpf.Views
 {
@@ -38,15 +38,39 @@ namespace Samples.Wpf.Views
                         player => player.Score > 0, // when the score is greater than 0
                         (sender, args) =>
                         {
-                            var shape = (Path) args.Shape;
-                            shape.Stroke = Brushes.Blue;
+                            // when score > 0 we are changing the visual stroke property to blue.
+
+                            // in this case we are using the LiveCharts brushes API to use the same instance in both cases.
+                            var blueBrush = LiveCharts.Core.Drawing.Brushes.Blue;
+
+                            // notice the geared version uses a different shape!
+                            if (charting.UiProvider.Name == "LiveCharts.Wpf.Geared")
+                            {
+                                var shape = (LiveCharts.Wpf.Geared.Drawing.Shapes.Path) args.Shape;
+                                shape.Stroke = blueBrush.AsGearedBrush();
+                            }
+                            else
+                            {
+                                var shape = (System.Windows.Shapes.Path) args.Shape;
+                                shape.Stroke = blueBrush.AsWpf();
+                            }
                         })
                     .When(
                         player => player.Score <= 0, // when lt or eq to 0
                         (sender, args) =>
                         {
-                            var shape = (Path) args.Shape;
-                            shape.Stroke = Brushes.Red;
+                            var redBrush = LiveCharts.Core.Drawing.Brushes.Red;
+
+                            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
+                            {
+                                var shape = (LiveCharts.Wpf.Geared.Drawing.Shapes.Path) args.Shape;
+                                shape.Stroke = redBrush.AsGearedBrush();
+                            }
+                            else
+                            {
+                                var shape = (System.Windows.Shapes.Path) args.Shape;
+                                shape.Stroke = redBrush.AsWpf();
+                            }
                         });
 
                 // notice in the case we cast arg.Shape to System.Windows.Shapes.Path

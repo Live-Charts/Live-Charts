@@ -514,6 +514,7 @@ namespace LiveCharts.Core.Dimensions
                     : new RectangleF(new PointF(0, t), new SizeF(chart.DrawAreaSize[0], h));
 
                 var dummyLabel = section.ViewProvider.GetMeasurableLabel();
+                chart.View.Content.AddChild(dummyLabel, false);
                 var labelSize = dummyLabel.Update(section.LabelContent, labelStyle);
 
                 float x;
@@ -588,6 +589,7 @@ namespace LiveCharts.Core.Dimensions
                 section.View.DrawLabel(args, animation);
 
                 chart.RegisterINotifyPropertyChanged(section);
+                chart.View.Content.DisposeChild(dummyLabel, false);
             }
         }
 
