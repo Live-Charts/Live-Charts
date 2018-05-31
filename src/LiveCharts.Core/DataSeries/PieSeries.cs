@@ -99,7 +99,7 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>
-            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.PieViewProvider<TModel>());
+            DefaultViewProvider => _provider ?? (_provider = Charting.Settings.UiProvider.PieViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)

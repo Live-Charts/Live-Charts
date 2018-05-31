@@ -162,7 +162,7 @@ namespace LiveCharts.Core.Dimensions
         /// <returns></returns>
         protected virtual IPlaneViewProvider DefaultViewProvider()
         {
-            return Charting.Current.UiProvider.GetNewSection();
+            return Charting.Settings.UiProvider.GetNewSection();
         }
 
         #region IResource implementation

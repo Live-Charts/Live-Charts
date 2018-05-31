@@ -17,14 +17,11 @@
              <RowDefinition Height="*"></RowDefinition>
          </Grid.RowDefinitions>
         <TextBlock Grid.Row="0">Click anywhere to add a new point to the chart, click hold and drag a point to move it.</TextBlock>
-        <lvc:CartesianChart Grid.Row="1" 
-                            Name="Chart"
+        <lvc:CartesianChart Name="Chart"
+                            Grid.Row="1"
                             AnimationsSpeed="0:0:0"
                             Series="{Binding SeriesCollection}"
-                            MouseDown="Chart_OnMouseDown"
-                            MouseMove="Chart_OnMouseMove"
-                            MouseUp="Chart_OnMouseUp"
-                            DataPointerDown="Chart_OnDataMouseDown"/>
+                            DataPointerDown="Chart_OnDataMouseDown" Margin="0,1,0,-1"/>
     </Grid>
 </UserControl>
 

@@ -101,7 +101,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>
             DefaultViewProvider => _provider ??
-                                   (_provider = Charting.Current.UiProvider
+                                   (_provider = Charting.Settings.UiProvider
                                        .GeometryPointViewProvider<TModel, WeightedCoordinate, IBubbleSeries>());
 
         /// <inheritdoc />

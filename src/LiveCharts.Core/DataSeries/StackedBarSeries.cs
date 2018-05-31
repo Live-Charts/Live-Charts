@@ -84,7 +84,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries>
             DefaultViewProvider =>
-            _provider ?? (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, StackedPointCoordinate, IStackedBarSeries>());
+            _provider ?? (_provider = Charting.Settings.UiProvider.BarViewProvider<TModel, StackedPointCoordinate, IStackedBarSeries>());
 
         /// <inheritdoc />
         protected override void BuildModel(

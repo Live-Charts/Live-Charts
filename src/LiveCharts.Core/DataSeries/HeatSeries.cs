@@ -89,7 +89,7 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries>
-            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.HeatViewProvider<TModel>());
+            DefaultViewProvider => _provider ?? (_provider = Charting.Settings.UiProvider.HeatViewProvider<TModel>());
 
         public override SeriesStyle Style => new SeriesStyle(); // ToDo: How do we display it in the legend/tooltip ??
 

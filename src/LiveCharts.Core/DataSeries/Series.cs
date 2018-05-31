@@ -389,7 +389,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 var tracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
                     Content[chart][Config.TrackerKey];
-                Charting.Current.DataFactory.Fetch(factoryContext, tracker, out var count);
+                Charting.Settings.DataFactory.Fetch(factoryContext, tracker, out var count);
                 PointsCount = count;
             }
         }

@@ -71,7 +71,7 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            View.Content = Charting.Current.UiProvider.GetChartContent(view);
+            View.Content = Charting.Settings.UiProvider.GetChartContent(view);
             view.Content.ContentLoaded += OnContentOnContentLoaded;
             view.ViewResized += OnViewOnChartViewResized;
             view.Content.PointerMoved += ViewOnPointerMoved;
@@ -139,7 +139,7 @@ namespace LiveCharts.Core.Charts
         /// </value>
         public IList<Color> Colors
         {
-            get => _colors ?? Charting.Current.Colors;
+            get => _colors ?? Charting.Settings.Colors;
             set => _colors = value;
         }
 

@@ -115,7 +115,7 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries>
-            DefaultViewProvider => _provider ?? (_provider = Charting.Current.UiProvider.BezierViewProvider<TModel>());
+            DefaultViewProvider => _provider ?? (_provider = Charting.Settings.UiProvider.BezierViewProvider<TModel>());
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)

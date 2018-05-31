@@ -51,7 +51,7 @@ namespace LiveCharts.Core
         /// </summary>
         static Charting()
         {
-            Current = new Charting();
+            Settings = new Charting();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace LiveCharts.Core
         /// <value>
         /// The current.
         /// </value>
-        public static Charting Current { get; }
+        public static Charting Settings { get; }
 
         /// <summary>
         /// Gets or sets the chart point factory.
@@ -160,7 +160,7 @@ namespace LiveCharts.Core
         public Charting SetDefault<T>(Action<T> builder)
         {
             Builders[typeof(T)] = builder;
-            return Current;
+            return Settings;
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace LiveCharts.Core
         /// <param name="options">The builder.</param>
         public static void Configure(Action<Charting> options)
         {
-            options(Current);
+            options(Settings);
         }
     }
 }

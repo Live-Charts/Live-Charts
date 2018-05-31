@@ -60,7 +60,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override ISeriesViewProvider<TModel, PointCoordinate, RectangleViewModel, IBarSeries>
             DefaultViewProvider => _provider ??
-                                   (_provider = Charting.Current.UiProvider.BarViewProvider<TModel, PointCoordinate, IBarSeries>());
+                                   (_provider = Charting.Settings.UiProvider.BarViewProvider<TModel, PointCoordinate, IBarSeries>());
 
         /// <inheritdoc />
         protected override void BuildModel(

@@ -37,7 +37,7 @@ namespace Samples.Wpf.Views
             IChartView chart, IEnumerable<IChartPoint> points, EventArgs args)
         {
             // Notice event args type is different if you are using the geared package.
-            if (Charting.Current.UiProvider.Name == "LiveCharts.Wpf.Geared")
+            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
             {
                 // ToDo: Handled events????
             }
@@ -78,7 +78,7 @@ namespace Samples.Wpf.Views
             IChartView chart, IEnumerable<IChartPoint> points, EventArgs args)
         {
             // Notice event args type is different if you are using the geared package.
-            if (Charting.Current.UiProvider.Name == "LiveCharts.Wpf.Geared")
+            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
             {
                 var mea = (HwndMouseEventArgs)args;
             }
@@ -98,7 +98,7 @@ namespace Samples.Wpf.Views
             IChartView chart, IEnumerable<IChartPoint> points, EventArgs args)
         {
             // Notice event args type is different if you are using the geared package.
-            if (Charting.Current.UiProvider.Name == "LiveCharts.Wpf.Geared")
+            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
             {
                 var mea = (HwndMouseEventArgs)args;
             }

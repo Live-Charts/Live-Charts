@@ -614,7 +614,7 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc />
         protected override IPlaneViewProvider DefaultViewProvider()
         {
-            return Charting.Current.UiProvider.GetNewPlane();
+            return Charting.Settings.UiProvider.GetNewPlane();
         }
 
         /// <summary>
