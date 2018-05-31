@@ -30,7 +30,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using LiveCharts.Core;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
@@ -39,6 +42,8 @@ using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Wpf.Controls;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 
 #endregion
@@ -79,6 +84,10 @@ namespace LiveCharts.Wpf
 
         #region ScrollBar behavior
 
+        private Canvas _scrollingCanvas;
+        private Popup _scrollingPopup;
+        private Window _window;
+
         private void InitializeScrolling()
         {
             XFrom = new HorizontalDraggable();
@@ -88,111 +97,110 @@ namespace LiveCharts.Wpf
             YTo = new VerticalDraggable();
             YThumb = new VerticalDraggableThumb();
 
-            XFrom.Dragging += args =>
+            XFrom.Dragging += OnXFromOnDragging;
+            XTo.Dragging += OnXToOnDragging;
+            XThumb.Dragging += OnXThumbOnDragging;
+            YFrom.Dragging += OnYFromOnDragging;
+            YTo.Dragging += OnYToOnDragging;
+            YThumb.Dragging += OnYThumbOnDragging;
+        }
+
+        private void OnXThumbOnDragging(DraggableArgs args)
+        {
+            var i = args.Point.X - XThumb.StartLeftOffset;
+            var j = i + XThumb.ActualWidth;
+            if (i <= Content.DrawArea.X) return;
+            if (j >= Content.DrawArea.Width) return;
+
+            for (var index = 0; index < ScrollsX.Count; index++)
             {
-                if (args.Point.X >= XTo.Left) return;
+                var xi = Model.ScaleFromUi((float) i, XAxis[index]);
+                ScrollsX[index].SetRange(xi, xi + ScrollsX[index].ActualRange);
+            }
 
-                EnsureXIsInRange(args);
+            XThumb.Left = i;
+            XFrom.Left = i;
+            XTo.Left = i + XThumb.Width;
+        }
 
-                for (var index = 0; index < ScrollsX.Count; index++)
-                {
-                    ScrollsX[index].SetRange(
-                        Model.ScaleFromUi((float) args.Point.X - Content.DrawArea.X, XAxis[index]),
-                        ScrollsX[index].ActualMaxValue);
-                }
+        private void OnYToOnDragging(DraggableArgs args)
+        {
+            if (args.Point.Y >= YFrom.Top) return;
 
-                XFrom.Left = args.Point.X;
-                XThumb.Left = args.Point.X;
-                XThumb.Width = XTo.Left - XFrom.Left;
-            };
+            EnsureYIsInRange(args);
 
-            XTo.Dragging += args =>
+            for (var index = 0; index < ScrollsY.Count; index++)
             {
-                if (XFrom.Left + XFrom.ActualWidth >= args.Point.X) return;
+                ScrollsY[index].SetRange(ScrollsY[index].ActualMinValue, Model.ScaleFromUi((float) args.Point.Y, YAxis[index]));
+            }
 
-                EnsureXIsInRange(args);
+            YTo.Top = args.Point.Y;
+            YThumb.Top = args.Point.Y;
+            YThumb.Height = YFrom.Top - YTo.Top;
+        }
 
-                for (var index = 0; index < ScrollsX.Count; index++)
-                {
-                    ScrollsX[index].SetRange(
-                        ScrollsX[index].ActualMinValue,
-                        Model.ScaleFromUi((float) args.Point.X, XAxis[index]));
-                }
+        private void OnYThumbOnDragging(DraggableArgs args)
+        {
+            var i = args.Point.Y - YThumb.StartTopOffset;
+            var j = i + YThumb.ActualHeight;
+            if (i < Content.DrawArea.Y) return;
+            if (j > Content.DrawArea.Y + Content.DrawArea.Height) return;
 
-                XTo.Left = args.Point.X;
-                XThumb.Width = XTo.Left - XFrom.Left;
-            };
-
-            XThumb.Dragging += args =>
+            for (var index = 0; index < ScrollsY.Count; index++)
             {
-                var i = args.Point.X - XThumb.StartLeftOffset;
-                var j = i + XThumb.ActualWidth;
-                if (i <= Content.DrawArea.X) return;
-                if (j >= Content.DrawArea.Width) return;
+                var yi = Model.ScaleFromUi((float) i, YAxis[index]);
+                ScrollsY[index].SetRange(yi - ScrollsY[index].ActualRange, yi);
+            }
 
-                for (var index = 0; index < ScrollsX.Count; index++)
-                {
-                    var xi = Model.ScaleFromUi((float) i, XAxis[index]);
-                    ScrollsX[index].SetRange(xi, xi + ScrollsX[index].ActualRange);
-                }
+            YFrom.Top = i;
+            YThumb.Top = i;
+            YTo.Top = i + YThumb.Height;
+        }
 
-                XThumb.Left = i;
-                XFrom.Left = i;
-                XTo.Left = i + XThumb.Width;
-            };
+        private void OnYFromOnDragging(DraggableArgs args)
+        {
+            if (args.Point.Y <= YTo.Top + YFrom.ActualHeight) return;
 
-            YFrom.Dragging += args =>
+            EnsureYIsInRange(args);
+
+            for (var index = 0; index < ScrollsY.Count; index++)
             {
-                if (args.Point.Y <= YTo.Top + YFrom.ActualHeight) return;
+                ScrollsY[index].SetRange(Model.ScaleFromUi((float) args.Point.Y - Content.DrawArea.Y, YAxis[index]), ScrollsY[index].ActualMaxValue);
+            }
 
-                EnsureYIsInRange(args);
-                
-                for (var index = 0; index < ScrollsY.Count; index++)
-                {
-                    ScrollsY[index].SetRange(
-                        Model.ScaleFromUi((float) args.Point.Y - Content.DrawArea.Y, YAxis[index]),
-                        ScrollsY[index].ActualMaxValue);
-                }
+            YFrom.Top = args.Point.Y;
+            YThumb.Height = YFrom.Top - YTo.Top;
+        }
 
-                YFrom.Top = args.Point.Y;
-                YThumb.Height = YFrom.Top - YTo.Top;
-            };
+        private void OnXToOnDragging(DraggableArgs args)
+        {
+            if (XFrom.Left + XFrom.ActualWidth >= args.Point.X) return;
 
-            YTo.Dragging += args =>
+            EnsureXIsInRange(args);
+
+            for (var index = 0; index < ScrollsX.Count; index++)
             {
-                if (args.Point.Y >= YFrom.Top) return;
+                ScrollsX[index].SetRange(ScrollsX[index].ActualMinValue, Model.ScaleFromUi((float) args.Point.X, XAxis[index]));
+            }
 
-                EnsureYIsInRange(args);
+            XTo.Left = args.Point.X;
+            XThumb.Width = XTo.Left - XFrom.Left;
+        }
 
-                for (var index = 0; index < ScrollsY.Count; index++)
-                {
-                    ScrollsY[index].SetRange(
-                        ScrollsY[index].ActualMinValue,
-                        Model.ScaleFromUi((float) args.Point.Y, YAxis[index]));
-                }
+        private void OnXFromOnDragging(DraggableArgs args)
+        {
+            if (args.Point.X >= XTo.Left) return;
 
-                YTo.Top = args.Point.Y;
-                YThumb.Top = args.Point.Y;
-                YThumb.Height = YFrom.Top - YTo.Top;
-            };
+            EnsureXIsInRange(args);
 
-            YThumb.Dragging += args =>
+            for (var index = 0; index < ScrollsX.Count; index++)
             {
-                var i = args.Point.Y - YThumb.StartTopOffset;
-                var j = i + YThumb.ActualHeight;
-                if (i < Content.DrawArea.Y) return;
-                if (j > Content.DrawArea.Y + Content.DrawArea.Height) return;
+                ScrollsX[index].SetRange(Model.ScaleFromUi((float) args.Point.X - Content.DrawArea.X, XAxis[index]), ScrollsX[index].ActualMaxValue);
+            }
 
-                for (var index = 0; index < ScrollsY.Count; index++)
-                {
-                    var yi = Model.ScaleFromUi((float) i, YAxis[index]);
-                    ScrollsY[index].SetRange(yi - ScrollsY[index].ActualRange, yi);
-                }
-
-                YFrom.Top = i;
-                YThumb.Top = i;
-                YTo.Top = i + YThumb.Height;
-            };
+            XFrom.Left = args.Point.X;
+            XThumb.Left = args.Point.X;
+            XThumb.Width = XTo.Left - XFrom.Left;
         }
 
         private void EnsureXIsInRange(DraggableArgs args)
@@ -254,22 +262,47 @@ namespace LiveCharts.Wpf
         {
             if (ScrollsX == null && ScrollsY == null) return;
 
+            if (_scrollingPopup == null)
+            {
+                _scrollingPopup = new Popup
+                {
+                    IsOpen = false,
+                    AllowsTransparency = true,
+                    Placement = PlacementMode.AbsolutePoint
+                };
+                Children.Add(_scrollingPopup);
+                _scrollingPopup.IsOpen = true;
+                _window = Window.GetWindow(this);
+                _window.LocationChanged += WindowOnLocationChanged;
+            }
+
+            _scrollingPopup.Width = ActualWidth;
+            _scrollingPopup.Height = ActualHeight;
+
+            UpdateScrollBarPopup();
+
+            if (_scrollingCanvas == null)
+            {
+                _scrollingCanvas = new Canvas();
+                _scrollingPopup.Child = _scrollingCanvas;
+            }
+
             if (ScrollsX != null)
             {
                 if (XFrom.Parent == null)
                 {
-                    Children.Add(XThumb);
-                    Children.Add(XFrom);
-                    Children.Add(XTo);
+                    _scrollingCanvas.Children.Add(XThumb);
+                    _scrollingCanvas.Children.Add(XFrom);
+                    _scrollingCanvas.Children.Add(XTo);
                 }
             }
             else
             {
                 if (XFrom.Parent != null)
                 {
-                    Children.Remove(XFrom);
-                    Children.Remove(XTo);
-                    Children.Remove(XThumb);
+                    _scrollingCanvas.Children.Remove(XFrom);
+                    _scrollingCanvas.Children.Remove(XTo);
+                    _scrollingCanvas.Children.Remove(XThumb);
                 }
             }
 
@@ -277,20 +310,23 @@ namespace LiveCharts.Wpf
             {
                 if (YFrom.Parent == null)
                 {
-                    Children.Add(YThumb);
-                    Children.Add(YFrom);
-                    Children.Add(YTo);
+                    _scrollingCanvas.Children.Add(YThumb);
+                    _scrollingCanvas.Children.Add(YFrom);
+                    _scrollingCanvas.Children.Add(YTo);
                 }
             }
             else
             {
                 if (YFrom.Parent != null)
                 {
-                    Children.Remove(YFrom);
-                    Children.Remove(YTo);
-                    Children.Remove(YThumb);
+                    _scrollingCanvas.Children.Remove(YFrom);
+                    _scrollingCanvas.Children.Remove(YTo);
+                    _scrollingCanvas.Children.Remove(YThumb);
                 }
             }
+
+            _scrollingCanvas.Width = ActualWidth;
+            _scrollingCanvas.Height = ActualHeight;
 
             SetTop(XFrom, Content.DrawArea.Y + Content.DrawArea.Height * .5 - XFrom.ActualHeight * .5);
             SetTop(XTo, Content.DrawArea.Y + Content.DrawArea.Height * .5 - XTo.ActualHeight * .5);
@@ -301,6 +337,19 @@ namespace LiveCharts.Wpf
             YThumb.Width = ActualWidth;
 
             AttachUpdateFromSourceHandlers();
+        }
+
+        private void WindowOnLocationChanged(object sender, EventArgs eventArgs)
+        {
+            _scrollingPopup.IsOpen = true;
+            UpdateScrollBarPopup();
+        }
+
+        private void UpdateScrollBarPopup()
+        {
+            var p = PointToScreen(new Point(0, 0));
+            _scrollingPopup.HorizontalOffset = p.X;
+            _scrollingPopup.VerticalOffset = p.Y;
         }
 
         private void UpdateScrollYFromDataSourceChange(Plane sender, double min, double max)
@@ -580,6 +629,20 @@ namespace LiveCharts.Wpf
                 ScrollsY[0].RangeChanged -= UpdateScrollYFromDataSourceChange;
                 ScrollsY = null;
             }
+
+            XFrom.Dragging -= OnXFromOnDragging;
+            XTo.Dragging -= OnXToOnDragging;
+            XThumb.Dragging -= OnXThumbOnDragging;
+            YFrom.Dragging -= OnYFromOnDragging;
+            YTo.Dragging -= OnYToOnDragging;
+            YThumb.Dragging -= OnYThumbOnDragging;
+
+            if (_window != null)
+            {
+                _window.LocationChanged -= WindowOnLocationChanged;
+            }
+
+            _window = null;
         }
     }
 }

@@ -38,7 +38,7 @@
 
         <Setter Property="BorderBrush" Value="#303030"></Setter>
         <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="#FFFFFF" />
         <Setter Property="Foreground" Value="#303030"></Setter>
         <Setter Property="Padding" Value="16 12" />
         <!--only for the shadow to be visible-->
