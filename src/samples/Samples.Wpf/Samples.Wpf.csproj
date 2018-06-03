@@ -271,10 +271,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\dev\livecharts.wpf.direct\src\LiveCharts.Wpf.Flash\LiveCharts.Wpf.HA\LiveCharts.Wpf.Geared.csproj">
-      <Project>{a1a5d617-53f2-4dfc-9b72-05ace8c2c08c}</Project>
-      <Name>LiveCharts.Wpf.Geared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\LiveCharts.Core\LiveCharts.Core.csproj">
       <Project>{8caf054c-fb7c-405b-889d-59048650f4b4}</Project>
       <Name>LiveCharts.Core</Name>
