@@ -551,10 +551,13 @@ namespace LiveCharts.Core.DataSeries
 
         object IResource.UpdateId { get; set; }
 
-        void IResource.Dispose(IChartView view, bool force)
+        void IResource.Dispose(IChartView chart, bool force)
         {
-            OnDisposing(view, force);
-            Disposed?.Invoke(view, this);
+            OnDisposing(chart, force);
+            var viewContent = Content[chart.Model];
+            viewContent.Remove(Config.TrackerKey);
+            _values = null;
+            Disposed?.Invoke(chart, this);
         }
 
         /// <summary>get
@@ -562,8 +565,6 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         protected virtual void OnDisposing(IChartView chart, bool force)
         {
-            var viewContent = Content[chart.Model];
-            viewContent.Remove(Config.TrackerKey);
         }
 
 #endregion

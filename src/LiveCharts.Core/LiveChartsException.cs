@@ -37,7 +37,7 @@ namespace LiveCharts.Core
     /// An Exception thrown when there is an error related with LiveCharts.
     /// </summary>
     /// <seealso cref="System.Exception" />
-    public sealed class LiveChartsException: Exception
+    public sealed class LiveChartsException : Exception
     {
         private static readonly string _baseErrorUri = "http://lvcharts.net/error/";
 
