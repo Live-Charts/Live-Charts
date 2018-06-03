@@ -15,5 +15,5 @@
             <Setter Property="Position" Value="Right"></Setter>
         </Style>
     </UserControl.Resources>
-    <lvc:CartesianChart Series="{Binding SeriesCollection}" InvertAxes="true" />
+    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendPosition="Left" InvertAxes="true" />
 </UserControl>

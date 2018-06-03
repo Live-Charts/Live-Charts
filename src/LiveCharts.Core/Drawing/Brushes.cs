@@ -25,10 +25,15 @@
 
 #region
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 #endregion
 
@@ -47,9 +52,13 @@ namespace LiveCharts.Core.Drawing
             {
                 if (_b != null) return _b;
 
-                using (var stream = new StreamReader("solidbrushes.txt"))
+                var assembly = Assembly.GetExecutingAssembly();
+                const string resourceName = "LiveCharts.Core.Assets.solidbrushes.txt";
+
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
-                    var content = stream.ReadToEnd();
+                    var content = reader.ReadToEnd();
                     _b = content.Split('#')
                         .Where(x => x.Length > 1)
                         .Select(x =>
@@ -72,6 +81,7 @@ namespace LiveCharts.Core.Drawing
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static SolidColorBrush AliceBlue => BrushesByName["AliceBlue"];
         public static SolidColorBrush AntiqueWhite => BrushesByName["AntiqueWhite"];
         public static SolidColorBrush Aqua => BrushesByName["Aqua"];
@@ -213,5 +223,6 @@ namespace LiveCharts.Core.Drawing
         public static SolidColorBrush WhiteSmoke => BrushesByName["WhiteSmoke"];
         public static SolidColorBrush Yellow => BrushesByName["Yellow"];
         public static SolidColorBrush YellowGreen => BrushesByName["YellowGreen"];
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }

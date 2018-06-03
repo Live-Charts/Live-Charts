@@ -57,7 +57,7 @@ namespace LiveCharts.Core
             string message;
 
             var assembly = Assembly.GetExecutingAssembly();
-            const string resourceName = "LiveCharts.Core.exceptions.txt";
+            const string resourceName = "LiveCharts.Core.Assets.exceptions.txt";
 
             try
             {

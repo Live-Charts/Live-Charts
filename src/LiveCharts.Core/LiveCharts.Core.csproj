@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="exceptions.txt" />
-    <EmbeddedResource Include="solidbrushes.txt" />
+    <EmbeddedResource Include="Assets\exceptions.txt" />
+    <EmbeddedResource Include="Assets\solidbrushes.txt" />
   </ItemGroup>
 
 </Project>

@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -271,7 +268,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\dev\livecharts.wpf.direct\src\LiveCharts.Wpf.Flash\LiveCharts.Wpf.HA\LiveCharts.Wpf.Geared.csproj">
+    <ProjectReference Include="..\..\..\..\..\LiveCharts.Wpf.Geared\LiveCharts.Wpf.Geared.csproj">
       <Project>{a1a5d617-53f2-4dfc-9b72-05ace8c2c08c}</Project>
       <Name>LiveCharts.Wpf.Geared</Name>
     </ProjectReference>
