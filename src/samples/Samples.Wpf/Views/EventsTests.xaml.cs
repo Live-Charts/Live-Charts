@@ -7,7 +7,9 @@ using LiveCharts.Core;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Wpf.Geared.Rendering.Gemini.Framework.Controls;
+#if GEARED
+    using LiveCharts.Wpf.Geared.Rendering.Gemini.Framework.Controls;
+#endif
 
 namespace Samples.Wpf.Views
 {
@@ -78,14 +80,11 @@ namespace Samples.Wpf.Views
             IChartView chart, IEnumerable<IChartPoint> points, EventArgs args)
         {
             // Notice event args type is different if you are using the geared package.
-            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
-            {
-                var mea = (HwndMouseEventArgs)args;
-            }
-            else
-            {
-                var mea = (MouseEventArgs) args;
-            }
+#if GEARED
+            var mea = (HwndMouseEventArgs) args;
+#else
+            var mea = (MouseEventArgs) args;
+#endif
 
             var context = (Assets.ViewModels.EventsTests) DataContext;
             var point = points.FirstOrDefault();
@@ -98,14 +97,11 @@ namespace Samples.Wpf.Views
             IChartView chart, IEnumerable<IChartPoint> points, EventArgs args)
         {
             // Notice event args type is different if you are using the geared package.
-            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
-            {
-                var mea = (HwndMouseEventArgs)args;
-            }
-            else
-            {
-                var mea = (MouseEventArgs)args;
-            }
+#if GEARED
+            var mea = (HwndMouseEventArgs) args;
+#else
+            var mea = (MouseEventArgs) args;
+#endif
 
             var context = (Assets.ViewModels.EventsTests) DataContext;
             var point = points.FirstOrDefault();

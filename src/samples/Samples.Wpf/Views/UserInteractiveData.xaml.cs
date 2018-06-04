@@ -4,12 +4,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using LiveCharts.Core;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Defaults;
 using LiveCharts.Core.Interaction.Points;
+#if GEARED
 using LiveCharts.Wpf.Geared.Rendering.Gemini.Framework.Controls;
+#endif
 
 namespace Samples.Wpf.Views
 {
@@ -24,68 +25,35 @@ namespace Samples.Wpf.Views
         {
             InitializeComponent();
 
-            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
-            {
-                var content = (LiveCharts.Wpf.Geared.Controls.ChartContent) Chart.Content;
-                content.HwndLButtonDown += OnContentOnHwndLButtonDown;
-                content.HwndMouseMove += ContentOnHwndMouseMove;
-                content.HwndLButtonUp += ContentOnHwndLButtonUp;
-            }
-            else
-            {
-                MouseDown += Chart_OnMouseDown;
-                MouseMove += Chart_OnMouseMove;
-                MouseUp += Chart_OnMouseUp;
-            }
+#if GEARED
+            var content = (LiveCharts.Wpf.Geared.Controls.ChartContent) Chart.Content;
+            content.HwndLButtonDown += OnContentOnHwndLButtonDown;
+            content.HwndMouseMove += ContentOnHwndMouseMove;
+            content.HwndLButtonUp += ContentOnHwndLButtonUp;
+#else
+            MouseDown += Chart_OnMouseDown;
+            MouseMove += Chart_OnMouseMove;
+            MouseUp += Chart_OnMouseUp;
+#endif
         }
 
         private void Chart_OnDataMouseDown(
             IChartView chart, IChartPoint[] interactedPoints, EventArgs args)
         {
-            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
-            {
-                var mbea = (HwndMouseEventArgs)args;
-
-                // if the user clicked over a data point
-                // handle the event so Chart_OnMouseDown is not called.
-                mbea.Handled = true;
-            }
-            else
-            {
-                var mbea = (MouseButtonEventArgs)args;
-
-                // if the user clicked over a data point
-                // handle the event so Chart_OnMouseDown is not called.
-                mbea.Handled = true;
-            }
-
+            // if the user clicked over a data point
+            // handle the event so Chart_OnMouseDown is not called.
+#if GEARED
+            var mbea = (HwndMouseEventArgs) args;
+            mbea.Handled = true;
+#else
+            var mbea = (MouseButtonEventArgs) args;
+            mbea.Handled = true;
+#endif
             // let save a reference to the point model that was clicked.
             _draggingModel = (PointModel) interactedPoints.FirstOrDefault()?.Model;
         }
 
-        #region WPF events
-
-        private void Chart_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var pointerLocation = e.GetPosition(Chart);
-            AddPointAt(pointerLocation);
-        }
-
-        private void Chart_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            var pointerLocation = e.GetPosition(Chart);
-            OnPointDragging(pointerLocation);
-        }
-
-        private void Chart_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _draggingModel = null;
-        }
-
-        #endregion
-
-        #region Geared events
-
+#if GEARED
         private void OnContentOnHwndLButtonDown(object sender, HwndMouseEventArgs e)
         {
             var pointerLocation = e.GetPosition(Chart);
@@ -102,8 +70,24 @@ namespace Samples.Wpf.Views
         {
             _draggingModel = null;
         }
+#else
+        private void Chart_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var pointerLocation = e.GetPosition(Chart);
+            AddPointAt(pointerLocation);
+        }
 
-        #endregion
+        private void Chart_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            var pointerLocation = e.GetPosition(Chart);
+            OnPointDragging(pointerLocation);
+        }
+
+        private void Chart_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _draggingModel = null;
+        }
+#endif
 
         private void AddPointAt(Point pointerLocation)
         {

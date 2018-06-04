@@ -28,9 +28,9 @@ using System.Windows;
 using LiveCharts.Core;
 using LiveCharts.Core.Themes;
 using LiveCharts.Wpf;
+#if GEARED
 using LiveCharts.Wpf.Geared;
-using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
-using FontWeight = LiveCharts.Core.Drawing.Styles.FontWeight;
+#endif
 
 #endregion
 
@@ -49,7 +49,9 @@ namespace Samples.Wpf
                     .LearnPrimitiveAndDefaultTypes()
                     .SetTheme(Themes.MaterialDesign)
                     .UsingWpf()
+#if GEARED
                     .UsingWpfGeared()
+#endif
                     ;
             });
         }
