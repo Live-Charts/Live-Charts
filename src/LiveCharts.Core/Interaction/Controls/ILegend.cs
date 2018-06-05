@@ -26,6 +26,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing.Styles;

@@ -58,7 +58,7 @@ namespace LiveCharts.Wpf.Controls
         public ChartContent(IChartView view)
         {
             View = view;
-            Background = Brushes.Transparent; // otherwise mouse move is not fired...
+            Background = Brushes.Red; // otherwise mouse move is not fired...
             Children.Add(_drawMargin);
 
             MouseMove += OnMouseMove;

@@ -26,8 +26,10 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction.Controls;
@@ -146,10 +148,16 @@ namespace LiveCharts.Wpf
         float[] ILegend.Measure(
             IEnumerable<ISeries> seriesCollection, Orientation orientation, IChartView chart)
         {
+            // return new[] { 0f, 0f };
+
             if (Parent == null)
             {
-                var content = chart.Content;
-                content.AddChild(this, false);
+                var wpfChart = (Chart) chart;
+                wpfChart.Children.Add(this);
+                Canvas.SetLeft(this, 0);
+                Canvas.SetTop(this, 0);
+                HorizontalAlignment = HorizontalAlignment.Left;
+                VerticalAlignment = VerticalAlignment.Top;
             }
 
             ItemsSource = seriesCollection;
@@ -165,7 +173,10 @@ namespace LiveCharts.Wpf
             {
                 SetValue(ActualOrientationProperty, orientation.AsWpf());
             }
+
             UpdateLayout();
+            ForceUiToUpdate();
+
             return new[] {(float) DesiredSize.Width, (float) DesiredSize.Height};
         }
 
@@ -185,6 +196,18 @@ namespace LiveCharts.Wpf
             var content = chart.Content;
             content.DisposeChild(this, false);
             Disposed?.Invoke(chart, this);
+        }
+
+        private static void ForceUiToUpdate()
+        {
+            var frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render,
+                new DispatcherOperationCallback(o =>
+                {
+                    frame.Continue = false;
+                    return null;
+                }), null);
+            Dispatcher.PushFrame(frame);
         }
     }
 }
