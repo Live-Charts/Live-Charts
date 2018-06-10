@@ -229,6 +229,12 @@ namespace LiveCharts.Core.Charts
         #region Methods
 
         /// <summary>
+        /// Sets th content area.
+        /// </summary>
+        /// <param name="rectangle"></param>
+        void SetContentArea(RectangleF rectangle);
+
+        /// <summary>
         /// Updates the chart manually.
         /// </summary>
         void ForceUpdate(bool restartAnimations = false);

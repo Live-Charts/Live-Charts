@@ -361,7 +361,7 @@ namespace LiveCharts.Core.Charts
             }
 
             View.Content.DrawArea = new RectangleF(
-                new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
+                new PointF(drawMargin.Left, drawMargin.Top),
                 new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 
             // draw separators

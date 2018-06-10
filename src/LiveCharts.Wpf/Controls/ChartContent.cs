@@ -48,7 +48,6 @@ namespace LiveCharts.Wpf.Controls
 
         private readonly Canvas _drawMargin = new Canvas();
         private RectangleF _drawArea;
-        private SizeF _controlSize;
 
         #endregion
 
@@ -58,7 +57,7 @@ namespace LiveCharts.Wpf.Controls
         public ChartContent(IChartView view)
         {
             View = view;
-            Background = Brushes.Red; // otherwise mouse move is not fired...
+            Background = Brushes.Transparent; // otherwise mouse move is not fired...
             Children.Add(_drawMargin);
 
             MouseMove += OnMouseMove;
@@ -87,17 +86,6 @@ namespace LiveCharts.Wpf.Controls
             {
                 _drawArea = value;
                 OnDrawAreaChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public SizeF ControlSize
-        {
-            get => _controlSize;
-            set
-            {
-                _controlSize = value;
-                OnControlSizeChanged();
             }
         }
 
@@ -297,12 +285,6 @@ namespace LiveCharts.Wpf.Controls
                 p.X - DrawArea.X,
                 p.Y - DrawArea.Y);
             return new PointF((float) c.X, (float) c.Y);
-        }
-
-        private void OnControlSizeChanged()
-        {
-            Width = _controlSize.Width;
-            Height = _controlSize.Height;
         }
 
         private void OnDrawAreaChanged()

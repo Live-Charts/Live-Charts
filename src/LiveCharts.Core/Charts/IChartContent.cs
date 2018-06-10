@@ -75,14 +75,6 @@ namespace LiveCharts.Core.Charts
         RectangleF DrawArea { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the control.
-        /// </summary>
-        /// <value>
-        /// The size of the control.
-        /// </value>
-        SizeF ControlSize { get; set; }
-
-        /// <summary>
         /// Adds a child child.
         /// </summary>
         void AddChild(object child, bool isClipped);

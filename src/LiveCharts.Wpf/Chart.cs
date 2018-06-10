@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -355,7 +356,7 @@ namespace LiveCharts.Wpf
 
         public IChartContent Content
         {
-            get => (IChartContent)VisualDrawMargin.Content;
+            get => (IChartContent) VisualDrawMargin.Content;
             set => VisualDrawMargin.Content = value;
         }
 
@@ -426,6 +427,14 @@ namespace LiveCharts.Wpf
         {
             get => (IDataToolTip) GetValue(DataTooltipProperty);
             set => SetValue(DataTooltipProperty, value);
+        }
+
+        void IChartView.SetContentArea(RectangleF rectangle)
+        {
+            SetLeft(VisualDrawMargin, rectangle.Left);
+            SetTop(VisualDrawMargin, rectangle.Top);
+            VisualDrawMargin.Width = rectangle.Width;
+            VisualDrawMargin.Height = rectangle.Height;
         }
 
         /// <inheritdoc />

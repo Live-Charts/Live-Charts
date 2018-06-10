@@ -494,7 +494,7 @@ namespace LiveCharts.Core.Charts
             }
 
             var chartSize = ControlSize;
-            View.Content.ControlSize = new SizeF(ControlSize[0], ControlSize[1]);
+            //View.Content.ControlSize = new SizeF(ControlSize[0], ControlSize[1]);
             float dax = 0f, day = 0f;
             float lw = 0f, lh = 0f;
 
@@ -540,6 +540,10 @@ namespace LiveCharts.Core.Charts
 
             DrawAreaLocation = new[] {dax, day};
             DrawAreaSize = Perform.SubstractEach2D(chartSize, new[] {lw, lh});
+            View.SetContentArea(
+                new RectangleF(
+                    new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
+                    new SizeF(DrawAreaSize[0], DrawAreaSize[1])));
         }
 
         /// <summary>

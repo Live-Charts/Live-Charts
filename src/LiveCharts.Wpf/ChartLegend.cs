@@ -193,8 +193,8 @@ namespace LiveCharts.Wpf
         /// <inheritdoc />
         void IResource.Dispose(IChartView chart, bool force)
         {
-            var content = chart.Content;
-            content.DisposeChild(this, false);
+            var wpfChart = (Chart) chart;
+            wpfChart.Children.Remove(this);
             Disposed?.Invoke(chart, this);
         }
 
