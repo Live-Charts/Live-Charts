@@ -2,7 +2,7 @@
   <a href="http://lvcharts.net/"><img src="http://lvcharts.net/Content/Images/LiveChartsWhite.gif" /></a>
 </p>
 
-# LiveCharts 1.0 is comming soon (ETA April 2018)!
+# LiveCharts 1.0 is coming soon (ETA April 2018)!
 
 We are doing a full rewrite of the library with all the learned lessons, the new version is focused on:
 
@@ -73,10 +73,10 @@ But that is not all, we try to support as many charts as possible, bars, lines, 
 - [x] ~~Build at least all the features any other charting library does, in WPF and WinForms~~
 - [ ] **[In progress]** Build High performance algorithms 
 - [ ] **[In progress]** Expand the library to:
- - [x] ~~WPF~~
- - [x] ~~WinForms~~
- - [ ] UWP **[In progress]**
- - [ ] Xamarin
+    - [x] ~~WPF~~
+    - [x] ~~WinForms~~
+    - [ ] UWP **[In progress]**
+    - [ ] Xamarin
 - [ ] Release 1.0 in WPF and WinForms, the other platforms will be beta, in case something went wrong.
 
 ### Support
@@ -111,7 +111,7 @@ You can also buy me a beer
 <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
 <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
 </form>
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J86WDLSS9PWGL)
+[paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J86WDLSS9PWGL)
 
 ### Examples?
 
