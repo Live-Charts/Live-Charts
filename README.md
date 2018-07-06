@@ -2,7 +2,7 @@
   <a href="http://lvcharts.net/"><img src="http://lvcharts.net/Content/Images/LiveChartsWhite.gif" /></a>
 </p>
 
-# LiveCharts 1.0 is comming soon (ETA April 2018)!
+# LiveCharts 1.0 is comming soon (ETA ~~April~~ September 2018)!
 
 We are doing a full rewrite of the library with all the learned lessons, the new version is focused on:
 
