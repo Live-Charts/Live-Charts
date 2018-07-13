@@ -232,7 +232,7 @@ namespace LiveCharts.Core.Drawing
         {
             unchecked
             {
-                var hashCode = _isEmpty.GetHashCode();
+                int hashCode = _isEmpty.GetHashCode();
                 hashCode = (hashCode * 397) ^ Top.GetHashCode();
                 hashCode = (hashCode * 397) ^ Left.GetHashCode();
                 hashCode = (hashCode * 397) ^ Right.GetHashCode();

@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Core.Animations;
@@ -121,7 +122,8 @@ namespace LiveCharts.Core.DataSeries
         public override void UpdateView(ChartModel chart, UpdateContext context)
         {
             var cartesianChart = (CartesianChartModel) chart;
-            var bezierViewProvider =
+
+            IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> bezierViewProvider =
                 (IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries>) ViewProvider;
 
             var x = chart.Dimensions[0][ScalesAt[0]];
@@ -133,9 +135,9 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = (float)timeLine.Duration.TotalMilliseconds;
-            var originalAnimationLine = timeLine.AnimationLine;
-            var itl = 0;
+            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            int itl = 0;
 
             Content[chart].TryGetValue(PathKey, out var path);
             var cartesianPath = (ICartesianPath) path;
@@ -148,12 +150,12 @@ namespace LiveCharts.Core.DataSeries
             }
 
             double length = 0;
-            var isFist = true;
+            bool isFist = true;
             float i = 0, j = 0;
 
             foreach (var currentBezier in GetBeziers(cartesianChart, x, y))
             {
-                var p = new[]
+                float[] p = new[]
                 {
                     chart.ScaleToUi(currentBezier.ChartPoint.Coordinate.X, x),
                     chart.ScaleToUi(currentBezier.ChartPoint.Coordinate.Y, y)
@@ -225,13 +227,14 @@ namespace LiveCharts.Core.DataSeries
         {
             ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries> pi, pn = null, pnn = null;
             PointF previous, current = new PointF(0,0), next = new  PointF(0,0), nextNext = new PointF(0, 0);
-            var i = 0;
+            int i = 0;
 
-            var smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
-            var r = (float) (GeometrySize * .5);
+            double smoothness = LineSmoothness > 1 ? 1 : (LineSmoothness < 0 ? 0 : LineSmoothness);
+            float r = (float) (GeometrySize * .5);
 
-            var e = GetPoints(chart.View).GetEnumerator();
-            var isFirstPoint = true;
+            IEnumerator<ChartPoint<TModel, PointCoordinate, BezierViewModel, ILineSeries>> e =
+                GetPoints(chart.View).GetEnumerator();
+            bool isFirstPoint = true;
 
             double GetDistance(PointF p1, PointF p2)
             {
@@ -247,35 +250,35 @@ namespace LiveCharts.Core.DataSeries
                     previous = current;
                 }
 
-                var xc1 = (previous.X + current.X) / 2d;
-                var yc1 = (previous.Y + current.Y) / 2d;
-                var xc2 = (current.X + next.X) / 2d;
-                var yc2 = (current.Y + next.Y) / 2d;
-                var xc3 = (next.X + nextNext.X) / 2d;
-                var yc3 = (next.Y + nextNext.Y) / 2d;
+                double xc1 = (previous.X + current.X) / 2d;
+                double yc1 = (previous.Y + current.Y) / 2d;
+                double xc2 = (current.X + next.X) / 2d;
+                double yc2 = (current.Y + next.Y) / 2d;
+                double xc3 = (next.X + nextNext.X) / 2d;
+                double yc3 = (next.Y + nextNext.Y) / 2d;
 
-                var len1 = Math.Sqrt((current.X - previous.X) * (current.X - previous.X) +
+                double len1 = Math.Sqrt((current.X - previous.X) * (current.X - previous.X) +
                                      (current.Y - previous.Y) * (current.Y - previous.Y));
-                var len2 = Math.Sqrt((next.X - current.X) * (next.X - current.X) +
+                double len2 = Math.Sqrt((next.X - current.X) * (next.X - current.X) +
                                      (next.Y - current.Y) * (next.Y - current.Y));
-                var len3 = Math.Sqrt((nextNext.X - next.X) * (nextNext.X - next.X) +
+                double len3 = Math.Sqrt((nextNext.X - next.X) * (nextNext.X - next.X) +
                                      (nextNext.Y - next.Y) * (nextNext.Y - next.Y));
 
-                var k1 = len1 / (len1 + len2);
-                var k2 = len2 / (len2 + len3);
+                double k1 = len1 / (len1 + len2);
+                double k2 = len2 / (len2 + len3);
 
                 if (double.IsNaN(k1)) k1 = 0d;
                 if (double.IsNaN(k2)) k2 = 0d;
 
-                var xm1 = xc1 + (xc2 - xc1) * k1;
-                var ym1 = yc1 + (yc2 - yc1) * k1;
-                var xm2 = xc2 + (xc3 - xc2) * k2;
-                var ym2 = yc2 + (yc3 - yc2) * k2;
+                double xm1 = xc1 + (xc2 - xc1) * k1;
+                double ym1 = yc1 + (yc2 - yc1) * k1;
+                double xm2 = xc2 + (xc3 - xc2) * k2;
+                double ym2 = yc2 + (yc3 - yc2) * k2;
 
-                var c1X = xm1 + (xc2 - xm1) * smoothness + current.X - xm1;
-                var c1Y = ym1 + (yc2 - ym1) * smoothness + current.Y - ym1;
-                var c2X = xm2 + (xc2 - xm2) * smoothness + next.X - xm2;
-                var c2Y = ym2 + (yc2 - ym2) * smoothness + next.Y - ym2;
+                double c1X = xm1 + (xc2 - xm1) * smoothness + current.X - xm1;
+                double c1Y = ym1 + (yc2 - ym1) * smoothness + current.Y - ym1;
+                double c2X = xm2 + (xc2 - xm2) * smoothness + next.X - xm2;
+                double c2Y = ym2 + (yc2 - ym2) * smoothness + next.Y - ym2;
 
                 var bezier = new BezierViewModel
                 {
@@ -292,8 +295,8 @@ namespace LiveCharts.Core.DataSeries
                 // https://stackoverflow.com/questions/29438398/cheap-way-of-calculating-cubic-bezier-length
                 // according to a previous test, this method seems fast, and accurate enough for our purposes
 
-                var chord = GetDistance(current, next);
-                var net = GetDistance(current, bezier.Point1) +
+                double chord = GetDistance(current, next);
+                double net = GetDistance(current, bezier.Point1) +
                           GetDistance(bezier.Point1, bezier.Point2) +
                           GetDistance(bezier.Point2, next);
                 bezier.AproxLength = (chord + net) / 2;
@@ -368,7 +371,7 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override void OnDisposing(IChartView view, bool force)
         {
-            var viewContent = Content[view.Model];
+            Dictionary<string, object> viewContent = Content[view.Model];
 
             viewContent.TryGetValue(PathKey, out var path);
             if (path == null) return;

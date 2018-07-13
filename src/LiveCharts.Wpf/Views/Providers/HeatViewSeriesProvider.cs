@@ -60,14 +60,14 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (HeatPointView<TModel>) point.View;
+            HeatPointView<TModel> view = (HeatPointView<TModel>) point.View;
             view.Shape.Opacity = .85;
         }
 
         /// <inheritdoc />
         public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (HeatPointView<TModel>)point.View;
+            HeatPointView<TModel> view = (HeatPointView<TModel>)point.View;
             view.Shape.Opacity = 1;
         }
 

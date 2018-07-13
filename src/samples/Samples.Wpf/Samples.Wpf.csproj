@@ -287,8 +287,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\LiveCharts.Wpf.Geared\LiveCharts.Wpf.Geared\LiveCharts.Wpf.Geared.csproj"
-                      Condition="'$(Configuration)' == 'DebugGeared' OR '$(Configuration)' == 'ReleaseGeared'">
+    <ProjectReference Include="..\..\..\..\..\LiveCharts.Wpf.Geared\LiveCharts.Wpf.Geared.csproj" Condition="'$(Configuration)' == 'DebugGeared' OR '$(Configuration)' == 'ReleaseGeared'">
       <Project>{a1a5d617-53f2-4dfc-9b72-05ace8c2c08c}</Project>
       <Name>LiveCharts.Wpf.Geared</Name>
     </ProjectReference>

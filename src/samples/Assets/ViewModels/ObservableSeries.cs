@@ -108,28 +108,28 @@ namespace Assets.ViewModels
         private void _addFirst()
         {
             if (SeriesCollection.Count == 0) return;
-            var values = (ObservableCollection<double>)SeriesCollection[0].Values;
+            ObservableCollection<double> values = (ObservableCollection<double>)SeriesCollection[0].Values;
             values.Insert(0, _r.Next(0, 10));
         }
 
         private void _addMiddle()
         {
             if (SeriesCollection.Count == 0) return;
-            var values = (ObservableCollection<double>)SeriesCollection[0].Values;
+            ObservableCollection<double> values = (ObservableCollection<double>)SeriesCollection[0].Values;
             values.Insert(values.Count / 2, _r.Next(0, 10));
         }
 
         private void _addLast()
         {
             if (SeriesCollection.Count == 0) return;
-            var values = (ObservableCollection<double>)SeriesCollection[0].Values;
+            ObservableCollection<double> values = (ObservableCollection<double>)SeriesCollection[0].Values;
             values.Add(_r.Next(0, 10));
         }
 
         private void _removeFirst()
         {
             if (SeriesCollection.Count == 0) return;
-            var values = (ObservableCollection<double>)SeriesCollection[0].Values;
+            ObservableCollection<double> values = (ObservableCollection<double>)SeriesCollection[0].Values;
             if (values.Count == 0) return;
             values.RemoveAt(0);
         }
@@ -137,7 +137,7 @@ namespace Assets.ViewModels
         private void _removeMiddle()
         {
             if (SeriesCollection.Count == 0) return;
-            var values = (ObservableCollection<double>)SeriesCollection[0].Values;
+            ObservableCollection<double> values = (ObservableCollection<double>)SeriesCollection[0].Values;
             if (values.Count == 0) return;
             values.RemoveAt(values.Count/2);
         }
@@ -145,7 +145,7 @@ namespace Assets.ViewModels
         private void _removeLast()
         {
             if (SeriesCollection.Count == 0) return;
-            var values = (ObservableCollection<double>)SeriesCollection[0].Values;
+            ObservableCollection<double> values = (ObservableCollection<double>)SeriesCollection[0].Values;
             if (values.Count == 0) return;
             values.RemoveAt(values.Count - 1);
         }

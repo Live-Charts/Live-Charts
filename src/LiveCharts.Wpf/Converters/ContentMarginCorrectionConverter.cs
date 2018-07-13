@@ -20,8 +20,8 @@ namespace LiveCharts.Wpf.Converters
 
             double t = 0d, l = 0d, r = 0d, b = 0d;
 
-            var alpha = wedge * Math.PI / 180d;
-            var overFlow = Math.Cos(alpha / 2d) * hyp;
+            double alpha = wedge * Math.PI / 180d;
+            double overFlow = Math.Cos(alpha / 2d) * hyp;
 
             switch (position)
             {

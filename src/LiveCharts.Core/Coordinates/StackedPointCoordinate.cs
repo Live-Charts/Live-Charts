@@ -105,7 +105,7 @@ namespace LiveCharts.Core.Coordinates
                 index = (int) _vector[0][0];
             }
 
-            var value = _vector[1][0];
+            float value = _vector[1][0];
 
             var stack = context.UpdateContext.Stack(index, context.SeriesScalesAt[1], value);
 
@@ -114,8 +114,8 @@ namespace LiveCharts.Core.Coordinates
 
             if (context.UpdateContext.Ranges == null) return;
             // store max and min limits..
-            var x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
-            var y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[0]];
+            float[] x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
+            float[] y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[0]];
 
             if (index > x[1]) x[1] = index; // 0: min, 1: Max
             if (index < x[0]) x[0] = index;

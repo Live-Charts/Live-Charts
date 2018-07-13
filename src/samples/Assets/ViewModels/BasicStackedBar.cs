@@ -39,17 +39,17 @@ namespace Assets.ViewModels
         {
             // let's feed the series...
             
-            var charlesValues = new ObservableCollection<double>();
+            ObservableCollection<double> charlesValues = new ObservableCollection<double>();
             charlesValues.Add(4d); // *
             charlesValues.Add(8d);
             charlesValues.Add(-3d);
 
-            var fridaValues = new ObservableCollection<double>();
+            ObservableCollection<double> fridaValues = new ObservableCollection<double>();
             fridaValues.Add(5d); // *
             fridaValues.Add(-3d);
             fridaValues.Add(8d);
 
-            var abrahamValues = new ObservableCollection<double>();
+            ObservableCollection<double> abrahamValues = new ObservableCollection<double>();
             abrahamValues.Add(5d); // *
             abrahamValues.Add(2d);
             abrahamValues.Add(-7d);

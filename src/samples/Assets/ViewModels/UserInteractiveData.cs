@@ -11,7 +11,7 @@ namespace Assets.ViewModels
         public UserInteractiveData()
         {
             var r = new Random();
-            var generator = new int[35];
+            int[] generator = new int[35];
 
             SeriesCollection = new ObservableCollection<ISeries>
             {

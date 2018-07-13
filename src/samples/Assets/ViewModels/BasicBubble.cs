@@ -39,7 +39,7 @@ namespace Assets.ViewModels
     {
         public BasicBubble()
         {
-            var values = new ObservableCollection<WeightedModel>();
+            ObservableCollection<WeightedModel> values = new ObservableCollection<WeightedModel>();
 
             // add some values to the series...
             //                              x, y, weight

@@ -68,23 +68,23 @@ namespace LiveCharts.Core.DataSeries
             Plane directionAxis, Plane scaleAxis, float cw, float columnStart, float[] byBarOffset, float[] positionOffset, 
             Orientation orientation, int h, int w)
         {
-            var currentOffset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
+            float currentOffset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
 
-            var columnCorner1 = new[]
+            float[] columnCorner1 = new[]
             {
                 currentOffset,
                 chart.ScaleToUi(current.Coordinate[1][0], scaleAxis)
             };
 
-            var columnCorner2 = new[]
+            float[] columnCorner2 = new[]
             {
                 currentOffset + cw,
                 columnStart
             };
 
-            var difference = Perform.SubstractEach2D(columnCorner1, columnCorner2);
+            float[] difference = Perform.SubstractEach2D(columnCorner1, columnCorner2);
 
-            var location = new[]
+            float[] location = new[]
             {
                 currentOffset,
                 columnStart + (columnCorner1[1] < columnStart ? difference[1] : 0f)

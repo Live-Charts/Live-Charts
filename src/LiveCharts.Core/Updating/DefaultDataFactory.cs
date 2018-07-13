@@ -30,6 +30,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Core.Interaction.Series;
 
 #endregion
 
@@ -49,18 +50,18 @@ namespace LiveCharts.Core.Updating
             where TCoordinate : ICoordinate
             where TSeries : ISeries
         {
-            var mapper = context.Mapper;
-            var notifiesChange = context.Series.Metadata.IsObservable;
-            var collection = context.Collection;
-            var isValueType = context.Series.Metadata.IsValueType;
+            ModelToCoordinateMapper<TModel, TCoordinate> mapper = context.Mapper;
+            bool notifiesChange = context.Series.Metadata.IsObservable;
+            IList<TModel> collection = context.Collection;
+            bool isValueType = context.Series.Metadata.IsValueType;
 
-            for (var index = 0; index < collection.Count; index++)
+            for (int index = 0; index < collection.Count; index++)
             {
                 var instance = collection[index];
 
                 var key = isValueType ? index : (object) instance;
 
-                if (!tracker.TryGetValue(key, out var chartPoint))
+                if (!tracker.TryGetValue(key, out ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint))
                 {
                     chartPoint = new ChartPoint<TModel, TCoordinate, TViewModel, TSeries>();
                     tracker.Add(key, chartPoint);

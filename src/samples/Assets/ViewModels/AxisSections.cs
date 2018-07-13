@@ -48,13 +48,13 @@ namespace Assets.ViewModels
 
             // now we build the x Axis
 
-            var sectionsCollection = new List<Section>();
+            List<Section> sectionsCollection = new List<Section>();
             sectionsCollection.Add(xSection);
 
             var xAxis = new Axis();
             xAxis.Sections = sectionsCollection;
 
-            var xAxisCollection = new List<Plane>();
+            List<Plane> xAxisCollection = new List<Plane>();
             xAxisCollection.Add(xAxis);
 
             X = xAxisCollection;

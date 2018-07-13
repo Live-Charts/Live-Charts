@@ -64,7 +64,7 @@ namespace LiveCharts.Wpf.Views
         {
             var chart = chartPoint.Chart;
             var vm = chartPoint.ViewModel;
-            var isNew = Shape == null;
+            bool isNew = Shape == null;
 
             if (isNew)
             {
@@ -83,7 +83,7 @@ namespace LiveCharts.Wpf.Views
             Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
             Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
 
-            var r = vm.Diameter * .5f;
+            float r = vm.Diameter * .5f;
 
             if (isNew)
             {

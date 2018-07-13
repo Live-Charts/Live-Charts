@@ -65,14 +65,14 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>) point.View;
+            BarPointView<TModel, TCoordinate, TSeries, Rectangle> view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>) point.View;
             view.Shape.Opacity = 0.85;
         }
 
         /// <inheritdoc />
         public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>)point.View;
+            BarPointView<TModel, TCoordinate, TSeries, Rectangle> view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>)point.View;
             view.Shape.Opacity = 1;
         }
 

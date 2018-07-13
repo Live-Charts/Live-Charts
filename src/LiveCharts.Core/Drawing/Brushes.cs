@@ -58,13 +58,13 @@ namespace LiveCharts.Core.Drawing
                 using (var stream = assembly.GetManifestResourceStream(resourceName))
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
-                    var content = reader.ReadToEnd();
+                    string content = reader.ReadToEnd();
                     _b = content.Split('#')
                         .Where(x => x.Length > 1)
                         .Select(x =>
                         {
                             // AliceBlue,240,248,255
-                            var item = x.Split(',');
+                            string[] item = x.Split(',');
                             return new
                             {
                                 name = item[0],

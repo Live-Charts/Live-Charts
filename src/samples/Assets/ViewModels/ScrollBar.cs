@@ -11,10 +11,10 @@ namespace Assets.ViewModels
         public ScrollBar()
         {
             var random = new Random();
-            var values = new ObservableCollection<double>();
-            var trend = 0;
+            ObservableCollection<double> values = new ObservableCollection<double>();
+            int trend = 0;
 
-            for (var i = 0; i < 50; i++)
+            for (int i = 0; i < 50; i++)
             {
                 values.Add(trend += random.Next(-5, 10));
             }

@@ -69,11 +69,11 @@ namespace LiveCharts.Core.Charts
             var p = points[0];
 
             var model = (PieViewModel)p.ViewModel;
-            var angle = ((IPieChartView)View).StartingRotationAngle + model.To.Rotation + model.To.Wedge * .5;
-            var radius = model.To.OuterRadius;
+            double angle = ((IPieChartView)View).StartingRotationAngle + model.To.Rotation + model.To.Wedge * .5;
+            float radius = model.To.OuterRadius;
 
-            var sx = model.ChartCenter.X + radius * Math.Sin(angle * Math.PI / 180);
-            var sy = model.ChartCenter.Y + radius * Math.Cos(angle * Math.PI / 180);
+            double sx = model.ChartCenter.X + radius * Math.Sin(angle * Math.PI / 180);
+            double sy = model.ChartCenter.Y + radius * Math.Cos(angle * Math.PI / 180);
 
             return new PointF((float) sx, (float) sy);
         }

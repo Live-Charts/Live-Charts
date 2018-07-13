@@ -46,7 +46,7 @@ namespace Assets.ViewModels
         {
             var r = new Random();
 
-            var values = new ObservableCollection<WeightedModel>
+            ObservableCollection<WeightedModel> values = new ObservableCollection<WeightedModel>
             {
                 // we will initialize the collection with the next set of point
 

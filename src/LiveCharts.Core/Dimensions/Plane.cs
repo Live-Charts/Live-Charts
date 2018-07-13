@@ -448,8 +448,8 @@ namespace LiveCharts.Core.Dimensions
         /// <param name="max">The maximum.</param>
         public void SetRange(double min, double max)
         {
-            var minCopy = _minValue;
-            var maxCopy = _maxValue;
+            double minCopy = _minValue;
+            double maxCopy = _maxValue;
 
             _minValue = min;
             _maxValue = max;

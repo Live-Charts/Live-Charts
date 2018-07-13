@@ -26,7 +26,7 @@ namespace Assets.ViewModels
         {
             var r = new Random();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 yield return _trend += r.Next(-5, 10);
             }

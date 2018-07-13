@@ -63,7 +63,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (BezierPointView<TModel, TextBlock>) point.View;
+            BezierPointView<TModel, TextBlock> view = (BezierPointView<TModel, TextBlock>) point.View;
             view.Shape.RenderTransformOrigin = new Point(0.5, 0.5);
             view.Shape.RenderTransform = new ScaleTransform(1.2, 1.2);
         }
@@ -71,7 +71,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (BezierPointView<TModel, TextBlock>) point.View;
+            BezierPointView<TModel, TextBlock> view = (BezierPointView<TModel, TextBlock>) point.View;
             view.Shape.RenderTransformOrigin = new Point();
             view.Shape.RenderTransform = null;
         }

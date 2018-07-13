@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Interaction
             const double giga = 1000000000;
             const double tera = 1000000000000;
 
-            var log = Math.Abs(number) < pico ? 0 : Math.Log10(Math.Abs(number));
+            double log = Math.Abs(number) < pico ? 0 : Math.Log10(Math.Abs(number));
             string Func(double @const) => Math.Round(number / @const, 2).ToString("N2");
 
             if (log >= 12) return $"{Func(tera)} T";

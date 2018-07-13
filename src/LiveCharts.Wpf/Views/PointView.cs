@@ -89,7 +89,7 @@ namespace LiveCharts.Wpf.Views
             TimeLine timeLine)
         {
             var chart = chartPoint.Chart;
-            var isNew = Label == null;
+            bool isNew = Label == null;
 
             if (isNew)
             {

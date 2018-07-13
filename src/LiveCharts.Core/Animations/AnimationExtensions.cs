@@ -25,7 +25,7 @@ namespace LiveCharts.Core.Animations
                 yield return new KeyFrame(delay, 0);
             }
 
-            var remaining = 1f - delay;
+            float remaining = 1f - delay;
 
             foreach (var curve in animation)
             {

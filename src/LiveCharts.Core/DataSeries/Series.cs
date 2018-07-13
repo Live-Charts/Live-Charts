@@ -331,8 +331,11 @@ namespace LiveCharts.Core.DataSeries
         void ISeries.UsedBy(ChartModel chart)
         {
             if (Content.ContainsKey(chart)) return;
-            var defaultDictionary = new Dictionary<string, object> {[Config.TrackerKey] = 
-                new Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>()};
+            Dictionary<string, object> defaultDictionary = new Dictionary<string, object>
+            {
+                [Config.TrackerKey] =
+                new Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>()
+            };
             Content[chart] = defaultDictionary;
         }
 
@@ -351,7 +354,8 @@ namespace LiveCharts.Core.DataSeries
         public IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> 
             GetPoints(IChartView chart)
         {
-            var tracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
+            Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> tracker =
+                (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
                 Content[chart.Model][Config.TrackerKey];
             return tracker.Values;
         }
@@ -377,19 +381,21 @@ namespace LiveCharts.Core.DataSeries
             {
                 throw new LiveChartsException(122, GetType().Name, typeof(TSeries).Name);
             }
-            
-            using (var factoryContext = new DataFactoryContext<TModel, TCoordinate, TSeries>
+
+            using (DataFactoryContext<TModel, TCoordinate, TSeries> factoryContext =
+                new DataFactoryContext<TModel, TCoordinate, TSeries>
+                {
+                    Series = tSeries,
+                    Chart = chart,
+                    Mapper = Mapper,
+                    UpdateContext = context,
+                    Collection = Values.ToArray()
+                })
             {
-                Series = tSeries,
-                Chart = chart,
-                Mapper = Mapper,
-                UpdateContext = context,
-                Collection = Values.ToArray()
-            })
-            {
-                var tracker = (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
+                Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> tracker =
+                    (Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>>)
                     Content[chart][Config.TrackerKey];
-                Charting.Settings.DataFactory.Fetch(factoryContext, tracker, out var count);
+                Charting.Settings.DataFactory.Fetch(factoryContext, tracker, out int count);
                 PointsCount = count;
             }
         }
@@ -412,7 +418,7 @@ namespace LiveCharts.Core.DataSeries
                         Distance = point.InteractionArea.DistanceTo(pointerLocation, selectionMode),
                         Point = point
                     }).ToArray();
-                var min = results.Min(x => x.Distance);
+                float min = results.Min(x => x.Distance);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 query = results.Where(x => x.Distance == min).Select(x => x.Point);
             }
@@ -464,19 +470,19 @@ namespace LiveCharts.Core.DataSeries
             DataLabelsPosition labelsPosition)
         {
             const double toRadians = Math.PI / 180;
-            var rotationAngle = labelsPosition.Rotation;
+            double rotationAngle = labelsPosition.Rotation;
 
-            var xw = (float)
+            float xw = (float)
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Width); // width's    horizontal    component
-            var yw = (float)
+            float yw = (float)
                 Math.Abs(Math.Sin(rotationAngle * toRadians) * labelModel.Width); // width's    vertical      component
-            var xh = (float)
+            float xh = (float)
                 Math.Abs(Math.Sin(rotationAngle * toRadians) * labelModel.Height); // height's   horizontal    component
-            var yh = (float)
+            float yh = (float)
                 Math.Abs(Math.Cos(rotationAngle * toRadians) * labelModel.Height); // height's   vertical      component
 
-            var width = xw + xh;
-            var height = yh + yw;
+            float width = xw + xh;
+            float height = yh + yw;
 
             float left, top;
 
@@ -554,7 +560,7 @@ namespace LiveCharts.Core.DataSeries
         void IResource.Dispose(IChartView chart, bool force)
         {
             OnDisposing(chart, force);
-            var viewContent = Content[chart.Model];
+            Dictionary<string, object> viewContent = Content[chart.Model];
             viewContent.Remove(Config.TrackerKey);
             _values = null;
             Disposed?.Invoke(chart, this);

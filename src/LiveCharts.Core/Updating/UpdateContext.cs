@@ -89,7 +89,7 @@ namespace LiveCharts.Core.Updating
         /// <returns></returns>
         public float GetStack(int stackingIndex, int scalingKey, bool isPositiveOrZero)
         {
-            var i = isPositiveOrZero ? 0 : 1;
+            int i = isPositiveOrZero ? 0 : 1;
             return _barsGroups[scalingKey].ByStackingIndexStack[stackingIndex][i];
         }
 
@@ -104,17 +104,17 @@ namespace LiveCharts.Core.Updating
         {
             var bars = GetBarsFromCache(scalingKey);
 
-            if (!bars.ByStackingIndexStack.TryGetValue(stackingIndex, out var stack))
+            if (!bars.ByStackingIndexStack.TryGetValue(stackingIndex, out float[] stack))
             {
                 stack = new float[2];
                 bars.ByStackingIndexStack.Add(stackingIndex, stack);
             }
 
-            var i = value >= 0 ? 0 : 1;
+            int i = value >= 0 ? 0 : 1;
 
-            var current = stack[i];
-            var from = current;
-            var to = stack[i] = current + value;
+            float current = stack[i];
+            float from = current;
+            float to = stack[i] = current + value;
 
             return new StackResult
             {
@@ -170,7 +170,7 @@ namespace LiveCharts.Core.Updating
 
             if (calculateSeries && group.BarSeriesGroupIndexes == null)
             {
-                var barsGroup = GroupBars(_series, scalingIndex);
+                Tuple<Dictionary<IBarSeries, int>, int> barsGroup = GroupBars(_series, scalingIndex);
                 group.BarSeriesGroupIndexes = barsGroup.Item1;
                 group.BarsCount = barsGroup.Item2;
             }
@@ -180,10 +180,10 @@ namespace LiveCharts.Core.Updating
 
         private static Tuple<Dictionary<IBarSeries, int>, int> GroupBars(IEnumerable<ISeries> series, int scalingIndex)
         {
-            var result = new Dictionary<IBarSeries, int>();
-            var keys = new Dictionary<int, int>();
+            Dictionary<IBarSeries, int> result = new Dictionary<IBarSeries, int>();
+            Dictionary<int, int> keys = new Dictionary<int, int>();
 
-            var barIndex = 0;
+            int barIndex = 0;
 
             foreach (var s in series)
             {
@@ -196,7 +196,7 @@ namespace LiveCharts.Core.Updating
                 }
                 else
                 {
-                    if (!keys.TryGetValue(s.GroupingIndex, out var assignedIndex))
+                    if (!keys.TryGetValue(s.GroupingIndex, out int assignedIndex))
                     {
                         assignedIndex = barIndex;
                         keys.Add(s.GroupingIndex, assignedIndex);

@@ -44,7 +44,7 @@ namespace LiveCharts.Core.Animations
         /// <returns></returns>
         public static IEnumerable<double> GetAnimatedDashArray(IEnumerable<double> strokeDashArray, float length)
         {
-            var stack = 0d;
+            double stack = 0d;
 
             if (strokeDashArray == null)
             {
@@ -53,8 +53,8 @@ namespace LiveCharts.Core.Animations
                 yield break;
             }
 
-            var e = strokeDashArray.GetEnumerator();
-            var isStroked = true;
+            IEnumerator<double> e = strokeDashArray.GetEnumerator();
+            bool isStroked = true;
 
             while (stack < length)
             {
@@ -84,7 +84,7 @@ namespace LiveCharts.Core.Animations
         /// <returns></returns>
         public static IEnumerable<float> GetAnimatedDashArray(IEnumerable<float> strokeDashArray, float length)
         {
-            var stack = 0f;
+            float stack = 0f;
 
             if (strokeDashArray == null)
             {
@@ -93,8 +93,8 @@ namespace LiveCharts.Core.Animations
                 yield break;
             }
 
-            var e = strokeDashArray.GetEnumerator();
-            var isStroked = true;
+            IEnumerator<float> e = strokeDashArray.GetEnumerator();
+            bool isStroked = true;
 
             while (stack < length)
             {

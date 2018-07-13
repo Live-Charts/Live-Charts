@@ -48,7 +48,7 @@ namespace Samples.Wpf
             CurrentView = new Menu();
             NavigateTo = new RelayCommand(o =>
             {
-                var path = (string) o;
+                string path = (string) o;
                 _navigateTo(path);
             });
             ShowMenu = new RelayCommand(o =>
@@ -72,7 +72,7 @@ namespace Samples.Wpf
             get => _isMenuHidden;
             set
             {
-                var changed = _isMenuHidden != value;
+                bool changed = _isMenuHidden != value;
                 if (!changed) return;
                 _isMenuHidden = value;
                 OnPropertyChanged(nameof(IsMenuHidden));

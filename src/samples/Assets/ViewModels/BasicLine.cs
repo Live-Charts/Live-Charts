@@ -40,7 +40,7 @@ namespace Assets.ViewModels
     {
         public BasicLine()
         {
-            var values = new ObservableCollection<double>();
+            ObservableCollection<double> values = new ObservableCollection<double>();
 
             // add some values...
             values.Add(4);

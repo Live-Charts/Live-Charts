@@ -63,10 +63,10 @@ namespace LiveCharts.Core.Drawing
             // See docs/resources/slice.png
             // if you require to know more about the formulas in the geometry
 
-            var pts = new PointF[8];
+            PointF[] pts = new PointF[8];
 
             const double toRadians = Math.PI / 180d;
-            var a = wedge;
+            double a = wedge;
 
             if (a > 359.9f)
             {
@@ -76,11 +76,11 @@ namespace LiveCharts.Core.Drawing
                 a = 359.99f;
             }
 
-            var angle = a * toRadians;
+            double angle = a * toRadians;
 
-            var cr = (outerRadius - innerRadius) / 2 > cornerRadius ? cornerRadius : (outerRadius - innerRadius) / 2;
+            double cr = (outerRadius - innerRadius) / 2 > cornerRadius ? cornerRadius : (outerRadius - innerRadius) / 2;
 
-            var temporal = Math.Atan(
+            double temporal = Math.Atan(
                 cr / Math.Sqrt(
                     Math.Pow(innerRadius + cr, 2) + Math.Pow(cr, 2)));
 
@@ -96,23 +96,23 @@ namespace LiveCharts.Core.Drawing
                 }
             }
 
-            var innerRoundingAngle = Math.Atan(
+            double innerRoundingAngle = Math.Atan(
                 cr / Math.Sqrt(
                     Math.Pow(innerRadius + cr, 2) + Math.Pow(cr, 2)));
-            var outerRoundingAngle = Math.Atan(
+            double outerRoundingAngle = Math.Atan(
                 cr / Math.Sqrt(
                     Math.Pow(outerRadius - cr, 2) + Math.Pow(cr, 2)));
 
             if (double.IsNaN(innerRoundingAngle)) innerRoundingAngle = 0d;
             if (double.IsNaN(outerRoundingAngle)) outerRoundingAngle = 0d;
             
-            var o1 = (innerRadius + cr) * Math.Cos(innerRoundingAngle);
-            var o2 = (outerRadius - cr) * Math.Cos(outerRoundingAngle);
-            var o3 = Math.Sqrt(Math.Pow(outerRadius - cr, 2) - Math.Pow(cr, 2));
-            var o4 = Math.Sqrt(Math.Pow(innerRadius + cr, 2) - Math.Pow(cr, 2));
+            double o1 = (innerRadius + cr) * Math.Cos(innerRoundingAngle);
+            double o2 = (outerRadius - cr) * Math.Cos(outerRoundingAngle);
+            double o3 = Math.Sqrt(Math.Pow(outerRadius - cr, 2) - Math.Pow(cr, 2));
+            double o4 = Math.Sqrt(Math.Pow(innerRadius + cr, 2) - Math.Pow(cr, 2));
 
-            var xp = pushOut * Math.Sin(angle / 2);
-            var yp = pushOut * Math.Cos(angle / 2);
+            double xp = pushOut * Math.Sin(angle / 2);
+            double yp = pushOut * Math.Cos(angle / 2);
 
             unchecked
             {

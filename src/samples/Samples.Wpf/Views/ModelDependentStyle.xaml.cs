@@ -2,6 +2,7 @@
 using Assets.Models;
 using LiveCharts.Core;
 using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Wpf;
 #if GEARED
 using LiveCharts.Wpf.Geared;
@@ -28,7 +29,7 @@ namespace Samples.Wpf.Views
                 // and the Y coordinate is the player.Score property
 
                 // A mapper from player to a point coordinate
-                var playerMapper = charting.LearnType<Player, PointCoordinate>(
+                ModelToCoordinateMapper<Player, PointCoordinate> playerMapper = charting.LearnType<Player, PointCoordinate>(
                     (player, index) => new PointCoordinate(index, (float)player.Score));
 
                 // the LearnType method returns a new instance of ModelToCoordinateMapper class

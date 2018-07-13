@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using LiveCharts.Core.Coordinates;
@@ -64,21 +65,21 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         public override float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null)
         {
-            var chartSize = sizeVector ?? DrawAreaSize;
+            float[] chartSize = sizeVector ?? DrawAreaSize;
 
             // based on the linear equation
             // y = m * (x - x1) + y1 
             // where x is the Series.Values scale and y the UI scale
 
-            var x1 = plane.InternalMaxValue;
-            var y1 = chartSize[plane.Dimension];
-            var x2 = plane.InternalMinValue;
-            var y2 = 0f;
+            double x1 = plane.InternalMaxValue;
+            float y1 = chartSize[plane.Dimension];
+            double x2 = plane.InternalMinValue;
+            float y2 = 0f;
 
             if (plane.ActualReverse)
             {
-                var temp1 = y1;
-                var temp2 = y2;
+                float temp1 = y1;
+                float temp2 = y2;
                 y1 = temp2;
                 y2 = temp1;
             }
@@ -86,7 +87,7 @@ namespace LiveCharts.Core.Charts
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (x2 == x1) return y1;
 
-            var m = (y2 - y1) / (x2 - x1);
+            double m = (y2 - y1) / (x2 - x1);
 
             return (float) (m * (dataValue - x1) + y1);
         }
@@ -94,7 +95,7 @@ namespace LiveCharts.Core.Charts
         /// <inheritdoc />
         public override double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
         {
-            var chartSize = sizeVector ?? DrawAreaSize;
+            float[] chartSize = sizeVector ?? DrawAreaSize;
 
             // based on the linear equation
             // y = m * (x - x1) + y1 
@@ -102,15 +103,15 @@ namespace LiveCharts.Core.Charts
             // then
             // x = ((y - y1) / m) + x1
 
-            var x1 = plane.InternalMaxValue;
-            var y1 = chartSize[plane.Dimension];
-            var x2 = plane.InternalMinValue;
-            var y2 = 0f;
+            double x1 = plane.InternalMaxValue;
+            float y1 = chartSize[plane.Dimension];
+            double x2 = plane.InternalMinValue;
+            float y2 = 0f;
 
             if (plane.ActualReverse)
             {
-                var temp1 = y1;
-                var temp2 = y2;
+                float temp1 = y1;
+                float temp2 = y2;
                 y1 = temp2;
                 y2 = temp1;
             }
@@ -118,7 +119,7 @@ namespace LiveCharts.Core.Charts
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (x2 == x1) return x1;
 
-            var m = (y2 - y1) / (x2 - x1);
+            double m = (y2 - y1) / (x2 - x1);
 
             return (pixelsValue - y1) / m + x1;
         }
@@ -135,7 +136,7 @@ namespace LiveCharts.Core.Charts
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (p2.X == p1.X) return p1.Y;
             
-            var m = (p2.Y - p1.Y) / (p2.X - p1.X);
+            float m = (p2.Y - p1.Y) / (p2.X - p1.X);
 
             return m * (value - p1.X) + p1.Y;
         }
@@ -151,7 +152,7 @@ namespace LiveCharts.Core.Charts
             var cartesianView = (ICartesianChartView) View;
             View.DataToolTip.Hide(View);
 
-            var speed = cartesianView.ZoomingSpeed < 0.1
+            double speed = cartesianView.ZoomingSpeed < 0.1
                 ? 0.1
                 : (cartesianView.ZoomingSpeed > 0.95
                     ? 0.95
@@ -159,24 +160,24 @@ namespace LiveCharts.Core.Charts
 
             if (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy)
             {
-                for (var index = 0; index < Dimensions[0].Length; index++)
+                for (int index = 0; index < Dimensions[0].Length; index++)
                 {
                     var xPlane = (Axis) cartesianView.Dimensions[0][index];
 
-                    var px = ScaleFromUi(pivot.X, xPlane);
+                    double px = ScaleFromUi(pivot.X, xPlane);
 
-                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue;
-                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue;
-                    var l = max - min;
+                    double max = double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue;
+                    double min = double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue;
+                    double l = max - min;
 
-                    var rMin = (px - min) / l;
-                    var rMax = 1 - rMin;
+                    double rMin = (px - min) / l;
+                    double rMax = 1 - rMin;
 
-                    var unit = l * speed;
+                    double unit = l * speed;
                     if (unit < xPlane.MinRange) return;
 
-                    var minR = px - unit * rMin;
-                    var maxR = px + unit * rMax;
+                    double minR = px - unit * rMin;
+                    double maxR = px + unit * rMax;
 
                     xPlane.SetRange(minR, maxR);
                 }
@@ -184,23 +185,23 @@ namespace LiveCharts.Core.Charts
 
             if (cartesianView.Zooming == Zooming.Y || cartesianView.Zooming == Zooming.Xy)
             {
-                for (var index = 0; index < Dimensions[1].Length; index++)
+                for (int index = 0; index < Dimensions[1].Length; index++)
                 {
                     var yPlane = (Axis) cartesianView.Dimensions[1][index];
 
-                    var py = ScaleFromUi(pivot.Y, yPlane);
+                    double py = ScaleFromUi(pivot.Y, yPlane);
 
-                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue;
-                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue;
-                    var l = max - min;
-                    var rMin = (py - min) / l;
-                    var rMax = 1 - rMin;
+                    double max = double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue;
+                    double min = double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue;
+                    double l = max - min;
+                    double rMin = (py - min) / l;
+                    double rMax = 1 - rMin;
 
-                    var target = l * speed;
+                    double target = l * speed;
                     if (target < yPlane.MinRange) return;
 
-                    var minR = py - target * rMin;
-                    var maxR = py + target * rMax;
+                    double minR = py - target * rMin;
+                    double maxR = py + target * rMax;
                     yPlane.SetRange(minR, maxR);
                 }
             }
@@ -219,7 +220,7 @@ namespace LiveCharts.Core.Charts
 
             View.DataToolTip.Hide(View);
 
-            var speed = cartesianView.ZoomingSpeed < 0.1
+            double speed = cartesianView.ZoomingSpeed < 0.1
                 ? 0.1
                 : (cartesianView.ZoomingSpeed > 0.95
                     ? 0.95
@@ -227,45 +228,45 @@ namespace LiveCharts.Core.Charts
 
             if (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy)
             {
-                for (var index = 0; index < Dimensions[0].Length; index++)
+                for (int index = 0; index < Dimensions[0].Length; index++)
                 {
                     var xPlane = (Axis) Dimensions[0][index];
 
-                    var px = ScaleFromUi(pivot.X, xPlane);
+                    double px = ScaleFromUi(pivot.X, xPlane);
 
-                    var max = double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue;
-                    var min = double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue;
-                    var l = max - min;
-                    var rMin = (px - min) / l;
-                    var rMax = 1 - rMin;
+                    double max = double.IsNaN(xPlane.MaxValue) ? xPlane.InternalMaxValue : xPlane.MaxValue;
+                    double min = double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue;
+                    double l = max - min;
+                    double rMin = (px - min) / l;
+                    double rMax = 1 - rMin;
 
-                    var target = l * (1 / speed);
+                    double target = l * (1 / speed);
                     if (target > xPlane.MaxRange) return;
 
-                    var minR = px - target * rMin;
-                    var maxR = px + target * rMax;
+                    double minR = px - target * rMin;
+                    double maxR = px + target * rMax;
                     xPlane.SetRange(minR, maxR);
                 }
             }
 
             if (cartesianView.Zooming == Zooming.Y || cartesianView.Zooming == Zooming.Xy)
             {
-                for (var index = 0; index < Dimensions[1].Length; index++)
+                for (int index = 0; index < Dimensions[1].Length; index++)
                 {
                     var yPlane = (Axis) Dimensions[1][index];
 
-                    var py = ScaleFromUi(pivot.Y, yPlane);
+                    double py = ScaleFromUi(pivot.Y, yPlane);
 
-                    var max = double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue;
-                    var min = double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue;
-                    var l = max - min;
-                    var rMin = (py - min) / l;
-                    var rMax = 1 - rMin;
+                    double max = double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue;
+                    double min = double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue;
+                    double l = max - min;
+                    double rMin = (py - min) / l;
+                    double rMax = 1 - rMin;
 
-                    var target = l * (1 / speed);
+                    double target = l * (1 / speed);
                     if (target > yPlane.MaxRange) return;
-                    var minR = py - target * rMin;
-                    var maxR = py + target * rMax;
+                    double minR = py - target * rMin;
+                    double maxR = py + target * rMax;
                     yPlane.SetRange(minR, maxR);
                 }
             }
@@ -291,18 +292,18 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            var px = cartesianView.Panning == Panning.Unset &&
+            bool px = cartesianView.Panning == Panning.Unset &&
                      (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy);
 
             px = px || cartesianView.Panning == Panning.X || cartesianView.Panning == Panning.Xy;
 
             if (px)
             {
-                for (var index = 0; index < Dimensions[0].Length; index++)
+                for (int index = 0; index < Dimensions[0].Length; index++)
                 {
                     var xPlane = Dimensions[0][index];
 
-                    var dx = ScaleFromUi(delta.X, xPlane) - ScaleFromUi(0f, xPlane);
+                    double dx = ScaleFromUi(delta.X, xPlane) - ScaleFromUi(0f, xPlane);
 
                     xPlane.SetRange(
                         (double.IsNaN(xPlane.MinValue) ? xPlane.InternalMinValue : xPlane.MinValue) + dx,
@@ -310,18 +311,18 @@ namespace LiveCharts.Core.Charts
                 }
             }
 
-            var py = cartesianView.Panning == Panning.Unset &&
+            bool py = cartesianView.Panning == Panning.Unset &&
                      (cartesianView.Zooming == Zooming.Y || cartesianView.Zooming == Zooming.Xy);
 
             py = py || cartesianView.Panning == Panning.Y || cartesianView.Panning == Panning.Xy;
 
             if (py)
             {
-                for (var index = 0; index < Dimensions[1].Length; index++)
+                for (int index = 0; index < Dimensions[1].Length; index++)
                 {
                     var yPlane = Dimensions[1][index];
 
-                    var dy = ScaleFromUi(delta.Y, yPlane) - ScaleFromUi(0f, yPlane);
+                    double dy = ScaleFromUi(delta.Y, yPlane) - ScaleFromUi(0f, yPlane);
 
                     yPlane.SetRange(
                         (double.IsNaN(yPlane.MinValue) ? yPlane.InternalMinValue : yPlane.MinValue) + dy,
@@ -366,7 +367,7 @@ namespace LiveCharts.Core.Charts
 
             // draw separators
             // for each dimension (for a cartesian chart X and Y)
-            foreach (var dimension in Dimensions)
+            foreach (Plane[] dimension in Dimensions)
             {
                 // for each plane in each dimension, in this case CartesianLinearAxis, for convention named Axis
                 foreach (var plane in dimension)
@@ -414,11 +415,11 @@ namespace LiveCharts.Core.Charts
         {
             float x = 0f, y = 0f;
 
-            var xDirection = 1;
+            int xDirection = 1;
             if (View.DataToolTip.Position == ToolTipPosition.Left) xDirection = -1;
             if (View.DataToolTip.Position == ToolTipPosition.Top || View.DataToolTip.Position == ToolTipPosition.Bottom) xDirection = 0;
 
-            var yDirection = 1;
+            int yDirection = 1;
             if (View.DataToolTip.Position == ToolTipPosition.Top) yDirection = -1;
             if (View.DataToolTip.Position == ToolTipPosition.Right || View.DataToolTip.Position == ToolTipPosition.Left) yDirection = 0;
 
@@ -434,13 +435,13 @@ namespace LiveCharts.Core.Charts
                 var coordinate = point.Coordinate;
                 var cartesianSeries = (ICartesianSeries) point.Series;
 
-                var xCorr = cartesianSeries.PointMargin * .5f * xDirection;
-                var yCorr = cartesianSeries.PointMargin * .5f * yDirection;
+                float xCorr = cartesianSeries.PointMargin * .5f * xDirection;
+                float yCorr = cartesianSeries.PointMargin * .5f * yDirection;
 
                 if (coordinate is StackedPointCoordinate stacked)
                 {
-                    var xc = stacked.Key;
-                    var yc = stacked.TotalStack;
+                    float xc = stacked.Key;
+                    float yc = stacked.TotalStack;
                     if (InvertXy)
                     {
                         y += ScaleToUi(xc, Dimensions[0][cartesianSeries.ScalesAt[0]]);
@@ -467,18 +468,18 @@ namespace LiveCharts.Core.Charts
 
         internal Margin EvaluateAxisAndGetDrawMargin(UpdateContext context, ChartModel chart)
         {
-            var requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
+            bool requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
 
             float xt = 0f, xr = 0f, xb = 0f, xl = 0f;
             float yt = 0f, yr = 0f, yb = 0f, yl = 0f;
 
             // for each dimension (for a cartesian chart X and Y)
-            for (var dimensionIndex = 0; dimensionIndex < Dimensions.Length; dimensionIndex++)
+            for (int dimensionIndex = 0; dimensionIndex < Dimensions.Length; dimensionIndex++)
             {
                 // for each plane in each dimension
-                var dimension = Dimensions[dimensionIndex];
+                Plane[] dimension = Dimensions[dimensionIndex];
 
-                for (var planeIndex = 0; planeIndex < dimension.Length; planeIndex++)
+                for (int planeIndex = 0; planeIndex < dimension.Length; planeIndex++)
                 {
                     var plane = dimension[planeIndex];
                     plane.Dimension = dimensionIndex;
@@ -503,7 +504,7 @@ namespace LiveCharts.Core.Charts
 
                     // set the axis limits, use the user defined value if not double.Nan, otherwise use the value calculated by LVC
 
-                    var uiPointMargin = 0d;
+                    double uiPointMargin = 0d;
 
                     plane.ActualPointMargin = double.IsNaN(plane.PointMargin)
                         ? context.PointMargin
@@ -526,7 +527,7 @@ namespace LiveCharts.Core.Charts
                             ScaleFromUi((float) plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane));
                     }
 
-                    var length = plane.ActualPointLength.Length > plane.Dimension
+                    float length = plane.ActualPointLength.Length > plane.Dimension
                         ? plane.ActualPointLength[plane.Dimension]
                         : 0;
 
@@ -556,7 +557,7 @@ namespace LiveCharts.Core.Charts
 
                     foreach (var sharedAx in axis.SharedAxes)
                     {
-                        foreach (var dependentChart in sharedAx.DependentCharts)
+                        foreach (KeyValuePair<ChartModel, Dictionary<double, PlaneSeparator>> dependentChart in sharedAx.DependentCharts)
                         {
                             var mj = axis.CalculateAxisMargin(dependentChart.Key, sharedAx);
 

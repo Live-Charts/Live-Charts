@@ -62,7 +62,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (PiePointView<TModel>) point.View;
+            PiePointView<TModel> view = (PiePointView<TModel>) point.View;
             view.Shape
                 .Animate(timeLine)
                 .Property(
@@ -73,7 +73,7 @@ namespace LiveCharts.Wpf.Views.Providers
         /// <inheritdoc />
         public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            var view = (PiePointView<TModel>)point.View;
+            PiePointView<TModel> view = (PiePointView<TModel>)point.View;
             view.Shape
                 .Animate(timeLine)
                 .Property(

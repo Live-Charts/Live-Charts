@@ -74,7 +74,7 @@ namespace LiveCharts.Wpf.Views
         {
             var chart = chartPoint.Chart;
             _vm = chartPoint.ViewModel;
-            var isNew = Shape == null;
+            bool isNew = Shape == null;
             var speed = chart.AnimationsSpeed;
             _previous = (BezierPointView<TModel, TLabel>) previous?.View;
             if (_previous != null) _previous._next = this;
@@ -97,7 +97,7 @@ namespace LiveCharts.Wpf.Views
                     Duration = TimeSpan.FromMilliseconds(speed.TotalMilliseconds * 2)
                 };
 
-                var r = _vm.GeometrySize * .5f;
+                float r = _vm.GeometrySize * .5f;
 
                 Shape.Animate(geometryAnimation)
                     .Property(Canvas.LeftProperty, _vm.Location.X + r, _vm.Location.X, 0.5)
@@ -152,7 +152,7 @@ namespace LiveCharts.Wpf.Views
                 return;
             }
 
-            var t = _next ?? _previous ?? this;
+            BezierPointView<TModel, TLabel> t = _next ?? _previous ?? this;
 
             var shapeAnimation = Shape.Animate(_lastTimeLine)
                 .Property(

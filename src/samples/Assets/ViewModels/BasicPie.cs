@@ -37,13 +37,13 @@ namespace Assets.ViewModels
     {
         public BasicPie()
         {
-            var chromeValues = new ObservableCollection<double>();
+            ObservableCollection<double> chromeValues = new ObservableCollection<double>();
             chromeValues.Add(12d);
 
-            var fireFoxValues = new ObservableCollection<double>();
+            ObservableCollection<double> fireFoxValues = new ObservableCollection<double>();
             fireFoxValues.Add(8d);
 
-            var explorerValues = new ObservableCollection<double>();
+            ObservableCollection<double> explorerValues = new ObservableCollection<double>();
             explorerValues.Add(6d);
 
             // some custom style..

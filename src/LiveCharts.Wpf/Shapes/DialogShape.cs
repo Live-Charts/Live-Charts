@@ -75,11 +75,11 @@ namespace LiveCharts.Wpf.Shapes
                     return new RectangleGeometry();
                 }
 
-                var hyp = WedgeHypotenuse;
-                var alpha = Wedge * Math.PI / 180d;
-                var tx = Math.Sin(alpha / 2d) * hyp;
-                var ty = Math.Cos(alpha / 2d) * hyp;
-                var t = tx < ty ? ty : tx;
+                double hyp = WedgeHypotenuse;
+                double alpha = Wedge * Math.PI / 180d;
+                double tx = Math.Sin(alpha / 2d) * hyp;
+                double ty = Math.Cos(alpha / 2d) * hyp;
+                double t = tx < ty ? ty : tx;
 
                 if (Width < t)
                 {
@@ -111,10 +111,10 @@ namespace LiveCharts.Wpf.Shapes
         {
             var combined = new GeometryGroup();
 
-            var hyp = WedgeHypotenuse;
-            var alpha = Wedge * Math.PI / 180d;
-            var tx = Math.Sin(alpha / 2d) * hyp;
-            var ty = Math.Cos(alpha / 2d) * hyp;
+            double hyp = WedgeHypotenuse;
+            double alpha = Wedge * Math.PI / 180d;
+            double tx = Math.Sin(alpha / 2d) * hyp;
+            double ty = Math.Cos(alpha / 2d) * hyp;
 
             var rectangle =
                 new RectangleGeometry(
@@ -126,7 +126,7 @@ namespace LiveCharts.Wpf.Shapes
 
             using (var context = triangle.Open())
             {
-                var x = Width / 2;
+                double x = Width / 2;
                 context.BeginFigure(new Point(x, 0), true, true);
                 context.LineTo(new Point(x + tx, ty), true, true);
                 context.LineTo(new Point(x - tx, ty), true, true);
@@ -145,10 +145,10 @@ namespace LiveCharts.Wpf.Shapes
         {
             var combined = new GeometryGroup();
 
-            var hyp = WedgeHypotenuse;
-            var alpha = Wedge * Math.PI / 180d;
-            var tx = Math.Sin(alpha / 2d) * hyp;
-            var ty = Math.Cos(alpha / 2d) * hyp;
+            double hyp = WedgeHypotenuse;
+            double alpha = Wedge * Math.PI / 180d;
+            double tx = Math.Sin(alpha / 2d) * hyp;
+            double ty = Math.Cos(alpha / 2d) * hyp;
 
             var rectangle =
                 new RectangleGeometry(
@@ -160,8 +160,8 @@ namespace LiveCharts.Wpf.Shapes
 
             using (var context = triangle.Open())
             {
-                var x = Width / 2;
-                var yo = Height - ty;
+                double x = Width / 2;
+                double yo = Height - ty;
                 context.BeginFigure(new Point(x - tx, yo), true, true);
                 context.LineTo(new Point(x + tx, yo), true, true);
                 context.LineTo(new Point(x, yo + ty), true, true);
@@ -180,10 +180,10 @@ namespace LiveCharts.Wpf.Shapes
         {
             var combined = new GeometryGroup();
 
-            var hyp = WedgeHypotenuse;
-            var alpha = Wedge * Math.PI / 180d;
-            var tx = Math.Sin(alpha / 2d) * hyp;
-            var ty = Math.Cos(alpha / 2d) * hyp;
+            double hyp = WedgeHypotenuse;
+            double alpha = Wedge * Math.PI / 180d;
+            double tx = Math.Sin(alpha / 2d) * hyp;
+            double ty = Math.Cos(alpha / 2d) * hyp;
 
             var rectangle =
                 new RectangleGeometry(
@@ -195,7 +195,7 @@ namespace LiveCharts.Wpf.Shapes
 
             using (var context = triangle.Open())
             {
-                var yo = Height / 2;
+                double yo = Height / 2;
                 context.BeginFigure(new Point(0, yo), true, true);
                 context.LineTo(new Point(ty, yo - tx), true, true);
                 context.LineTo(new Point(ty, yo + ty), true, true);
@@ -214,10 +214,10 @@ namespace LiveCharts.Wpf.Shapes
         {
             var combined = new GeometryGroup();
 
-            var hyp = WedgeHypotenuse;
-            var alpha = Wedge * Math.PI / 180d;
-            var tx = Math.Sin(alpha / 2d) * hyp;
-            var ty = Math.Cos(alpha / 2d) * hyp;
+            double hyp = WedgeHypotenuse;
+            double alpha = Wedge * Math.PI / 180d;
+            double tx = Math.Sin(alpha / 2d) * hyp;
+            double ty = Math.Cos(alpha / 2d) * hyp;
 
             var rectangle =
                 new RectangleGeometry(
@@ -229,8 +229,8 @@ namespace LiveCharts.Wpf.Shapes
 
             using (var context = triangle.Open())
             {
-                var xo = Width - ty;
-                var yo = Height / 2;
+                double xo = Width - ty;
+                double yo = Height / 2;
                 context.BeginFigure(new Point(xo, yo - tx), true, true);
                 context.LineTo(new Point(xo + ty, yo), true, true);
                 context.LineTo(new Point(xo, yo + ty), true, true);

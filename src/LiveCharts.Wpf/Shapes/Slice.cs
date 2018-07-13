@@ -59,7 +59,7 @@ namespace LiveCharts.Wpf.Shapes
             get => (double) GetValue(WedgeProperty);
             set
             {
-                var a = value;
+                double a = value;
                 if (a > 360) a = 360;
                 if (a < 0) a = 0;
                 SetValue(WedgeProperty, a);

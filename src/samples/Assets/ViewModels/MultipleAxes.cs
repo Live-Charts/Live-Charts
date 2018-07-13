@@ -54,7 +54,7 @@ namespace Assets.ViewModels
 
             // now we create some series.
 
-            var values1 = new ObservableCollection<double>();
+            ObservableCollection<double> values1 = new ObservableCollection<double>();
             values1.Add(10d);
             values1.Add(5d);
             values1.Add(3d);
@@ -65,7 +65,7 @@ namespace Assets.ViewModels
                 Values = values1
             };
 
-            var values2 = new ObservableCollection<double>();
+            ObservableCollection<double> values2 = new ObservableCollection<double>();
             values2.Add(350d);
             values2.Add(650d);
             values2.Add(125d);

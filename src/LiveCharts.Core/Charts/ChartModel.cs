@@ -324,12 +324,12 @@ namespace LiveCharts.Core.Charts
                 CopyDataFromView();
                 using (var context = new UpdateContext(Series.Where(series => series.IsVisible)))
                 {
-                    var dims = new float[Dimensions.Length][][];
-                    for (var dimIndex = 0; dimIndex < Dimensions.Length; dimIndex++)
+                    float[][][] dims = new float[Dimensions.Length][][];
+                    for (int dimIndex = 0; dimIndex < Dimensions.Length; dimIndex++)
                     {
-                        var dimension = Dimensions[dimIndex];
+                        Plane[] dimension = Dimensions[dimIndex];
                         dims[dimIndex] = new float[dimension.Length][];
-                        for (var planeIndex = 0; planeIndex < dimension.Length; planeIndex++)
+                        for (int planeIndex = 0; planeIndex < dimension.Length; planeIndex++)
                         {
                             dims[dimIndex][planeIndex] = new[] {float.MaxValue, float.MinValue};
                         }
@@ -397,7 +397,7 @@ namespace LiveCharts.Core.Charts
                     Distance = point.InteractionArea.DistanceTo(pointerLocation, selectionMode),
                     Point = point
                 }).ToArray();
-            var min = results.Min(x => x.Distance);
+            float min = results.Min(x => x.Distance);
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             return results.Where(x => x.Distance == min).Select(x => x.Point);
         }
@@ -411,9 +411,9 @@ namespace LiveCharts.Core.Charts
         {
             if (Series == null) return;
             if (!IsViewInitialized) return;
-            var requiresDataLeft = DataPointerLeft != null && DataPointerLeftCommand != null;
-            var requiresDataEnter = DataPointerEntered != null && DataPointerEnteredCommand != null;
-            var requiresTooltip = View.DataToolTip != null;
+            bool requiresDataLeft = DataPointerLeft != null && DataPointerLeftCommand != null;
+            bool requiresDataEnter = DataPointerEntered != null && DataPointerEnteredCommand != null;
+            bool requiresTooltip = View.DataToolTip != null;
             if (!requiresTooltip && !requiresDataEnter && !requiresDataLeft) return;
 
             if (requiresTooltip)
@@ -440,7 +440,7 @@ namespace LiveCharts.Core.Charts
                 return;
             }
             
-            var query = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
+            IChartPoint[] query = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
 
             if (query.Length < 1)
             {
@@ -493,7 +493,7 @@ namespace LiveCharts.Core.Charts
                 OnPreparingSeries(context, series);
             }
 
-            var chartSize = ControlSize;
+            float[] chartSize = ControlSize;
             //View.Content.ControlSize = new SizeF(ControlSize[0], ControlSize[1]);
             float dax = 0f, day = 0f;
             float lw = 0f, lh = 0f;
@@ -503,7 +503,7 @@ namespace LiveCharts.Core.Charts
             {
                 RegisterINotifyPropertyChanged(Legend);
 
-                var legendSize = Legend.Measure(Series, DefaultLegendOrientation, View);
+                float[] legendSize = Legend.Measure(Series, DefaultLegendOrientation, View);
 
                 float lx = 0f, ly = 0f;
 
@@ -559,7 +559,7 @@ namespace LiveCharts.Core.Charts
             LegendPosition = View.LegendPosition;
             Legend = View.Legend;
             RegisterINotifyCollectionChanged(View.Series);
-            foreach (var dimension in View.Dimensions)
+            foreach (IList<Plane> dimension in View.Dimensions)
             {
                 RegisterINotifyCollectionChanged(dimension);
             }
@@ -645,7 +645,7 @@ namespace LiveCharts.Core.Charts
                 resource.Dispose(View, wasChartDisposed);
             }
 
-            foreach (var resource in _enumerableResources.ToArray())
+            foreach (KeyValuePair<IEnumerable, EnumerableResource> resource in _enumerableResources.ToArray())
             {
                 if (!collectAll && Equals(resource.Value.UpdateId, UpdateId)) continue;
                 _enumerableResources.Remove(resource.Value.Collection);
@@ -669,9 +669,9 @@ namespace LiveCharts.Core.Charts
         private void EvaluateTooltip(PointF pointerLocation)
         {
             var selectionMode = View.DataToolTip.SelectionMode;
-            var query = GetPointsAt(pointerLocation, selectionMode, View.DataToolTip.SnapToClosest).ToArray();
+            IChartPoint[] query = GetPointsAt(pointerLocation, selectionMode, View.DataToolTip.SnapToClosest).ToArray();
 
-            var notHoveredAnymore = _previousHovered?.Where(x =>
+            IEnumerable<IChartPoint> notHoveredAnymore = _previousHovered?.Where(x =>
                                         !x.InteractionArea.Contains(pointerLocation, selectionMode))
                                     ?? Enumerable.Empty<IChartPoint>();
 
@@ -695,9 +695,9 @@ namespace LiveCharts.Core.Charts
 
         private void EvaluateEnterLeftPoints(PointF pointerLocation, EventArgs args)
         {
-            var q = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
+            IChartPoint[] q = GetPointsAt(pointerLocation, ToolTipSelectionMode.SharedXy, false).ToArray();
 
-            var leftPoints = _previousEntered
+            IChartPoint[] leftPoints = _previousEntered
                 .Where(x => !x.InteractionArea.Contains(pointerLocation, ToolTipSelectionMode.SharedXy)).ToArray();
             if (leftPoints.Any())
             {
@@ -710,7 +710,7 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            var enteredPoints = q.Where(x => !_previousEntered.Contains(x)).ToArray();
+            IChartPoint[] enteredPoints = q.Where(x => !_previousEntered.Contains(x)).ToArray();
 
             if (enteredPoints.Any())
             {
@@ -740,8 +740,8 @@ namespace LiveCharts.Core.Charts
 
         private PointF CorrectTooltipLocationByPosition(SizeF tooltipSize, PointF toolTipLocation)
         {
-            var xCorrection = 0f;
-            var yCorrection = 0f;
+            float xCorrection = 0f;
+            float yCorrection = 0f;
 
             switch (View.DataToolTip.Position)
             {

@@ -64,9 +64,9 @@ namespace LiveCharts.Core
                 using (var stream = assembly.GetManifestResourceStream(resourceName))
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
-                    var content = reader.ReadToEnd();
+                    string content = reader.ReadToEnd();
 
-                    var byLine = content.Split(
+                    string[] byLine = content.Split(
                         new[] { Environment.NewLine },
                         StringSplitOptions.None);
 
@@ -74,7 +74,7 @@ namespace LiveCharts.Core
                         .Select(x =>
                         {
                             if (string.IsNullOrWhiteSpace(x)) return new {code = 0, message = ""};
-                            var byField = x.Split(',');
+                            string[] byField = x.Split(',');
                             return new { code = int.Parse(byField[0]), message = byField[1] };
                         })
                         .FirstOrDefault(x => x.code == code);

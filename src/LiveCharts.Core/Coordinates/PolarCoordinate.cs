@@ -71,7 +71,7 @@ namespace LiveCharts.Core.Coordinates
         /// <inheritdoc cref="Compare"/>
         public void Compare(IDataFactoryContext context)
         {
-            var radius = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
+            float[] radius = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
 
             // 0:min, 1: max
             if (Radius > radius[1]) radius[1] = Radius;

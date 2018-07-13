@@ -66,13 +66,13 @@
         private float GetTForX(float aX)
         {
             // Newton-Raphson iteration
-            var aGuessT = aX;
-            for (var i = 0; i < 4; ++i)
+            float aGuessT = aX;
+            for (int i = 0; i < 4; ++i)
             {
-                var currentSlope = GetSlope(aGuessT, _mx1, _mx2);
+                float currentSlope = GetSlope(aGuessT, _mx1, _mx2);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (currentSlope == 0.0) return aGuessT;
-                var currentX = CalcBezier(aGuessT, _mx1, _mx2) - aX;
+                float currentX = CalcBezier(aGuessT, _mx1, _mx2) - aX;
                 aGuessT -= currentX / currentSlope;
             }
             return aGuessT;

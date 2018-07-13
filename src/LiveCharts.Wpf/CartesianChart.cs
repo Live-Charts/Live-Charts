@@ -107,14 +107,14 @@ namespace LiveCharts.Wpf
 
         private void OnXThumbOnDragging(DraggableArgs args)
         {
-            var i = args.Point.X - XThumb.StartLeftOffset;
-            var j = i + XThumb.ActualWidth;
+            double i = args.Point.X - XThumb.StartLeftOffset;
+            double j = i + XThumb.ActualWidth;
             if (i <= Content.DrawArea.X) return;
             if (j >= Content.DrawArea.Width) return;
 
-            for (var index = 0; index < ScrollsX.Count; index++)
+            for (int index = 0; index < ScrollsX.Count; index++)
             {
-                var xi = Model.ScaleFromUi((float) i, XAxis[index]);
+                double xi = Model.ScaleFromUi((float) i, XAxis[index]);
                 ScrollsX[index].SetRange(xi, xi + ScrollsX[index].ActualRange);
             }
 
@@ -129,7 +129,7 @@ namespace LiveCharts.Wpf
 
             EnsureYIsInRange(args);
 
-            for (var index = 0; index < ScrollsY.Count; index++)
+            for (int index = 0; index < ScrollsY.Count; index++)
             {
                 ScrollsY[index].SetRange(ScrollsY[index].ActualMinValue, Model.ScaleFromUi((float) args.Point.Y, YAxis[index]));
             }
@@ -141,14 +141,14 @@ namespace LiveCharts.Wpf
 
         private void OnYThumbOnDragging(DraggableArgs args)
         {
-            var i = args.Point.Y - YThumb.StartTopOffset;
-            var j = i + YThumb.ActualHeight;
+            double i = args.Point.Y - YThumb.StartTopOffset;
+            double j = i + YThumb.ActualHeight;
             if (i < Content.DrawArea.Y) return;
             if (j > Content.DrawArea.Y + Content.DrawArea.Height) return;
 
-            for (var index = 0; index < ScrollsY.Count; index++)
+            for (int index = 0; index < ScrollsY.Count; index++)
             {
-                var yi = Model.ScaleFromUi((float) i, YAxis[index]);
+                double yi = Model.ScaleFromUi((float) i, YAxis[index]);
                 ScrollsY[index].SetRange(yi - ScrollsY[index].ActualRange, yi);
             }
 
@@ -163,7 +163,7 @@ namespace LiveCharts.Wpf
 
             EnsureYIsInRange(args);
 
-            for (var index = 0; index < ScrollsY.Count; index++)
+            for (int index = 0; index < ScrollsY.Count; index++)
             {
                 ScrollsY[index].SetRange(Model.ScaleFromUi((float) args.Point.Y - Content.DrawArea.Y, YAxis[index]), ScrollsY[index].ActualMaxValue);
             }
@@ -178,7 +178,7 @@ namespace LiveCharts.Wpf
 
             EnsureXIsInRange(args);
 
-            for (var index = 0; index < ScrollsX.Count; index++)
+            for (int index = 0; index < ScrollsX.Count; index++)
             {
                 ScrollsX[index].SetRange(ScrollsX[index].ActualMinValue, Model.ScaleFromUi((float) args.Point.X, XAxis[index]));
             }
@@ -193,7 +193,7 @@ namespace LiveCharts.Wpf
 
             EnsureXIsInRange(args);
 
-            for (var index = 0; index < ScrollsX.Count; index++)
+            for (int index = 0; index < ScrollsX.Count; index++)
             {
                 ScrollsX[index].SetRange(Model.ScaleFromUi((float) args.Point.X - Content.DrawArea.X, XAxis[index]), ScrollsX[index].ActualMaxValue);
             }
@@ -356,10 +356,10 @@ namespace LiveCharts.Wpf
         {
             if (YFrom.IsDragging || YTo.IsDragging || YThumb.IsDragging) return;
 
-            var i = Model.ScaleToUi(ScrollsY[0].ActualMinValue, YAxis[0]);
-            var j = Model.ScaleToUi(ScrollsY[0].ActualMaxValue, YAxis[0]);
+            float i = Model.ScaleToUi(ScrollsY[0].ActualMinValue, YAxis[0]);
+            float j = Model.ScaleToUi(ScrollsY[0].ActualMaxValue, YAxis[0]);
 
-            var tolerance = 10;
+            int tolerance = 10;
 
             if (j < Content.DrawArea.Y) j = Content.DrawArea.Y;
             if (i < Content.DrawArea.Y) i = Content.DrawArea.Y + tolerance;
@@ -378,10 +378,10 @@ namespace LiveCharts.Wpf
         {
             if (XFrom.IsDragging || XTo.IsDragging || XThumb.IsDragging) return;
 
-            var i = Model.ScaleToUi(ScrollsX[0].ActualMinValue, XAxis[0]);
-            var j = Model.ScaleToUi(ScrollsX[0].ActualMaxValue, XAxis[0]);
+            float i = Model.ScaleToUi(ScrollsX[0].ActualMinValue, XAxis[0]);
+            float j = Model.ScaleToUi(ScrollsX[0].ActualMaxValue, XAxis[0]);
 
-            var tolerance = 10;
+            int tolerance = 10;
 
             if (i < Content.DrawArea.X) i = Content.DrawArea.X;
             if (j < Content.DrawArea.X) j = Content.DrawArea.X + tolerance;

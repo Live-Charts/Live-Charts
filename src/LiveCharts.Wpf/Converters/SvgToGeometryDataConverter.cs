@@ -51,7 +51,7 @@ namespace LiveCharts.Wpf.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
-            var g = (string) value;
+            string g = (string) value;
             return System.Windows.Media.Geometry.Parse(g);
         }
 

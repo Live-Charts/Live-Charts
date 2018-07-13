@@ -20,8 +20,8 @@ namespace Assets.ViewModels
             Log = new ObservableCollection<string>();
 
             var r = new Random();
-            var trend = 0d;
-            var generator = new double[20];
+            double trend = 0d;
+            double[] generator = new double[20];
 
             SeriesCollection = new ObservableCollection<ISeries>
             {
@@ -39,20 +39,20 @@ namespace Assets.ViewModels
                 // has no idea of the UI platform I am using
                 // I will cast it to IChartView.
                 var chartView = (IChartView) chart;
-                var seriesCount = chartView.Series.Count();
+                int seriesCount = chartView.Series.Count();
                 Log.Insert(0,$"[C] UpdatePreview fired");
             });
 
             UpdateFinishedCommand = new RelayCommand(chart =>
             {
                 var chartView = (IChartView) chart;
-                var firstSeriesValuesCount = ((ICollection) chartView.Series.First().Values).Count;
+                int firstSeriesValuesCount = ((ICollection) chartView.Series.First().Values).Count;
                 Log.Insert(0,$"[C] Updated");
             });
 
             PointerDataDownCommand = new RelayCommand(points =>
             {
-                var chartPoints = (IEnumerable<IChartPoint>) points;
+                IEnumerable<IChartPoint> chartPoints = (IEnumerable<IChartPoint>) points;
                 var point = chartPoints.FirstOrDefault();
                 if (point == null) return;
                 var pointCoordinate = (PointCoordinate)point.Coordinate;
@@ -61,7 +61,7 @@ namespace Assets.ViewModels
 
             PointerDataEnteredCommand = new RelayCommand(points =>
             {
-                var chartPoints = (IEnumerable<IChartPoint>)points;
+                IEnumerable<IChartPoint> chartPoints = (IEnumerable<IChartPoint>)points;
                 var point = chartPoints.FirstOrDefault();
                 if (point == null) return;
                 var pointCoordinate = (PointCoordinate)point.Coordinate;
@@ -70,7 +70,7 @@ namespace Assets.ViewModels
 
             PointerDataLeftCommand = new RelayCommand(points =>
             {
-                var chartPoints = (IEnumerable<IChartPoint>) points;
+                IEnumerable<IChartPoint> chartPoints = (IEnumerable<IChartPoint>) points;
                 var point = chartPoints.FirstOrDefault();
                 if (point == null) return;
                 var pointCoordinate = (PointCoordinate) point.Coordinate;

@@ -108,7 +108,7 @@ namespace LiveCharts.Wpf.Animations
                 {
                     _animations[0].Item2.Completed += OnFinished;
                 }
-                foreach (var x in _animations)
+                foreach (Tuple<DependencyProperty, Timeline> x in _animations)
                 {
                     ((Animatable) Target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
                 }
@@ -132,7 +132,7 @@ namespace LiveCharts.Wpf.Animations
                 Duration = Duration
             };
 
-            var frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
+            IEnumerable<KeyFrame> frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
 
             foreach (var frame in frames)
             {
@@ -173,7 +173,7 @@ namespace LiveCharts.Wpf.Animations
                 Duration = Duration
             };
 
-            var frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
+            IEnumerable<KeyFrame> frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
 
             foreach (var frame in frames)
             {
@@ -216,7 +216,7 @@ namespace LiveCharts.Wpf.Animations
                 Duration = Duration
             };
 
-            var frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
+            IEnumerable<KeyFrame> frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
 
             foreach (var frame in frames)
             {

@@ -25,6 +25,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -127,25 +128,25 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = (float) timeLine.Duration.TotalMilliseconds;
-            var originalAnimationLine = timeLine.AnimationLine;
-            var i = 0;
+            float originalDuration = (float) timeLine.Duration.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            int i = 0;
 
-            foreach (var current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> current in GetPoints(chart.View))
             {
                 if (current.View == null)
                 {
                     current.View = ViewProvider.GetNewPoint();
                 }
 
-                var p = new[]
+                float[] p = new[]
                 {
                     chart.ScaleToUi(current.Coordinate[0][0], x),
                     chart.ScaleToUi(current.Coordinate[1][0], y),
                     cartesianChart.LinealScale(p1, p2, current.Coordinate.Weight)
                 };
 
-                var r = p[2] * .5f;
+                float r = p[2] * .5f;
 
                 var vm = new GeometryPointViewModel
                 {

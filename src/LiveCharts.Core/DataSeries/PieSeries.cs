@@ -26,6 +26,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -106,10 +107,10 @@ namespace LiveCharts.Core.DataSeries
         {
             var pieChart = (IPieChartView) chart.View;
             
-            var maxPushOut = context.GetMaxPushOut();
+            double maxPushOut = context.GetMaxPushOut();
 
-            var innerRadius = (float) pieChart.InnerRadius;
-            var outerDiameter = pieChart.ControlSize[0] < pieChart.ControlSize[1]
+            float innerRadius = (float) pieChart.InnerRadius;
+            float outerDiameter = pieChart.ControlSize[0] < pieChart.ControlSize[1]
                 ? pieChart.ControlSize[0]
                 : pieChart.ControlSize[1];
 
@@ -117,7 +118,7 @@ namespace LiveCharts.Core.DataSeries
 
             var centerPoint = new PointF(pieChart.ControlSize[0] / 2f, pieChart.ControlSize[1] / 2f);
 
-            var startsAt = pieChart.StartingRotationAngle > 360f
+            float startsAt = pieChart.StartingRotationAngle > 360f
                 ? 360f
                 : (pieChart.StartingRotationAngle < 0
                     ? 0f
@@ -129,13 +130,13 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = (float)timeLine.Duration.TotalMilliseconds;
-            var originalAnimationLine = timeLine.AnimationLine;
-            var i = 0;
+            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            int i = 0;
 
-            foreach (var current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> current in GetPoints(chart.View))
             {
-                var range = current.Coordinate.To - current.Coordinate.From;
+                float range = current.Coordinate.To - current.Coordinate.From;
 
                 float stack;
 

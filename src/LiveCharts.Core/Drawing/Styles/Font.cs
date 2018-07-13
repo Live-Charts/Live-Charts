@@ -132,7 +132,7 @@ namespace LiveCharts.Core.Drawing.Styles
         {
             unchecked
             {
-                var hashCode = _isEmpty.GetHashCode();
+                int hashCode = _isEmpty.GetHashCode();
                 hashCode = (hashCode * 397) ^ (FamilyName != null ? FamilyName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Size.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int) Style;

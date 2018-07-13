@@ -23,11 +23,11 @@ namespace LiveCharts.Wpf.Converters
                 return new Size(0, 0);
             }
 
-            var overFlow = 0d;
+            double overFlow = 0d;
 
             if (shape.Position == ToolTipPosition.Top || shape.Position == ToolTipPosition.Bottom)
             {
-                var alpha = shape.Wedge * Math.PI / 180d;
+                double alpha = shape.Wedge * Math.PI / 180d;
                 overFlow = Math.Cos(alpha / 2d) * shape.WedgeHypotenuse;
             }
 

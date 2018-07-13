@@ -100,7 +100,7 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.Dimensions[0][ScalesAt[0]];
             var y = cartesianChart.Dimensions[1][ScalesAt[1]];
 
-            var uw = chart.Get2DUiUnitWidth(x, y);
+            float[] uw = chart.Get2DUiUnitWidth(x, y);
 
             int xi = 0, yi = 1;
             if (chart.InvertXy)
@@ -111,7 +111,7 @@ namespace LiveCharts.Core.DataSeries
 
             // ReSharper disable CompareOfFloatsByEqualityOperator
 
-            var d = new[]
+            double[] d = new[]
             {
                 x.InternalMaxValue - x.InternalMinValue == 0
                     ? float.MaxValue
@@ -123,11 +123,11 @@ namespace LiveCharts.Core.DataSeries
 
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var wp = (float) (cartesianChart.DrawAreaSize[0] / d[xi]);
-            var hp = (float) (cartesianChart.DrawAreaSize[1] / d[yi]);
+            float wp = (float) (cartesianChart.DrawAreaSize[0] / d[xi]);
+            float hp = (float) (cartesianChart.DrawAreaSize[1] / d[yi]);
 
-            var minW = context.Ranges[2][ScalesAt[2]][0];
-            var maxW = context.Ranges[2][ScalesAt[2]][1];
+            float minW = context.Ranges[2][ScalesAt[2]][0];
+            float maxW = context.Ranges[2][ScalesAt[2]][1];
 
             ChartPoint<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> previous = null;
             var timeLine = new TimeLine
@@ -135,11 +135,11 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = (float)timeLine.Duration.TotalMilliseconds;
-            var originalAnimationLine = timeLine.AnimationLine;
-            var i = 0;
+            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            int i = 0;
 
-            foreach (var current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> current in GetPoints(chart.View))
             {
                 if (current.View == null)
                 {
@@ -150,7 +150,7 @@ namespace LiveCharts.Core.DataSeries
                     };
                 }
 
-                var p = new[]
+                float[] p = new[]
                 {
                     chart.ScaleToUi(current.Coordinate[0][0], x) - uw[0] *.5f,
                     chart.ScaleToUi(current.Coordinate[1][0], y) - uw[1] *.5f
@@ -205,8 +205,8 @@ namespace LiveCharts.Core.DataSeries
 
         private Color ColorInterpolation(float min, float max, float current)
         {
-            var currentOffset = (current - min) / (max - min);
-            var enumerator = Gradient.GetEnumerator();
+            float currentOffset = (current - min) / (max - min);
+            IEnumerator<GradientStop> enumerator = Gradient.GetEnumerator();
 
             if (!enumerator.MoveNext())
             {
@@ -223,7 +223,7 @@ namespace LiveCharts.Core.DataSeries
                 {
                     enumerator.Dispose();
 
-                    var p = from.Offset + (from.Offset - to.Offset) *
+                    double p = from.Offset + (from.Offset - to.Offset) *
                             ((currentOffset - from.Offset) / (from.Offset - to.Offset));
 
                     return Color.FromArgb(

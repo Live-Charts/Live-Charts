@@ -94,8 +94,8 @@ namespace Samples.Wpf.Views
             // we grab our data context that we specified in the XAML
             var context = (Assets.ViewModels.UserInteractiveData)DataContext;
 
-            var scatterSeries = (ScatterSeries<PointModel>)context.SeriesCollection[0];
-            var values = (ObservableCollection<PointModel>)scatterSeries.Values;
+            ScatterSeries<PointModel> scatterSeries = (ScatterSeries<PointModel>)context.SeriesCollection[0];
+            ObservableCollection<PointModel> values = (ObservableCollection<PointModel>)scatterSeries.Values;
 
             var scaled = Chart.ScaleFromUi(pointerLocation);
             values.Add(new PointModel(scaled.X, scaled.Y));

@@ -58,11 +58,11 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <inheritdoc />
         public override bool Contains(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
-            var x = pointerLocation.X;
-            var y = pointerLocation.Y;
+            float x = pointerLocation.X;
+            float y = pointerLocation.Y;
 
-            var sharesX = x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width;
-            var sharesY = y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
+            bool sharesX = x >= Rectangle.Left && x <= Rectangle.Left + Rectangle.Width;
+            bool sharesY = y >= Rectangle.Top && y <= Rectangle.Top + Rectangle.Height;
 
             switch (selectionMode)
             {
@@ -80,8 +80,8 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <inheritdoc />
         public override float DistanceTo(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
-            var x = pointerLocation.X;
-            var y = pointerLocation.Y;
+            float x = pointerLocation.X;
+            float y = pointerLocation.Y;
 
             switch (selectionMode)
             {

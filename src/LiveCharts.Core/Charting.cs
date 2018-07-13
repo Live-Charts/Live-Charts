@@ -108,14 +108,16 @@ namespace LiveCharts.Core
         {
             var modelType = typeof(TModel);
             var coordinateType = typeof(TCoordinate);
-            var key = new Tuple<Type, Type>(modelType, coordinateType);
-            var modelToPoint = new ModelToCoordinateMapper<TModel, TCoordinate>(
-                pointPredicate);
+            Tuple<Type, Type> key = new Tuple<Type, Type>(modelType, coordinateType);
+            ModelToCoordinateMapper<TModel, TCoordinate> modelToPoint =
+                new ModelToCoordinateMapper<TModel, TCoordinate>(pointPredicate);
+
             if (DefaultMappers.ContainsKey(key))
             {
                 DefaultMappers[key] = modelToPoint;
                 return modelToPoint;
             }
+
             DefaultMappers.Add(key, modelToPoint);
             return modelToPoint;
         }
@@ -147,7 +149,7 @@ namespace LiveCharts.Core
         {
             var modelType = typeof(TModel);
             var coordinateType = typeof(TCoordinate);
-            var key = new Tuple<Type, Type>(modelType, coordinateType);
+            Tuple<Type, Type> key = new Tuple<Type, Type>(modelType, coordinateType);
             if (DefaultMappers.TryGetValue(key, out var mapper)) return (ModelToCoordinateMapper<TModel, TCoordinate>) mapper;
             throw new LiveChartsException(100, modelType.Name, coordinateType.Name);
         }
@@ -171,7 +173,7 @@ namespace LiveCharts.Core
         public static void BuildFromTheme<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
-            var builderForT = (Action<T>) builder;
+            Action<T> builderForT = (Action<T>) builder;
             builderForT(instance);
         }
 

@@ -92,7 +92,7 @@ namespace LiveCharts.Core.Interaction.Series
         {
             if (_modelDependentActions == null) return;
 
-            foreach (var mda in _modelDependentActions)
+            foreach (ModelState<TModel, TCoordinate> mda in _modelDependentActions)
             {
                 if (mda.Trigger(model))
                 {

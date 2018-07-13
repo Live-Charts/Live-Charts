@@ -101,14 +101,14 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <inheritdoc />
         public override bool Contains(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
-            var x = pointerLocation.X;
-            var y = pointerLocation.Y;
+            float x = pointerLocation.X;
+            float y = pointerLocation.Y;
 
-            var dx = Math.Abs(x - Center.X);
-            var dy = Math.Abs(y - Center.Y);
+            float dx = Math.Abs(x - Center.X);
+            float dy = Math.Abs(y - Center.Y);
 
-            var radius = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
-            var angle = Math.Atan(dy / dx) * 180 / Math.PI;
+            double radius = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+            double angle = Math.Atan(dy / dx) * 180 / Math.PI;
 
             // correction because ATan returns angles from 0-90
 
@@ -138,17 +138,17 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <inheritdoc />
         public override float DistanceTo(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
-            var x = pointerLocation.X;
-            var y = pointerLocation.Y;
+            float x = pointerLocation.X;
+            float y = pointerLocation.Y;
 
-            var dx = Math.Abs(x - Center.X);
-            var dy = Math.Abs(y - Center.Y);
+            float dx = Math.Abs(x - Center.X);
+            float dy = Math.Abs(y - Center.Y);
 
-            var radius = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
-            var angle = Math.Atan(dy / dx);
+            double radius = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+            double angle = Math.Atan(dy / dx);
 
-            var a = (AngleFrom + AngleTo) / 2d;
-            var r = (Math.PI / 180) * (InnerRadius + Radius) / 2d;
+            double a = (AngleFrom + AngleTo) / 2d;
+            double r = (Math.PI / 180) * (InnerRadius + Radius) / 2d;
 
             return (float) Math.Sqrt(
                 Math.Pow(Math.Sin(angle) * radius - Math.Sin(a) * r, 2) +

@@ -61,9 +61,9 @@ namespace LiveCharts.Wpf.Views
             float i,
             float j)
         {
-            var l = length / StrokePath.StrokeThickness;
-            var tl = l - PreviousLength;
-            var remaining = 0d;
+            double l = length / StrokePath.StrokeThickness;
+            double tl = l - PreviousLength;
+            double remaining = 0d;
             if (tl < 0)
             {
                 remaining = -tl;

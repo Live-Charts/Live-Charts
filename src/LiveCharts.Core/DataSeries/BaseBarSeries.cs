@@ -26,6 +26,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
@@ -119,27 +120,27 @@ namespace LiveCharts.Core.DataSeries
             var directionAxis = chart.Dimensions[0][ScalesAt[0]];
             var scaleAxis = chart.Dimensions[1][ScalesAt[1]];
 
-            var uw = chart.Get2DUiUnitWidth(directionAxis, scaleAxis);
+            float[] uw = chart.Get2DUiUnitWidth(directionAxis, scaleAxis);
 
-            var barsCount = context.GetBarsCount(ScalesAt[1]);
+            int barsCount = context.GetBarsCount(ScalesAt[1]);
 
-            var cw = (uw[0] - (float) BarPadding * barsCount) / barsCount;
-            var position = context.GetBarIndex(ScalesAt[1], this);
+            float cw = (uw[0] - (float) BarPadding * barsCount) / barsCount;
+            int position = context.GetBarIndex(ScalesAt[1], this);
 
             if (cw > MaxColumnWidth)
             {
                 cw = (float) MaxColumnWidth;
             }
 
-            var bp = (float) BarPadding;
+            float bp = (float) BarPadding;
 
-            var byBarOffset = new[]
+            float[] byBarOffset = new[]
             {
                 -cw * .5f,
                 0f
             };
 
-            var positionOffset = new float[2];
+            float[] positionOffset = new float[2];
 
             if (chart.InvertXy)
             {
@@ -152,7 +153,7 @@ namespace LiveCharts.Core.DataSeries
 
             positionOffset[w] = (bp + cw) * position - (bp + cw) * ((barsCount - 1) * .5f);
             
-            var pivot = GetColumnStart(chart, scaleAxis, directionAxis);
+            float pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
             ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
             var timeLine = new TimeLine
@@ -160,11 +161,11 @@ namespace LiveCharts.Core.DataSeries
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            var originalDuration = (float) timeLine.Duration.TotalMilliseconds;
-            var originalAnimationLine = timeLine.AnimationLine;
-            var i = 0;
+            float originalDuration = (float) timeLine.Duration.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            int i = 0;
 
-            foreach (var current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> current in GetPoints(chart.View))
             {
                 if (current.View == null)
                 {
@@ -204,9 +205,9 @@ namespace LiveCharts.Core.DataSeries
 
         private float GetColumnStart(ChartModel chart, Plane target, Plane complementary)
         {
-            var p = (float) Pivot;
+            float p = (float) Pivot;
 
-            var value = target.ActualMinValue >= p && complementary.ActualMaxValue > p
+            double value = target.ActualMinValue >= p && complementary.ActualMaxValue > p
                 ? target.ActualMinValue
                 : (target.ActualMinValue < p && complementary.ActualMaxValue <= p
                     ? target.ActualMaxValue

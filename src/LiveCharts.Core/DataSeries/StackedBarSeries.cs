@@ -92,9 +92,9 @@ namespace LiveCharts.Core.DataSeries
             ChartModel chart, Plane directionAxis, Plane scaleAxis, float cw, float columnStart, 
             float[] byBarOffset, float[] positionOffset, Orientation orientation, int h, int w)
         {
-            var currentOffset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
-            var key = current.Coordinate.Key;
-            var value = current.Coordinate.Value;
+            float currentOffset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
+            float key = current.Coordinate.Key;
+            float value = current.Coordinate.Value;
 
             float stack;
 
@@ -103,21 +103,21 @@ namespace LiveCharts.Core.DataSeries
                 stack = context.GetStack((int) key, ScalesAt[1], value >= 0);
             }
 
-            var columnCorner1 = new[]
+            float[] columnCorner1 = new[]
             {
                 currentOffset,
                 chart.ScaleToUi(stack, scaleAxis)
             };
 
-            var columnCorner2 = new[]
+            float[] columnCorner2 = new[]
             {
                 currentOffset + cw,
                 columnStart
             };
 
-            var difference = Perform.SubstractEach2D(columnCorner1, columnCorner2);
+            float[] difference = Perform.SubstractEach2D(columnCorner1, columnCorner2);
 
-            var location = new[]
+            float[] location = new[]
             {
                 currentOffset,
                 columnStart + (columnCorner1[1] < columnStart ? difference[1] : 0f) 
@@ -147,8 +147,8 @@ namespace LiveCharts.Core.DataSeries
             // ToDo: optimize this rule???
             if (orientation == Orientation.Horizontal)
             {
-                var y = location[h] + byBarOffset[1] + positionOffset[1];
-                var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
+                float y = location[h] + byBarOffset[1] + positionOffset[1];
+                float l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
                 current.ViewModel = new RectangleViewModel(
                     current.ViewModel.To,
@@ -161,8 +161,8 @@ namespace LiveCharts.Core.DataSeries
             }
             else
             {
-                var x = location[w] + byBarOffset[0] + positionOffset[0];
-                var l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
+                float x = location[w] + byBarOffset[0] + positionOffset[0];
+                float l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
                 current.ViewModel = new RectangleViewModel(
                     current.ViewModel.To,

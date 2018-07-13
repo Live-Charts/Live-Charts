@@ -42,7 +42,7 @@ namespace Assets.ViewModels
         {
             // feed the values
 
-            var values2017 = new ObservableCollection<PointModel>();
+            ObservableCollection<PointModel> values2017 = new ObservableCollection<PointModel>();
             
             //                               ( x, y)
             values2017.Add(new PointModel(10, 6));
@@ -57,7 +57,7 @@ namespace Assets.ViewModels
                     new PointModel(r.NextDouble() * 10, r.NextDouble() * 10));
             }
 
-            var values2018 = new ObservableCollection<PointModel>();
+            ObservableCollection<PointModel> values2018 = new ObservableCollection<PointModel>();
 
             //                               (x, y)
             values2018.Add(new PointModel(5, 8));

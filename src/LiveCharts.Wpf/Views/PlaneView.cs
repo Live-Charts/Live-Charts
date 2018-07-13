@@ -67,7 +67,7 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         public virtual void DrawShape(CartesianAxisSectionArgs args, TimeLine timeLine)
         {
-            var isNewShape = Rectangle == null;
+            bool isNewShape = Rectangle == null;
 
             // initialize the shape
             if (isNewShape)
@@ -126,7 +126,7 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         public virtual void DrawLabel(CartesianAxisSectionArgs args, TimeLine timeLine)
         {
-            var isNewLabel = Label == null;
+            bool isNewLabel = Label == null;
 
             var pos = Perform.Sum(args.Label.UiPosition, args.ChartView.Content.DrawArea.Location);
 

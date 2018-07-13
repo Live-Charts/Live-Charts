@@ -59,7 +59,7 @@ namespace LiveCharts.Wpf.Views
         {
             var chart = chartPoint.Chart;
             var vm = chartPoint.ViewModel;
-            var isNewShape = Shape == null;
+            bool isNewShape = Shape == null;
 
             // initialize shape
             if (isNewShape)

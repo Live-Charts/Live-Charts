@@ -37,13 +37,13 @@ namespace Assets.ViewModels
     {
         public InvertedSeries()
         {
-            var values1 = new ObservableCollection<double>();
+            ObservableCollection<double> values1 = new ObservableCollection<double>();
             values1.Add(5d);
             values1.Add(3d);
             values1.Add(6d);
             values1.Add(4d);
 
-            var values2 = new ObservableCollection<double>();
+            ObservableCollection<double> values2 = new ObservableCollection<double>();
             values2.Add(7d);
             values2.Add(8d);
             values2.Add(2d);

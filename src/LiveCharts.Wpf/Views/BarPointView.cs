@@ -68,7 +68,7 @@ namespace LiveCharts.Wpf.Views
         {
             var chart = chartPoint.Chart;
             var vm = chartPoint.ViewModel;
-            var isNewShape = Shape == null;
+            bool isNewShape = Shape == null;
 
             // initialize shape
             if (isNewShape)
@@ -95,7 +95,7 @@ namespace LiveCharts.Wpf.Views
             var r = Shape as Rectangle;
             if (r != null)
             {
-                var radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
+                double radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
                 r.RadiusY = radius;
                 r.RadiusX = radius;
             }
@@ -138,7 +138,7 @@ namespace LiveCharts.Wpf.Views
             // if not forced, animate the exit...
 
             var barSeries = (IBarSeries) _chartPoint.Series;
-            var pivot = chart.Model.ScaleToUi(barSeries.Pivot, chart.Dimensions[1][barSeries.ScalesAt[1]]);
+            float pivot = chart.Model.ScaleToUi(barSeries.Pivot, chart.Dimensions[1][barSeries.ScalesAt[1]]);
 
             var animation = Shape.Animate(_lastTimeLine)
                 .Property(Canvas.TopProperty, Canvas.GetTop(Shape), pivot)

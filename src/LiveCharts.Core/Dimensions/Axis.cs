@@ -293,7 +293,7 @@ namespace LiveCharts.Core.Dimensions
         /// </returns>
         public override string ToString()
         {
-            var d = Dimension == 0 ? "X" : "Y";
+            string d = Dimension == 0 ? "X" : "Y";
             return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
@@ -320,14 +320,14 @@ namespace LiveCharts.Core.Dimensions
             // to calculate exactly the size don't we?
             // ... this is not supported for now.
 #endregion
-            var space = chart.DrawAreaSize;
+            float[] space = chart.DrawAreaSize;
             if (!(axis.Dimension == 0 || axis.Dimension == 1))
             {
                 throw new LiveChartsException(
                     103, (object) axis.Dimension);
             }
-            var dimension = space[axis.Dimension];
-            var step = (float) (double.IsNaN(Step) ? 5d : Step);
+            float dimension = space[axis.Dimension];
+            float step = (float) (double.IsNaN(Step) ? 5d : Step);
 
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
@@ -342,7 +342,7 @@ namespace LiveCharts.Core.Dimensions
                 Padding = axis.LabelsPadding
             };
 
-            for (var i = 0f; i < dimension; i += step)
+            for (float i = 0f; i < dimension; i += step)
             {
                 var label = axis.EvaluateAxisLabel(
                     dummyControl,
@@ -351,16 +351,16 @@ namespace LiveCharts.Core.Dimensions
                     space,
                     chart);
 
-                var li = label.Pointer.X - label.Margin.Left;
+                float li = label.Pointer.X - label.Margin.Left;
                 if (li < 0 && l > li) l = -li;
 
-                var ri = label.Pointer.X + label.Margin.Right;
+                float ri = label.Pointer.X + label.Margin.Right;
                 if (ri > space[0] && r < ri - space[0]) r = ri - space[0];
 
-                var ti = label.Pointer.Y - label.Margin.Top;
+                float ti = label.Pointer.Y - label.Margin.Top;
                 if (ti < 0 && t > ti) t = -ti;
 
-                var bi = label.Pointer.Y + label.Margin.Bottom;
+                float bi = label.Pointer.Y + label.Margin.Bottom;
                 if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
@@ -373,31 +373,31 @@ namespace LiveCharts.Core.Dimensions
         {
             ActualStep = GetActualAxisStep(chart);
             ActualStepStart = GetActualStepStart();
-            var from = Math.Ceiling(ActualStepStart / ActualStep) * ActualStep;
-            var to = Math.Floor(InternalMaxValue / ActualStep) * ActualStep;
+            double from = Math.Ceiling(ActualStepStart / ActualStep) * ActualStep;
+            double to = Math.Floor(InternalMaxValue / ActualStep) * ActualStep;
 
-            var tolerance = ActualStep * .1f;
-            var stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
-            var alternate = false;
+            double tolerance = ActualStep * .1f;
+            float stepSize = Math.Abs(chart.ScaleToUi(ActualStep, this) - chart.ScaleToUi(0, this));
+            bool alternate = false;
 
             var dummyControl = ViewProvider.GetMeasurableLabel();
             chart.View.Content.AddChild(dummyControl, false);
 
-            var delta = (float) ActualStep;
+            float delta = (float) ActualStep;
 
             if (DependentCharts == null) DependentCharts = new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>();
 
-            if (!DependentCharts.TryGetValue(chart, out var viewHolder))
+            if (!DependentCharts.TryGetValue(chart, out Dictionary<double, PlaneSeparator> viewHolder))
             {
                 viewHolder = new Dictionary<double, PlaneSeparator>();
                 DependentCharts.Add(chart, viewHolder);
             }
 
-            for (var i = (float) from; i <= to + tolerance; i += delta)
+            for (float i = (float) from; i <= to + tolerance; i += delta)
             {
                 alternate = !alternate;
-                var iui = chart.ScaleToUi(i, this);
-                var key = Math.Round(i / tolerance) * tolerance;
+                float iui = chart.ScaleToUi(i, this);
+                double key = Math.Round(i / tolerance) * tolerance;
 
                 if (!viewHolder.TryGetValue(key, out var separator))
                 {
@@ -418,7 +418,7 @@ namespace LiveCharts.Core.Dimensions
 
                 if (Dimension == 0)
                 {
-                    var w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
+                    float w = iui + stepSize > chart.DrawAreaSize[0] ? 0 : stepSize;
                     var xModel = new RectangleF(new PointF(iui, 0), new SizeF(w, chart.DrawAreaSize[1]));
 
                     var args = new CartesianAxisSectionArgs
@@ -438,7 +438,7 @@ namespace LiveCharts.Core.Dimensions
                 }
                 else
                 {
-                    var h = iui + stepSize > chart.DrawAreaSize[1] ? 0 : stepSize;
+                    float h = iui + stepSize > chart.DrawAreaSize[1] ? 0 : stepSize;
                     var yModel = new RectangleF(new PointF(0, iui), new SizeF(chart.DrawAreaSize[0], h));
 
                     var args = new CartesianAxisSectionArgs
@@ -463,9 +463,9 @@ namespace LiveCharts.Core.Dimensions
 
             // remove unnecessary elements from cache
             // the visual element will be removed by the chart's resource collector
-            foreach (var holder in DependentCharts.ToArray())
+            foreach (KeyValuePair<ChartModel, Dictionary<double, PlaneSeparator>> holder in DependentCharts.ToArray())
             {
-                foreach (var separator in holder.Value.ToArray())
+                foreach (KeyValuePair<double, PlaneSeparator> separator in holder.Value.ToArray())
                 {
                     if (separator.Value.UpdateId != chart.UpdateId)
                     {
@@ -479,7 +479,7 @@ namespace LiveCharts.Core.Dimensions
         {
             if (Sections == null) return;
 
-            var isX = Dimension == 0;
+            bool isX = Dimension == 0;
 
             if (isX)
             {
@@ -499,15 +499,15 @@ namespace LiveCharts.Core.Dimensions
                     section.View = section.ViewProvider.GetNewVisual();
                 }
 
-                var iui = chart.ScaleToUi(section.Value, this);
-                var jui = chart.ScaleToUi(section.Value + section.Length, this);
+                float iui = chart.ScaleToUi(section.Value, this);
+                float jui = chart.ScaleToUi(section.Value + section.Length, this);
 
-                var length = Math.Abs(iui - jui);
+                float length = Math.Abs(iui - jui);
 
-                var w = iui + length > chart.DrawAreaSize[0] ? 0 : length;
-                var h = iui + length > chart.DrawAreaSize[1] ? 0 : length;
+                float w = iui + length > chart.DrawAreaSize[0] ? 0 : length;
+                float h = iui + length > chart.DrawAreaSize[1] ? 0 : length;
                 
-                var t = isX ? (Reverse ? jui : iui) : (Reverse ? iui : jui);
+                float t = isX ? (Reverse ? jui : iui) : (Reverse ? iui : jui);
 
                 var model = isX
                     ? new RectangleF(new PointF(t, 0), new SizeF(w, chart.DrawAreaSize[1]))
@@ -596,9 +596,9 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc cref="Plane.OnDispose"/>
         protected override void OnDispose(IChartView chart, bool force)
         {
-            foreach (var holder in DependentCharts ?? new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>())
+            foreach (KeyValuePair<ChartModel, Dictionary<double, PlaneSeparator>> holder in DependentCharts ?? new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>())
             {
-                foreach (var separator in holder.Value)
+                foreach (KeyValuePair<double, PlaneSeparator> separator in holder.Value)
                 {
                     separator.Value.Dispose(chart, force);
                 }
@@ -645,20 +645,20 @@ namespace LiveCharts.Core.Dimensions
                 return (float) Step;
             }
 
-            var range = InternalMaxValue - InternalMinValue;
+            double range = InternalMaxValue - InternalMinValue;
             range = range <= 0 ? 1 : range;
 
             const double cleanFactor = 50d;
 
             //ToDO: Improve this according to current labels!
-            var separations = Math.Round(chart.DrawAreaSize[Dimension] / cleanFactor, 0);
+            double separations = Math.Round(chart.DrawAreaSize[Dimension] / cleanFactor, 0);
 
             separations = separations < 2 ? 2 : separations;
 
-            var minimum = range / separations;
-            var magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
+            double minimum = range / separations;
+            double magnitude = Math.Pow(10, Math.Floor(Math.Log(minimum) / Math.Log(10)));
 
-            var residual = minimum / magnitude;
+            double residual = minimum / magnitude;
             double tick;
             if (residual > 5)
             {
@@ -698,16 +698,16 @@ namespace LiveCharts.Core.Dimensions
             }
 
             const double toRadians = Math.PI / 180;
-            var angle = labelStyle.ActualLabelsRotation;
-            var text = FormatValue(value);
+            double angle = labelStyle.ActualLabelsRotation;
+            string text = FormatValue(value);
             var labelSize = control.Update(text, labelStyle);
 
-            var xw = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Width);  // width's    horizontal    component
-            var yw = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Width);  // width's    vertical      component
-            var xh = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Height); // height's   horizontal    component
-            var yh = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Height); // height's   vertical      component
+            double xw = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Width);  // width's    horizontal    component
+            double yw = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Width);  // width's    vertical      component
+            double xh = Math.Abs(Math.Sin(angle * toRadians) * labelSize.Height); // height's   horizontal    component
+            double yh = Math.Abs(Math.Cos(angle * toRadians) * labelSize.Height); // height's   vertical      component
 
-            var isSecondQuadrant = angle >= 270;
+            bool isSecondQuadrant = angle >= 270;
 
             // You can find more information about the cases at 
             // docs/resources/labels.2.png
@@ -797,7 +797,7 @@ namespace LiveCharts.Core.Dimensions
                     y = chart.ScaleToUi(value, this, drawMargin);
                     break;
                 default:
-                    var d = Dimension == 0 ? "X" : "Y";
+                    string d = Dimension == 0 ? "X" : "Y";
                     throw new LiveChartsException(106, d, Position);
             }
 
@@ -808,7 +808,7 @@ namespace LiveCharts.Core.Dimensions
                 // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (Dimension == 0)
                 {
-                    var direction = Position != AxisPosition.Top ? 1 : -1;
+                    int direction = Position != AxisPosition.Top ? 1 : -1;
                     xo = xo - xw * .5f * direction;
                 }
                 else if (Dimension == 1)

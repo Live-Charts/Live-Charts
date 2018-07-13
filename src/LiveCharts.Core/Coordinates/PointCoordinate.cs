@@ -69,8 +69,8 @@ namespace LiveCharts.Core.Coordinates
         /// <inheritdoc />
         public void Compare(IDataFactoryContext context)
         {
-            var x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
-            var y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[1]];
+            float[] x = context.UpdateContext.Ranges[0][context.SeriesScalesAt[0]];
+            float[] y = context.UpdateContext.Ranges[1][context.SeriesScalesAt[1]];
 
             if (X > x[1]) x[1] = X; // 0: min, 1: Max
             if (X < x[0]) x[0] = X;
