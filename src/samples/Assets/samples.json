@@ -1,0 +1,126 @@
+﻿{
+  "version": "1.0",
+  "items": {
+    "Title...": [
+      {
+        "id": "BasicLine",
+        "name": "Basic line series",
+        "text": "An easy way to get started with line series."
+      },
+      {
+        "id": "BasicBar",
+        "name": "Basic bar series",
+        "text": "Get started with the bar series class."
+      },
+      {
+        "id": "BasicStackedBar",
+        "name": "Basic stacked bar series",
+        "text": "A bar series that stacks the content."
+      },
+      {
+        "id": "BasicScatter",
+        "name": "Basic scatter series",
+        "text": "Only a points series that explicitly sets X and Y coordinates."
+      },
+      {
+        "id": "BasicBubble",
+        "name": "Basic bubble series",
+        "text": "Similar to a scatter series, but the points are weithed."
+      },
+      {
+        "id": "BasicHeat",
+        "name": "Heat series",
+        "text": "Heat series based on the weight of every point."
+      },
+      {
+        "id": "InvertedSeries",
+        "name": "Inverted series",
+        "text": "Invert series using InvertAxes property."
+      },
+      {
+        "id": "AxisPositioning",
+        "name": "Axis positioning",
+        "text": "Axis positioning tests"
+      },
+      {
+        "id": "AxisSections",
+        "name": "Axis sections",
+        "text": "A chart that highlights a range in an axis."
+      },
+      {
+        "id": "MultipleAxes",
+        "name": "Multiple axes",
+        "text": "A chart that scales its series in multiple axes."
+      }, {
+        "id": "ReverseAxes",
+        "name": "Reverse Axes",
+        "text": "Use the Plane.Reverse property to invert any plane/Axis."
+      },
+      {
+        "id": "DataLabels",
+        "name": "Data Labels",
+        "text": "Set DataLabels = true in any series to display a label in every point."
+      },
+      {
+        "id": "BasicPie",
+        "name": "Basic Pie chart",
+        "text": "Generate pie charts easily"
+      },
+      {
+        "id": "ModelDependentStyle",
+        "name": "Model Dependent Style",
+        "text": "The chart style changes according to the data in every point.",
+        "extraFiles": [
+          "Models/Player.cs"
+        ]
+      }, {
+        "id": "UserInteractiveData",
+        "name": "User Interactive Data",
+        "text": "The user modifies the chart clicking over the it."
+      },
+      {
+        "id": "ZoomingAndPanning",
+        "name": "Zooming and panning",
+        "text": "A chart with zooming and pannign enabled."
+      }, {
+        "id": "SharedAxes",
+        "name": "Shared axes",
+        "text": "Illustrates how to share an axis in multiple charts."
+      }, {
+        "id": "ScrollBar",
+        "name": "ScrollBar",
+        "text": "Just an scrollable chart."
+      },
+      {
+        "id": "Animations",
+        "name": "Animations",
+        "text": "Change all the animations with only one property."
+      },
+      {
+        "id": "ByPointDelay",
+        "name": "By point delay",
+        "text": "Set a delayer to draw every point."
+      },
+      {
+        "id": "ToolTipsAndLegends",
+        "name": "Tooltips and legends",
+        "text": "A dynamic sample customizing tooltips and legends properties."
+      },
+      {
+        "id": "EventsTests",
+        "name": "Events Tests",
+        "text": "Basic sample to illustrate chartt events."
+      }
+    ],
+    "Testing": [
+      {
+        "id": "ObservableSeries",
+        "name": "ObservableSeries",
+        "text": "Tests Chart.Series property change and Chart.Series items interaction",
+        "extraFiles": [
+          "Commands/RelayCommand.cs"
+        ]
+      }
+    ]
+  }
+}

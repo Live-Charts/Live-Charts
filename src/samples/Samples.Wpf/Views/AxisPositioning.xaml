@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Samples.Wpf.Views.AxisPositioning"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:AxisPositioning></viewModels:AxisPositioning>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Inverted</TextBlock>
+                <CheckBox IsChecked="{Binding Invert}"></CheckBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>X Position</TextBlock>
+                <ComboBox ItemsSource="{Binding VerticalPositions}"
+                          SelectedValue="{Binding XPosition}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>X Rotation (<TextBlock Text="{Binding XRotation}"></TextBlock>)</TextBlock>
+                <Slider Minimum="-360" Maximum="360" Value="{Binding XRotation}" IsSnapToTickEnabled="True" TickFrequency="1" Width="150"></Slider>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Y Position</TextBlock>
+                <ComboBox ItemsSource="{Binding HorizontalPositions}"
+                          SelectedValue="{Binding YPosition}"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Y Rotation (<TextBlock Text="{Binding YRotation}"></TextBlock>)</TextBlock>
+                <Slider Minimum="-360" Maximum="360" Value="{Binding YRotation}" IsSnapToTickEnabled="True" TickFrequency="1" Width="150"></Slider>
+            </StackPanel>
+        </StackPanel>
+        <lvc:CartesianChart Grid.Row="1"
+                            Series="{Binding SeriesCollection}"
+                            InvertAxes="{Binding Invert}"
+                            XAxis="{Binding X}"
+                            YAxis="{Binding Y}" />
+    </Grid>
+</UserControl>

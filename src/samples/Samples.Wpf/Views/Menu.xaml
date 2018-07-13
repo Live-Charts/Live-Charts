@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Samples.Wpf.Views.Menu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             mc:Ignorable="d"
+             Background="#F9F9F9"
+             d:DesignHeight="650" d:DesignWidth="950"
+             d:DataContext="{d:DesignInstance viewModels:Menu}">
+    <UserControl.DataContext>
+        <viewModels:Menu />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Samples}" Margin="25, 10">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MenuSectionTitle}"
+                                   Text="{Binding Key}" />
+                        <ItemsControl ItemsSource="{Binding Value}"
+                                      ItemTemplate="{StaticResource MainMenuButtonTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock Grid.Row="1" TextAlignment="Center" VerticalAlignment="Bottom">
+            Icons made by
+            <Hyperlink NavigateUri="https://www.freepik.com/" RequestNavigate="Hyperlink_OnRequestNavigate">
+                <!-- ReSharper disable once MarkupTextTypo -->
+                Freepik
+            </Hyperlink>
+            from
+            <Hyperlink NavigateUri="https://www.flaticon.com/" RequestNavigate="Hyperlink_OnRequestNavigate">
+                www.flaticon.com
+            </Hyperlink>
+        </TextBlock>
+    </Grid>
+</UserControl>

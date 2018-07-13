@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Samples.Wpf.Views.EventsTests"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:EventsTests></viewModels:EventsTests>
+    </UserControl.DataContext>
+    <Grid Name="Grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <lvc:CartesianChart Series="{Binding SeriesCollection}"
+                            XAxis="{Binding XAxis}"
+                            Zooming="X"
+
+                            ChartUpdatePreview="OnChartUpdatePreview"
+                            ChartUpdatePreviewCommand="{Binding UpdatePreviewCommand}"
+
+                            ChartUpdated="OnChartUpdated"
+                            ChartUpdatedCommand="{Binding UpdateFinishedCommand}"
+
+                            DataPointerDown="OnDataPointerDown"
+                            DataPointerDownCommand="{Binding PointerDataDownCommand}"
+
+                            DataPointerEntered="OnDataPointerEntered"
+                            DataPointerEnteredCommand="{Binding PointerDataEnteredCommand}"
+
+                            DataPointerLeft="OnDataPointerLeft"
+                            DataPointerLeftCommand="{Binding PointerDataLeftCommand}" />
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible" MaxHeight="{Binding ElementName=Grid, Path=ActualHeight}">
+            <ItemsControl ItemsSource="{Binding Log}" Background="#303030" Padding="15">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0 0 0 5" BorderBrush="#EBEBEB" BorderThickness="0 0 0 1">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding}" Foreground="#EBEBEB"></TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

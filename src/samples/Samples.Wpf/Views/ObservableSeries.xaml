@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Samples.Wpf.Views.ObservableSeries"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Assets.ViewModels;assembly=Assets"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:ObservableSeriesAndValues/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Margin="8">SeriesType</TextBlock>
+            <ComboBox SelectedValue="{Binding SeriesType}" ItemsSource="{Binding AvailableTypes}"></ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Command="{Binding AddSeries}" Margin="8">Add Series</Button>
+            <Button Command="{Binding RemoveSeries}" Margin="8">Remove Series</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Command="{Binding AddPointFirst}" Margin="8">+s</Button>
+            <Button Command="{Binding AddPointMiddle}" Margin="8">+m</Button>
+            <Button Command="{Binding AddPointLast}" Margin="8">+l</Button>
+            <Button Command="{Binding RemovePointFirst}" Margin="8">-s</Button>
+            <Button Command="{Binding RemovePointMiddle}" Margin="8">-m</Button>
+            <Button Command="{Binding RemovePointLast}" Margin="8">-l</Button>
+        </StackPanel>
+        <lvc:CartesianChart Grid.Row="3"
+                            Series="{Binding SeriesCollection}">
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

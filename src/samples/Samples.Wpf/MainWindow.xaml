@@ -1,0 +1,36 @@
+﻿<Window x:Class="Samples.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:Samples.Wpf"
+        xmlns:shapes="clr-namespace:LiveCharts.Wpf.Shapes;assembly=LiveCharts.Wpf"
+        xmlns:controls="clr-namespace:LiveCharts.Wpf.Controls;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="700"
+        Width="950"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <wpf:NavigationHandler />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Left">
+            <Button Width="20" Height="20" HorizontalAlignment="Left" Margin="8"
+                    Visibility="{Binding IsMenuHidden, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Command="{Binding ShowMenu}">
+                <Image Source="Images/menu.png" />
+            </Button>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <ContentControl Content="{Binding CurrentView}" />
+        </ScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,34 @@
+﻿0, core exceptions
+
+100, LiveCharts was not able to map from model '{0}' to coordinate '{1}' ensure you configured properly the type you are trying to plot.
+101, It was not possible to determine the plane of the series.
+102, '{0}' is not supported at an instance of '{1}'.
+103, A CartesianChart instance is not able to handle more than 3 dimensions (X, Y, Weight).
+104, A Cartesian chart is not able to handle dimension {0}.
+105, Axis.LabelFormatter property can not be null.
+106, An axis at dimension {0} can not be positioned at {1}.
+
+0, series exceptions
+
+120, At least 2 elements must be present at the property IHeatSeries.Gradient.
+121, The property IHeatSeriesGradient must contain at least 2 elements and at the offset range should explicitly go from 0 to 1.
+122, The series type '{0}' is not assignable to '{1}'.
+
+0, view exceptions
+
+140, IPlaneViewProvider was not found when trying to draw '{0}' in the UI.
+141, No animation was found, therefore it is not possible to listen for animation completion.
+142, The source to scroll could only contain 1 plane.
+143, It was not possible to map a core brush to {0}, probably the brush type is not already supported.
+144, The TimeLine was not defined properly, please specify '{0}' in your animation constructor.
+145, Could not animate the property '{0}', with the given time line, because the property is of type '{1}' and the animation targets the type '{2}', please use the a time line that targets '{1}' type.
+146, A time line can only be used by a unique property.
+
+0, geared exceptions
+
+160, Error parsing Path Markup Syntax. The Mini Language command '{0}' is not supported.
+161, Error parsing the Path Markup Syntax '{0}'. {1}
+162, The PlotElement already belongs to another plot, please ensure any visual is unique at every plot.
+164, The property '{0}' is already registered by the '{1}' class.
+165, The properety '{0} is not an animatable or not a member of the animation target type.
+166, The Label size can not be calculated because the label must belong to a PlotRenderer first.
