@@ -215,6 +215,9 @@ namespace LiveCharts.Wpf
                 pbv.DataLabel = null;
             }
 
+            if (point.Stroke != null) pbv.Rectangle.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Rectangle.Fill = (Brush)point.Fill;
+
             pbv.LabelPosition = LabelsPosition;
 
             return pbv;

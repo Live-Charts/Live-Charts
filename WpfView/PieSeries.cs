@@ -173,6 +173,9 @@ namespace LiveCharts.Wpf
                 pbv.DataLabel = null;
             }
 
+            if (point.Stroke != null) pbv.Slice.Stroke = (Brush)point.Stroke;
+            if (point.Fill != null) pbv.Slice.Fill = (Brush)point.Fill;
+
             pbv.OriginalPushOut  = PushOut;
 
             return pbv;
