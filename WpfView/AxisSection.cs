@@ -317,6 +317,7 @@ namespace LiveCharts.Wpf
                 #region Obsolete
                 Canvas.SetTop(_label, Model.Chart.DrawMargin.Height);
                 Canvas.SetLeft(_label, 0d);
+                Panel.SetZIndex(_label, Panel.GetZIndex(this));
                 #endregion
             }
 
