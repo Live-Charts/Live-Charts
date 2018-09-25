@@ -98,9 +98,9 @@
 
                                         <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
-                                                                                                    AncestorType={x:Type StackPanel}}, 
-                                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
+                                               Visibility="{Binding DataContext.Data,
+                                                    RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
