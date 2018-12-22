@@ -26,6 +26,8 @@
 
 #endregion
 
+using LiveCharts.Core.Drawing.Brushes;
+
 namespace LiveCharts.Core.Drawing.Styles
 {
     /// <summary>
@@ -40,7 +42,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="strokeDashArray">The stroke dash array.</param>
-        public ShapeStyle(Brush stroke, Brush fill, float strokeThickness, float[] strokeDashArray)
+        public ShapeStyle(IBrush stroke, IBrush fill, float strokeThickness, float[] strokeDashArray)
         {
             Stroke = stroke;
             Fill = fill;
@@ -54,7 +56,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The stroke.
         /// </value>
-        public Brush Stroke { get; }
+        public IBrush Stroke { get; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -78,6 +80,6 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The fill.
         /// </value>
-        public Brush Fill { get; }
+        public IBrush Fill { get; }
     }
 }

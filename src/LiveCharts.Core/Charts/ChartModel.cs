@@ -591,7 +591,7 @@ namespace LiveCharts.Core.Charts
                 {
                     inpc.PropertyChanged += InvalidatePropertyChanged;
 
-                    void DisposePropertyChanged(IChartView view, object instance)
+                    void DisposePropertyChanged(IChartView view, object instance, bool force)
                     {
                         inpc.PropertyChanged -= InvalidatePropertyChanged;
                         resource.Disposed -= DisposePropertyChanged;

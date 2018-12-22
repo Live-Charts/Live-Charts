@@ -88,32 +88,7 @@ namespace LiveCharts.Wpf.Views
             LabelStyle style,
             TimeLine timeLine)
         {
-            var chart = chartPoint.Chart;
-            bool isNew = Label == null;
-
-            if (isNew)
-            {
-                Label = new Label();
-                chart.Content.AddChild(Label, true);
-            }
-
-            Label.Content = chartPoint.Series.GetDataLabel(chartPoint.Coordinate);
-
-            Label.Foreground = style.Foreground.AsWpf();
-            Label.FontFamily = new FontFamily(style.Font.FamilyName);
-            Label.FontSize = style.Font.Size;
-            Label.FontStyle = style.Font.Style.AsWpf();
-            Label.FontWeight = style.Font.Weight.AsWpf();
-
-            var ft = new FormattedText(
-                Label.Content.ToString(),
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(Label.FontFamily, Label.FontStyle, Label.FontWeight, Label.FontStretch),
-                Label.FontSize,
-                Label.Foreground);
-
-            PlaceLabel(chartPoint, new SizeF((float) ft.Width, (float) ft.Height));
+            
         }
 
         /// <inheritdoc cref="Dispose"/>

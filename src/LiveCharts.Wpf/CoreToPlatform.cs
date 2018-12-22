@@ -29,13 +29,14 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using LiveCharts.Core;
-using Brush = LiveCharts.Core.Drawing.Brush;
+using LiveCharts.Core.Drawing;
 using Font = LiveCharts.Core.Drawing.Styles.Font;
 using FontFamily = System.Windows.Media.FontFamily;
 using FontStyle = System.Windows.FontStyle;
 using FontWeight = System.Windows.FontWeight;
 using Orientation = System.Windows.Controls.Orientation;
 using Point = System.Windows.Point;
+using SolidColorBrush = System.Windows.Media.SolidColorBrush;
 
 #endregion
 
@@ -51,7 +52,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="brush">The color.</param>
         /// <returns></returns>
-        public static SolidColorBrush AsWpf(this Brush brush)
+        public static SolidColorBrush AsWpfBrush(this IBrush brush)
         {
             if (brush == null) return null;
 

@@ -76,10 +76,10 @@ namespace LiveCharts.Wpf.Views
                 Shape.Height = 0;
             }
 
-            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
-            Shape.Fill = chartPoint.Series.Fill.AsWpf();
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpfBrush();
+            Shape.Fill = chartPoint.Series.Fill.AsWpfBrush();
             Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
-            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpfBrush();
             Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
             Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);
 

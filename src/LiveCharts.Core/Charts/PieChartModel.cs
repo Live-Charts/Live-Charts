@@ -68,7 +68,7 @@ namespace LiveCharts.Core.Charts
         {
             var p = points[0];
 
-            var model = (PieViewModel)p.ViewModel;
+            var model = new PieViewModel();
             double angle = ((IPieChartView)View).StartingRotationAngle + model.To.Rotation + model.To.Wedge * .5;
             float radius = model.To.OuterRadius;
 

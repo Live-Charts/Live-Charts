@@ -29,6 +29,9 @@
 #region
 
 using LiveCharts.Core.Coordinates;
+using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
 
 #endregion
 
@@ -37,20 +40,21 @@ namespace LiveCharts.Core.DataSeries
     /// <summary>
     /// A series that requires at least a cartesian coordinate (X, Y).
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <typeparam name="TSeries">The type of the series.</typeparam>
-    /// <seealso cref="Series{TModel, TCoordinate, TViewModel, TSeries}" />
-    public abstract class CartesianStrokeSeries<TModel, TCoordinate, TViewModel, TSeries> 
-        : StrokeSeries<TModel, TCoordinate, TViewModel, TSeries>, ICartesianSeries
+    /// <typeparam name="TModel">The type of the model to plot.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
+    /// <typeparam name="TPointShape">The type of the point shape in the UI.</typeparam>
+    /// <typeparam name="TBrush">The type of the brush.</typeparam>
+    /// <seealso cref="Series{TModel, TCoordinate, TPointShape}" />
+    public abstract class CartesianStrokeSeries<TModel, TCoordinate, TPointShape, TBrush> 
+        : StrokeSeries<TModel, TCoordinate, TPointShape, TBrush>, ICartesianSeries
         where TCoordinate : ICoordinate
-        where TSeries : class, ISeries
+        where TPointShape : class, IShape
+        where TBrush : class, IBrush
     {
         private int _zIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CartesianStrokeSeries{TModel,TCoordinate,TViewModel, TSeries}"/> class.
+        /// Initializes a new instance of the <see cref="CartesianStrokeSeries{TModel,TCoordinate, TPointShape, TBrush}"/> class.
         /// </summary>
         protected CartesianStrokeSeries()
         {

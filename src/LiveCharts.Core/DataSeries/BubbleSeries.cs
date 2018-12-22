@@ -24,18 +24,19 @@
 #endregion
 #region
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 #endregion
 
@@ -44,10 +45,9 @@ namespace LiveCharts.Core.DataSeries
     /// <summary>
     /// The bubble series class.
     /// </summary>
-    public class BubbleSeries<TModel> 
-        : CartesianStrokeSeries<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>, IBubbleSeries
+    public class BubbleSeries<TModel>
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, ISvgPath, IBrush>, IBubbleSeries
     {
-        private ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> _provider;
         private double _maxGeometrySize;
         private double _minGeometrySize;
 
@@ -56,7 +56,7 @@ namespace LiveCharts.Core.DataSeries
         /// </summary>
         public BubbleSeries()
         {
-            ScalesAt = new[] {0, 0, 0};
+            ScalesAt = new[] { 0, 0, 0 };
             MaxGeometrySize = 30f;
             MinGeometrySize = 14f;
             StrokeThickness = 1f;
@@ -94,16 +94,10 @@ namespace LiveCharts.Core.DataSeries
         public override Type ThemeKey => typeof(IBubbleSeries);
 
         /// <inheritdoc />
-        public override float[] DefaultPointWidth => new []{0f,0f};
+        public override float[] DefaultPointWidth => new[] { 0f, 0f };
 
         /// <inheritdoc />
-        public override float PointMargin => (float) MaxGeometrySize;
-
-        /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries>
-            DefaultViewProvider => _provider ??
-                                   (_provider = Charting.Settings.UiProvider
-                                       .GeometryPointViewProvider<TModel, WeightedCoordinate, IBubbleSeries>());
+        public override float PointMargin => (float)MaxGeometrySize;
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -112,8 +106,8 @@ namespace LiveCharts.Core.DataSeries
             var x = cartesianChart.Dimensions[0][ScalesAt[0]];
             var y = cartesianChart.Dimensions[1][ScalesAt[1]];
 
-            var p1 = new PointF(context.Ranges[2][ScalesAt[2]][0], (float) MinGeometrySize);
-            var p2 = new PointF(context.Ranges[2][ScalesAt[2]][1], (float) MaxGeometrySize);
+            var p1 = new PointF(context.Ranges[2][ScalesAt[2]][0], (float)MinGeometrySize);
+            var p2 = new PointF(context.Ranges[2][ScalesAt[2]][1], (float)MaxGeometrySize);
 
             int xi = 0, yi = 1;
             if (chart.InvertXy)
@@ -122,23 +116,18 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            ChartPoint<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> previous = null;
+            ChartPoint<TModel, WeightedCoordinate, ISvgPath> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            float originalDuration = (float) timeLine.Duration.TotalMilliseconds;
+            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
             IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
             int i = 0;
 
-            foreach (ChartPoint<TModel, WeightedCoordinate, GeometryPointViewModel, IBubbleSeries> current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, WeightedCoordinate, ISvgPath> current in GetPoints(chart.View))
             {
-                if (current.View == null)
-                {
-                    current.View = ViewProvider.GetNewPoint();
-                }
-
                 float[] p = new[]
                 {
                     chart.ScaleToUi(current.Coordinate[0][0], x),
@@ -161,10 +150,14 @@ namespace LiveCharts.Core.DataSeries
                         originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
                 }
 
-                current.ViewModel = vm;
-                current.View.DrawShape(current, previous, timeLine);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
-                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+                DrawPointShape(current, timeLine, vm);
+
+                if (DataLabels)
+                {
+                    DrawPointLabel(current);
+                }
+
+                Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
                 current.InteractionArea = new RectangleInteractionArea(
                     new RectangleF(
                         vm.Location.X,
@@ -174,6 +167,51 @@ namespace LiveCharts.Core.DataSeries
 
                 previous = current;
                 i++;
+            }
+        }
+
+        private void DrawPointShape(
+            ChartPoint<TModel, WeightedCoordinate, ISvgPath> current,
+            TimeLine timeline,
+            GeometryPointViewModel vm)
+        {
+            var shape = current.Shape;
+            bool isNew = current.Shape == null;
+
+            if (isNew)
+            {
+                current.Shape = Charting.Settings.UiProvider.GetNewSvgPath(current.Chart.Model);
+                shape = current.Shape;
+                current.Chart.Content.AddChild(shape, true);
+                shape.Left = vm.Location.X;
+                shape.Top = vm.Location.Y;
+                shape.Width = 0;
+                shape.Height = 0;
+            }
+
+            shape.Svg = Geometry.Data;
+            shape.StrokeDashArray = StrokeDashArray;
+            shape.StrokeThickness = StrokeThickness;
+            shape.ZIndex = ZIndex;
+            shape.Paint(Stroke, Fill);
+
+            float r = vm.Diameter * .5f;
+
+            if (isNew)
+            {
+                shape.Animate(timeline)
+                    .Property(nameof(shape.Left), vm.Location.X + r, vm.Location.X)
+                    .Property(nameof(shape.Top), vm.Location.Y + r, vm.Location.Y)
+                    .Property(nameof(shape.Width), 0, vm.Diameter)
+                    .Property(nameof(shape.Height), 0, vm.Diameter)
+                    .Begin();
+            }
+            else
+            {
+                shape.Animate(timeline)
+                    .Property(nameof(shape.Left), shape.Left, vm.Location.X)
+                    .Property(nameof(shape.Top), shape.Top, vm.Location.Y)
+                    .Begin();
             }
         }
     }

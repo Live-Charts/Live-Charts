@@ -72,8 +72,8 @@ namespace LiveCharts.Core.Dimensions
             SharedAxes = new List<Axis>();
             XSeparatorStyle =
                 new ShapeStyle(
-                    new SolidColorBrush(Color.FromArgb(255, 250, 250, 250)),
-                    new SolidColorBrush(Color.FromArgb(50, 240, 240, 240)),
+                    Charting.Settings.UiProvider.GetNewSolidColorBrush(255,250,250,250),
+                    Charting.Settings.UiProvider.GetNewSolidColorBrush(50, 240, 240, 240),
                     1,
                     null);
             YSeparatorStyle = null;

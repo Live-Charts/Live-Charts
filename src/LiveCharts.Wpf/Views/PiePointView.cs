@@ -26,6 +26,7 @@
 #region
 
 using System.Drawing;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Core.Charts;
@@ -57,58 +58,7 @@ namespace LiveCharts.Wpf.Views
             ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous,
             TimeLine timeLine)
         {
-            var chart = chartPoint.Chart;
-            var vm = chartPoint.ViewModel;
-            bool isNewShape = Shape == null;
-
-            // initialize shape
-            if (isNewShape)
-            {
-                Shape = new Slice();
-                chart.Content.AddChild(Shape, true);
-                Canvas.SetLeft(Shape, chartPoint.Chart.Model.DrawAreaSize[0] / 2 - vm.To.OuterRadius);
-                Canvas.SetTop(Shape, chartPoint.Chart.Model.DrawAreaSize[1] / 2 - vm.To.OuterRadius);
-                Shape.Rotation = 0d;
-                Shape.Wedge = 0d;
-                Shape.Width = vm.To.OuterRadius * 2;
-                Shape.Height = vm.To.OuterRadius * 2;
-            }
-
-            // map properties
-            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
-            Shape.Fill = chartPoint.Series.Fill.AsWpf();
-            Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
-            if (chartPoint.Series.StrokeDashArray != null)
-            {
-                Shape.StrokeDashArray = new DoubleCollection(chartPoint.Series.StrokeDashArray);
-            }
-            Shape.InnerRadius = vm.To.InnerRadius;
-            Shape.Radius = vm.To.OuterRadius;
-            Shape.ForceAngle = true;
-            Shape.CornerRadius = chartPoint.Series.CornerRadius;
-            Shape.PushOut = chartPoint.Series.PushOut;
-
-            // animate
-
-            var shapeAnimation = Shape.Animate(timeLine);
-
-            if (isNewShape)
-            {
-                Shape.Radius = vm.To.OuterRadius * .8;
-                shapeAnimation
-                    .Property(Slice.RadiusProperty, vm.From.InnerRadius, vm.To.OuterRadius)
-                    .Property(Slice.RotationProperty, 0, vm.To.Rotation)
-                    .Property(Slice.WedgeProperty, 0, vm.To.Wedge);
-            }
-            else
-            {
-                shapeAnimation
-                    .Property(Slice.RotationProperty, Shape.Rotation, vm.To.Rotation)
-                    .Property(Slice.WedgeProperty, Shape.Wedge, vm.To.Wedge);
-            }
-
-            shapeAnimation.Begin();
-            _lastTimeLine = timeLine;
+           
         }
 
         /// <inheritdoc />

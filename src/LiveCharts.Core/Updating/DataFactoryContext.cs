@@ -37,9 +37,8 @@ namespace LiveCharts.Core.Updating
     /// <summary>
     /// Point factory options class.
     /// </summary>
-    public class DataFactoryContext<TModel, TCoordinate, TSeries> : IDataFactoryContext
+    public class DataFactoryContext<TModel, TCoordinate> : IDataFactoryContext
         where TCoordinate : ICoordinate
-        where TSeries : ISeries
     {
         private bool _isGiKnown;
         private int _gi;
@@ -60,7 +59,7 @@ namespace LiveCharts.Core.Updating
         /// <value>
         /// The series.
         /// </value>
-        public TSeries Series { get; internal set; }
+        public ISeries Series { get; internal set; }
 
         /// <summary>
         /// Gets the mapper.
@@ -127,7 +126,7 @@ namespace LiveCharts.Core.Updating
         {
             Ranges = null;
             Collection = null;
-            Series = default(TSeries);
+            Series = null;
             UpdateContext = null;
             Chart = null;
         }

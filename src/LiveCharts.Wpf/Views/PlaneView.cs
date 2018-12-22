@@ -85,8 +85,8 @@ namespace LiveCharts.Wpf.Views
                     .Begin();
             }
             
-            Rectangle.Fill = args.Style?.Fill.AsWpf();
-            Rectangle.Stroke = args.Style?.Stroke.AsWpf();
+            Rectangle.Fill = args.Style?.Fill.AsWpfBrush();
+            Rectangle.Stroke = args.Style?.Stroke.AsWpfBrush();
             Rectangle.StrokeThickness = args.Style?.StrokeThickness ?? 0;
             Rectangle.StrokeDashArray = args.Style?.StrokeDashArray == null
                 ? null

@@ -28,6 +28,8 @@ using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
 
@@ -84,11 +86,11 @@ namespace LiveCharts.Core.Interaction.Series
         /// <summary>
         /// Evaluates models dependent actions.
         /// </summary>
-        internal void EvaluateModelDependentActions<TViewModel, TSeries>(
+        internal void EvaluateModelDependentActions<TPointShape>(
             TModel model, 
             object visual, 
-            ChartPoint<TModel, TCoordinate, TViewModel, TSeries> chartPoint)
-            where TSeries : ISeries
+            ChartPoint<TModel, TCoordinate, TPointShape> chartPoint)
+            where TPointShape : class, IShape
         {
             if (_modelDependentActions == null) return;
 

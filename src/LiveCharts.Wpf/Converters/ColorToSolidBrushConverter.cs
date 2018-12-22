@@ -58,7 +58,7 @@ namespace LiveCharts.Wpf.Converters
         {
             if (value == null) return null;
 
-            var coreBrush = (Core.Drawing.Brush) value;
+            var coreBrush = (Core.Drawing.IBrush) value;
 
             if (coreBrush is Core.Drawing.SolidColorBrush scb)
             {

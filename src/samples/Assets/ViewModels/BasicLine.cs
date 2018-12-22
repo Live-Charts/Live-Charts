@@ -65,7 +65,7 @@ namespace Assets.ViewModels
 
             // set a stroke dash array
             // 2 spaces for the stroked line, 2 spaces fot the white space
-            lineSeries.StrokeDashArray = new double[] {2f, 2f};
+            lineSeries.StrokeDashArray = new[] {2f, 2f};
 
             // do not display a label for every point
             lineSeries.DataLabels = false;

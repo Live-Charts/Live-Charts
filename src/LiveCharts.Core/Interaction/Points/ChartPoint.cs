@@ -27,9 +27,9 @@
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Events;
-
 #endregion
 
 namespace LiveCharts.Core.Interaction.Points
@@ -37,14 +37,14 @@ namespace LiveCharts.Core.Interaction.Points
     /// <summary>
     /// Represents a point int he chart.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <typeparam name="TSeries">The type of the series.</typeparam>
+    /// <typeparam name="TModel">The type of the model to plot.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
+    /// <typeparam name="TPointShape">The type of the point shape in hte UI.</typeparam>
     /// <seealso cref="T:System.IDisposable" />
-    public class ChartPoint<TModel, TCoordinate, TViewModel, TSeries> : IResource, IChartPoint<TModel, TCoordinate>
+    public class ChartPoint<TModel, TCoordinate, TPointShape> 
+        : IResource, IChartPoint<TModel, TCoordinate>
         where TCoordinate : ICoordinate
-        where TSeries : ISeries
+        where TPointShape : class, IShape
     {
         /// <inheritdoc />
         public int Key { get; internal set; }
@@ -54,15 +54,18 @@ namespace LiveCharts.Core.Interaction.Points
 
         object IChartPoint.Model => Model;
 
-        /// <inheritdoc cref="IChartPoint.ViewModel" />
-        public TViewModel ViewModel { get; internal set; }
+        /// <summary>
+        /// Gets the shape.
+        /// </summary>
+        /// <value>
+        /// The shape.
+        /// </value>
+        public TPointShape Shape { get; internal set; }
 
-        object IChartPoint.ViewModel => ViewModel;
+        IShape IChartPoint.Shape => Shape;
 
-        /// <inheritdoc cref="IChartPoint.View" />
-        public IPointView<TModel, TCoordinate, TViewModel, TSeries> View { get; internal set; }
-
-        object IChartPoint.View => View;
+        /// <inheritdoc />
+        public ILabel Label { get; internal set; }
 
         /// <inheritdoc />
         public TCoordinate Coordinate { get; internal set; }
@@ -72,10 +75,7 @@ namespace LiveCharts.Core.Interaction.Points
         /// <inheritdoc />
         public InteractionArea InteractionArea { get; internal set; }
 
-        /// <inheritdoc cref="IChartView.Series" />
-        public TSeries Series { get; internal set; }
-
-        ISeries IChartPoint.Series => Series;
+        public ISeries Series { get; internal set; }
 
         /// <inheritdoc />
         public IChartView Chart { get; internal set; }
@@ -101,8 +101,7 @@ namespace LiveCharts.Core.Interaction.Points
 
         void IResource.Dispose(IChartView view, bool force)
         {
-            View?.Dispose(view, force);
-            Disposed?.Invoke(view, this);
+            Disposed?.Invoke(view, this, force);
         }
     }
 }

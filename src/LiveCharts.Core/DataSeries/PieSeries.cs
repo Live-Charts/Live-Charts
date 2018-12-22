@@ -32,6 +32,7 @@ using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
@@ -46,12 +47,11 @@ namespace LiveCharts.Core.DataSeries
     /// The Pie series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TSeries}" />
+    /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TSeries, TPointShape, TPointLabel}" />
     /// <seealso cref="IPieSeries" />
     public class PieSeries<TModel> :
-        StrokeSeries<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>, IPieSeries
+        StrokeSeries<TModel, StackedPointCoordinate, ISlice, IBrush>, IPieSeries
     {
-        private ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> _provider;
         private double _pushOut;
         private double _cornerRadius;
 
@@ -73,7 +73,7 @@ namespace LiveCharts.Core.DataSeries
             get => _pushOut;
             set
             {
-                _pushOut = value; 
+                _pushOut = value;
                 OnPropertyChanged();
             }
         }
@@ -93,28 +93,24 @@ namespace LiveCharts.Core.DataSeries
         public override Type ThemeKey => typeof(IPieSeries);
 
         /// <inheritdoc />
-        public override float[] DefaultPointWidth => new[] {0f, 0f};
+        public override float[] DefaultPointWidth => new[] { 0f, 0f };
 
         /// <inheritdoc />
         public override float PointMargin => 0f;
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries>
-            DefaultViewProvider => _provider ?? (_provider = Charting.Settings.UiProvider.PieViewProvider<TModel>());
-
-        /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
         {
-            var pieChart = (IPieChartView) chart.View;
-            
+            var pieChart = (IPieChartView)chart.View;
+
             double maxPushOut = context.GetMaxPushOut();
 
-            float innerRadius = (float) pieChart.InnerRadius;
+            float innerRadius = (float)pieChart.InnerRadius;
             float outerDiameter = pieChart.ControlSize[0] < pieChart.ControlSize[1]
                 ? pieChart.ControlSize[0]
                 : pieChart.ControlSize[1];
 
-            outerDiameter -= (float) maxPushOut *2f;
+            outerDiameter -= (float)maxPushOut * 2f;
 
             var centerPoint = new PointF(pieChart.ControlSize[0] / 2f, pieChart.ControlSize[1] / 2f);
 
@@ -122,9 +118,9 @@ namespace LiveCharts.Core.DataSeries
                 ? 360f
                 : (pieChart.StartingRotationAngle < 0
                     ? 0f
-                    : (float) pieChart.StartingRotationAngle);
+                    : (float)pieChart.StartingRotationAngle);
 
-            ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> previous = null;
+            ChartPoint<TModel, StackedPointCoordinate, ISlice> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
@@ -134,7 +130,7 @@ namespace LiveCharts.Core.DataSeries
             IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
             int i = 0;
 
-            foreach (ChartPoint<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, StackedPointCoordinate, ISlice> current in GetPoints(chart.View))
             {
                 float range = current.Coordinate.To - current.Coordinate.From;
 
@@ -142,7 +138,7 @@ namespace LiveCharts.Core.DataSeries
 
                 unchecked
                 {
-                    stack = context.GetStack((int) current.Coordinate.Key, 0, true);
+                    stack = context.GetStack((int)current.Coordinate.Key, 0, true);
                 }
 
                 var vm = new PieViewModel
@@ -150,17 +146,12 @@ namespace LiveCharts.Core.DataSeries
                     To = new SliceViewModel
                     {
                         Wedge = range * 360f / stack,
-                        InnerRadius = (float) innerRadius,
+                        InnerRadius = innerRadius,
                         OuterRadius = outerDiameter / 2,
                         Rotation = startsAt + current.Coordinate.From * 360f / stack
                     },
                     ChartCenter = centerPoint
                 };
-
-                if (current.View == null)
-                {
-                    current.View = ViewProvider.GetNewPoint();
-                }
 
                 if (DelayRule != DelayRules.None)
                 {
@@ -170,16 +161,75 @@ namespace LiveCharts.Core.DataSeries
                 }
 
                 current.Coordinate.TotalStack = stack;
-                current.ViewModel = vm;
-                current.View.DrawShape(current, previous, timeLine);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
-                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
+
+                DrawPointShape(current, timeLine, vm);
+
+                if (DataLabels)
+                {
+                    DrawPointLabel(current);
+                }
+
+                Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
                 current.InteractionArea = new PolarInteractionArea(
                     vm.To.OuterRadius, innerRadius, vm.To.Rotation, vm.To.Rotation + vm.To.Wedge, centerPoint);
 
                 previous = current;
                 i++;
             }
+        }
+
+        private void DrawPointShape(
+           ChartPoint<TModel, StackedPointCoordinate, ISlice> current,
+           TimeLine timeline,
+           PieViewModel vm)
+        {
+            var shape = current.Shape;
+            bool isNew = shape == null;
+
+            // initialize shape
+            if (isNew)
+            {
+                current.Shape = Charting.Settings.UiProvider.GetNewSlice(current.Chart.Model);
+                shape = current.Shape;
+                current.Chart.Content.AddChild(shape, true);
+                shape.Left = current.Chart.Model.DrawAreaSize[0] / 2 - vm.To.OuterRadius;
+                shape.Top = current.Chart.Model.DrawAreaSize[1] / 2 - vm.To.OuterRadius;
+                shape.Rotation = 0f;
+                shape.Wedge = 0f;
+                shape.Width = vm.To.OuterRadius * 2;
+                shape.Height = vm.To.OuterRadius * 2;
+            }
+
+            // map properties
+            shape.StrokeDashArray = StrokeDashArray;
+            shape.StrokeThickness = StrokeThickness;
+            shape.InnerRadius = vm.To.InnerRadius;
+            shape.Radius = vm.To.OuterRadius;
+            shape.ForceAngle = true;
+            shape.CornerRadius = CornerRadius;
+            shape.PushOut = PushOut;
+            shape.Paint(Stroke, Fill);
+
+            // animate
+
+            var shapeAnimation = shape.Animate(timeline);
+
+            if (isNew)
+            {
+                shape.Radius = vm.To.OuterRadius * .8;
+                shapeAnimation
+                    .Property(nameof(shape.Radius), vm.From.InnerRadius, vm.To.OuterRadius)
+                    .Property(nameof(shape.Rotation), 0, vm.To.Rotation)
+                    .Property(nameof(shape.Wedge), 0, vm.To.Wedge);
+            }
+            else
+            {
+                shapeAnimation
+                    .Property(nameof(shape.Rotation), shape.Rotation, vm.To.Rotation)
+                    .Property(nameof(shape.Wedge), shape.Wedge, vm.To.Wedge);
+            }
+
+            shapeAnimation.Begin();
         }
     }
 }

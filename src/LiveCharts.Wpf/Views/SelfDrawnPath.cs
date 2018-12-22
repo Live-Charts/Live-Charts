@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -8,8 +8,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Wpf.Animations;
-using Brush = LiveCharts.Core.Drawing.Brush;
 
 namespace LiveCharts.Wpf.Views
 {
@@ -21,11 +21,11 @@ namespace LiveCharts.Wpf.Views
         public override void SetStyle(
             PointF startPoint,
             PointF pivot,
-            Brush stroke,
-            Brush fill,
+            IBrush stroke,
+            IBrush fill,
             double strokeThickness,
             int zIndex,
-            IEnumerable<double> strokeDashArray)
+            float[] strokeDashArray)
         {
             if (IsNew)
             {
@@ -38,7 +38,7 @@ namespace LiveCharts.Wpf.Views
                     .Begin();
             }
 
-            StrokePath.Stroke = stroke.AsWpf();
+            StrokePath.Stroke = stroke.AsWpfBrush();
             StrokePath.Fill = null;
             StrokePath.StrokeThickness = strokeThickness;
             StrokeDashArray = strokeDashArray;
@@ -49,7 +49,7 @@ namespace LiveCharts.Wpf.Views
             _startSegment.Point = startPoint.AsWpf();
             FillPathFigure.Segments.Remove(_startSegment);
             FillPathFigure.Segments.Insert(0, _startSegment);
-            FillPath.Fill = fill.AsWpf();
+            FillPath.Fill = fill.AsWpfBrush();
             FillPath.StrokeThickness = 0;
             Panel.SetZIndex(FillPath, zIndex);
         }
@@ -69,8 +69,8 @@ namespace LiveCharts.Wpf.Views
                 remaining = -tl;
             }
 
-            StrokePath.StrokeDashArray = new DoubleCollection(
-                Effects.GetAnimatedDashArray(StrokeDashArray, (float) (l + remaining)));
+            var effect = Effects.GetAnimatedDashArray(StrokeDashArray.AsEnumerable(), (float) (l + remaining));
+            StrokePath.StrokeDashArray = new DoubleCollection(effect.Select(x => (double) x));
             StrokePath.BeginAnimation(
                 Shape.StrokeDashOffsetProperty,
                 new DoubleAnimation(tl + remaining, 0, view.AnimationsSpeed, FillBehavior.Stop));

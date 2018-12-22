@@ -52,10 +52,10 @@ namespace Samples.Wpf.Views
                             // notice the geared version uses a different shape!
 #if GEARED
                             var shape = (LiveCharts.Wpf.Geared.Drawing.Shapes.Path) args.Shape;
-                            shape.Stroke = blueBrush.AsGearedBrush();
+                            // shape.Stroke = blueBrush.AsGearedBrush();
 #else
                             var shape = (System.Windows.Shapes.Path) args.Shape;
-                            shape.Stroke = blueBrush.AsWpf();
+                            shape.Stroke = blueBrush.AsWpfBrush();
 #endif
                         })
                     .When(
@@ -66,10 +66,10 @@ namespace Samples.Wpf.Views
 
 #if GEARED
                             var shape = (LiveCharts.Wpf.Geared.Drawing.Shapes.Path) args.Shape;
-                            shape.Stroke = redBrush.AsGearedBrush();
+                            // shape.Stroke = redBrush.AsGearedBrush();
 #else
                             var shape = (System.Windows.Shapes.Path) args.Shape;
-                            shape.Stroke = redBrush.AsWpf();
+                            shape.Stroke = redBrush.AsWpfBrush();
 #endif
                         });
 

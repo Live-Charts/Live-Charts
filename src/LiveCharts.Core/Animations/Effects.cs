@@ -42,7 +42,7 @@ namespace LiveCharts.Core.Animations
         /// <param name="strokeDashArray">The stroke dash array.</param>
         /// <param name="length">The length.</param>
         /// <returns></returns>
-        public static IEnumerable<double> GetAnimatedDashArray(IEnumerable<double> strokeDashArray, float length)
+        public static IEnumerable<double> GetAnimatedDashArray(IEnumerable<double> strokeDashArray, double length)
         {
             double stack = 0d;
 
@@ -54,46 +54,6 @@ namespace LiveCharts.Core.Animations
             }
 
             IEnumerator<double> e = strokeDashArray.GetEnumerator();
-            bool isStroked = true;
-
-            while (stack < length)
-            {
-                if (!e.MoveNext())
-                {
-                    e.Reset();
-                    e.MoveNext();
-                }
-                isStroked = !isStroked;
-                yield return e.Current;
-                stack += e.Current;
-            }
-
-            if (isStroked)
-            {
-                yield return 0;
-            }
-            yield return length;
-            e.Dispose();
-        }
-
-        /// <summary>
-        /// Gets the animated stroke dash array.
-        /// </summary>
-        /// <param name="strokeDashArray">The stroke dash array.</param>
-        /// <param name="length">The length.</param>
-        /// <returns></returns>
-        public static IEnumerable<float> GetAnimatedDashArray(IEnumerable<float> strokeDashArray, float length)
-        {
-            float stack = 0f;
-
-            if (strokeDashArray == null)
-            {
-                yield return length;
-                yield return length;
-                yield break;
-            }
-
-            IEnumerator<float> e = strokeDashArray.GetEnumerator();
             bool isStroked = true;
 
             while (stack < length)

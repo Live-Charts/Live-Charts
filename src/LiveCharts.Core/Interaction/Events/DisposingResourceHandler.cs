@@ -39,5 +39,5 @@ namespace LiveCharts.Core.Interaction.Events
     /// </summary>
     /// <param name="view">The view.</param>
     /// <param name="instance">The sender instance.</param>
-    public delegate void DisposingResourceHandler(IChartView view, object instance);
+    public delegate void DisposingResourceHandler(IChartView view, object instance, bool force);
 }

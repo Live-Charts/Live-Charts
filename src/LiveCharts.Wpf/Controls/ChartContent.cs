@@ -31,6 +31,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Events;
 using Brushes = System.Windows.Media.Brushes;
@@ -124,6 +125,12 @@ namespace LiveCharts.Wpf.Controls
         {
             if (isClipped)
             {
+                if (child is IShape iShape)
+                {
+                    _drawMargin.Children.Add((UIElement) iShape.Shape);
+                    return;
+                }
+
                 _drawMargin.Children.Add((UIElement) child);
                 return;
             }

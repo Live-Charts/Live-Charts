@@ -45,9 +45,9 @@ namespace LiveCharts.Wpf.Views.Providers
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
     /// <typeparam name="TSeries">The type of the series.</typeparam>
-    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel,TSeries}" />
+    /// <seealso cref="ISeriesViewProvider{TModel,TCoordinate,TViewModel,TSeries, TPointShape, TPointLabel}" />
     public class BarSeriesViewProvider<TModel, TCoordinate, TSeries> 
-        : ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries>
+        : ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries, IRectangle, ILabel>
         where TCoordinate : ICoordinate
         where TSeries : ICartesianSeries, IStrokeSeries
     {
@@ -57,22 +57,22 @@ namespace LiveCharts.Wpf.Views.Providers
         }
 
         /// <inheritdoc />
-        public IPointView<TModel, TCoordinate, RectangleViewModel, TSeries> GetNewPoint()
+        public PointView<TModel, TCoordinate, RectangleViewModel, TSeries> GetNewPoint()
         {
-            return new BarPointView<TModel, TCoordinate, TSeries, Rectangle>();
+            return new Core.Views.BarPointView<TModel, TCoordinate, TSeries, Drawing.Rectangle>();
         }
 
         /// <inheritdoc />
         public void OnPointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            BarPointView<TModel, TCoordinate, TSeries, Rectangle> view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>) point.View;
-            view.Shape.Opacity = 0.85;
+            var view = (BarPointView<TModel, TCoordinate, TSeries, Drawing.Rectangle>) point.View;
+            view.Shape.Opacity = 0.85f;
         }
 
         /// <inheritdoc />
         public void RemovePointHighlight(IChartPoint point, TimeLine timeLine)
         {
-            BarPointView<TModel, TCoordinate, TSeries, Rectangle> view = (BarPointView<TModel, TCoordinate, TSeries, Rectangle>)point.View;
+            var view = (BarPointView<TModel, TCoordinate, TSeries, Drawing.Rectangle>) point.View;
             view.Shape.Opacity = 1;
         }
 

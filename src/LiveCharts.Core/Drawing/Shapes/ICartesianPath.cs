@@ -22,51 +22,56 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region
 
-using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Core.Drawing.Shapes
 {
     /// <summary>
-    /// The solid color brush class, represents a solid color fill.
+    /// Defines a path.
     /// </summary>
-    public class SolidColorBrush : Brush
+    public interface ICartesianPath : IShape
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SolidColorBrush"/> class.
-        /// </summary>
-        public SolidColorBrush()
-        {
-            
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SolidColorBrush"/> class.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        public SolidColorBrush(Color color)
-        {
-            Color = color;
-        }
-
-        /// <summary>
-        /// Gets or sets the color.
+        /// Gets or sets the start point.
         /// </summary>
         /// <value>
-        /// The color.
+        /// The start point.
         /// </value>
-        public Color Color { get; set; }
+        PointD StartPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the opacity.
+        /// Gets or sets the pivot.
         /// </summary>
         /// <value>
-        /// The opacity.
+        /// The pivot.
         /// </value>
-        public double Opacity { get; set; }
+        PointD StartPivot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end pivot.
+        /// </summary>
+        /// <value>
+        /// The end pivot.
+        /// </value>
+        PointD EndPivot { get; set; }
+
+        /// <summary>
+        /// Adds the bezier segment and returns the instance added.
+        /// </summary>
+        /// <param name="segment">The segment instance.</param>
+        /// <param name="index">The index to insert the segment at.</param>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <param name="p3">The p3.</param>
+        void InsertSegment(IBezierSegment segment, int index);
+
+        /// <summary>
+        /// Removes the segment.
+        /// </summary>
+        /// <param name="segment">The segment.</param>
+        void RemoveSegment(IBezierSegment segment);
     }
 }

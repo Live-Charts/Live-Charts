@@ -26,7 +26,7 @@
 
 using System.Collections.Generic;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction.Points;
 
 #endregion
@@ -41,19 +41,18 @@ namespace LiveCharts.Core.Updating
         /// <summary>
         /// Fetches the data.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-        /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-        /// <typeparam name="TSeries">The type of the series.</typeparam>
+        /// <typeparam name="TModel">The type of the model to plot.</typeparam>
+        /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
+        /// <typeparam name="TPointShape">The type of the point shape in the UI.</typeparam>
         /// <param name="context">The arguments.</param>
         /// <param name="tracker">The tracker instance.</param>
         /// <param name="count">The points count.</param>
         /// <returns></returns>
-        void Fetch<TModel, TCoordinate, TViewModel, TSeries>(
-            DataFactoryContext<TModel, TCoordinate, TSeries> context,
-            Dictionary<object, ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> tracker,
+        void Fetch<TModel, TCoordinate, TPointShape>(
+            DataFactoryContext<TModel, TCoordinate> context,
+            Dictionary<object, ChartPoint<TModel, TCoordinate, TPointShape>> tracker,
             out int count)
             where TCoordinate : ICoordinate
-            where TSeries : ISeries;
+            where TPointShape : class, IShape;
     }
 }

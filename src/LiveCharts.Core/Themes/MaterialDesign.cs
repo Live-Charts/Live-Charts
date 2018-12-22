@@ -117,7 +117,7 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<Plane>(plane =>
                 {
                     plane.LabelsFont = baseFont;
-                    plane.LabelsForeground = new SolidColorBrush(Color.FromArgb(30, 30, 30));
+                    plane.LabelsForeground = Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 30, 30, 30);
                     plane.LabelsRotation = 0;
                     plane.LabelFormatter = Format.AsMetricNumber;
                 })
@@ -125,8 +125,8 @@ namespace LiveCharts.Core.Themes
                 {
                     axis.XSeparatorStyle = null;
                     axis.YSeparatorStyle = new ShapeStyle(
-                        new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
-                        new SolidColorBrush(Color.FromArgb(255, 225, 225, 225)),
+                        Charting.Settings.UiProvider.GetNewSolidColorBrush(0, 0, 0, 0),
+                        Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 225, 225, 225),
                         0,
                         null);
                     axis.XAlternativeSeparatorStyle = null;

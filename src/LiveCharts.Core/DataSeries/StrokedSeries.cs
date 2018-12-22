@@ -25,11 +25,13 @@
 
 #region
 
-using System.Collections.Generic;
-using System.Linq;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
+using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
@@ -38,20 +40,21 @@ namespace LiveCharts.Core.DataSeries
     /// <summary>
     /// An <see cref="ISeries"/> that has <see cref="Stroke"/> and <see cref="Fill"/> properties.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <typeparam name="TSeries">The type of the series.</typeparam>
-    /// <seealso cref="Series{TModel, TCoordinate, TViewModel, TSeries}" />
+    /// <typeparam name="TModel">The type of the model to plot.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
+    /// <typeparam name="TPointShape">The type of the point shape in the UI.</typeparam>
+    /// /// <typeparam name="TBrush">The type of the brush.</typeparam>
+    /// <seealso cref="Series{TModel, TCoordinate, TPointShape}" />
     /// <seealso cref="IStrokeSeries" />
-    public abstract class StrokeSeries<TModel, TCoordinate, TViewModel, TSeries> 
-        : Series<TModel, TCoordinate, TViewModel, TSeries>, IStrokeSeries
+    public abstract class StrokeSeries<TModel, TCoordinate, TPointShape, TBrush>
+        : Series<TModel, TCoordinate, TPointShape>, IStrokeSeries
         where TCoordinate : ICoordinate
-        where TSeries : class, ISeries
+        where TPointShape : class, IShape
+        where TBrush : IBrush
     {
-        private Brush _stroke;
-        private double _strokeThickness;
-        private Brush _fill;
+        private TBrush _stroke;
+        private float _strokeThickness;
+        private TBrush _fill;
         private IEnumerable<double> _strokeDashArray;
 
         /// <inheritdoc />
@@ -61,7 +64,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public Brush Stroke
+        public TBrush Stroke
         {
             get => _stroke;
             set
@@ -71,8 +74,10 @@ namespace LiveCharts.Core.DataSeries
             }
         }
 
+        IBrush IStrokeSeries.Stroke { get => _stroke; set => Stroke = (TBrush)value; }
+
         /// <inheritdoc />
-        public double StrokeThickness
+        public float StrokeThickness
         {
             get => _strokeThickness;
             set
@@ -94,7 +99,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        public Brush Fill
+        public TBrush Fill
         {
             get => _fill;
             set
@@ -103,6 +108,8 @@ namespace LiveCharts.Core.DataSeries
                 OnPropertyChanged();
             }
         }
+
+        IBrush IStrokeSeries.Fill { get => _fill; set => Fill = (TBrush)value; }
 
         /// <inheritdoc />
         public override SeriesStyle Style
@@ -122,18 +129,23 @@ namespace LiveCharts.Core.DataSeries
         /// <inheritdoc />
         protected override void SetDefaultColors(ChartModel chart)
         {
-            if (!(Stroke == null || Fill == null)) return;
+            if (!(Stroke == null || Fill == null))
+            {
+                return;
+            }
 
             var nextColor = chart.GetNextColor();
 
             if (Stroke == null)
             {
-                Stroke = new SolidColorBrush(nextColor);
+                Stroke = (TBrush) Charting.Settings.UiProvider.GetNewSolidColorBrush(
+                    nextColor.A, nextColor.R, nextColor.G, nextColor.B);
             }
 
             if (Fill == null)
             {
-                Fill = new SolidColorBrush(nextColor.SetOpacity(DefaultFillOpacity));
+                Fill = (TBrush) Charting.Settings.UiProvider.GetNewSolidColorBrush(
+                    (byte)(DefaultFillOpacity * 255), nextColor.R, nextColor.G, nextColor.B);
             }
         }
     }

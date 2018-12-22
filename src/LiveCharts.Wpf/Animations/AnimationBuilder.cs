@@ -26,11 +26,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using LiveCharts.Core;
 using LiveCharts.Core.Animations;
+using LiveCharts.Core.Drawing;
 
 #endregion
 
@@ -39,7 +42,7 @@ namespace LiveCharts.Wpf.Animations
     /// <summary>
     /// A storyboard builder.
     /// </summary>
-    public class AnimationBuilder
+    public class AnimationBuilder : IAnimationBuilder
     {
         private readonly bool _isFrameworkElement;
         private readonly IEnumerable<KeyFrame> _animationLine;
@@ -71,7 +74,7 @@ namespace LiveCharts.Wpf.Animations
         /// <value>
         /// The duration.
         /// </value>
-        public TimeSpan Duration { get; }
+        public TimeSpan Duration { get; set; }
 
         /// <summary>
         /// Gets or sets the target.
@@ -113,6 +116,43 @@ namespace LiveCharts.Wpf.Animations
                     ((Animatable) Target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
                 }
             }
+        }
+
+        IAnimationBuilder IAnimationBuilder.Property(string property, float from, float to, double delay)
+        {
+            DependencyProperty p;
+            switch (property)
+            {
+                case nameof(IShape.Left):
+                    p = Canvas.LeftProperty;
+                    break;
+                case nameof(IShape.Top):
+                    p = Canvas.TopProperty;
+                    break;
+                default:
+                    p = DependencyPropertyDescriptor.FromName(property, Target.GetType(), Target.GetType())
+                        .DependencyProperty;
+                    break;
+            }
+
+            return Property(p, from, to, delay);
+        }
+
+        IAnimationBuilder IAnimationBuilder.Property(string property, PointD from, PointD to, double delay)
+        {
+            var p = DependencyPropertyDescriptor.FromName(property, Target.GetType(), Target.GetType());
+            return Property(p.DependencyProperty, new Point(from.X, from.Y), new Point(to.X, to.Y), delay);
+        }
+
+        IAnimationBuilder IAnimationBuilder.Property
+            (string property, System.Drawing.Color from, System.Drawing.Color to, double delay)
+        {
+            var p = DependencyPropertyDescriptor.FromName(property, Target.GetType(), Target.GetType());
+            return Property(
+                p.DependencyProperty,
+                Color.FromArgb(from.A, from.R, from.G, from.B),
+                Color.FromArgb(to.A, to.R, to.G, to.B),
+                delay);
         }
 
         /// <summary>
@@ -249,7 +289,7 @@ namespace LiveCharts.Wpf.Animations
         /// </summary>
         /// <param name="callback">The callback.</param>
         /// <returns></returns>
-        public AnimationBuilder Then(EventHandler callback)
+        public IAnimationBuilder Then(EventHandler callback)
         {
             if (!_isFrameworkElement)
             {

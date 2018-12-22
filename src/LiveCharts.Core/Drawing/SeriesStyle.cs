@@ -25,6 +25,7 @@
 
 #region
 
+using LiveCharts.Core.Drawing.Brushes;
 using System.Collections.Generic;
 
 #endregion
@@ -42,7 +43,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The stroke.
         /// </value>
-        public Brush Stroke { get; set; }
+        public IBrush Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -66,6 +67,6 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The fill.
         /// </value>
-        public Brush Fill { get; set; }
+        public IBrush Fill { get; set; }
     }
 }

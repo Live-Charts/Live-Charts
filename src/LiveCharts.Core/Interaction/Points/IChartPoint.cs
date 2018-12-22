@@ -1,10 +1,17 @@
 ﻿using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction.ChartAreas;
 
 namespace LiveCharts.Core.Interaction.Points
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
+    /// <seealso cref="LiveCharts.Core.Interaction.Points.IChartPoint" />
     public interface IChartPoint<out TModel, out TCoordinate> : IChartPoint
         where TCoordinate : ICoordinate
     {
@@ -25,6 +32,10 @@ namespace LiveCharts.Core.Interaction.Points
         new TCoordinate Coordinate { get; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="LiveCharts.Core.Interaction.Points.IChartPoint" />
     public interface IChartPoint
     {
         /// <summary>
@@ -45,20 +56,28 @@ namespace LiveCharts.Core.Interaction.Points
         object Model { get;  }
 
         /// <summary>
-        /// Gets the view model,the model to drawn in the user interface.
+        /// Gets the shape.
         /// </summary>
         /// <value>
-        /// The view model.
+        /// The shape.
         /// </value>
-        object ViewModel { get; }
+        IShape Shape { get; }
 
         /// <summary>
-        /// Gets the view.
+        /// Gets the label.
         /// </summary>
         /// <value>
-        /// The view.
+        /// The label.
         /// </value>
-        object View { get; }
+        ILabel Label { get; }
+
+        // /// <summary>
+        // /// Gets the view.
+        // /// </summary>
+        // /// <value>
+        // /// The view.
+        // /// </value>
+        // object View { get; }
 
         /// <summary>
         /// Gets the point coordinate.

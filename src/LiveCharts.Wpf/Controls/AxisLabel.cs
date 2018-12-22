@@ -58,7 +58,7 @@ namespace LiveCharts.Wpf.Controls
             FontSize = font.Size;
             FontWeight = font.Weight.AsWpf();
             FontStyle = font.Style.AsWpf();
-            Foreground = labelStyle.Foreground.AsWpf();
+            Foreground = labelStyle.Foreground.AsWpfBrush();
             Padding = new Thickness(
                 labelStyle.Padding.Left,
                 labelStyle.Padding.Top,

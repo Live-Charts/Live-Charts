@@ -31,6 +31,7 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Points;
@@ -48,11 +49,11 @@ namespace LiveCharts.Core.DataSeries
     /// The stacked bar series.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TViewModel, TSeries}" />
+    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate, TPointShape}" />
     /// <seealso cref="IBarSeries" />
-    public class StackedBarSeries<TModel> : BaseBarSeries<TModel, StackedPointCoordinate, IStackedBarSeries>, IStackedBarSeries
+    public class StackedBarSeries<TModel> 
+        : BaseBarSeries<TModel, StackedPointCoordinate>, IStackedBarSeries
     {
-        private ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> _provider;
         private int _stackIndex;
 
         /// <summary>
@@ -82,15 +83,19 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override ISeriesViewProvider<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries>
-            DefaultViewProvider =>
-            _provider ?? (_provider = Charting.Settings.UiProvider.BarViewProvider<TModel, StackedPointCoordinate, IStackedBarSeries>());
-
-        /// <inheritdoc />
-        protected override void BuildModel(
-            ChartPoint<TModel, StackedPointCoordinate, RectangleViewModel, IStackedBarSeries> current, UpdateContext context, 
-            ChartModel chart, Plane directionAxis, Plane scaleAxis, float cw, float columnStart, 
-            float[] byBarOffset, float[] positionOffset, Orientation orientation, int h, int w)
+        protected override RectangleViewModel BuildModel(
+            ChartPoint<TModel, StackedPointCoordinate, IRectangle> current,
+            UpdateContext context, 
+            ChartModel chart,
+            Plane directionAxis,
+            Plane scaleAxis,
+            float cw, 
+            float columnStart, 
+            float[] byBarOffset,
+            float[] positionOffset,
+            Orientation orientation,
+            int h,
+            int w)
         {
             float currentOffset = chart.ScaleToUi(current.Coordinate[0][0], directionAxis);
             float key = current.Coordinate.Key;
@@ -125,7 +130,7 @@ namespace LiveCharts.Core.DataSeries
 
             current.Coordinate.TotalStack = stack;
 
-            if (current.View.VisualElement == null)
+            if (current.Shape == null)
             {
                 var initialRectangle = chart.InvertXy
                     ? new RectangleF(
@@ -138,7 +143,7 @@ namespace LiveCharts.Core.DataSeries
                         columnStart,
                         Math.Abs(difference[w]),
                         0f);
-                current.ViewModel = new RectangleViewModel(
+                return new RectangleViewModel(
                     RectangleF.Empty, 
                     initialRectangle, 
                     orientation);
@@ -150,8 +155,8 @@ namespace LiveCharts.Core.DataSeries
                 float y = location[h] + byBarOffset[1] + positionOffset[1];
                 float l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
-                current.ViewModel = new RectangleViewModel(
-                    current.ViewModel.To,
+                return new RectangleViewModel(
+                    new RectangleF(current.Shape.Left, current.Shape.Top, current.Shape.Width, current.Shape.Height), 
                     new RectangleF(
                         location[w] + byBarOffset[0] + positionOffset[0],
                         y + (l - y) * current.Coordinate.From / stack,
@@ -164,8 +169,8 @@ namespace LiveCharts.Core.DataSeries
                 float x = location[w] + byBarOffset[0] + positionOffset[0];
                 float l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
-                current.ViewModel = new RectangleViewModel(
-                    current.ViewModel.To,
+                return new RectangleViewModel(
+                    new RectangleF(current.Shape.Left, current.Shape.Top, current.Shape.Width, current.Shape.Height),
                     new RectangleF(
                         x + (l - x) * current.Coordinate.From / stack,
                         location[h] + byBarOffset[1] + positionOffset[1],

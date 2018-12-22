@@ -1,4 +1,6 @@
-﻿namespace LiveCharts.Core.Drawing.Styles
+﻿using LiveCharts.Core.Drawing.Brushes;
+
+namespace LiveCharts.Core.Drawing.Styles
 {
     /// <summary>
     /// Defines a data label style.
@@ -11,7 +13,7 @@
         /// <value>
         /// The color of the fore.
         /// </value>
-        public Brush Foreground { get; set; }
+        public IBrush Foreground { get; set; }
 
         /// <summary>
         /// Gets or sets the font of the label.

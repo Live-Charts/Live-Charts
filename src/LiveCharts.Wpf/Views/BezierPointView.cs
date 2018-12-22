@@ -108,7 +108,7 @@ namespace LiveCharts.Wpf.Views
             }
 
             Shape.StrokeThickness = chartPoint.Series.StrokeThickness;
-            Shape.Stroke = chartPoint.Series.Stroke.AsWpf();
+            Shape.Stroke = chartPoint.Series.Stroke.AsWpfBrush();
             Shape.Fill = Brushes.White; // ToDo: use user defined color.
             Shape.Data = Geometry.Parse(chartPoint.Series.Geometry.Data);
             Panel.SetZIndex(Shape, chartPoint.Series.ZIndex);

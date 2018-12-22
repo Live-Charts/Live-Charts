@@ -24,8 +24,12 @@
 #endregion
 #region
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows;
+using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
@@ -35,7 +39,9 @@ using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Wpf.Animations;
 using LiveCharts.Wpf.Controls;
+using LiveCharts.Wpf.Drawing;
 using LiveCharts.Wpf.Views;
 using LiveCharts.Wpf.Views.Providers;
 
@@ -94,12 +100,22 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries> 
+        public ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries, IRectangle, ILabel> 
             BarViewProvider<TModel, TCoordinate, TSeries>()
             where TCoordinate : ICoordinate
             where TSeries : ICartesianSeries, IStrokeSeries
         {
             return new BarSeriesViewProvider<TModel, TCoordinate, TSeries>();
+        }
+
+        public ILabel GetNewLabel()
+        {
+            return new Label();
+        }
+
+        public IRectangle GetNewRectangle()
+        {
+            return new Rectangle();
         }
 
         /// <inheritdoc />

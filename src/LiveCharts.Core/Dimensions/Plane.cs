@@ -31,11 +31,11 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Events;
-using Brush = LiveCharts.Core.Drawing.Brush;
 using Font = LiveCharts.Core.Drawing.Styles.Font;
 using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
 
@@ -58,7 +58,7 @@ namespace LiveCharts.Core.Dimensions
         private IEnumerable<Section> _sections;
         private double _labelsRotation;
         private Font _labelsFont;
-        private Brush _labelsForeground;
+        private IBrush _labelsForeground;
         private Margin _labelsPadding;
         private double _pointMargin;
         private bool _showLabels;
@@ -74,7 +74,7 @@ namespace LiveCharts.Core.Dimensions
             _showLabels = true;
             _labelFormatter = Format.AsMetricNumber;
             _labelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            _labelsForeground = new SolidColorBrush(Color.FromArgb(255, 30, 30, 30));
+            _labelsForeground = Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 30, 30, 30);
             Charting.BuildFromTheme(this);
         }
 
@@ -270,7 +270,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The labels foreground.
         /// </value>
-        public Brush LabelsForeground
+        public IBrush LabelsForeground
         {
             get => _labelsForeground;
             set
@@ -469,7 +469,7 @@ namespace LiveCharts.Core.Dimensions
         void IResource.Dispose(IChartView view, bool force)
         {
             OnDispose(view, force);
-            Disposed?.Invoke(view, this);
+            Disposed?.Invoke(view, this, force);
         }
 
         #endregion

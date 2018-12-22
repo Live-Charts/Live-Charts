@@ -28,6 +28,9 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.DataSeries;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
+using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Series;
 
@@ -75,51 +78,45 @@ namespace LiveCharts.Core.Interaction
         IPlaneViewProvider GetNewSection();
 
         /// <summary>
-        /// Provides LiveCharts with a builder that returns a column view.
+        /// Gets the new label.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-        /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, TCoordinate, RectangleViewModel, TSeries>
-            BarViewProvider<TModel, TCoordinate, TSeries>()
-            where TCoordinate : ICoordinate
-            where TSeries : ICartesianSeries, IStrokeSeries;
+        ILabel GetNewLabel(ChartModel context);
 
         /// <summary>
-        /// Provides LiveCharts with a builder that returns a bezier view.
+        /// Gets the new path.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        IBezierSeriesViewProvider<TModel, PointCoordinate, BezierViewModel, ILineSeries> 
-            BezierViewProvider<TModel>();
+        ICartesianPath GetNewPath(ChartModel context);
 
         /// <summary>
-        /// Provides LiveCharts with a builder that returns a scatter view.
+        /// Gets a new rectangle.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
-        /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-        /// <typeparam name="TSeries">The type of the series.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, TCoordinate, GeometryPointViewModel, TSeries> 
-            GeometryPointViewProvider<TModel, TCoordinate, TSeries>()
-            where TCoordinate : ICoordinate
-            where TSeries : ICartesianSeries, IStrokeSeries;
+        IRectangle GetNewRectangle(ChartModel context);
 
         /// <summary>
-        /// Provides LiveCharts with a builder that returns a pie view.
+        /// Gets the new sg path.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, StackedPointCoordinate, PieViewModel, IPieSeries> 
-            PieViewProvider<TModel>();
+        ISvgPath GetNewSvgPath(ChartModel context);
 
         /// <summary>
-        /// Provides LiveCharts with a builder that returns a heat view.
+        /// Gets the new bezier segment.
         /// </summary>
-        /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <returns></returns>
-        ISeriesViewProvider<TModel, WeightedCoordinate, HeatViewModel, IHeatSeries> 
-            HeatViewProvider<TModel>();
+        IBezierSegment GetNewBezierSegment(ChartModel context);
+
+        /// <summary>
+        /// Gets the new slice.
+        /// </summary>
+        /// <returns></returns>
+        ISlice GetNewSlice(ChartModel context);
+
+        /// <summary>
+        /// Gets the new solid color brush.
+        /// </summary>
+        /// <returns></returns>
+        ISolidColorBrush GetNewSolidColorBrush(byte alpha, byte red, byte green, byte blue);
     }
 }

@@ -24,16 +24,13 @@
 #endregion
 #region
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Wpf.Animations;
-using Brush = LiveCharts.Core.Drawing.Brush;
 
 #endregion
 
@@ -90,7 +87,7 @@ namespace LiveCharts.Wpf.Views
         protected bool IsNew { get; set; }
         protected PathFigure StrokePathFigure { get; set; }
         protected PathFigure FillPathFigure { get; set; }
-        protected IEnumerable<double> StrokeDashArray { get; set; }
+        protected float[] StrokeDashArray { get; set; }
         protected double PreviousLength { get; set; }
 
         /// <inheritdoc />
@@ -106,11 +103,11 @@ namespace LiveCharts.Wpf.Views
         public virtual void SetStyle(
             PointF startPoint,
             PointF pivot,
-            Brush stroke,
-            Brush fill,
+            IBrush stroke,
+            IBrush fill,
             double strokeThickness,
             int zIndex,
-            IEnumerable<double> strokeDashArray)
+            float[] strokeDashArray)
         {
         }
 

@@ -27,12 +27,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Dimensions;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
@@ -48,20 +49,18 @@ namespace LiveCharts.Core.DataSeries
     /// <summary>
     /// The base bar series.
     /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TSeries">The type of the series.</typeparam>
-    public abstract class BaseBarSeries<TModel, TCoordinate, TSeries>
-        : CartesianStrokeSeries<TModel, TCoordinate, RectangleViewModel, TSeries>, IBarSeries
+    /// <typeparam name="TModel">The type of the model to plot.</typeparam>
+    /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
+    public abstract class BaseBarSeries<TModel, TCoordinate>
+        : CartesianStrokeSeries<TModel, TCoordinate, IRectangle, IBrush>, IBarSeries
         where TCoordinate : ICoordinate
-        where TSeries : class, ISeries
     {
         private double _pivot;
         private double _barPadding;
         private double _maxColumnWidth;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseBarSeries{TModel,TCoordinate, TSeries}"/> class.
+        /// Initializes a new instance of the <see cref="BaseBarSeries{TModel, TCoordinate}"/> class.
         /// </summary>
         protected BaseBarSeries()
         {
@@ -124,15 +123,15 @@ namespace LiveCharts.Core.DataSeries
 
             int barsCount = context.GetBarsCount(ScalesAt[1]);
 
-            float cw = (uw[0] - (float) BarPadding * barsCount) / barsCount;
+            float cw = (uw[0] - (float)BarPadding * barsCount) / barsCount;
             int position = context.GetBarIndex(ScalesAt[1], this);
 
             if (cw > MaxColumnWidth)
             {
-                cw = (float) MaxColumnWidth;
+                cw = (float)MaxColumnWidth;
             }
 
-            float bp = (float) BarPadding;
+            float bp = (float)BarPadding;
 
             float[] byBarOffset = new[]
             {
@@ -152,44 +151,41 @@ namespace LiveCharts.Core.DataSeries
             }
 
             positionOffset[w] = (bp + cw) * position - (bp + cw) * ((barsCount - 1) * .5f);
-            
+
             float pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
-            float originalDuration = (float) timeLine.Duration.TotalMilliseconds;
+            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
             IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
             int i = 0;
 
-            foreach (ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, TCoordinate, IRectangle> current in GetPoints(chart.View))
             {
-                if (current.View == null)
-                {
-                    current.View = ViewProvider.GetNewPoint();
-                }
-
-                BuildModel(
-                    current, context, chart, directionAxis,
-                    scaleAxis, cw, pivot, byBarOffset,
-                    positionOffset, orientation, h, w);
-
                 if (DelayRule != DelayRules.None)
                 {
                     timeLine = AnimationExtensions.Delay(
                         // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (float) PointsCount, DelayRule);
+                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
                 }
 
-                current.View.DrawShape(current, previous, timeLine);
-                if (DataLabels) current.View.DrawLabel(current, DataLabelsPosition, LabelsStyle, timeLine);
-                Mapper.EvaluateModelDependentActions(current.Model, current.View.VisualElement, current);
-                current.InteractionArea = new RectangleInteractionArea(current.ViewModel.To);
+                var vm = BuildModel(
+                    current, context, chart, directionAxis,
+                    scaleAxis, cw, pivot, byBarOffset,
+                    positionOffset, orientation, h, w);
 
-                previous = current;
+                DrawPointShape(current, timeLine, vm, pivot);
+
+                if (DataLabels)
+                {
+                    DrawPointLabel(current);
+                }
+
+                Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
+                current.InteractionArea = new RectangleInteractionArea(vm.To);
                 i++;
             }
         }
@@ -198,14 +194,23 @@ namespace LiveCharts.Core.DataSeries
         /// Offsets the by stack.
         /// </summary>
         /// <returns></returns>
-        protected abstract void BuildModel(
-            ChartPoint<TModel, TCoordinate, RectangleViewModel, TSeries> current, UpdateContext context, ChartModel chart, Plane directionAxis, Plane scaleAxis,
-            float cw, float columnStart, float[] byBarOffset, float[] positionOffset, Orientation orientation,
-            int h, int w);
+        protected abstract RectangleViewModel BuildModel(
+            ChartPoint<TModel, TCoordinate, IRectangle> current,
+            UpdateContext context,
+            ChartModel chart,
+            Plane directionAxis,
+            Plane scaleAxis,
+            float cw,
+            float columnStart,
+            float[] byBarOffset,
+            float[] positionOffset,
+            Orientation orientation,
+            int h,
+            int w);
 
         private float GetColumnStart(ChartModel chart, Plane target, Plane complementary)
         {
-            float p = (float) Pivot;
+            float p = (float)Pivot;
 
             double value = target.ActualMinValue >= p && complementary.ActualMaxValue > p
                 ? target.ActualMinValue
@@ -213,6 +218,74 @@ namespace LiveCharts.Core.DataSeries
                     ? target.ActualMaxValue
                     : p);
             return chart.ScaleToUi(value, target);
+        }
+
+        private void DrawPointShape(
+            ChartPoint<TModel, TCoordinate, IRectangle> current,
+            TimeLine timeline,
+            RectangleViewModel vm,
+            float pivot)
+        {
+            var shape = current.Shape;
+            var isNewShape = false;
+
+            if (current.Shape == null)
+            {
+                current.Shape = Charting.Settings.UiProvider.GetNewRectangle(current.Chart.Model);
+                shape = current.Shape;
+                current.Chart.Content.AddChild(shape, true);
+                shape.Left = vm.From.Left;
+                shape.Top = vm.From.Top;
+                shape.Width = vm.From.Width;
+                shape.Height = vm.From.Height;
+                isNewShape = true;
+
+                void AnimateOnDispose(IChartView view, object instance, bool force)
+                {
+                    current.Disposed -= AnimateOnDispose;
+
+                    if (force)
+                    {
+                        current.Chart.Content.DisposeChild(shape, true);
+                        //current.Chart.Content.DisposeChild(Label, true);
+                        return;
+                    }
+
+                    // if not forced, animate the exit...
+
+                    var animation = shape.Animate(timeline)
+                        .Property(nameof(shape.Top), shape.Top, pivot)
+                        .Property(nameof(shape.Height), shape.Height, 0);
+
+                    animation.Then((sender, args) =>
+                    {
+                        current.Chart.Content?.DisposeChild(shape, true);
+                        // chart.Content?.DisposeChild(Label, true);
+                        animation.Dispose();
+                        animation = null;
+                    }).Begin();
+                }
+
+                current.Disposed += AnimateOnDispose;
+            }
+
+            // map properties
+            shape.StrokeDashArray = StrokeDashArray;
+            shape.StrokeThickness = StrokeThickness;
+            shape.ZIndex = ZIndex;
+            shape.Paint(Stroke, Fill);
+
+            float radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4f;
+            shape.XRadius = radius;
+            shape.YRadius = radius;
+
+            shape
+                .Animate(timeline)
+                .Property(nameof(shape.Left), shape.Left, vm.To.Left)
+                .Property(nameof(shape.Width), shape.Width, vm.To.Width)
+                .Property(nameof(shape.Top), shape.Top, vm.To.Top)
+                .Property(nameof(shape.Height), !isNewShape ? shape.Height : vm.From.Height, vm.To.Height)
+                .Begin();
         }
     }
 }

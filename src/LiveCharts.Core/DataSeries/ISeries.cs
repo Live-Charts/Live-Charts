@@ -33,12 +33,12 @@ using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
-using Brush = LiveCharts.Core.Drawing.Brush;
 #if NET45 || NET46
 using Font = LiveCharts.Core.Drawing.Styles.Font;
 #endif
@@ -47,51 +47,6 @@ using Font = LiveCharts.Core.Drawing.Styles.Font;
 
 namespace LiveCharts.Core.DataSeries
 {
-    /// <summary>
-    /// The series interface.
-    /// </summary>
-    /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <typeparam name="TSeries">The type of the series.</typeparam>
-    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    /// <seealso cref="ISeries" />
-    public interface ISeries<TModel, TCoordinate, TViewModel, TSeries> : ISeries<TCoordinate>
-        where TCoordinate : ICoordinate
-        where TSeries : ISeries
-    {
-        /// <summary>
-        /// Gets or sets the mapper.
-        /// </summary>
-        /// <value>
-        /// The mapper.
-        /// </value>
-        ModelToCoordinateMapper<TModel, TCoordinate> Mapper { get; set; }
-
-        /// <summary>
-        /// Gets the points count.
-        /// </summary>
-        /// <value>
-        /// The points count.
-        /// </value>
-        int PointsCount { get; }
-
-        /// <summary>
-        /// Gets the view provider.
-        /// </summary>
-        /// <value>
-        /// The view provider.
-        /// </value>
-        ISeriesViewProvider<TModel, TCoordinate, TViewModel, TSeries> ViewProvider { get; set; }
-        
-        /// <summary>
-        /// Gets the points for the given view.
-        /// </summary>
-        /// <value>
-        /// The points.
-        /// </value>
-        IEnumerable<ChartPoint<TModel, TCoordinate, TViewModel, TSeries>> GetPoints(IChartView chart);
-    }
-
     /// <summary>
     /// A series with a defined coordinate.
     /// </summary>
@@ -169,7 +124,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The data labels foreground.
         /// </value>
-        Brush DataLabelsForeground { get; set; }
+        IBrush DataLabelsForeground { get; set; }
 
         /// <summary>
         /// Gets or sets the default fill opacity, this property is used to determine the fill opacity of a point when 

@@ -68,6 +68,8 @@
     <Compile Include="ChartLegend.cs" />
     <Compile Include="Controls\AxisLabel.cs" />
     <Compile Include="CoreToPlatform.cs" />
+    <Compile Include="Drawing\Label.cs" />
+    <Compile Include="Drawing\Rectangle.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Shapes\DialogShape.cs" />
     <Compile Include="Shapes\Slice.cs" />
@@ -93,7 +95,6 @@
     <Compile Include="Views\SelfDrawnPath.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\BarPointView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

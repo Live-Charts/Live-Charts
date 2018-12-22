@@ -28,6 +28,7 @@
 using System;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Brushes;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Events;
@@ -78,7 +79,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The stroke.
         /// </value>
-        public Brush Stroke { get; set; }
+        public IBrush Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -102,7 +103,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The fill.
         /// </value>
-        public Brush Fill { get; set; }
+        public IBrush Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the font.
