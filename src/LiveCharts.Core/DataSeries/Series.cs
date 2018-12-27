@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Collections;
@@ -64,18 +63,18 @@ namespace LiveCharts.Core.DataSeries
         : ISeries<TCoordinate>
         where TCoordinate : ICoordinate
         where TPointShape : class, IShape
-    { 
-        private IEnumerable<TModel> _values;
-        private ModelToCoordinateMapper<TModel, TCoordinate> _mapper;
-        private object _chartPointsUpdateId;
+    {
+        private IEnumerable<TModel> _values = Enumerable.Empty<TModel>();
+        private ModelToCoordinateMapper<TModel, TCoordinate>? _mapper;
+        private object _chartPointsUpdateId = new object();
         private bool _isVisible;
         private bool _dataLabels;
-        private string _title;
-        private Font _dataLabelsFont;
+        private string _title = string.Empty;
+        private Font _dataLabelsFont = Font.Default;
         private double _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
-        private IBrush _dataLabelsForeground;
+        private IBrush _dataLabelsForeground = UIFactory.GetNewSolidColorBrush(255, 0, 0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TShape}"/> class.
@@ -94,13 +93,10 @@ namespace LiveCharts.Core.DataSeries
             Initialize(itemsSource);
         }
 
-#region Properties
+        #region Properties
 
         /// <inheritdoc />
         public abstract Type ThemeKey { get; }
-
-        /// <inheritdoc />
-        public virtual SeriesStyle Style => throw new NotImplementedException();
 
         /// <inheritdoc />
         public bool IsVisible
@@ -109,7 +105,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _isVisible = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsVisible));
             }
         }
 
@@ -120,7 +116,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _title = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Title));
             }
         }
 
@@ -131,7 +127,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _defaultFillOpacity = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(DefaultFillOpacity));
             }
         }
 
@@ -142,7 +138,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _geometry = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Geometry));
             }
         }
 
@@ -153,7 +149,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _dataLabels = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(DataLabelsForeground));
             }
         }
 
@@ -164,7 +160,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _dataLabelsPosition = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(DataLabelsPosition));
             }
         }
 
@@ -175,7 +171,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _dataLabelsFont = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(DataLabelsFont));
             }
         }
 
@@ -186,7 +182,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _dataLabelsForeground = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(DataLabelsForeground));
             }
         }
 
@@ -194,7 +190,7 @@ namespace LiveCharts.Core.DataSeries
         public TimeSpan AnimationsSpeed { get; set; }
 
         /// <inheritdoc />
-        public IEnumerable<KeyFrame> AnimationLine { get; set; }
+        public IEnumerable<KeyFrame> AnimationLine { get; set; } = TimeLine.Completed;
 
         /// <inheritdoc />
         public DelayRules DelayRule { get; set; }
@@ -203,11 +199,12 @@ namespace LiveCharts.Core.DataSeries
         int ISeries.GroupingIndex => -1;
 
         /// <inheritdoc />
-        public Dictionary<ChartModel, Dictionary<string, object>> Content { get; protected set; }
+        public Dictionary<ChartModel, Dictionary<string, object>> Content { get; protected set; } =
+            new Dictionary<ChartModel, Dictionary<string, object>>();
 
         /// <inheritdoc />
         public abstract float[] DefaultPointWidth { get; }
-        
+
         /// <inheritdoc />
         public abstract float PointMargin { get; }
 
@@ -218,7 +215,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _values = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Values));
             }
         }
 
@@ -229,7 +226,7 @@ namespace LiveCharts.Core.DataSeries
         IEnumerable ISeries.Values
         {
             get => Values;
-            set => Values = (IEnumerable<TModel>) value;
+            set => Values = (IEnumerable<TModel>)value;
         }
 
         /// <summary>
@@ -240,22 +237,13 @@ namespace LiveCharts.Core.DataSeries
         /// </value>
         public ModelToCoordinateMapper<TModel, TCoordinate> Mapper
         {
-            get => _mapper ?? ( _mapper = Charting.GetCurrentMapperFor<TModel, TCoordinate>());
+            get => _mapper ?? (_mapper = Global.Settings.GetCurrentMapperFor<TModel, TCoordinate>());
             set
             {
                 _mapper = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Mapper));
             }
         }
-
-        /// <summary>
-        /// Gets or sets the point builder.
-        /// </summary>
-        /// <value>
-        /// The point builder.
-        /// </value>
-        [Obsolete]
-        public Func<TModel> PointBuilder { get; set; }
 
         /// <summary>
         /// Gets the points count.
@@ -265,32 +253,24 @@ namespace LiveCharts.Core.DataSeries
         /// </value>
         public int PointsCount { get; private set; }
 
-        internal LabelStyle LabelsStyle => new LabelStyle
-        {
-            Font = DataLabelsFont,
-            Foreground = DataLabelsForeground,
-            LabelsRotation = 0d,
-            Padding = new Margin(0f)
-        };
-
         #endregion
 
         /// <inheritdoc />
-        public Func<TCoordinate, string> DataLabelFormatter { get; set; }
+        public Func<TCoordinate, string>? DataLabelFormatter { get; set; }
 
         /// <inheritdoc />
-        public Func<TCoordinate, string> TooltipFormatter { get; set; }
+        public Func<TCoordinate, string>? TooltipFormatter { get; set; }
 
         /// <inheritdoc />
         string ISeries.GetDataLabel(ICoordinate coordinate)
         {
-            return DataLabelFormatter((TCoordinate) coordinate);
+            return DataLabelFormatter?.Invoke((TCoordinate)coordinate) ?? "";
         }
 
         /// <inheritdoc />
         string ISeries.GetTooltipLabel(ICoordinate coordinate)
         {
-            return TooltipFormatter((TCoordinate) coordinate);
+            return TooltipFormatter?.Invoke((TCoordinate)coordinate) ?? "";
         }
 
         /// <inheritdoc />
@@ -341,7 +321,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The points.
         /// </value>
-        public IEnumerable<ChartPoint<TModel, TCoordinate, TPointShape>> 
+        public IEnumerable<ChartPoint<TModel, TCoordinate, TPointShape>>
             GetPoints(IChartView chart)
         {
             Dictionary<object, ChartPoint<TModel, TCoordinate, TPointShape>> tracker =
@@ -366,29 +346,22 @@ namespace LiveCharts.Core.DataSeries
             // 2. Compare every coordinate in the case of a cartesian chart, to get Max and Min limits, 
             // if stacked, then also do the stacking...
 
-            using (DataFactoryContext<TModel, TCoordinate> factoryContext =
-                new DataFactoryContext<TModel, TCoordinate>
-                {
-                    Series = this,
-                    Chart = chart,
-                    Mapper = Mapper,
-                    UpdateContext = context,
-                    Collection = Values.ToArray()
-                })
+            using (var factoryContext = new DataFactoryContext<TModel, TCoordinate>(
+                    chart, this, context, Mapper, Values.ToArray()))
             {
                 Dictionary<object, ChartPoint<TModel, TCoordinate, TPointShape>> tracker =
                     (Dictionary<object, ChartPoint<TModel, TCoordinate, TPointShape>>)
                     Content[chart][Config.TrackerKey];
-                Charting.Settings.DataFactory.Fetch(factoryContext, tracker, out int count);
+                Global.Settings.DataFactory.Fetch(factoryContext, tracker, out int count);
                 PointsCount = count;
             }
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IChartPoint> GetPointsAt(
+        public virtual IEnumerable<IChartPoint>? GetPointsAt(
             PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest, IChartView chart)
         {
-            IEnumerable<ChartPoint<TModel, TCoordinate, TPointShape>> query;
+            IEnumerable<ChartPoint<TModel, TCoordinate, TPointShape>>? query;
 
             if (!snapToClosest)
             {
@@ -404,7 +377,7 @@ namespace LiveCharts.Core.DataSeries
                     }).ToArray();
                 float min = results.Min(x => x.Distance);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                query = results.Where(x => x.Distance == min).Select(x => x.Point);
+                query = results?.Where(x => x.Distance == min).Select(x => x.Point);
             }
 
             return query;
@@ -435,24 +408,22 @@ namespace LiveCharts.Core.DataSeries
         protected void DrawPointLabel(ChartPoint<TModel, TCoordinate, TPointShape> chartPoint)
         {
             var chart = chartPoint.Chart;
-            bool isNew = chartPoint.Label == null;
-            var label = chartPoint.Label;
 
-            if (isNew)
+            if (chartPoint.Label == null)
             {
-                label = Charting.Settings.UiProvider.GetNewLabel(chartPoint.Chart.Model);
-                chart.Content.AddChild(label, true);
+                chartPoint.Label = UIFactory.GetNewLabel(chartPoint.Chart.Model);
+                chart.Content.AddChild(chartPoint.Label, true);
             }
 
-            label.Content = chartPoint.Series.GetDataLabel(chartPoint.Coordinate);
+            chartPoint.Label.Content = chartPoint.Series.GetDataLabel(chartPoint.Coordinate);
 
-            label.FontFamily = LabelsStyle.Font.FamilyName;
-            label.FontSize = LabelsStyle.Font.Size;
-            label.FontStyle = LabelsStyle.Font.Style;
-            label.FontWeight = LabelsStyle.Font.Weight;
+            chartPoint.Label.FontFamily = DataLabelsFont.FamilyName;
+            chartPoint.Label.FontSize = DataLabelsFont.Size;
+            chartPoint.Label.FontStyle = DataLabelsFont.Style;
+            chartPoint.Label.FontWeight = DataLabelsFont.Weight;
 
-            label.Paint(LabelsStyle.Foreground);
-            PlaceLabel(chartPoint, label.Measure());
+            chartPoint.Label.Paint(DataLabelsForeground, null);
+            PlaceLabel(chartPoint, chartPoint.Label.Measure());
         }
 
         /// <summary>
@@ -464,6 +435,7 @@ namespace LiveCharts.Core.DataSeries
             ChartPoint<TModel, TCoordinate, TPointShape> chartPoint,
             SizeF size)
         {
+            if (chartPoint.Label == null) return;
             chartPoint.Label.Left = chartPoint.Coordinate[0][0];
             chartPoint.Label.Top = chartPoint.Coordinate[0][1];
         }
@@ -522,7 +494,7 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.HorizontalAlignment), 
+                        nameof(DataLabelsPosition.HorizontalAlignment),
                         DataLabelsPosition.HorizontalAlignment,
                         null);
             }
@@ -543,19 +515,19 @@ namespace LiveCharts.Core.DataSeries
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
-                        nameof(DataLabelsPosition.VerticalAlignment), 
+                        nameof(DataLabelsPosition.VerticalAlignment),
                         DataLabelsPosition.VerticalAlignment, null);
             }
 
             return new PointF(left, top);
         }
 
-        private void Initialize(IEnumerable<TModel> itemsSource = null)
+        private void Initialize(IEnumerable<TModel>? itemsSource = null)
         {
             _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
             _dataLabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            _dataLabelsForeground = Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 30, 30, 30);
+            _dataLabelsForeground = UIFactory.GetNewSolidColorBrush(255, 30, 30, 30);
             _values = itemsSource ?? new ChartingCollection<TModel>();
             var t = typeof(TModel);
             Metadata = new SeriesMetadata
@@ -565,24 +537,24 @@ namespace LiveCharts.Core.DataSeries
                 IsObservable = typeof(INotifyPropertyChanged).IsAssignableFrom(t)
             };
             AnimationsSpeed = TimeSpan.MaxValue;
-            AnimationLine = null;
+            AnimationLine = TimeLine.Completed;
             DelayRule = DelayRules.None;
-            Charting.BuildFromTheme<ISeries>(this);
+            Global.Settings.BuildFromTheme<ISeries>(this);
         }
 
-#region IResource implementation
+        #region IResource implementation
 
         /// <inheritdoc />
         public event DisposingResourceHandler Disposed;
 
-        object IResource.UpdateId { get; set; }
+        object IResource.UpdateId { get; set; } = new object();
 
         void IResource.Dispose(IChartView chart, bool force)
         {
             OnDisposing(chart, force);
             Dictionary<string, object> viewContent = Content[chart.Model];
             viewContent.Remove(Config.TrackerKey);
-            _values = null;
+            _values = Enumerable.Empty<TModel>();
             Disposed?.Invoke(chart, this, force);
         }
 
@@ -593,9 +565,9 @@ namespace LiveCharts.Core.DataSeries
         {
         }
 
-#endregion
+        #endregion
 
-#region INPC implementation
+        #region INPC implementation
 
         /// <summary>
         /// Occurs when [property changed].
@@ -606,11 +578,11 @@ namespace LiveCharts.Core.DataSeries
         /// Called when a property changes.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-#endregion
+        #endregion
     }
 }

@@ -49,21 +49,21 @@ namespace LiveCharts.Core.Charts
         public CartesianChartModel(IChartView view)
             : base(view)
         {
-            Charting.BuildFromTheme((ICartesianChartView) view);
+            Global.Settings.BuildFromTheme((ICartesianChartView)view);
         }
 
         /// <inheritdoc />
         protected override void CopyDataFromView()
         {
             base.CopyDataFromView();
-            InvertXy = ((ICartesianChartView) View).InvertAxes;
+            InvertXy = ((ICartesianChartView)View).InvertAxes;
         }
 
         /// <inheritdoc />
         protected override int DimensionsCount => 3;
 
         /// <inheritdoc />
-        public override float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null)
+        public override float ScaleToUi(double dataValue, Plane plane, float[]? sizeVector = null)
         {
             float[] chartSize = sizeVector ?? DrawAreaSize;
 
@@ -89,11 +89,11 @@ namespace LiveCharts.Core.Charts
 
             double m = (y2 - y1) / (x2 - x1);
 
-            return (float) (m * (dataValue - x1) + y1);
+            return (float)(m * (dataValue - x1) + y1);
         }
 
         /// <inheritdoc />
-        public override double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
+        public override double ScaleFromUi(float pixelsValue, Plane plane, float[]? sizeVector = null)
         {
             float[] chartSize = sizeVector ?? DrawAreaSize;
 
@@ -135,7 +135,7 @@ namespace LiveCharts.Core.Charts
         {
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (p2.X == p1.X) return p1.Y;
-            
+
             float m = (p2.Y - p1.Y) / (p2.X - p1.X);
 
             return m * (value - p1.X) + p1.Y;
@@ -149,7 +149,7 @@ namespace LiveCharts.Core.Charts
         {
             if (!IsViewInitialized) return;
 
-            var cartesianView = (ICartesianChartView) View;
+            var cartesianView = (ICartesianChartView)View;
             View.DataToolTip.Hide(View);
 
             double speed = cartesianView.ZoomingSpeed < 0.1
@@ -162,7 +162,7 @@ namespace LiveCharts.Core.Charts
             {
                 for (int index = 0; index < Dimensions[0].Length; index++)
                 {
-                    var xPlane = (Axis) cartesianView.Dimensions[0][index];
+                    var xPlane = (Axis)cartesianView.Dimensions[0][index];
 
                     double px = ScaleFromUi(pivot.X, xPlane);
 
@@ -187,7 +187,7 @@ namespace LiveCharts.Core.Charts
             {
                 for (int index = 0; index < Dimensions[1].Length; index++)
                 {
-                    var yPlane = (Axis) cartesianView.Dimensions[1][index];
+                    var yPlane = (Axis)cartesianView.Dimensions[1][index];
 
                     double py = ScaleFromUi(pivot.Y, yPlane);
 
@@ -224,13 +224,13 @@ namespace LiveCharts.Core.Charts
                 ? 0.1
                 : (cartesianView.ZoomingSpeed > 0.95
                     ? 0.95
-                    : cartesianView.ZoomingSpeed); 
+                    : cartesianView.ZoomingSpeed);
 
             if (cartesianView.Zooming == Zooming.X || cartesianView.Zooming == Zooming.Xy)
             {
                 for (int index = 0; index < Dimensions[0].Length; index++)
                 {
-                    var xPlane = (Axis) Dimensions[0][index];
+                    var xPlane = (Axis)Dimensions[0][index];
 
                     double px = ScaleFromUi(pivot.X, xPlane);
 
@@ -253,7 +253,7 @@ namespace LiveCharts.Core.Charts
             {
                 for (int index = 0; index < Dimensions[1].Length; index++)
                 {
-                    var yPlane = (Axis) Dimensions[1][index];
+                    var yPlane = (Axis)Dimensions[1][index];
 
                     double py = ScaleFromUi(pivot.Y, yPlane);
 
@@ -283,7 +283,7 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            var cartesianView = (ICartesianChartView) View;
+            var cartesianView = (ICartesianChartView)View;
 
             if (cartesianView.Panning == Panning.Unset &&
                 cartesianView.Zooming == Zooming.None ||
@@ -374,15 +374,8 @@ namespace LiveCharts.Core.Charts
                 {
                     RegisterINotifyPropertyChanged(plane);
                     if (!(plane is Axis axis)) continue;
-                    var labelsStyle = new LabelStyle
-                    {
-                        Font = plane.LabelsFont,
-                        Foreground = plane.LabelsForeground,
-                        LabelsRotation = plane.LabelsRotation,
-                        Padding = plane.LabelsPadding
-                    };
-                    axis.DrawSeparators(this, labelsStyle);
-                    axis.DrawSections(this, labelsStyle);
+                    axis.DrawSeparators(this);
+                    axis.DrawSections(this);
                 }
             }
 
@@ -433,7 +426,7 @@ namespace LiveCharts.Core.Charts
             foreach (var point in points)
             {
                 var coordinate = point.Coordinate;
-                var cartesianSeries = (ICartesianSeries) point.Series;
+                var cartesianSeries = (ICartesianSeries)point.Series;
 
                 float xCorr = cartesianSeries.PointMargin * .5f * xDirection;
                 float yCorr = cartesianSeries.PointMargin * .5f * yDirection;
@@ -455,6 +448,14 @@ namespace LiveCharts.Core.Charts
                 }
                 else
                 {
+                    // TODO: As fas as I can see this is a bug in C#8
+                    //       currently this was written in the beta version of C#8
+                    //       I get a warning saying something about a possible null reference (coordinate var)
+                    //       I really don't how coordinate could be null at this point.
+                    if (coordinate == null)
+                    {
+                        throw new Exception("Is this a compiler bug???");
+                    }
                     x += ScaleToUi(coordinate[xi][0], Dimensions[xi][cartesianSeries.ScalesAt[0]]) + xCorr;
                     y += ScaleToUi(coordinate[yi][0], Dimensions[yi][cartesianSeries.ScalesAt[1]]) + yCorr;
                 }
@@ -524,7 +525,7 @@ namespace LiveCharts.Core.Charts
                         plane.InternalMinValue = context.Ranges[dimensionIndex][planeIndex][0];
                         plane.InternalMaxValue = context.Ranges[dimensionIndex][planeIndex][1];
                         uiPointMargin = Math.Abs(
-                            ScaleFromUi((float) plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane));
+                            ScaleFromUi((float)plane.ActualPointMargin, plane) - ScaleFromUi(0f, plane));
                     }
 
                     float length = plane.ActualPointLength.Length > plane.Dimension

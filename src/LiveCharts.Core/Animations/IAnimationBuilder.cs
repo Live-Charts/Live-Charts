@@ -4,6 +4,9 @@ using System.Drawing;
 
 namespace LiveCharts.Core.Animations
 {
+    /// <summary>
+    /// Defines the animation builder helper object.
+    /// </summary>
     public interface IAnimationBuilder
     {
         /// <summary>
@@ -27,7 +30,7 @@ namespace LiveCharts.Core.Animations
         /// <param name="to">To.</param>
         /// <param name="delay">The delay.</param>
         /// <returns></returns>
-        IAnimationBuilder Property(string property, float from, float to, double delay = 0);
+        IAnimationBuilder Property(string property, double from, double to, double delay = 0);
 
         /// <summary>
         /// Applies a point animation to a given property.

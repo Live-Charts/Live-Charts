@@ -90,6 +90,11 @@ namespace LiveCharts.Core.Drawing.Styles
         public FontWeight Weight { get; }
 
         /// <summary>
+        /// Get the default font.
+        /// </summary>
+        public static Font Default => new Font("Arial", 10, FontStyle.Regular, FontWeight.Regular);
+
+        /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>

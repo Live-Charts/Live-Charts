@@ -6,7 +6,7 @@ namespace LiveCharts.Core.Drawing.Brushes
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Core.Drawing.Brushes.IBrush" />
+    /// <seealso cref="global::LiveCharts.Core.Drawing.Brushes.IBrush" />
     public interface ISolidColorBrush : IBrush
     {
         /// <summary>

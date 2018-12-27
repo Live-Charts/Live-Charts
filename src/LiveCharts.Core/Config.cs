@@ -49,56 +49,52 @@ namespace LiveCharts.Core
         /// <summary>
         /// Configures LiveCharts to plot the default types.
         /// </summary>
-        /// <param name="charting">The configuration.</param>
+        /// <param name="settings">The configuration.</param>
         /// <returns></returns>
-        public static Charting LearnPrimitiveAndDefaultTypes(this Charting charting)
+        public static Settings LearnPrimitiveAndDefaultTypes(this Settings settings)
         {
             // PointCoordinates
-
-            charting.LearnType<short, PointCoordinate>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<ushort, PointCoordinate>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<int, PointCoordinate>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<long, PointCoordinate>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<ulong, PointCoordinate>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<double, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
-            charting.LearnType<float, PointCoordinate>((value, index) => new PointCoordinate(index, value));
-            charting.LearnType<decimal, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
-            charting.LearnType<ObservableModel, PointCoordinate>((om, index) => new PointCoordinate(index, om.Value));
-            charting.LearnType<PointModel, PointCoordinate>((opm, index) => new PointCoordinate((float) opm.X, (float) opm.Y));
+            settings.LearnMap<short, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            settings.LearnMap<ushort, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            settings.LearnMap<int, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            settings.LearnMap<long, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            settings.LearnMap<ulong, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            settings.LearnMap<double, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
+            settings.LearnMap<float, PointCoordinate>((value, index) => new PointCoordinate(index, value));
+            settings.LearnMap<decimal, PointCoordinate>((value, index) => new PointCoordinate(index, (float) value));
+            settings.LearnMap<ObservableModel, PointCoordinate>((om, index) => new PointCoordinate(index, om.Value));
+            settings.LearnMap<PointModel, PointCoordinate>((opm, index) => new PointCoordinate((float) opm.X, (float) opm.Y));
 
             // Stacked Coordinates
-
-            charting.LearnType<short, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
-            charting.LearnType<ushort, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
-            charting.LearnType<int, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
-            charting.LearnType<long, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
-            charting.LearnType<ulong, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
-            charting.LearnType<double, StackedPointCoordinate>(
+            settings.LearnMap<short, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            settings.LearnMap<ushort, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            settings.LearnMap<int, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            settings.LearnMap<long, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            settings.LearnMap<ulong, StackedPointCoordinate>((value, index) => new StackedPointCoordinate(index, value));
+            settings.LearnMap<double, StackedPointCoordinate>(
                 (value, index) => new StackedPointCoordinate(index, (float) value));
-            charting.LearnType<float, StackedPointCoordinate>(
+            settings.LearnMap<float, StackedPointCoordinate>(
                 (value, index) => new StackedPointCoordinate(index, value));
-            charting.LearnType<decimal, StackedPointCoordinate>(
+            settings.LearnMap<decimal, StackedPointCoordinate>(
                 (value, index) => new StackedPointCoordinate(index, (float) value));
-            charting.LearnType<ObservableModel, StackedPointCoordinate>(
+            settings.LearnMap<ObservableModel, StackedPointCoordinate>(
                 (om, index) => new StackedPointCoordinate(index, om.Value));
-            charting.LearnType<PointModel, StackedPointCoordinate>(
+            settings.LearnMap<PointModel, StackedPointCoordinate>(
                 (opm, index) => new StackedPointCoordinate((float) opm.X, (float) opm.Y));
 
             // weighted coordinates
-
-            charting.LearnType<WeightedModel, WeightedCoordinate>((model, index) =>
+            settings.LearnMap<WeightedModel, WeightedCoordinate>((model, index) =>
                 new WeightedCoordinate((float) model.X, (float) model.Y, model.Weight));
             
             // financial coordinates
-
-            charting.LearnType<FinancialModel, FinancialCoordinate>(
+            settings.LearnMap<FinancialModel, FinancialCoordinate>(
                 (fm, index) => new FinancialCoordinate(index, fm.Open, fm.High, fm.Low, fm.Close));
 
             //charting.PlotPolar<PolarModel>((pm, index) => new PolarPoint(pm.Radius, pm.Angle));
 
-            charting.LearnType<WeightedCoordinate, WeightedCoordinate>((point, index) => new WeightedCoordinate(point.X, point.Y, point.Weight));
+            settings.LearnMap<WeightedCoordinate, WeightedCoordinate>((point, index) => new WeightedCoordinate(point.X, point.Y, point.Weight));
 
-            return charting;
+            return settings;
         }
     }
 }

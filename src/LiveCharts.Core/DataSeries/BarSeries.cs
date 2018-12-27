@@ -51,21 +51,21 @@ namespace LiveCharts.Core.DataSeries
         {
             DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Y);
             TooltipFormatter = DataLabelFormatter;
-            Charting.BuildFromTheme<IBarSeries>(this);
-            Charting.BuildFromTheme<ISeries<PointCoordinate>>(this);
+            Global.Settings.BuildFromTheme<IBarSeries>(this);
+            Global.Settings.BuildFromTheme<ISeries<PointCoordinate>>(this);
         }
 
         /// <inheritdoc />
         protected override RectangleViewModel BuildModel(
             ChartPoint<TModel, PointCoordinate, IRectangle> current,
             UpdateContext context,
-            ChartModel chart, 
+            ChartModel chart,
             Plane directionAxis,
             Plane scaleAxis,
             float cw,
             float columnStart,
             float[] byBarOffset,
-            float[] positionOffset, 
+            float[] positionOffset,
             Orientation orientation,
             int h,
             int w)
@@ -95,31 +95,34 @@ namespace LiveCharts.Core.DataSeries
             if (current.Shape == null)
             {
                 var initialRectangle = chart.InvertXy
-                    ? new RectangleF(
+                    ? new RectangleD(
                         columnStart,
                         location[h] + byBarOffset[1] + positionOffset[1],
                         0f,
                         Math.Abs(difference[h]))
-                    : new RectangleF(
+                    : new RectangleD(
                         location[w] + byBarOffset[0] + positionOffset[0],
                         columnStart,
                         Math.Abs(difference[w]),
                         0f);
-                return new RectangleViewModel(RectangleF.Empty, initialRectangle, orientation);
+                return new RectangleViewModel(RectangleD.Empty, initialRectangle, orientation);
             }
 
-            return new RectangleViewModel(
-                new RectangleF(
+            unchecked
+            {
+                return new RectangleViewModel(
+                new RectangleD(
                     current.Shape.Left,
                     current.Shape.Top,
                     current.Shape.Width,
                     current.Shape.Height),
-                new RectangleF(
+                new RectangleD(
                     location[w] + byBarOffset[0] + positionOffset[0],
                     location[h] + byBarOffset[1] + positionOffset[1],
                     Math.Abs(difference[w]),
                     Math.Abs(difference[h])),
                 orientation);
+            }
         }
     }
 }

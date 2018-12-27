@@ -48,7 +48,7 @@ namespace LiveCharts.Core.Themes
         /// Uses the material design light theme.
         /// </summary>
         /// <param name="charting">The settings.</param>
-        internal static Charting SetMaterialDesignDefaults(this Charting charting)
+        internal static Settings SetMaterialDesignDefaults(this Settings charting)
         {
             var baseFont = new Font("Arial", 13, FontStyle.Regular, FontWeight.Regular);
 
@@ -117,7 +117,7 @@ namespace LiveCharts.Core.Themes
                 .SetDefault<Plane>(plane =>
                 {
                     plane.LabelsFont = baseFont;
-                    plane.LabelsForeground = Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 30, 30, 30);
+                    plane.LabelsForeground = UIFactory.GetNewSolidColorBrush(255, 30, 30, 30);
                     plane.LabelsRotation = 0;
                     plane.LabelFormatter = Format.AsMetricNumber;
                 })
@@ -125,8 +125,8 @@ namespace LiveCharts.Core.Themes
                 {
                     axis.XSeparatorStyle = null;
                     axis.YSeparatorStyle = new ShapeStyle(
-                        Charting.Settings.UiProvider.GetNewSolidColorBrush(0, 0, 0, 0),
-                        Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 225, 225, 225),
+                        UIFactory.GetNewSolidColorBrush(0, 0, 0, 0),
+                        UIFactory.GetNewSolidColorBrush(255, 225, 225, 225),
                         0,
                         null);
                     axis.XAlternativeSeparatorStyle = null;

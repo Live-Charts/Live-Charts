@@ -64,8 +64,8 @@ namespace LiveCharts.Core.DataSeries
             DataLabelFormatter = coordinate =>
                 $"{Format.AsMetricNumber(coordinate.X)}, {Format.AsMetricNumber(coordinate.Y)}, {Format.AsMetricNumber(coordinate.Weight)}";
             TooltipFormatter = DataLabelFormatter;
-            Charting.BuildFromTheme<IBubbleSeries>(this);
-            Charting.BuildFromTheme<ISeries<WeightedCoordinate>>(this);
+            Global.Settings.BuildFromTheme<IBubbleSeries>(this);
+            Global.Settings.BuildFromTheme<ISeries<WeightedCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -75,7 +75,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _maxGeometrySize = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(MaxGeometrySize));
             }
         }
 
@@ -86,7 +86,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _minGeometrySize = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(MinGeometrySize));
             }
         }
 
@@ -116,7 +116,7 @@ namespace LiveCharts.Core.DataSeries
                 yi = 0;
             }
 
-            ChartPoint<TModel, WeightedCoordinate, ISvgPath> previous = null;
+            ChartPoint<TModel, WeightedCoordinate, ISvgPath>? previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
@@ -159,7 +159,7 @@ namespace LiveCharts.Core.DataSeries
 
                 Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
                 current.InteractionArea = new RectangleInteractionArea(
-                    new RectangleF(
+                    new RectangleD(
                         vm.Location.X,
                         vm.Location.Y,
                         p[2],
@@ -175,42 +175,40 @@ namespace LiveCharts.Core.DataSeries
             TimeLine timeline,
             GeometryPointViewModel vm)
         {
-            var shape = current.Shape;
-            bool isNew = current.Shape == null;
+            var isNew = current.Shape == null;
 
-            if (isNew)
+            if (current.Shape == null)
             {
-                current.Shape = Charting.Settings.UiProvider.GetNewSvgPath(current.Chart.Model);
-                shape = current.Shape;
-                current.Chart.Content.AddChild(shape, true);
-                shape.Left = vm.Location.X;
-                shape.Top = vm.Location.Y;
-                shape.Width = 0;
-                shape.Height = 0;
+                current.Shape = UIFactory.GetNewSvgPath(current.Chart.Model);
+                current.Chart.Content.AddChild(current.Shape, true);
+                current.Shape.Left = vm.Location.X;
+                current.Shape.Top = vm.Location.Y;
+                current.Shape.Width = 0;
+                current.Shape.Height = 0;
             }
 
-            shape.Svg = Geometry.Data;
-            shape.StrokeDashArray = StrokeDashArray;
-            shape.StrokeThickness = StrokeThickness;
-            shape.ZIndex = ZIndex;
-            shape.Paint(Stroke, Fill);
+            current.Shape.Svg = Geometry.Data;
+            current.Shape.StrokeDashArray = StrokeDashArray;
+            current.Shape.StrokeThickness = StrokeThickness;
+            current.Shape.ZIndex = ZIndex;
+            current.Shape.Paint(Stroke, Fill);
 
-            float r = vm.Diameter * .5f;
+            var r = vm.Diameter * .5f;
 
             if (isNew)
             {
-                shape.Animate(timeline)
-                    .Property(nameof(shape.Left), vm.Location.X + r, vm.Location.X)
-                    .Property(nameof(shape.Top), vm.Location.Y + r, vm.Location.Y)
-                    .Property(nameof(shape.Width), 0, vm.Diameter)
-                    .Property(nameof(shape.Height), 0, vm.Diameter)
+                current.Shape.Animate(timeline)
+                    .Property(nameof(ISvgPath.Left), vm.Location.X + r, vm.Location.X)
+                    .Property(nameof(ISvgPath.Top), vm.Location.Y + r, vm.Location.Y)
+                    .Property(nameof(ISvgPath.Width), 0, vm.Diameter)
+                    .Property(nameof(ISvgPath.Height), 0, vm.Diameter)
                     .Begin();
             }
             else
             {
-                shape.Animate(timeline)
-                    .Property(nameof(shape.Left), shape.Left, vm.Location.X)
-                    .Property(nameof(shape.Top), shape.Top, vm.Location.Y)
+                current.Shape.Animate(timeline)
+                    .Property(nameof(ISvgPath.Left), current.Shape.Left, vm.Location.X)
+                    .Property(nameof(ISvgPath.Top), current.Shape.Top, vm.Location.Y)
                     .Begin();
             }
         }

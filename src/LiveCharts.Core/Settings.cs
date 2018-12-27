@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Interaction;
+using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
 
@@ -39,44 +40,20 @@ namespace LiveCharts.Core
     /// <summary>
     /// LiveCharts configuration class.
     /// </summary>
-    public class Charting
+    public class Settings
     {
-        private static readonly Dictionary<Type, object> Builders = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> Builders = new Dictionary<Type, object>();
 
-        private static readonly Dictionary<Tuple<Type, Type>, object> DefaultMappers =
+        private readonly Dictionary<Tuple<Type, Type>, object> DefaultMappers =
             new Dictionary<Tuple<Type, Type>, object>();
 
-        /// <summary>
-        /// Initializes the <see cref="Charting"/> class.
-        /// </summary>
-        static Charting()
-        {
-            Settings = new Charting();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Charting"/> class.
-        /// </summary>
-        public Charting()
-        {
-            Colors = new List<Color>();
-        }
-        
         /// <summary>
         /// Gets the default colors.
         /// </summary>
         /// <value>
         /// The colors.
         /// </value>
-        internal List<Color> Colors { get; }
-
-        /// <summary>
-        /// Gets the current settings.
-        /// </summary>
-        /// <value>
-        /// The current.
-        /// </value>
-        public static Charting Settings { get; }
+        internal List<Color> Colors { get; } = new List<Color>();
 
         /// <summary>
         /// Gets or sets the chart point factory.
@@ -84,15 +61,7 @@ namespace LiveCharts.Core
         /// <value>
         /// The chart point factory.
         /// </value>
-        public IDataFactory DataFactory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the UI provider.
-        /// </summary>
-        /// <value>
-        /// The UI provider.
-        /// </value>
-        public IUiProvider UiProvider { get; set; }
+        public IDataFactory DataFactory { get; set; } = new DataFactory();
 
         #region Register types
 
@@ -129,9 +98,8 @@ namespace LiveCharts.Core
         /// <typeparam name="TPoint">The type of the point.</typeparam>
         /// <param name="predicate">The point predicate.</param>
         /// <returns></returns>
-        public ModelToCoordinateMapper<TModel, TPoint> LearnType<TModel, TPoint>(
-            Func<TModel, int, TPoint> predicate)
-            where TPoint: ICoordinate
+        public ModelToCoordinateMapper<TModel, TPoint> LearnMap<TModel, TPoint>(
+            Func<TModel, int, TPoint> predicate) where TPoint : ICoordinate
         {
             return Learn(predicate);
         }
@@ -144,13 +112,13 @@ namespace LiveCharts.Core
         /// <typeparam name="TModel">The type of the model.</typeparam>
         /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
         /// <returns></returns>
-        public static ModelToCoordinateMapper<TModel, TCoordinate> GetCurrentMapperFor<TModel, TCoordinate>()
+        public ModelToCoordinateMapper<TModel, TCoordinate> GetCurrentMapperFor<TModel, TCoordinate>()
             where TCoordinate : ICoordinate
         {
             var modelType = typeof(TModel);
             var coordinateType = typeof(TCoordinate);
             Tuple<Type, Type> key = new Tuple<Type, Type>(modelType, coordinateType);
-            if (DefaultMappers.TryGetValue(key, out var mapper)) return (ModelToCoordinateMapper<TModel, TCoordinate>) mapper;
+            if (DefaultMappers.TryGetValue(key, out var mapper)) return (ModelToCoordinateMapper<TModel, TCoordinate>)mapper;
             throw new LiveChartsException(100, modelType.Name, coordinateType.Name);
         }
 
@@ -159,10 +127,10 @@ namespace LiveCharts.Core
         /// </summary>
         /// <param name="builder">the builder.</param>
         /// <returns></returns>
-        public Charting SetDefault<T>(Action<T> builder)
+        public Settings SetDefault<T>(Action<T> builder)
         {
             Builders[typeof(T)] = builder;
-            return Settings;
+            return this;
         }
 
         /// <summary>
@@ -170,10 +138,10 @@ namespace LiveCharts.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The instance.</param>
-        public static void BuildFromTheme<T>(T instance)
+        public void BuildFromTheme<T>(T instance)
         {
             if (!Builders.TryGetValue(typeof(T), out var builder)) return;
-            Action<T> builderForT = (Action<T>) builder;
+            Action<T> builderForT = (Action<T>)builder;
             builderForT(instance);
         }
 
@@ -181,9 +149,9 @@ namespace LiveCharts.Core
         /// Configures LiveCharts globally.
         /// </summary>
         /// <param name="options">The builder.</param>
-        public static void Configure(Action<Charting> options)
+        public void Configure(Action<Settings> options)
         {
-            options(Settings);
+            options(this);
         }
     }
 }

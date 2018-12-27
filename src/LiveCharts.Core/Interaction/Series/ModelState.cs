@@ -41,6 +41,17 @@ namespace LiveCharts.Core.Interaction.Series
         where TCoordinate : ICoordinate
     {
         /// <summary>
+        /// Initializes a new intance of the <see cref="ModelState{TModel, TCoordinate}"/> class.
+        /// </summary>
+        /// <param name="trigger"></param>
+        /// <param name="handler"></param>
+        public ModelState(Func<TModel, bool> trigger, ModelStateHandler<TModel, TCoordinate> handler)
+        {
+            Trigger = trigger;
+            Handler = handler;
+        }
+
+        /// <summary>
         /// Gets or sets the condition.
         /// </summary>
         /// <value>

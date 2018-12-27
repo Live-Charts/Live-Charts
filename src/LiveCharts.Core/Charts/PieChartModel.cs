@@ -48,22 +48,25 @@ namespace LiveCharts.Core.Charts
         /// <param name="view">The chart view.</param>
         public PieChartModel(IChartView view) : base(view)
         {
-            Charting.BuildFromTheme((IPieChartView) view);
+            Global.Settings.BuildFromTheme((IPieChartView) view);
         }
 
         /// <inheritdoc />
         protected override int DimensionsCount => 2;
 
-        public override float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null)
+        /// <inheritdoc />
+        public override float ScaleToUi(double dataValue, Plane plane, float[]? sizeVector = null)
         {
             throw new NotImplementedException();
         }
 
-        public override double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
+        /// <inheritdoc />
+        public override double ScaleFromUi(float pixelsValue, Plane plane, float[]? sizeVector = null)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         protected override PointF GetTooltipLocation(IChartPoint[] points)
         {
             var p = points[0];

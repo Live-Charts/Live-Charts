@@ -47,7 +47,7 @@ namespace LiveCharts.Core.DataSeries
     /// The scatter series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate, TPointShape}" />
+    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape,IBrush}" />
     /// <seealso cref="IScatterSeries" />
     public class ScatterSeries<TModel>
         : CartesianStrokeSeries<TModel, PointCoordinate, ISvgPath, IBrush>, IScatterSeries
@@ -65,8 +65,8 @@ namespace LiveCharts.Core.DataSeries
             DataLabelFormatter = coordinate =>
                 $"{Format.AsMetricNumber(coordinate.X)}, {Format.AsMetricNumber(coordinate.Y)}";
             TooltipFormatter = DataLabelFormatter;
-            Charting.BuildFromTheme<IScatterSeries>(this);
-            Charting.BuildFromTheme<ISeries<PointCoordinate>>(this);
+            Global.Settings.BuildFromTheme<IScatterSeries>(this);
+            Global.Settings.BuildFromTheme<ISeries<PointCoordinate>>(this);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _geometrySize = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(GeometrySize));
             }
         }
 
@@ -110,7 +110,7 @@ namespace LiveCharts.Core.DataSeries
 
             float r = (float)GeometrySize * .5f;
 
-            ChartPoint<TModel, PointCoordinate, ISvgPath> previous = null;
+            ChartPoint<TModel, PointCoordinate, ISvgPath>? previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
@@ -151,11 +151,11 @@ namespace LiveCharts.Core.DataSeries
                 Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
 
                 current.InteractionArea = new RectangleInteractionArea(
-                    new RectangleF(
+                    new RectangleD(
                         vm.Location.X,
                         vm.Location.Y,
-                        (float)GeometrySize,
-                        (float)GeometrySize));
+                        GeometrySize,
+                        GeometrySize));
 
                 previous = current;
                 i++;
@@ -170,9 +170,9 @@ namespace LiveCharts.Core.DataSeries
             var shape = current.Shape;
             bool isNew = current.Shape == null;
 
-            if (isNew)
+            if (shape == null)
             {
-                current.Shape = Charting.Settings.UiProvider.GetNewSvgPath(current.Chart.Model);
+                current.Shape = UIFactory.GetNewSvgPath(current.Chart.Model);
                 shape = current.Shape;
                 current.Chart.Content.AddChild(shape, true);
                 shape.Left = vm.Location.X;
@@ -192,17 +192,17 @@ namespace LiveCharts.Core.DataSeries
             if (isNew)
             {
                 shape.Animate(timeline)
-                    .Property(nameof(shape.Left), vm.Location.X + r, vm.Location.X)
-                    .Property(nameof(shape.Top), vm.Location.Y + r, vm.Location.Y)
-                    .Property(nameof(shape.Width), 0, vm.Diameter)
-                    .Property(nameof(shape.Height), 0, vm.Diameter)
+                    .Property(nameof(ISvgPath.Left), vm.Location.X + r, vm.Location.X)
+                    .Property(nameof(ISvgPath.Top), vm.Location.Y + r, vm.Location.Y)
+                    .Property(nameof(ISvgPath.Width), 0, vm.Diameter)
+                    .Property(nameof(ISvgPath.Height), 0, vm.Diameter)
                     .Begin();
             }
             else
             {
                 shape.Animate(timeline)
-                    .Property(nameof(shape.Left), shape.Left, vm.Location.X)
-                    .Property(nameof(shape.Top), shape.Top, vm.Location.Y)
+                    .Property(nameof(ISvgPath.Left), shape.Left, vm.Location.X)
+                    .Property(nameof(ISvgPath.Top), shape.Top, vm.Location.Y)
                     .Begin();
             }
         }

@@ -27,8 +27,6 @@
 using System;
 using System.Collections.Generic;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction.Events;
 using LiveCharts.Core.Interaction.Points;
@@ -43,7 +41,7 @@ namespace LiveCharts.Core.Interaction.Series
     public class ModelToCoordinateMapper<TModel, TCoordinate>
         where TCoordinate : ICoordinate
     {
-        private List<ModelState<TModel, TCoordinate>> _modelDependentActions;
+        private List<ModelState<TModel, TCoordinate>> _modelDependentActions = new List<ModelState<TModel, TCoordinate>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelToCoordinateMapper{TModel,TCoordinate}"/> class.
@@ -54,6 +52,13 @@ namespace LiveCharts.Core.Interaction.Series
         {
             PointPredicate = pointPredicate;
         }
+
+        /// <summary>
+        /// Gets an empty mapper.
+        /// </summary>
+        public static ModelToCoordinateMapper<TModel, TCoordinate> Default =>
+            new ModelToCoordinateMapper<TModel, TCoordinate>((x, y) =>
+                throw new LiveChartsException(100, typeof(TModel).Name, typeof(TCoordinate).Name));
 
         /// <summary>
         /// Gets the mapper.
@@ -68,18 +73,10 @@ namespace LiveCharts.Core.Interaction.Series
         /// </summary>
         /// <returns></returns>
         public ModelToCoordinateMapper<TModel, TCoordinate> When(
-            Func<TModel, bool> trigger, 
+            Func<TModel, bool> trigger,
             ModelStateHandler<TModel, TCoordinate> handler)
         {
-            if (_modelDependentActions == null)
-            {
-                _modelDependentActions = new List<ModelState<TModel, TCoordinate>>();
-            }
-            _modelDependentActions.Add(new ModelState<TModel, TCoordinate>
-            {
-               Trigger = trigger,
-               Handler = handler
-            });
+            _modelDependentActions.Add(new ModelState<TModel, TCoordinate>(trigger, handler));
             return this;
         }
 
@@ -87,8 +84,8 @@ namespace LiveCharts.Core.Interaction.Series
         /// Evaluates models dependent actions.
         /// </summary>
         internal void EvaluateModelDependentActions<TPointShape>(
-            TModel model, 
-            object visual, 
+            TModel model,
+            object? visual,
             ChartPoint<TModel, TCoordinate, TPointShape> chartPoint)
             where TPointShape : class, IShape
         {

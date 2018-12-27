@@ -39,6 +39,21 @@ namespace LiveCharts.Core.Interaction.Events
     public class CartesianAxisSectionArgs
     {
         /// <summary>
+        /// Initalizes a new instance of the <see cref="CartesianAxisSectionArgs"/> class.
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="plane"></param>
+        /// <param name="section"></param>
+        /// <param name="style"></param>
+        public CartesianAxisSectionArgs(IChartView view, Plane plane, Section section, ShapeStyle style)
+        {
+            ChartView = view;
+            Plane = plane;
+            Section = section;
+            Style = style;
+        }
+
+        /// <summary>
         /// Gets or sets the index of the z.
         /// </summary>
         /// <value>

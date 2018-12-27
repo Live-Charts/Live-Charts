@@ -42,7 +42,7 @@ namespace LiveCharts.Core.Animations
         /// <param name="strokeDashArray">The stroke dash array.</param>
         /// <param name="length">The length.</param>
         /// <returns></returns>
-        public static IEnumerable<double> GetAnimatedDashArray(IEnumerable<double> strokeDashArray, double length)
+        public static IEnumerable<double> GetAnimatedDashArray(IEnumerable<double>? strokeDashArray, double length)
         {
             double stack = 0d;
 

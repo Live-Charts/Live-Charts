@@ -1,26 +1,20 @@
-﻿using LiveCharts.Core.Animations;
-using LiveCharts.Core.Drawing.Brushes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace LiveCharts.Core.Drawing.Shapes
 {
-    public interface IShape
+    /// <summary>
+    /// Defines a shape in the user interface.
+    /// </summary>
+    public interface IShape : IUiElement
     {
-        /// <summary>
-        /// Gets the platform specific shape.
-        /// </summary>
-        /// <value>
-        /// The shape.
-        /// </value>
-        object Shape { get; }
-
         /// <summary>
         /// Gets or sets the left.
         /// </summary>
         /// <value>
         /// The left.
         /// </value>
-        float Left { get; set; }
+        double Left { get; set; }
 
         /// <summary>
         /// Gets or sets the top.
@@ -28,7 +22,7 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// <value>
         /// The top.
         /// </value>
-        float Top { get; set; }
+        double Top { get; set; }
 
         /// <summary>
         /// Gets or sets the width.
@@ -36,7 +30,7 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// <value>
         /// The width.
         /// </value>
-        float Width { get; set; }
+        double Width { get; set; }
 
         /// <summary>
         /// Gets or sets the height.
@@ -44,23 +38,7 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// <value>
         /// The height.
         /// </value>
-        float Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the fill brush.
-        /// </summary>
-        /// <value>
-        /// The fill.
-        /// </value>
-        IBrush Fill { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke brush.
-        /// </summary>
-        /// <value>
-        /// The stroke.
-        /// </value>
-        IBrush Stroke { get; set; }
+        double Height { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -68,7 +46,7 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// <value>
         /// The stroke thickness.
         /// </value>
-        float StrokeThickness { get; set; }
+        double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the z.
@@ -84,7 +62,7 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// <value>
         /// The opacity.
         /// </value>
-        float Opacity { get; set; }
+        double Opacity { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke dash array.
@@ -92,7 +70,7 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// <value>
         /// The stroke dash array.
         /// </value>
-        IEnumerable<double> StrokeDashArray { get; set; }
+        IEnumerable<double>? StrokeDashArray { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke dash offset.
@@ -101,19 +79,5 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// The stroke dash offset.
         /// </value>
         double StrokeDashOffset { get; set; }
-
-        /// <summary>
-        /// Returns an animation builder for the given time line.
-        /// </summary>
-        /// <param name="timeline">The timeline.</param>
-        /// <returns></returns>
-        IAnimationBuilder Animate(TimeLine timeline);
-
-        /// <summary>
-        /// Paints the shape with the given stroke and fill.
-        /// </summary>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="fill">The fill.</param>
-        void Paint(IBrush stroke, IBrush fill);
     }
 }

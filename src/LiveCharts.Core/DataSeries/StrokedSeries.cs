@@ -50,31 +50,31 @@ namespace LiveCharts.Core.DataSeries
         : Series<TModel, TCoordinate, TPointShape>, IStrokeSeries
         where TCoordinate : ICoordinate
         where TPointShape : class, IShape
-        where TBrush : IBrush
+        where TBrush : class, IBrush
     {
-        private TBrush _stroke;
+        private TBrush? _stroke;
         private float _strokeThickness;
-        private TBrush _fill;
-        private IEnumerable<double> _strokeDashArray;
+        private TBrush? _fill;
+        private IEnumerable<double>? _strokeDashArray;
 
         /// <inheritdoc />
         protected StrokeSeries()
         {
-            Charting.BuildFromTheme<IStrokeSeries>(this);
+            Global.Settings.BuildFromTheme<IStrokeSeries>(this);
         }
 
         /// <inheritdoc />
-        public TBrush Stroke
+        public TBrush? Stroke
         {
             get => _stroke;
             set
             {
                 _stroke = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Stroke));
             }
         }
 
-        IBrush IStrokeSeries.Stroke { get => _stroke; set => Stroke = (TBrush)value; }
+        IBrush? IStrokeSeries.Stroke { get => _stroke; set => Stroke = (TBrush?) value; }
 
         /// <inheritdoc />
         public float StrokeThickness
@@ -83,48 +83,33 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _strokeThickness = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(StrokeThickness));
             }
         }
 
         /// <inheritdoc />
-        public IEnumerable<double> StrokeDashArray
+        public IEnumerable<double>? StrokeDashArray
         {
             get => _strokeDashArray;
             set
             {
                 _strokeDashArray = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(StrokeDashArray));
             }
         }
 
         /// <inheritdoc />
-        public TBrush Fill
+        public TBrush? Fill
         {
             get => _fill;
             set
             {
                 _fill = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Fill));
             }
         }
 
-        IBrush IStrokeSeries.Fill { get => _fill; set => Fill = (TBrush)value; }
-
-        /// <inheritdoc />
-        public override SeriesStyle Style
-        {
-            get
-            {
-                return new SeriesStyle
-                {
-                    Fill = Fill,
-                    Stroke = Stroke,
-                    StrokeThickness = StrokeThickness,
-                    StrokeDashArray = StrokeDashArray?.Select(x => (float) x)
-                };
-            }
-        }
+        IBrush? IStrokeSeries.Fill { get => _fill; set => Fill = (TBrush?) value; }
 
         /// <inheritdoc />
         protected override void SetDefaultColors(ChartModel chart)
@@ -138,13 +123,13 @@ namespace LiveCharts.Core.DataSeries
 
             if (Stroke == null)
             {
-                Stroke = (TBrush) Charting.Settings.UiProvider.GetNewSolidColorBrush(
+                Stroke = (TBrush) UIFactory.GetNewSolidColorBrush(
                     nextColor.A, nextColor.R, nextColor.G, nextColor.B);
             }
 
             if (Fill == null)
             {
-                Fill = (TBrush) Charting.Settings.UiProvider.GetNewSolidColorBrush(
+                Fill = (TBrush) UIFactory.GetNewSolidColorBrush(
                     (byte)(DefaultFillOpacity * 255), nextColor.R, nextColor.G, nextColor.B);
             }
         }

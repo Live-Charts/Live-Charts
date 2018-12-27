@@ -44,7 +44,7 @@ namespace LiveCharts.Core.Defaults
         /// </summary>
         public ObservableModel()
         {
-            
+
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace LiveCharts.Core.Defaults
             set
             {
                 _value = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Value));
             }
         }
 
@@ -81,7 +81,7 @@ namespace LiveCharts.Core.Defaults
         /// Called when <see cref="Value"/> property changes.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

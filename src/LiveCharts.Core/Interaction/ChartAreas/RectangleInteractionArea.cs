@@ -26,6 +26,7 @@
 
 using System;
 using System.Drawing;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 
 #endregion
@@ -42,7 +43,7 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// Initializes a new instance of the <see cref="RectangleInteractionArea"/> class.
         /// </summary>
         /// <param name="rectangle">The rectangle.</param>
-        public RectangleInteractionArea(RectangleF rectangle)
+        public RectangleInteractionArea(RectangleD rectangle)
         {
             Rectangle = rectangle;
         }
@@ -53,7 +54,12 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <value>
         /// The rectangle.
         /// </value>
-        public RectangleF Rectangle { get; }
+        public RectangleD Rectangle { get; }
+
+        /// <summary>
+        /// Gets an empty intance.
+        /// </summary>
+        public static RectangleInteractionArea Empty => new RectangleInteractionArea(new RectangleD(new PointD(0, 0), new SizeD(0, 0)));
 
         /// <inheritdoc />
         public override bool Contains(PointF pointerLocation, ToolTipSelectionMode selectionMode)
@@ -80,17 +86,17 @@ namespace LiveCharts.Core.Interaction.ChartAreas
         /// <inheritdoc />
         public override float DistanceTo(PointF pointerLocation, ToolTipSelectionMode selectionMode)
         {
-            float x = pointerLocation.X;
-            float y = pointerLocation.Y;
+            var x = pointerLocation.X;
+            var y = pointerLocation.Y;
 
             switch (selectionMode)
             {
                 case ToolTipSelectionMode.SharedXy:
-                    return (float) Math.Sqrt(Math.Pow(x - Rectangle.Left, 2) + Math.Pow(y - Rectangle.Top, 2));
+                    return (float)Math.Sqrt(Math.Pow(x - Rectangle.Left, 2) + Math.Pow(y - Rectangle.Top, 2));
                 case ToolTipSelectionMode.SharedX:
-                    return Math.Abs(x - Rectangle.Left);
+                    return Math.Abs(x - (float)Rectangle.Left);
                 case ToolTipSelectionMode.SharedY:
-                    return Math.Abs(y - Rectangle.Top);
+                    return Math.Abs(y - (float)Rectangle.Top);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(selectionMode), selectionMode, null);
             }

@@ -67,25 +67,33 @@ namespace LiveCharts.Core.Drawing.Brushes
                         {
                             // AliceBlue,240,248,255
                             string[] item = x.Split(',');
-                            return new
+                            return new Color
                             {
-                                name = item[0],
-                                r = byte.Parse(item[1]),
-                                g = byte.Parse(item[2]),
-                                b = byte.Parse(item[3])
+                                Name = item[0],
+                                R = byte.Parse(item[1]),
+                                G = byte.Parse(item[2]),
+                                B = byte.Parse(item[3])
                             };
                         }).ToDictionary(
-                            x => x.name,
-                            x => new[] { x.r, x.g, x.b });
+                            x => x.Name,
+                            x => new[] { x.R, x.G, x.B });
                 }
 
                 return _b;
             }
         }
 
+        private struct Color
+        {
+            public string Name { get; set; }
+            public byte R { get; set; }
+            public byte G { get; set; }
+            public byte B { get; set; }
+        }
+
         private static ISolidColorBrush GetNewBrushForUi(byte[] components)
         {
-            return Charting.Settings.UiProvider.GetNewSolidColorBrush(255, components[0], components[1], components[2]);
+            return UIFactory.GetNewSolidColorBrush(255, components[0], components[1], components[2]);
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

@@ -38,6 +38,7 @@ namespace LiveCharts.Core.Interaction.Events
     /// Disposing resource delegate.
     /// </summary>
     /// <param name="view">The view.</param>
-    /// <param name="instance">The sender instance.</param>
-    public delegate void DisposingResourceHandler(IChartView view, object instance, bool force);
+    /// <param name="sender">The sender instance.</param>
+    /// /// <param name="force">Indicates if the update is forced.</param>
+    public delegate void DisposingResourceHandler(IChartView view, object sender, bool force);
 }

@@ -1,25 +1,14 @@
-﻿using System.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Styles;
+﻿using LiveCharts.Core.Drawing.Styles;
+using System.Drawing;
 using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
 
 namespace LiveCharts.Core.Drawing.Shapes
 {
-    public interface IUiElement
+    /// <summary>
+    /// Defines a label in the user interface.
+    /// </summary>
+    public interface ILabel : IUiElement
     {
-
-    }
-
-    public interface ILabel
-    {
-        /// <summary>
-        /// Gets the platform specific shape.
-        /// </summary>
-        /// <value>
-        /// The shape.
-        /// </value>
-        object Shape { get; }
-
         /// <summary>
         /// Gets or sets the left.
         /// </summary>
@@ -75,12 +64,6 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// The font weight.
         /// </value>
         FontWeight FontWeight { get; set; }
-
-        /// <summary>
-        /// Paints the label with the given brush.
-        /// </summary>
-        /// <param name="brush">The brush.</param>
-        void Paint(IBrush brush);
 
         /// <summary>
         /// Measures this instance.

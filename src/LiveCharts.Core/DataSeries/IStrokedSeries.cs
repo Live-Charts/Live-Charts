@@ -43,7 +43,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The fill.
         /// </value>
-        IBrush Fill { get; set; }
+        IBrush? Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke.
@@ -51,7 +51,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The stroke.
         /// </value>
-        IBrush Stroke { get; set; }
+        IBrush? Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -67,6 +67,6 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The stroke dash array.
         /// </value>
-        IEnumerable<double> StrokeDashArray { get; set; }
+        IEnumerable<double>? StrokeDashArray { get; set; }
     }
 }

@@ -75,7 +75,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _barPadding = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(BarPadding));
             }
         }
 
@@ -86,7 +86,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _maxColumnWidth = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(MaxColumnWidth));
             }
         }
 
@@ -97,7 +97,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _pivot = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Pivot));
             }
         }
 
@@ -229,9 +229,9 @@ namespace LiveCharts.Core.DataSeries
             var shape = current.Shape;
             var isNewShape = false;
 
-            if (current.Shape == null)
+            if (shape == null)
             {
-                current.Shape = Charting.Settings.UiProvider.GetNewRectangle(current.Chart.Model);
+                current.Shape = UIFactory.GetNewRectangle(current.Chart.Model);
                 shape = current.Shape;
                 current.Chart.Content.AddChild(shape, true);
                 shape.Left = vm.From.Left;
@@ -239,34 +239,6 @@ namespace LiveCharts.Core.DataSeries
                 shape.Width = vm.From.Width;
                 shape.Height = vm.From.Height;
                 isNewShape = true;
-
-                void AnimateOnDispose(IChartView view, object instance, bool force)
-                {
-                    current.Disposed -= AnimateOnDispose;
-
-                    if (force)
-                    {
-                        current.Chart.Content.DisposeChild(shape, true);
-                        //current.Chart.Content.DisposeChild(Label, true);
-                        return;
-                    }
-
-                    // if not forced, animate the exit...
-
-                    var animation = shape.Animate(timeline)
-                        .Property(nameof(shape.Top), shape.Top, pivot)
-                        .Property(nameof(shape.Height), shape.Height, 0);
-
-                    animation.Then((sender, args) =>
-                    {
-                        current.Chart.Content?.DisposeChild(shape, true);
-                        // chart.Content?.DisposeChild(Label, true);
-                        animation.Dispose();
-                        animation = null;
-                    }).Begin();
-                }
-
-                current.Disposed += AnimateOnDispose;
             }
 
             // map properties
@@ -275,7 +247,7 @@ namespace LiveCharts.Core.DataSeries
             shape.ZIndex = ZIndex;
             shape.Paint(Stroke, Fill);
 
-            float radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4f;
+            var radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
             shape.XRadius = radius;
             shape.YRadius = radius;
 

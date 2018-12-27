@@ -24,6 +24,9 @@
 #endregion
 namespace LiveCharts.Core.Charts
 {
+    /// <summary>
+    /// Reperesents a pie chart view.
+    /// </summary>
     public interface IPieChartView : IChartView
     {
         /// <summary>

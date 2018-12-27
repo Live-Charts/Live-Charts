@@ -39,7 +39,7 @@ namespace Samples.Wpf.Views
             IChartView chart, IEnumerable<IChartPoint> points, EventArgs args)
         {
             // Notice event args type is different if you are using the geared package.
-            if (Charting.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
+            if (LiveCharts.Core.Charts.Settings.UiProvider.Name == "LiveCharts.Wpf.Geared")
             {
                 // ToDo: Handled events????
             }

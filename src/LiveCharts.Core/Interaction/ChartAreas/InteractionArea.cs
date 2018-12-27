@@ -24,6 +24,7 @@
 #endregion
 
 using System.Drawing;
+using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Interaction.Controls;
 
 namespace LiveCharts.Core.Interaction.ChartAreas

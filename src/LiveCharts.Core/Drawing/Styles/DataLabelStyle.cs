@@ -13,7 +13,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The color of the fore.
         /// </value>
-        public IBrush Foreground { get; set; }
+        public IBrush? Foreground { get; set; }
 
         /// <summary>
         /// Gets or sets the font of the label.
@@ -56,7 +56,8 @@ namespace LiveCharts.Core.Drawing.Styles
                 if (alpha >= 90 && alpha < 180)
                 {
                     alpha += 180;
-                } else if (alpha >= 180 && alpha < 270)
+                }
+                else if (alpha >= 180 && alpha < 270)
                 {
                     alpha -= 180;
                 }

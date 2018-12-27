@@ -64,7 +64,7 @@ namespace LiveCharts.Core.Defaults
             set
             {
                 _weight = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Weight));
             }
         }
     }

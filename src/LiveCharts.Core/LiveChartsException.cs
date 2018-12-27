@@ -36,7 +36,7 @@ namespace LiveCharts.Core
     /// <summary>
     /// An Exception thrown when there is an error related with LiveCharts.
     /// </summary>
-    /// <seealso cref="System.Exception" />
+    /// <seealso cref="Exception" />
     public sealed class LiveChartsException : Exception
     {
         private static readonly string _baseErrorUri = "http://lvcharts.net/error/";
@@ -46,13 +46,13 @@ namespace LiveCharts.Core
         /// </summary>
         /// <param name="code">the error code</param>
         /// <param name="parameters">The parameters to inject.</param>
-        public LiveChartsException(int code, params object[] parameters)
+        public LiveChartsException(int code, params object[]? parameters)
             :base(GetMessage(code, parameters))
         { 
             HelpLink = _baseErrorUri + code;
         }
 
-        private static string GetMessage(int code, object[] parameters)
+        private static string GetMessage(int code, object[]? parameters)
         {
             string message;
 

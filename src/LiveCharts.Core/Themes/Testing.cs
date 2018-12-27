@@ -45,21 +45,21 @@ namespace LiveCharts.Core.Themes
         /// </summary>
         /// <param name="charting">The charting.</param>
         /// <returns></returns>
-        public static Charting UsingTestingTheme(this Charting charting)
+        public static Settings UsingTestingTheme(this Settings charting)
         {
             var sepStyle = new ShapeStyle(
-                Charting.Settings.UiProvider.GetNewSolidColorBrush(0, 230, 230, 230),
-                Charting.Settings.UiProvider.GetNewSolidColorBrush(150, 245, 245, 245),
+                UIFactory.GetNewSolidColorBrush(255, 230, 230, 230),
+                UIFactory.GetNewSolidColorBrush(150, 245, 245, 245),
                 1,
                 null);
             var altStyle = new ShapeStyle(
-                Charting.Settings.UiProvider.GetNewSolidColorBrush(0, 220, 220, 220),
-                Charting.Settings.UiProvider.GetNewSolidColorBrush(150, 220, 220, 220),
+                UIFactory.GetNewSolidColorBrush(0, 220, 220, 220),
+                UIFactory.GetNewSolidColorBrush(150, 220, 220, 220),
                 1,
                 null);
 
             charting
-                .HasColors(new []
+                .HasColors(new[]
                 {
                     // Google's material design
                     // https://material.io/guidelines/style/color.html#color-color-palette

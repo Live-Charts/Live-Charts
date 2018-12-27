@@ -50,9 +50,9 @@ namespace LiveCharts.Core.DataSeries
     /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape, TBrush}" />
     /// <seealso cref="IHeatSeries" />
     public class HeatSeries<TModel>
-        : CartesianStrokeSeries<TModel, WeightedCoordinate, IShape, ISolidColorBrush>, IHeatSeries
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, IColoredShape, ISolidColorBrush>, IHeatSeries
     {
-        private IEnumerable<GradientStop> _gradient;
+        private IEnumerable<GradientStop>? _gradient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HeatSeries{TModel}"/> class.
@@ -63,18 +63,18 @@ namespace LiveCharts.Core.DataSeries
             DefaultFillOpacity = .2f;
             DataLabelFormatter = coordinate => $"{Format.AsMetricNumber(coordinate.Weight)}";
             TooltipFormatter = DataLabelFormatter;
-            Charting.BuildFromTheme<IHeatSeries>(this);
-            Charting.BuildFromTheme<ISeries<WeightedCoordinate>>(this);
+            Global.Settings.BuildFromTheme<IHeatSeries>(this);
+            Global.Settings.BuildFromTheme<ISeries<WeightedCoordinate>>(this);
         }
 
         /// <inheritdoc />
-        public IEnumerable<GradientStop> Gradient
+        public IEnumerable<GradientStop>? Gradient
         {
             get => _gradient;
             set
             {
                 _gradient = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Gradient));
             }
         }
 
@@ -86,8 +86,6 @@ namespace LiveCharts.Core.DataSeries
 
         /// <inheritdoc />
         public override float PointMargin => 0f;
-
-        public override SeriesStyle Style => new SeriesStyle(); // ToDo: How do we display it in the legend/tooltip ??
 
         /// <inheritdoc />
         public override void UpdateView(ChartModel chart, UpdateContext context)
@@ -123,17 +121,17 @@ namespace LiveCharts.Core.DataSeries
             float minW = context.Ranges[2][ScalesAt[2]][0];
             float maxW = context.Ranges[2][ScalesAt[2]][1];
 
-            ChartPoint<TModel, WeightedCoordinate, IShape> previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
                 AnimationLine = AnimationLine ?? chart.View.AnimationLine
             };
+
             float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
             IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
             int i = 0;
 
-            foreach (ChartPoint<TModel, WeightedCoordinate, IShape> current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, WeightedCoordinate, IColoredShape> current in GetPoints(chart.View))
             {
                 float[] p = new[]
                 {
@@ -143,8 +141,8 @@ namespace LiveCharts.Core.DataSeries
 
                 var vm = new HeatViewModel
                 {
-                    Rectangle = new RectangleF(p[xi], p[yi], wp, hp),
-                    From = ((ISolidColorBrush) current.Shape.Fill).Color,
+                    Rectangle = new RectangleD(p[xi], p[yi], wp, hp),
+                    From = current.Shape?.Color ?? Color.FromArgb(0, 255, 255, 255),
                     To = ColorInterpolation(minW, maxW, current.Coordinate.Weight)
                 };
 
@@ -163,8 +161,6 @@ namespace LiveCharts.Core.DataSeries
 
                 Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
                 current.InteractionArea = new RectangleInteractionArea(vm.Rectangle);
-
-                previous = current;
                 i++;
             }
         }
@@ -179,7 +175,7 @@ namespace LiveCharts.Core.DataSeries
 
             var nextColor = chart.GetNextColor();
 
-            Gradient = new List<GradientStop>
+            _gradient = new List<GradientStop>
             {
                 new GradientStop
                 {
@@ -196,8 +192,10 @@ namespace LiveCharts.Core.DataSeries
 
         private Color ColorInterpolation(float min, float max, float current)
         {
+            if (_gradient == null) throw new Exception($"It was not possible call {nameof(ColorInterpolation)}() method, gradient is not specified.");
+
             float currentOffset = (current - min) / (max - min);
-            IEnumerator<GradientStop> enumerator = Gradient.GetEnumerator();
+            IEnumerator<GradientStop> enumerator = _gradient.GetEnumerator();
 
             if (!enumerator.MoveNext())
             {
@@ -231,18 +229,16 @@ namespace LiveCharts.Core.DataSeries
         }
 
         private void DrawPointShape(
-            ChartPoint<TModel, WeightedCoordinate, IShape> current,
+            ChartPoint<TModel, WeightedCoordinate, IColoredShape> current,
             TimeLine timeline,
             HeatViewModel vm)
         {
-            bool isNewShape = current.Shape == null;
-
             // initialize shape
-            if (isNewShape)
+            if (current.Shape == null)
             {
-                current.Shape = Charting.Settings.UiProvider.GetNewRectangle(current.Chart.Model);
+                current.Shape = UIFactory.GetNewColoredShape(current.Chart.Model);
                 current.Chart.Content.AddChild(current.Shape, true);
-                current.Shape.Fill = Charting.Settings.UiProvider.GetNewSolidColorBrush(vm.From.A, vm.From.R, vm.From.G, vm.From.B);
+                current.Shape.Color = vm.From;
             }
 
             // map properties
@@ -253,12 +249,11 @@ namespace LiveCharts.Core.DataSeries
             current.Shape.ZIndex = ZIndex;
 
             // animate
-            var solidColorBrush = (ISolidColorBrush)current.Shape.Fill;
-            solidColorBrush.Animate(timeline)
+            current.Shape.Animate(timeline)
                 .Property(
-                    nameof(solidColorBrush.Color),
-                    solidColorBrush.Color,
-                    Color.FromArgb(vm.To.A, vm.To.R, vm.To.G, vm.To.B))
+                    nameof(IColoredShape.Color),
+                    current.Shape.Color,
+                    vm.To)
                 .Begin();
         }
     }

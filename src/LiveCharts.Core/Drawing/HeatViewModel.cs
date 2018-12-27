@@ -42,7 +42,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// The rectangle.
         /// </value>
-        public RectangleF Rectangle { get; set; }
+        public RectangleD Rectangle { get; set; }
 
         /// <summary>
         /// Gets or sets from.

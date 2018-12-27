@@ -54,13 +54,13 @@ namespace LiveCharts.Core.Charts
         protected override int DimensionsCount => 2;
 
         /// <inheritdoc />
-        public override float ScaleToUi(double dataValue, Plane plane, float[] sizeVector = null)
+        public override float ScaleToUi(double dataValue, Plane plane, float[]? sizeVector = null)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public override double ScaleFromUi(float pixelsValue, Plane plane, float[] sizeVector = null)
+        public override double ScaleFromUi(float pixelsValue, Plane plane, float[]? sizeVector = null)
         {
             throw new System.NotImplementedException();
         }

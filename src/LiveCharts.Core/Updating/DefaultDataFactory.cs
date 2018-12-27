@@ -28,8 +28,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction.Points;
 using LiveCharts.Core.Interaction.Series;
@@ -44,10 +42,12 @@ namespace LiveCharts.Core.Updating
     /// <seealso cref="IDataFactory" />
     public class DataFactory : IDataFactory
     {
+        private static readonly object _nullKey = new object();
+
         /// <inheritdoc />
         public void Fetch<TModel, TCoordinate, TPointShape>(
-            DataFactoryContext<TModel, TCoordinate> context, 
-            Dictionary<object, ChartPoint<TModel, TCoordinate, TPointShape>> tracker, 
+            DataFactoryContext<TModel, TCoordinate> context,
+            Dictionary<object, ChartPoint<TModel, TCoordinate, TPointShape>> tracker,
             out int count)
             where TCoordinate : ICoordinate
             where TPointShape : class, IShape
@@ -61,15 +61,15 @@ namespace LiveCharts.Core.Updating
             {
                 var instance = collection[index];
 
-                var key = isValueType ? index : (object) instance;
+                object key = isValueType ? index : instance ?? _nullKey;
 
                 if (!tracker.TryGetValue(key, out ChartPoint<TModel, TCoordinate, TPointShape> chartPoint))
                 {
-                    chartPoint = new ChartPoint<TModel, TCoordinate, TPointShape>();
+                    chartPoint = new ChartPoint<TModel, TCoordinate, TPointShape>(context.Series, context.Chart.View);
                     tracker.Add(key, chartPoint);
                     if (notifiesChange)
                     {
-                        var npc = (INotifyPropertyChanged) instance;
+                        var npc = (INotifyPropertyChanged)instance;
 
                         // ToDo: Evaluate memory consumption with and without observers...
                         void InvalidateOnPropertyChanged(object sender, PropertyChangedEventArgs e)

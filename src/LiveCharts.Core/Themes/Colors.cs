@@ -40,7 +40,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a custom colors array as the default series color set.
         /// </summary>
         /// <returns></returns>
-        public static Charting HasColors(this Charting settings, IEnumerable<Color> colors)
+        public static Settings HasColors(this Settings settings, IEnumerable<Color> colors)
         {
             settings.Colors.Clear();
             settings.Colors.AddRange(colors);
@@ -51,7 +51,7 @@ namespace LiveCharts.Core.Themes
         /// Uses Microsoft's metro colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting HasMetroColors(this Charting settings)
+        public static Settings HasMetroColors(this Settings settings)
         {
             settings.HasColors(new[]
             {
@@ -74,7 +74,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a white scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting HasWhiteScaleColors(this Charting settings)
+        public static Settings HasWhiteScaleColors(this Settings settings)
         {
             settings.HasColors(new[]
             {
@@ -92,7 +92,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a black scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting HasGrayScaleColors(this Charting settings)
+        public static Settings HasGrayScaleColors(this Settings settings)
         {
             settings.HasColors(new[]
             {
@@ -110,7 +110,7 @@ namespace LiveCharts.Core.Themes
         /// Uses a blue scale colors.
         /// </summary>
         /// <returns></returns>
-        public static Charting HasBlueScaleColors(this Charting settings)
+        public static Settings HasBlueScaleColors(this Settings settings)
         {
             settings.HasColors(new[]
             {

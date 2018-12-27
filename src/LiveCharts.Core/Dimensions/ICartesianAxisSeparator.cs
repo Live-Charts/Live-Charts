@@ -26,6 +26,7 @@
 
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Controls;
 using LiveCharts.Core.Interaction.Events;
@@ -53,7 +54,7 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The label.
         /// </value>
-        IMeasurableLabel Label { get; }
+        ILabel Label { get; }
 
         /// <summary>
         /// Moves the specified point1.

@@ -51,7 +51,7 @@ namespace LiveCharts.Core.DataSeries
     /// A series with a defined coordinate.
     /// </summary>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="LiveCharts.Core.DataSeries.ISeries" />
+    /// <seealso cref="global::LiveCharts.Core.DataSeries.ISeries" />
     public interface ISeries<TCoordinate> : ISeries
         where TCoordinate : ICoordinate
     {
@@ -61,7 +61,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The data label formatter.
         /// </value>
-        Func<TCoordinate, string> DataLabelFormatter { get; set; }
+        Func<TCoordinate, string>? DataLabelFormatter { get; set; }
 
         /// <summary>
         /// Gets or sets the tooltip formatter, a delegate that will build the coordinate in the tooltip.
@@ -69,7 +69,7 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The tooltip formatter.
         /// </value>
-        Func<TCoordinate, string> TooltipFormatter { get; set; }
+        Func<TCoordinate, string>? TooltipFormatter { get; set; }
     }
 
 
@@ -162,14 +162,6 @@ namespace LiveCharts.Core.DataSeries
         Geometry Geometry { get; set; }
 
         /// <summary>
-        /// Gets the series style.
-        /// </summary>
-        /// <value>
-        /// The series style.
-        /// </value>
-        SeriesStyle Style { get; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this instance is visible.
         /// </summary>
         /// <value>
@@ -255,7 +247,7 @@ namespace LiveCharts.Core.DataSeries
         /// <param name="snapToClosest">Specifies if the result should only get the closest point.</param>
         /// <param name="chart">The chart view.</param>
         /// <returns></returns>
-        IEnumerable<IChartPoint> GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest, IChartView chart);
+        IEnumerable<IChartPoint>? GetPointsAt(PointF pointerLocation, ToolTipSelectionMode selectionMode, bool snapToClosest, IChartView chart);
 
         /// <summary>
         /// Highlights a point.

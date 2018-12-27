@@ -11,7 +11,7 @@ namespace LiveCharts.Core.Interaction.Points
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="LiveCharts.Core.Interaction.Points.IChartPoint" />
+    /// <seealso cref="global::LiveCharts.Core.Interaction.Points.IChartPoint" />
     public interface IChartPoint<out TModel, out TCoordinate> : IChartPoint
         where TCoordinate : ICoordinate
     {
@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Interaction.Points
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="LiveCharts.Core.Interaction.Points.IChartPoint" />
+    /// <seealso cref="global::LiveCharts.Core.Interaction.Points.IChartPoint" />
     public interface IChartPoint
     {
         /// <summary>
@@ -53,7 +53,7 @@ namespace LiveCharts.Core.Interaction.Points
         /// <value>
         /// The instance.
         /// </value>
-        object Model { get;  }
+        object? Model { get;  }
 
         /// <summary>
         /// Gets the shape.
@@ -61,7 +61,7 @@ namespace LiveCharts.Core.Interaction.Points
         /// <value>
         /// The shape.
         /// </value>
-        IShape Shape { get; }
+        IShape? Shape { get; }
 
         /// <summary>
         /// Gets the label.
@@ -69,7 +69,7 @@ namespace LiveCharts.Core.Interaction.Points
         /// <value>
         /// The label.
         /// </value>
-        ILabel Label { get; }
+        ILabel? Label { get; }
 
         // /// <summary>
         // /// Gets the view.

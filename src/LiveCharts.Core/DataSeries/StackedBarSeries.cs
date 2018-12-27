@@ -49,7 +49,7 @@ namespace LiveCharts.Core.DataSeries
     /// The stacked bar series.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate, TPointShape}" />
+    /// <seealso cref="BaseBarSeries{TModel,TCoordinate}" />
     /// <seealso cref="IBarSeries" />
     public class StackedBarSeries<TModel> 
         : BaseBarSeries<TModel, StackedPointCoordinate>, IStackedBarSeries
@@ -64,8 +64,8 @@ namespace LiveCharts.Core.DataSeries
             DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Value);
             TooltipFormatter = coordinate =>
                 $"{Format.AsMetricNumber(coordinate.Value)} / {Format.AsMetricNumber(coordinate.TotalStack)}";
-            Charting.BuildFromTheme<IStackedBarSeries>(this);
-            Charting.BuildFromTheme<ISeries<StackedPointCoordinate>>(this);
+            Global.Settings.BuildFromTheme<IStackedBarSeries>(this);
+            Global.Settings.BuildFromTheme<ISeries<StackedPointCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -78,7 +78,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _stackIndex = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(StackIndex));
             }
         }
 
@@ -133,18 +133,18 @@ namespace LiveCharts.Core.DataSeries
             if (current.Shape == null)
             {
                 var initialRectangle = chart.InvertXy
-                    ? new RectangleF(
+                    ? new RectangleD(
                         columnStart,
                         location[h] + byBarOffset[1] + positionOffset[1],
-                        0f,
+                        0,
                         Math.Abs(difference[h]))
-                    : new RectangleF(
+                    : new RectangleD(
                         location[w] + byBarOffset[0] + positionOffset[0],
                         columnStart,
                         Math.Abs(difference[w]),
-                        0f);
+                        0);
                 return new RectangleViewModel(
-                    RectangleF.Empty, 
+                    RectangleD.Empty, 
                     initialRectangle, 
                     orientation);
             }
@@ -156,8 +156,8 @@ namespace LiveCharts.Core.DataSeries
                 float l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
                 return new RectangleViewModel(
-                    new RectangleF(current.Shape.Left, current.Shape.Top, current.Shape.Width, current.Shape.Height), 
-                    new RectangleF(
+                    new RectangleD(current.Shape.Left, current.Shape.Top, current.Shape.Width, current.Shape.Height), 
+                    new RectangleD(
                         location[w] + byBarOffset[0] + positionOffset[0],
                         y + (l - y) * current.Coordinate.From / stack,
                         Math.Abs(difference[w]),
@@ -170,8 +170,8 @@ namespace LiveCharts.Core.DataSeries
                 float l = columnCorner1[1] > columnCorner2[1] ? columnCorner1[1] : columnCorner2[1];
 
                 return new RectangleViewModel(
-                    new RectangleF(current.Shape.Left, current.Shape.Top, current.Shape.Width, current.Shape.Height),
-                    new RectangleF(
+                    new RectangleD(current.Shape.Left, current.Shape.Top, current.Shape.Width, current.Shape.Height),
+                    new RectangleD(
                         x + (l - x) * current.Coordinate.From / stack,
                         location[h] + byBarOffset[1] + positionOffset[1],
                         Math.Abs(difference[w]) * value / stack,

@@ -27,6 +27,7 @@
 #endregion
 
 using LiveCharts.Core.Drawing.Brushes;
+using System.Collections.Generic;
 
 namespace LiveCharts.Core.Drawing.Styles
 {
@@ -42,7 +43,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="strokeDashArray">The stroke dash array.</param>
-        public ShapeStyle(IBrush stroke, IBrush fill, float strokeThickness, float[] strokeDashArray)
+        public ShapeStyle(IBrush? stroke, IBrush? fill, float strokeThickness, IEnumerable<double>? strokeDashArray)
         {
             Stroke = stroke;
             Fill = fill;
@@ -56,7 +57,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The stroke.
         /// </value>
-        public IBrush Stroke { get; }
+        public IBrush? Stroke { get; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -64,7 +65,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The stroke thickness.
         /// </value>
-        public float StrokeThickness { get;}
+        public double StrokeThickness { get; }
 
         /// <summary>
         /// Gets or sets the stroke dash array.
@@ -72,7 +73,7 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The stroke dash array.
         /// </value>
-        public float[] StrokeDashArray { get; set; }
+        public IEnumerable<double>? StrokeDashArray { get; set; }
 
         /// <summary>
         /// Gets or sets the fill.
@@ -80,6 +81,15 @@ namespace LiveCharts.Core.Drawing.Styles
         /// <value>
         /// The fill.
         /// </value>
-        public IBrush Fill { get; }
+        public IBrush? Fill { get; }
+
+        /// <summary>
+        /// Gets the default shape style.
+        /// </summary>
+        public static ShapeStyle Default => new ShapeStyle(
+            UIFactory.GetNewSolidColorBrush(255, 0, 0, 0),
+            UIFactory.GetNewSolidColorBrush(255, 0, 0, 0),
+            2,
+            null);
     }
 }

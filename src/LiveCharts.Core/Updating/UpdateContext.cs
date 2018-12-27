@@ -38,7 +38,7 @@ namespace LiveCharts.Core.Updating
     /// The update context class lives as the update is done once the chart is updated, all the resources consumed by 
     /// this class update should be released, it should also lazy load the resources as the series needs them.
     /// </summary>
-    public class UpdateContext : IDisposable
+    public class UpdateContext
     {
         private IEnumerable<ISeries> _series;
         private double _maxPushOut = double.NaN;
@@ -54,6 +54,7 @@ namespace LiveCharts.Core.Updating
             _barsGroups = new Dictionary<int, BarsGroup>();
             PointLength = new[] {0f, 0f};
             PointMargin = 0d;
+            Ranges = new float[0][][];
         }
 
         /// <summary>
@@ -208,18 +209,6 @@ namespace LiveCharts.Core.Updating
             }
 
             return new Tuple<Dictionary<IBarSeries, int>, int>(result, barIndex);
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        public void Dispose()
-        {
-            _series = null;
-            _barsGroups = null;
-            PointLength = null;
-            Ranges = null;
         }
     }
 }

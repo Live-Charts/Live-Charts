@@ -30,7 +30,7 @@
 namespace LiveCharts.Core.Drawing.Shapes
 {
     /// <summary>
-    /// Defines a path.
+    /// Defines a path in the user interface.
     /// </summary>
     public interface ICartesianPath : IShape
     {
@@ -63,9 +63,6 @@ namespace LiveCharts.Core.Drawing.Shapes
         /// </summary>
         /// <param name="segment">The segment instance.</param>
         /// <param name="index">The index to insert the segment at.</param>
-        /// <param name="p1">The p1.</param>
-        /// <param name="p2">The p2.</param>
-        /// <param name="p3">The p3.</param>
         void InsertSegment(IBezierSegment segment, int index);
 
         /// <summary>

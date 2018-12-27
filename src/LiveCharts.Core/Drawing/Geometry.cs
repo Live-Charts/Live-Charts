@@ -34,7 +34,7 @@ namespace LiveCharts.Core.Drawing
         private Geometry(bool isEmpty)
         {
             _isEmpty = isEmpty;
-            Data = null;
+            Data = "";
         }
 
         /// <summary>

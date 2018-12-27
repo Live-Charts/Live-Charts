@@ -42,7 +42,7 @@ namespace LiveCharts.Core.Drawing
         /// <param name="from">From.</param>
         /// <param name="to">To.</param>
         /// <param name="orientation">The orientation property.</param>
-        public RectangleViewModel(RectangleF from, RectangleF to, Orientation orientation)
+        public RectangleViewModel(RectangleD from, RectangleD to, Orientation orientation)
         {
             From = from;
             To = to;
@@ -63,7 +63,7 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// From.
         /// </value>
-        public RectangleF From { get; set; }
+        public RectangleD From { get; set; }
 
         /// <summary>
         /// Gets or sets to.
@@ -71,6 +71,6 @@ namespace LiveCharts.Core.Drawing
         /// <value>
         /// To.
         /// </value>
-        public RectangleF To { get; set; }
+        public RectangleD To { get; set; }
     }
 }

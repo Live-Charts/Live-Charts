@@ -47,7 +47,7 @@ namespace LiveCharts.Core.Interaction.Events
         /// <param name="shape">The visual.</param>
         /// <param name="point">the point.</param>
         public ModelStateEventArgs(
-            object shape,
+            object? shape,
             IChartPoint<TModel, TCoordinate> point)
         {
             Shape = shape;
@@ -68,6 +68,6 @@ namespace LiveCharts.Core.Interaction.Events
         /// <value>
         /// The visual.
         /// </value>
-        public object Shape { get; }
+        public object? Shape { get; }
     }
 }

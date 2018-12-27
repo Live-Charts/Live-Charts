@@ -43,17 +43,17 @@ namespace Samples.Wpf
     {
         public App()
         {
-            Charting.Configure(charting =>
+            LiveCharts.Core.Charts.Configure((System.Action<LiveCharts.Core.Charts>)((LiveCharts.Core.Charts charting) =>
             {
-                charting
+                LiveCharts.Wpf.Config.UsingWpf(charting
                     .LearnPrimitiveAndDefaultTypes()
                     .SetTheme(Themes.MaterialDesign)
-                    .UsingWpf()
+)
 #if GEARED
                     .UsingWpfGeared()
 #endif
                     ;
-            });
+            }));
         }
     }
 }

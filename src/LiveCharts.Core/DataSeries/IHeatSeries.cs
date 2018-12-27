@@ -43,6 +43,6 @@ namespace LiveCharts.Core.DataSeries
         /// <value>
         /// The gradient stop collection.
         /// </value>
-        IEnumerable<GradientStop> Gradient { get; set; }
+        IEnumerable<GradientStop>? Gradient { get; set; }
     }
 }

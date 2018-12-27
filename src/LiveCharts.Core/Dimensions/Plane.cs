@@ -27,14 +27,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 using LiveCharts.Core.Charts;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Brushes;
 using LiveCharts.Core.Drawing.Styles;
 using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Dimensions;
 using LiveCharts.Core.Interaction.Events;
 using Font = LiveCharts.Core.Drawing.Styles.Font;
 using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
@@ -48,14 +45,14 @@ namespace LiveCharts.Core.Dimensions
     /// </summary>
     public class Plane : IResource, INotifyPropertyChanged
     {
-        private float[] _pointLength;
+        private float[] _pointLength = new float[0];
         private Func<double, string> _labelFormatter;
         private double _maxValue;
         private double _minValue;
-        private string _title;
-        private IList<string> _labels;
+        private string _title = string.Empty;
+        private IList<string>? _labels;
         private bool _reverse;
-        private IEnumerable<Section> _sections;
+        private IEnumerable<Section>? _sections;
         private double _labelsRotation;
         private Font _labelsFont;
         private IBrush _labelsForeground;
@@ -74,8 +71,8 @@ namespace LiveCharts.Core.Dimensions
             _showLabels = true;
             _labelFormatter = Format.AsMetricNumber;
             _labelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            _labelsForeground = Charting.Settings.UiProvider.GetNewSolidColorBrush(255, 30, 30, 30);
-            Charting.BuildFromTheme(this);
+            _labelsForeground = UIFactory.GetNewSolidColorBrush(255, 30, 30, 30);
+            Global.Settings.BuildFromTheme(this);
         }
 
         /// <summary>
@@ -106,7 +103,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _maxValue = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(MaxValue));
             }
         }
 
@@ -132,7 +129,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _minValue = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(MinValue));
             }
         }
 
@@ -152,7 +149,7 @@ namespace LiveCharts.Core.Dimensions
         /// if <see cref="PointLength"/> is not null, <see cref="ActualPointLength"/> is equals
         /// to <see cref="PointLength"/> property.
         /// </summary>
-        public float[] ActualPointLength { get; internal set; }
+        public float[] ActualPointLength { get; internal set; } = new float[0];
 
         /// <summary>
         /// Gets or sets the <see cref="PointLength"/>, this property represents the space taken by a single point,
@@ -170,7 +167,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _pointLength = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(PointLength));
             }
         }
 
@@ -196,7 +193,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _pointMargin = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(PointMargin));
             }
         }
 
@@ -212,7 +209,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _title = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Title));
             }
         }
 
@@ -228,7 +225,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _showLabels = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowLabels));
             }
         }
 
@@ -238,13 +235,13 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The labels.
         /// </value>
-        public IList<string> Labels
+        public IList<string>? Labels
         {
             get => _labels;
             set
             {
                 _labels = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Labels));
             }
         }
 
@@ -260,7 +257,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _labelsFont = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(LabelsFont));
             }
         }
 
@@ -276,7 +273,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _labelsForeground = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(LabelsForeground));
             }
         }
 
@@ -292,7 +289,33 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _labelsRotation = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(LabelsRotation));
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual labels rotation.
+        /// </summary>
+        /// <value>
+        /// The actual labels rotation.
+        /// </value>
+        public double ActualLabelsRotation
+        {
+            get
+            {
+                // we only use 2 quadrants...
+                // see appendix/labels.1.png
+                double alpha = LabelsRotation % 360;
+                if (alpha < 0) alpha += 360;
+                if (alpha >= 90 && alpha < 180)
+                {
+                    alpha += 180;
+                }
+                else if (alpha >= 180 && alpha < 270)
+                {
+                    alpha -= 180;
+                }
+                return alpha;
             }
         }
 
@@ -308,7 +331,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _labelsPadding = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(LabelsPadding));
             }
         }
 
@@ -324,7 +347,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _labelFormatter = value ?? throw new LiveChartsException(105);
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(LabelFormatter));
             }
         }
 
@@ -334,13 +357,13 @@ namespace LiveCharts.Core.Dimensions
         /// <value>
         /// The sections.
         /// </value>
-        public IEnumerable<Section> Sections
+        public IEnumerable<Section>? Sections
         {
             get => _sections;
             set
             {
                 _sections = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Sections));
             }
         }
 
@@ -364,7 +387,7 @@ namespace LiveCharts.Core.Dimensions
             set
             {
                 _reverse = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Reverse));
             }
         }
 
@@ -422,15 +445,6 @@ namespace LiveCharts.Core.Dimensions
         }
 
         /// <summary>
-        /// The default separator provider.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IPlaneViewProvider DefaultViewProvider()
-        {
-            throw new LiveChartsException(140 ,ToString());
-        }
-
-        /// <summary>
         /// Called when [range changed].
         /// </summary>
         /// <param name="plane">The plane.</param>
@@ -463,7 +477,7 @@ namespace LiveCharts.Core.Dimensions
         /// <inheritdoc />
         public event DisposingResourceHandler Disposed;
 
-        object IResource.UpdateId { get; set; }
+        object IResource.UpdateId { get; set; } = new object();
 
         /// <inheritdoc />
         void IResource.Dispose(IChartView view, bool force)
@@ -483,7 +497,7 @@ namespace LiveCharts.Core.Dimensions
         /// Called when a property changes.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

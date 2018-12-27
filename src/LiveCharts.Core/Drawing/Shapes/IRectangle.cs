@@ -1,5 +1,8 @@
 ﻿namespace LiveCharts.Core.Drawing.Shapes
 {
+    /// <summary>
+    /// De3fines a rectangle shape in the user interface.
+    /// </summary>
     public interface IRectangle : IShape
     {
         /// <summary>
@@ -8,7 +11,7 @@
         /// <value>
         /// The x radius.
         /// </value>
-        float XRadius { get; set; }
+        double XRadius { get; set; }
 
         /// <summary>
         /// Gets or sets the y radius.
@@ -16,6 +19,6 @@
         /// <value>
         /// The y radius.
         /// </value>
-        float YRadius { get; set; }
+        double YRadius { get; set; }
     }
 }

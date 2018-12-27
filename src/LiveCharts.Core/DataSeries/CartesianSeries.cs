@@ -92,7 +92,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 ScalesAt[0] = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ScalesXAt));
             }
         }
 
@@ -108,7 +108,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 ScalesAt[1] = value; 
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ScalesYAt));
             }
         }
 
@@ -119,7 +119,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _zIndex = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ZIndex));
             }
         }
     }

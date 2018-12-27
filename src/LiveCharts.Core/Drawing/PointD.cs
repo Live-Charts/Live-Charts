@@ -31,5 +31,27 @@
         /// The y.
         /// </value>
         public double Y { get; set; }
+
+        /// <inheritdoc></inheritdoc>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PointD))
+            {
+                return false;
+            }
+
+            var d = (PointD)obj;
+            return X == d.X &&
+                   Y == d.Y;
+        }
+
+        /// <inheritdoc></inheritdoc>
+        public override int GetHashCode()
+        {
+            var hashCode = 1861411795;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            return hashCode;
+        }
     }
 }

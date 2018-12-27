@@ -33,10 +33,10 @@ using LiveCharts.Core.Charts;
 using LiveCharts.Core.Coordinates;
 using LiveCharts.Core.Drawing;
 using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.ChartAreas;
 using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
 using LiveCharts.Core.Updating;
 
 #endregion
@@ -47,7 +47,7 @@ namespace LiveCharts.Core.DataSeries
     /// The Pie series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="LiveCharts.Core.DataSeries.Series{TModel, PieCoordinate, PieViewModel, TSeries, TPointShape, TPointLabel}" />
+    /// <seealso cref="DataSeries.Series{TModel, PieCoordinate, TPointShape}" />
     /// <seealso cref="IPieSeries" />
     public class PieSeries<TModel> :
         StrokeSeries<TModel, StackedPointCoordinate, ISlice, IBrush>, IPieSeries
@@ -63,8 +63,8 @@ namespace LiveCharts.Core.DataSeries
             DataLabelFormatter = coordinate => Format.AsMetricNumber(coordinate.Value);
             TooltipFormatter = coordinate =>
                 $"{Format.AsMetricNumber(coordinate.Value)} / {Format.AsMetricNumber(coordinate.TotalStack)}";
-            Charting.BuildFromTheme<IPieSeries>(this);
-            Charting.BuildFromTheme<ISeries<StackedPointCoordinate>>(this);
+            Global.Settings.BuildFromTheme<IPieSeries>(this);
+            Global.Settings.BuildFromTheme<ISeries<StackedPointCoordinate>>(this);
         }
 
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _pushOut = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(PushOut));
             }
         }
 
@@ -85,7 +85,7 @@ namespace LiveCharts.Core.DataSeries
             set
             {
                 _cornerRadius = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(CornerRadius));
             }
         }
 
@@ -120,7 +120,7 @@ namespace LiveCharts.Core.DataSeries
                     ? 0f
                     : (float)pieChart.StartingRotationAngle);
 
-            ChartPoint<TModel, StackedPointCoordinate, ISlice> previous = null;
+            ChartPoint<TModel, StackedPointCoordinate, ISlice>? previous = null;
             var timeLine = new TimeLine
             {
                 Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
@@ -184,12 +184,11 @@ namespace LiveCharts.Core.DataSeries
            PieViewModel vm)
         {
             var shape = current.Shape;
-            bool isNew = shape == null;
+            var isNew = shape == null;
 
-            // initialize shape
-            if (isNew)
+            if (shape == null)
             {
-                current.Shape = Charting.Settings.UiProvider.GetNewSlice(current.Chart.Model);
+                current.Shape = UIFactory.GetNewSlice(current.Chart.Model);
                 shape = current.Shape;
                 current.Chart.Content.AddChild(shape, true);
                 shape.Left = current.Chart.Model.DrawAreaSize[0] / 2 - vm.To.OuterRadius;
@@ -218,15 +217,15 @@ namespace LiveCharts.Core.DataSeries
             {
                 shape.Radius = vm.To.OuterRadius * .8;
                 shapeAnimation
-                    .Property(nameof(shape.Radius), vm.From.InnerRadius, vm.To.OuterRadius)
-                    .Property(nameof(shape.Rotation), 0, vm.To.Rotation)
-                    .Property(nameof(shape.Wedge), 0, vm.To.Wedge);
+                    .Property(nameof(ISlice.Radius), vm.From.InnerRadius, vm.To.OuterRadius)
+                    .Property(nameof(ISlice.Rotation), 0, vm.To.Rotation)
+                    .Property(nameof(ISlice.Wedge), 0, vm.To.Wedge);
             }
             else
             {
                 shapeAnimation
-                    .Property(nameof(shape.Rotation), shape.Rotation, vm.To.Rotation)
-                    .Property(nameof(shape.Wedge), shape.Wedge, vm.To.Wedge);
+                    .Property(nameof(ISlice.Rotation), shape.Rotation, vm.To.Rotation)
+                    .Property(nameof(ISlice.Wedge), shape.Wedge, vm.To.Wedge);
             }
 
             shapeAnimation.Begin();

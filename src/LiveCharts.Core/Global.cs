@@ -1,7 +1,7 @@
-#region License
+﻿#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -24,24 +24,19 @@
 #endregion
 #region
 
-using System.Drawing;
-using LiveCharts.Core.Drawing.Styles;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Controls
+namespace LiveCharts.Core
 {
     /// <summary>
-    /// A control that its able to measure itself.
+    /// The global LiveCharts Configuration
     /// </summary>
-    public interface IMeasurableLabel
+    public static class Global
     {
         /// <summary>
-        /// Measures the specified content (without rotation) and maps the style to the control properties.
+        /// Gets or sets the current LivbeCharts settings.
         /// </summary>
-        /// <param name="content">The content.</param>
-        /// <param name="labelStyle">The label style.</param>
-        /// <returns></returns>
-        SizeF Update(object content, LabelStyle labelStyle);
+        public static Settings Settings { get; set; }
     }
 }

@@ -24,99 +24,88 @@
 #endregion
 #region
 
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Dimensions;
-using LiveCharts.Core.Interaction.Series;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction
+using LiveCharts.Core.Charts;
+using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Core.Drawing.Shapes;
+using System;
+
+namespace LiveCharts.Core
 {
     /// <summary>
-    /// Defines a drawing provider.
+    /// Defines the user interface factory.
     /// </summary>
-    public interface IUiProvider
+    public static class UIFactory
     {
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get; }
+        internal static IChartContent GetNewChartContent(IChartView view) => WhenDrawingChartContents(view);
+
+        internal static ILabel GetNewLabel(ChartModel context) => WhenDrawingLabels(context);
+
+        internal static ICartesianPath GetNewCartesianPath(ChartModel context) => WhenDrawingCartesianPaths(context);
+
+        internal static IRectangle GetNewRectangle(ChartModel context) => WhenDrawingRectangles(context);
+
+        internal static IColoredShape GetNewColoredShape(ChartModel context) => WhenDrawingColoredShapes(context);
+
+        internal static ISvgPath GetNewSvgPath(ChartModel context) => WhenDrawingSvgPaths(context);
+
+        internal static IBezierSegment GetNewBezierSegment(ChartModel context) => WhenDrawingBezierSegments(context);
+
+        internal static ISlice GetNewSlice(ChartModel context) => WhenDrawingSlices(context);
+
+        internal static ISolidColorBrush GetNewSolidColorBrush(byte alpha, byte red, byte green, byte blue) => WhenPainting(alpha, red, green, blue);
 
         /// <summary>
-        /// Gets the version.
+        /// Called when a chart host is required in the UI.
         /// </summary>
-        /// <value>
-        /// The version.
-        /// </value>
-        string Version { get; }
-
-        /// <summary>
-        /// Gets the content of the chart.
-        /// </summary>
-        /// <returns></returns>
-        IChartContent GetChartContent(IChartView chart);
-
-        /// <summary>
-        /// The axis separator provider.
-        /// </summary>
-        /// <returns></returns>
-        IPlaneViewProvider GetNewPlane();
-
-        /// <summary>
-        /// Gets the new section.
-        /// </summary>
-        /// <returns></returns>
-        IPlaneViewProvider GetNewSection();
+        public static event Func<IChartView, IChartContent> WhenDrawingChartContents;
 
         /// <summary>
         /// Gets the new label.
         /// </summary>
         /// <returns></returns>
-        ILabel GetNewLabel(ChartModel context);
+        public static event Func<ChartModel, ILabel> WhenDrawingLabels;
 
         /// <summary>
         /// Gets the new path.
         /// </summary>
         /// <returns></returns>
-        ICartesianPath GetNewPath(ChartModel context);
+        public static event Func<ChartModel, ICartesianPath> WhenDrawingCartesianPaths;
 
         /// <summary>
         /// Gets a new rectangle.
         /// </summary>
         /// <returns></returns>
-        IRectangle GetNewRectangle(ChartModel context);
+        public static event Func<ChartModel, IRectangle> WhenDrawingRectangles;
+
+        /// <summary>
+        /// Called when a colored shape needs to be added to the UI.
+        /// </summary>
+        public static event Func<ChartModel, IColoredShape> WhenDrawingColoredShapes;
 
         /// <summary>
         /// Gets the new sg path.
         /// </summary>
         /// <returns></returns>
-        ISvgPath GetNewSvgPath(ChartModel context);
+        public static event Func<ChartModel, ISvgPath> WhenDrawingSvgPaths;
 
         /// <summary>
         /// Gets the new bezier segment.
         /// </summary>
         /// <returns></returns>
-        IBezierSegment GetNewBezierSegment(ChartModel context);
+        public static event Func<ChartModel, IBezierSegment> WhenDrawingBezierSegments;
 
         /// <summary>
         /// Gets the new slice.
         /// </summary>
         /// <returns></returns>
-        ISlice GetNewSlice(ChartModel context);
+        public static event Func<ChartModel, ISlice> WhenDrawingSlices;
 
         /// <summary>
-        /// Gets the new solid color brush.
+        /// Called when a solid color brush is required, the parameters are alpha, red, green and blue.
         /// </summary>
-        /// <returns></returns>
-        ISolidColorBrush GetNewSolidColorBrush(byte alpha, byte red, byte green, byte blue);
+        public static event Func<byte, byte, byte, byte, ISolidColorBrush> WhenPainting;
     }
 }
