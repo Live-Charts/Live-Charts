@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 
 #endregion
 
-namespace LiveCharts.Core.Defaults
+namespace LiveCharts.Defaults
 {
     /// <summary>
     /// Defines an observable model, this object notifies the chart to update when the value property changes.

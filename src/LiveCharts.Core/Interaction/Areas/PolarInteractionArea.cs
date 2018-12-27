@@ -28,11 +28,11 @@
 using System;
 using System.Drawing;
 using System.Net.Sockets;
-using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Interaction.Controls;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.ChartAreas
+namespace LiveCharts.Interaction.Areas
 {
     /// <summary>
     /// The polar interaction area class.

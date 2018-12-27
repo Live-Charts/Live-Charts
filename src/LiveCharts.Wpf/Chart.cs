@@ -354,9 +354,9 @@ namespace LiveCharts.Wpf
             }
         }
 
-        public IChartContent Content
+        public IChartCanvas Content
         {
-            get => (IChartContent) VisualDrawMargin.Content;
+            get => (IChartCanvas) VisualDrawMargin.Content;
             set => VisualDrawMargin.Content = value;
         }
 

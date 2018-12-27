@@ -23,9 +23,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using LiveCharts.Core.Charts;
+using LiveCharts.Charts;
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// The Chart event handler.

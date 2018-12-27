@@ -30,27 +30,27 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Collections;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Events;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Updating;
-using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Collections;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Events;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Interaction.Series;
+using LiveCharts.Updating;
+using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Drawing.Styles.Font;
+using Font = LiveCharts.Drawing.Styles.Font;
 #endif
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The series class with a defined plot model, represents a series to plot in a chart.
@@ -412,7 +412,7 @@ namespace LiveCharts.Core.DataSeries
             if (chartPoint.Label == null)
             {
                 chartPoint.Label = UIFactory.GetNewLabel(chartPoint.Chart.Model);
-                chart.Content.AddChild(chartPoint.Label, true);
+                chart.Canvas.AddChild(chartPoint.Label, true);
             }
 
             chartPoint.Label.Content = chartPoint.Series.GetDataLabel(chartPoint.Coordinate);

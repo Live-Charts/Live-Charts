@@ -25,12 +25,12 @@
 
 #region
 
-using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Drawing.Brushes;
 using System.Collections.Generic;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// The series style struct.

@@ -26,11 +26,11 @@
 #region
 
 using System;
-using LiveCharts.Core.Charts;
+using LiveCharts.Charts;
 
 #endregion
 
-namespace LiveCharts.Core.Updating
+namespace LiveCharts.Updating
 {
     /// <summary>
     /// An abstraction of the data factory context.

@@ -26,14 +26,14 @@
 
 using System;
 using System.Drawing;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Dimensions;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <summary>
     /// Represents a chart with a polar system.

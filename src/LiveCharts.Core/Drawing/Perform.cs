@@ -28,7 +28,7 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// Vector operations.

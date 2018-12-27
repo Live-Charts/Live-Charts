@@ -1,7 +1,7 @@
-﻿using LiveCharts.Core.Animations;
+﻿using LiveCharts.Animations;
 using System.Drawing;
 
-namespace LiveCharts.Core.Drawing.Brushes
+namespace LiveCharts.Drawing.Brushes
 {
     /// <summary>
     /// 

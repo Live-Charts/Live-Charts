@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace LiveCharts.Core.Drawing.Shapes
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a shape in the user interface.
     /// </summary>
-    public interface IShape : IUiElement
+    public interface IShape : IUIElement
     {
         /// <summary>
         /// Gets or sets the left.

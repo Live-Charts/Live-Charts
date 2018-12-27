@@ -28,20 +28,20 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.ChartAreas;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Areas;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The Pie series class.
@@ -190,7 +190,7 @@ namespace LiveCharts.Core.DataSeries
             {
                 current.Shape = UIFactory.GetNewSlice(current.Chart.Model);
                 shape = current.Shape;
-                current.Chart.Content.AddChild(shape, true);
+                current.Chart.Canvas.AddChild(shape, true);
                 shape.Left = current.Chart.Model.DrawAreaSize[0] / 2 - vm.To.OuterRadius;
                 shape.Top = current.Chart.Model.DrawAreaSize[1] / 2 - vm.To.OuterRadius;
                 shape.Rotation = 0f;

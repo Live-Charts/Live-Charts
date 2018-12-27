@@ -1,17 +1,17 @@
-﻿using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.ChartAreas;
+﻿using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.DataSeries;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction.Areas;
 
-namespace LiveCharts.Core.Interaction.Points
+namespace LiveCharts.Interaction.Points
 {
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="global::LiveCharts.Core.Interaction.Points.IChartPoint" />
+    /// <seealso cref="Core.Interaction.Points.IChartPoint" />
     public interface IChartPoint<out TModel, out TCoordinate> : IChartPoint
         where TCoordinate : ICoordinate
     {
@@ -35,7 +35,7 @@ namespace LiveCharts.Core.Interaction.Points
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="global::LiveCharts.Core.Interaction.Points.IChartPoint" />
+    /// <seealso cref="Core.Interaction.Points.IChartPoint" />
     public interface IChartPoint
     {
         /// <summary>

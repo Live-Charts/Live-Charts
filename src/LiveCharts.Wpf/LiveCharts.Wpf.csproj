@@ -119,9 +119,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LiveCharts.Core\LiveCharts.Core.csproj">
+    <ProjectReference Include="..\LiveCharts.Core\LiveCharts.csproj">
       <Project>{8CAF054C-FB7C-405B-889D-59048650F4B4}</Project>
-      <Name>LiveCharts.Core</Name>
+      <Name>LiveCharts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

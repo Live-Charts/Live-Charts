@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Drawing.Shapes
+﻿namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a SVG-based path in the user interface.

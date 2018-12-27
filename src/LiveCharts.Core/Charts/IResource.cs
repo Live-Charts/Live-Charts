@@ -26,9 +26,9 @@
 
 #endregion
 
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Interaction.Events;
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <summary>
     /// A resource able to erase itself from memory and/or a chart view.

@@ -27,7 +27,7 @@
 
 #endregion
 
-namespace LiveCharts.Core
+namespace LiveCharts
 {
     /// <summary>
     /// The global LiveCharts Configuration

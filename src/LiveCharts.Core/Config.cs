@@ -24,12 +24,12 @@
 #endregion
 #region
 
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Defaults;
+using LiveCharts.Coordinates;
+using LiveCharts.Defaults;
 
 #endregion
 
-namespace LiveCharts.Core
+namespace LiveCharts
 {
     /// <summary>
     /// Primitive types configuration.

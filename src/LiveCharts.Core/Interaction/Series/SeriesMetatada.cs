@@ -28,7 +28,7 @@ using System;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Series
+namespace LiveCharts.Interaction.Series
 {
     /// <summary>
     /// A class containing series information.

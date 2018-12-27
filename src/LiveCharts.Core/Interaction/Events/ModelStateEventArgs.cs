@@ -22,18 +22,15 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-#region
-
-#endregion
 
 #region
 
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Coordinates;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// The model state event arguments.

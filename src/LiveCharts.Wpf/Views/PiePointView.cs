@@ -75,8 +75,8 @@ namespace LiveCharts.Wpf.Views
         {
             if (force)
             {
-                chart.Content.DisposeChild(Shape, true);
-                chart.Content.DisposeChild(Label, true);
+                chart.Canvas.DisposeChild(Shape, true);
+                chart.Canvas.DisposeChild(Label, true);
                 _lastTimeLine = null;
                 return;
             }
@@ -87,8 +87,8 @@ namespace LiveCharts.Wpf.Views
             sliceAnimation
                 .Then((sender, args) =>
                 {
-                    chart.Content?.DisposeChild(Shape, true);
-                    chart.Content?.DisposeChild(Label, true);
+                    chart.Canvas?.DisposeChild(Shape, true);
+                    chart.Canvas?.DisposeChild(Label, true);
                     sliceAnimation.Dispose();
                     sliceAnimation = null;
                     _lastTimeLine = null;

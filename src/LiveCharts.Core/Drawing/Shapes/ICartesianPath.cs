@@ -27,7 +27,7 @@
 
 #endregion
 
-namespace LiveCharts.Core.Drawing.Shapes
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a path in the user interface.

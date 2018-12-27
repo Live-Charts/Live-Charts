@@ -29,12 +29,12 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// The heat view model.
     /// </summary>
-    public struct HeatViewModel
+    internal struct HeatViewModel
     {
         /// <summary>
         /// Gets or sets the rectangle.

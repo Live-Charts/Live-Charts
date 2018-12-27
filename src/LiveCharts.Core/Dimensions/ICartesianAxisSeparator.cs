@@ -24,16 +24,16 @@
 #endregion
 #region
 
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Dimensions
+namespace LiveCharts.Dimensions
 {
     /// <summary>
     /// Defines a separator view.

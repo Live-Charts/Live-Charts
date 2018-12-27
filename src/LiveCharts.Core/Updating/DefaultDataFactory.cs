@@ -26,15 +26,15 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Interaction.Series;
 
 #endregion
 
-namespace LiveCharts.Core.Updating
+namespace LiveCharts.Updating
 {
     /// <summary>
     /// Defines the default chart point factory.

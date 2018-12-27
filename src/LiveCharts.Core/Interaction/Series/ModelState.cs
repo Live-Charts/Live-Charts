@@ -25,12 +25,12 @@
 #region
 
 using System;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Coordinates;
+using LiveCharts.Interaction.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Series
+namespace LiveCharts.Interaction.Series
 {
     /// <summary>
     /// the model state class.

@@ -22,7 +22,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Core.Interaction.Controls
+namespace LiveCharts.Interaction.Controls
 {
     /// <summary>
     /// Chart legend available positions.

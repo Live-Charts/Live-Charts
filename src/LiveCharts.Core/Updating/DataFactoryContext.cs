@@ -25,14 +25,14 @@
 #region
 
 using System.Collections.Generic;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Interaction.Series;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.DataSeries;
+using LiveCharts.Interaction.Series;
 
 #endregion
 
-namespace LiveCharts.Core.Updating
+namespace LiveCharts.Updating
 {
     /// <summary>
     /// Point factory options class.

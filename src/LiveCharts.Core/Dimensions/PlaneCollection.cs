@@ -1,6 +1,6 @@
-﻿using LiveCharts.Core.Collections;
+﻿using LiveCharts.Collections;
 
-namespace LiveCharts.Core.Dimensions
+namespace LiveCharts.Dimensions
 {
     /// <summary>
     /// Just a <see cref="ChartingCollection{T}"/> of <see cref="Plane"/> to make XAML easier.

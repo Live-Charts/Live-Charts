@@ -26,7 +26,7 @@
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The bubble series interface.

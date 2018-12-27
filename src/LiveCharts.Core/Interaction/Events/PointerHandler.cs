@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// The pointer handler.

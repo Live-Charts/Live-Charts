@@ -73,7 +73,7 @@ namespace LiveCharts.Wpf.Views
             if (isNewShape)
             {
                 Rectangle = new Rectangle();
-                args.ChartView.Content.AddChild(Rectangle, true);
+                args.ChartView.Canvas.AddChild(Rectangle, true);
                 Canvas.SetLeft(Rectangle, args.Rectangle.From.Left);
                 Canvas.SetTop(Rectangle, args.Rectangle.From.Top);
                 Rectangle.Width = args.Rectangle.From.Width;
@@ -128,12 +128,12 @@ namespace LiveCharts.Wpf.Views
         {
             bool isNewLabel = Label == null;
 
-            var pos = Perform.Sum(args.Label.UiPosition, args.ChartView.Content.DrawArea.Location);
+            var pos = Perform.Sum(args.Label.UiPosition, args.ChartView.Canvas.DrawArea.Location);
 
             if (isNewLabel)
             {
                 Label = new TLabel();
-                args.ChartView.Content.AddChild(Label, false);
+                args.ChartView.Canvas.AddChild(Label, false);
                 Canvas.SetLeft(Label, pos.X);
                 Canvas.SetTop(Label, pos.Y);
             }
@@ -148,8 +148,8 @@ namespace LiveCharts.Wpf.Views
 
         void IPlaneSeparatorView.Dispose(IChartView view, bool force)
         {
-            view.Content?.DisposeChild(Rectangle, true);
-            view.Content?.DisposeChild(Label, false);
+            view.Canvas?.DisposeChild(Rectangle, true);
+            view.Canvas?.DisposeChild(Label, false);
             Rectangle = null;
             Label = null;
         }

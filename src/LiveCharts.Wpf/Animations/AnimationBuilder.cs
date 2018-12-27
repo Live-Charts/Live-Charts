@@ -34,6 +34,7 @@ using System.Windows.Media.Animation;
 using LiveCharts.Core;
 using LiveCharts.Core.Animations;
 using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Shapes;
 
 #endregion
 
@@ -118,7 +119,7 @@ namespace LiveCharts.Wpf.Animations
             }
         }
 
-        IAnimationBuilder IAnimationBuilder.Property(string property, float from, float to, double delay)
+        IAnimationBuilder IAnimationBuilder.Property(string property, double from, double to, double delay)
         {
             DependencyProperty p;
             switch (property)

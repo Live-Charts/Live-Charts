@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace LiveCharts.Core.Drawing.Shapes
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a shape with a specified solid color.

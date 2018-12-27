@@ -28,7 +28,7 @@ using System;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction
+namespace LiveCharts.Interaction
 {
     /// <summary>
     /// A helper class.

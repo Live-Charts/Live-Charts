@@ -27,20 +27,20 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction.Events;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Drawing.Styles.Font;
+using Font = LiveCharts.Drawing.Styles.Font;
 #endif
 
 #endregion
 
-namespace LiveCharts.Core.Dimensions
+namespace LiveCharts.Dimensions
 {
     /// <summary>
     /// Defines a section in an axis.
@@ -152,7 +152,7 @@ namespace LiveCharts.Core.Dimensions
             if (Label == null)
             {
                 Label = UIFactory.GetNewLabel(chart.Model);
-                chart.Content.AddChild(Label, false);
+                chart.Canvas.AddChild(Label, false);
                 Label.Left = pos.X;
                 Label.Top = pos.Y;
             }
@@ -171,7 +171,7 @@ namespace LiveCharts.Core.Dimensions
             if (Shape == null)
             {
                 Shape = UIFactory.GetNewRectangle(chart.Model);
-                chart.Content.AddChild(Shape, true);
+                chart.Canvas.AddChild(Shape, true);
                 Shape.Left = vm.From.Left;
                 Shape.Top = vm.From.Top;
                 Shape.Width = vm.From.Width;

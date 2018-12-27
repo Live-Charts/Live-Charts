@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Animations
+﻿namespace LiveCharts.Animations
 {
     /// <summary>
     /// Represents an animation frame, where <see cref="Time"/> is the percentage of 

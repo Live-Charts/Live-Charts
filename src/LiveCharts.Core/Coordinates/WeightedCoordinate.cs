@@ -24,12 +24,12 @@
 #endregion
 #region
 
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Updating;
+using LiveCharts.Dimensions;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core.Coordinates
+namespace LiveCharts.Coordinates
 {
     /// <summary>
     /// A weighted coordinate.

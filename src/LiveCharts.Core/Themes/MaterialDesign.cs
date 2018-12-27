@@ -25,19 +25,20 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Drawing.Styles.Font;
-using FontStyle= LiveCharts.Core.Drawing.Styles.FontStyle;
+using Font = LiveCharts.Drawing.Styles.Font;
+using FontStyle= LiveCharts.Drawing.Styles.FontStyle;
 #endif
 
 #endregion
 
-namespace LiveCharts.Core.Themes
+namespace LiveCharts.Themes
 {
     /// <summary>
     /// material design theme.

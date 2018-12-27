@@ -28,11 +28,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.DataSeries;
 
 #endregion
 
-namespace LiveCharts.Core.Updating
+namespace LiveCharts.Updating
 {
     /// <summary>
     /// The update context class lives as the update is done once the chart is updated, all the resources consumed by 

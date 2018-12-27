@@ -144,8 +144,8 @@ namespace LiveCharts.Wpf.Views
         {
             if (force)
             {
-                chart.Content.DisposeChild(Shape, true);
-                chart.Content.DisposeChild(Label, true);
+                chart.Canvas.DisposeChild(Shape, true);
+                chart.Canvas.DisposeChild(Label, true);
                 _segment = null;
                 _path = null;
                 _lastTimeLine = null;
@@ -163,8 +163,8 @@ namespace LiveCharts.Wpf.Views
             shapeAnimation
                 .Then((sender, args) =>
                 {
-                    chart.Content.DisposeChild(Shape, true);
-                    chart.Content.DisposeChild(Label, true);
+                    chart.Canvas.DisposeChild(Shape, true);
+                    chart.Canvas.DisposeChild(Label, true);
                 })
                 .Begin();
 

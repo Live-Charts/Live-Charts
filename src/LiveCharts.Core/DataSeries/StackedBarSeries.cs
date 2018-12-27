@@ -26,24 +26,22 @@
 #region
 
 using System;
-using System.Drawing;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Updating;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Drawing.Styles.Font;
+using Font = LiveCharts.Drawing.Styles.Font;
 #endif
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The stacked bar series.
@@ -83,7 +81,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override RectangleViewModel BuildModel(
+        internal override RectangleViewModel BuildModel(
             ChartPoint<TModel, StackedPointCoordinate, IRectangle> current,
             UpdateContext context, 
             ChartModel chart,

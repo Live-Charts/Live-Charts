@@ -25,13 +25,13 @@
 #region
 
 using System.Collections.Generic;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
-namespace LiveCharts.Core.Updating
+namespace LiveCharts.Updating
 {
     /// <summary>
     /// Defines a chart point factory.

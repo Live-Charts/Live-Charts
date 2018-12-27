@@ -1,13 +1,13 @@
-﻿using LiveCharts.Core.Drawing.Styles;
+﻿using LiveCharts.Drawing.Styles;
 using System.Drawing;
-using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
+using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 
-namespace LiveCharts.Core.Drawing.Shapes
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a label in the user interface.
     /// </summary>
-    public interface ILabel : IUiElement
+    public interface ILabel : IUIElement
     {
         /// <summary>
         /// Gets or sets the left.

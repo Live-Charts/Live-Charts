@@ -28,17 +28,17 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Drawing.Styles.Font;
+using Font = LiveCharts.Drawing.Styles.Font;
 #endif
 #endregion
 
-namespace LiveCharts.Core.Dimensions
+namespace LiveCharts.Dimensions
 {
     /// <summary>
     /// Defines a cartesian linear axis.
@@ -313,7 +313,7 @@ namespace LiveCharts.Core.Dimensions
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
             var dummyControl = UIFactory.GetNewLabel(chart);
-            chart.View.Content.AddChild(dummyControl, false);
+            chart.View.Canvas.AddChild(dummyControl, false);
 
             for (float i = 0f; i < dimension; i += step)
             {
@@ -336,7 +336,7 @@ namespace LiveCharts.Core.Dimensions
                 if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
-            chart.View.Content.DisposeChild(dummyControl, false);
+            chart.View.Canvas.DisposeChild(dummyControl, false);
 
             return new Margin(t, r, b, l);
         }
@@ -353,7 +353,7 @@ namespace LiveCharts.Core.Dimensions
             bool alternate = false;
 
             var dummyControl = UIFactory.GetNewLabel(chart);
-            chart.View.Content.AddChild(dummyControl, false);
+            chart.View.Canvas.AddChild(dummyControl, false);
 
             float delta = (float)ActualStep;
 
@@ -403,7 +403,7 @@ namespace LiveCharts.Core.Dimensions
 
                     if (ShowLabels)
                     {
-                        separator.DrawLabel(chart.View, animation, Perform.Sum(labelModel.UiPosition, chart.View.Content.DrawArea.Location));
+                        separator.DrawLabel(chart.View, animation, Perform.Sum(labelModel.UiPosition, chart.View.Canvas.DrawArea.Location));
                     }
                 }
                 else
@@ -422,14 +422,14 @@ namespace LiveCharts.Core.Dimensions
 
                     if (ShowLabels)
                     {
-                        separator.DrawLabel(chart.View, animation, Perform.Sum(labelModel.UiPosition, chart.View.Content.DrawArea.Location));
+                        separator.DrawLabel(chart.View, animation, Perform.Sum(labelModel.UiPosition, chart.View.Canvas.DrawArea.Location));
                     }
                 }
 
                 chart.RegisterINotifyPropertyChanged(separator);
             }
 
-            chart.View.Content.DisposeChild(dummyControl, false);
+            chart.View.Canvas.DisposeChild(dummyControl, false);
 
             // remove unnecessary elements from cache
             // the visual element will be removed by the chart's resource collector
@@ -479,7 +479,7 @@ namespace LiveCharts.Core.Dimensions
                     : new RectangleD(new PointD(0, t), new SizeD(chart.DrawAreaSize[0], h));
 
                 var dummyLabel = UIFactory.GetNewLabel(chart);
-                chart.View.Content.AddChild(dummyLabel, false);
+                chart.View.Canvas.AddChild(dummyLabel, false);
                 dummyLabel.Content = section.LabelContent;
                 dummyLabel.FontStyle = section.Font.Style;
                 dummyLabel.FontFamily = section.Font.FamilyName;
@@ -543,10 +543,10 @@ namespace LiveCharts.Core.Dimensions
                         Position);
 
                 section.DrawShape(chart.View, animation, vm);
-                section.DrawLabel(chart.View, animation, Perform.Sum(labelVm.UiPosition, chart.View.Content.DrawArea.Location));
+                section.DrawLabel(chart.View, animation, Perform.Sum(labelVm.UiPosition, chart.View.Canvas.DrawArea.Location));
 
                 chart.RegisterINotifyPropertyChanged(section);
-                chart.View.Content.DisposeChild(dummyLabel, false);
+                chart.View.Canvas.DisposeChild(dummyLabel, false);
             }
         }
 

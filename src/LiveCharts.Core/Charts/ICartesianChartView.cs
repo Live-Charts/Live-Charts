@@ -23,9 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using LiveCharts.Core.Interaction;
+using LiveCharts.Charts;
+using LiveCharts.Interaction;
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <summary>
     /// Defines a cartesian chart view.

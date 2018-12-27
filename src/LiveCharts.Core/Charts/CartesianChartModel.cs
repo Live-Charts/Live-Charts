@@ -28,19 +28,19 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.Coordinates;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <inheritdoc />
     public class CartesianChartModel : ChartModel
@@ -361,7 +361,7 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            View.Content.DrawArea = new RectangleF(
+            View.Canvas.DrawArea = new RectangleF(
                 new PointF(drawMargin.Left, drawMargin.Top),
                 new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 

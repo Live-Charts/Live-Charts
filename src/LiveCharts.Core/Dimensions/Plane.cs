@@ -27,18 +27,18 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Events;
-using Font = LiveCharts.Core.Drawing.Styles.Font;
-using FontStyle = LiveCharts.Core.Drawing.Styles.FontStyle;
+using LiveCharts.Charts;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Events;
+using Font = LiveCharts.Drawing.Styles.Font;
+using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 
 #endregion
 
-namespace LiveCharts.Core.Dimensions
+namespace LiveCharts.Dimensions
 {
     /// <summary>
     /// Defines a Plane.

@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Animations
+﻿namespace LiveCharts.Animations
 {
     /// <summary>
     /// The key Spline class

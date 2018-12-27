@@ -24,18 +24,18 @@
 #endregion
 #region
 
+using LiveCharts.Dimensions;
 using System.Drawing;
-using LiveCharts.Core.Dimensions;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// Represents an axis label.
     /// </summary>
     /// <seealso cref="Rectangle" />
-    public struct AxisSectionViewModel
+    internal struct AxisSectionViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisSectionViewModel"/> struct.

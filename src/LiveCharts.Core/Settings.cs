@@ -27,15 +27,15 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Updating;
+using LiveCharts.Coordinates;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Interaction.Series;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core
+namespace LiveCharts
 {
     /// <summary>
     /// LiveCharts configuration class.

@@ -23,11 +23,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using LiveCharts.Interaction.Controls;
 using System.Drawing;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction.Controls;
 
-namespace LiveCharts.Core.Interaction.ChartAreas
+namespace LiveCharts.Interaction.Areas
 {
     /// <summary>
     /// The interaction area class.

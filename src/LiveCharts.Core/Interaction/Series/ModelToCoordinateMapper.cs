@@ -26,14 +26,14 @@
 
 using System;
 using System.Collections.Generic;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.Events;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction.Events;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Series
+namespace LiveCharts.Interaction.Series
 {
     /// <summary>
     /// Defines a model to chart point mapping.

@@ -28,7 +28,7 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core
+namespace LiveCharts
 {
     /// <summary>
     /// A set of useful extensions.

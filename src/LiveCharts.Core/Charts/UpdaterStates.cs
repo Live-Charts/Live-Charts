@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Charts
+﻿namespace LiveCharts.Charts
 {
     /// <summary>
     /// The updater states.

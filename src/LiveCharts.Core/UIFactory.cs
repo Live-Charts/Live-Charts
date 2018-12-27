@@ -24,22 +24,22 @@
 #endregion
 #region
 
+using LiveCharts.Charts;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction.Controls;
+using System;
 
 #endregion
 
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using System;
-
-namespace LiveCharts.Core
+namespace LiveCharts
 {
     /// <summary>
     /// Defines the user interface factory.
     /// </summary>
     public static class UIFactory
     {
-        internal static IChartContent GetNewChartContent(IChartView view) => WhenDrawingChartContents(view);
+        internal static IChartCanvas GetNewChartContent(IChartView view) => WhenDrawingChartContents(view);
 
         internal static ILabel GetNewLabel(ChartModel context) => WhenDrawingLabels(context);
 
@@ -60,7 +60,7 @@ namespace LiveCharts.Core
         /// <summary>
         /// Called when a chart host is required in the UI.
         /// </summary>
-        public static event Func<IChartView, IChartContent> WhenDrawingChartContents;
+        public static event Func<IChartView, IChartCanvas> WhenDrawingChartContents;
 
         /// <summary>
         /// Gets the new label.

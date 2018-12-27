@@ -25,22 +25,22 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Charts;
+using LiveCharts.Interaction.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Interaction.Controls
 {
     /// <summary>
     /// Defines the chart content view.
     /// </summary>
-    public interface IChartContent
+    public interface IChartCanvas
     {
         // as a suggestion do a Explicit implementation
         // of the following events, these events are used by the core
         // of the library and they are not necessary for the user.
-        #region Explicit implementation events
+        #region events
 
         /// <summary>
         /// Occurs when the charts is initialized.

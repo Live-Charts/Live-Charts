@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveCharts.Core", "LiveCharts.Core\LiveCharts.Core.csproj", "{8CAF054C-FB7C-405B-889D-59048650F4B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveCharts", "LiveCharts.Core\LiveCharts.csproj", "{8CAF054C-FB7C-405B-889D-59048650F4B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveCharts.Wpf", "LiveCharts.Wpf\LiveCharts.Wpf.csproj", "{5D63B51D-7E4D-4868-8CEF-DB2419718CEA}"
 EndProject

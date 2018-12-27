@@ -22,7 +22,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The pie series interface.

@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Drawing
+﻿namespace LiveCharts.Drawing
 {
     /// <summary>
     /// A Point with double precision.

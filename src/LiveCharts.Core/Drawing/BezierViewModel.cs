@@ -24,17 +24,16 @@
 #endregion
 #region
 
-using System.Drawing;
-using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Drawing.Shapes;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// A bezier view model.
     /// </summary>
-    public class BezierViewModel
+    internal class BezierViewModel
     {
         /// <summary>
         /// Gets or sets the index.

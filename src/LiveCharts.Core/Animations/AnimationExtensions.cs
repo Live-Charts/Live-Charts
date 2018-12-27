@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LiveCharts.Core.Animations
+namespace LiveCharts.Animations
 {
     /// <summary>
     /// A set of animations extensions.

@@ -29,7 +29,7 @@ using System;
 
 #endregion
 
-namespace LiveCharts.Core.Themes
+namespace LiveCharts.Themes
 {
     /// <summary>
     /// The default themes.

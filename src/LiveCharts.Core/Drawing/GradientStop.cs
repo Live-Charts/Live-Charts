@@ -30,7 +30,7 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// Represents a gradient stop.

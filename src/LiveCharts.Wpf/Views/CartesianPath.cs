@@ -94,8 +94,8 @@ namespace LiveCharts.Wpf.Views
         public void Initialize(IChartView view, TimeLine timeLine)
         {
             TimeLine = timeLine;
-            view.Content.AddChild(StrokePath, true);
-            view.Content.AddChild(FillPath, true);
+            view.Canvas.AddChild(StrokePath, true);
+            view.Canvas.AddChild(FillPath, true);
             IsNew = true;
         }
 
@@ -143,8 +143,8 @@ namespace LiveCharts.Wpf.Views
 
         public virtual void Dispose(IChartView view)
         {
-            view.Content.DisposeChild(StrokePath, true);
-            view.Content.DisposeChild(FillPath, true);
+            view.Canvas.DisposeChild(StrokePath, true);
+            view.Canvas.DisposeChild(FillPath, true);
         }
     }
 }

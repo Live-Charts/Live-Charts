@@ -26,12 +26,12 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Charts;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Controls
+namespace LiveCharts.Interaction.Controls
 {
     /// <summary>
     /// Defines a data tool tip.

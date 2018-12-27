@@ -100,8 +100,8 @@ namespace LiveCharts.Wpf.Views
         /// <inheritdoc />
         protected override void OnDispose(IChartView chart, bool force)
         {
-            chart.Content.DisposeChild(Shape, true);
-            chart.Content.DisposeChild(Label, true);
+            chart.Canvas.DisposeChild(Shape, true);
+            chart.Canvas.DisposeChild(Label, true);
         }
     }
 }

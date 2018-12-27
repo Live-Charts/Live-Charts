@@ -1,6 +1,6 @@
-﻿using LiveCharts.Core.Dimensions;
+﻿using LiveCharts.Dimensions;
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// The range solved event handler.

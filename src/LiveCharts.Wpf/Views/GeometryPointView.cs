@@ -119,8 +119,8 @@ namespace LiveCharts.Wpf.Views
         {
             if (force)
             {
-                chart.Content.DisposeChild(Shape, true);
-                chart.Content.DisposeChild(Label, true);
+                chart.Canvas.DisposeChild(Shape, true);
+                chart.Canvas.DisposeChild(Label, true);
                 _lastTimeLine = null;
                 return;
             }
@@ -131,8 +131,8 @@ namespace LiveCharts.Wpf.Views
 
             animation.Then((sender, args) =>
             {
-                chart.Content?.DisposeChild(Shape, true);
-                chart.Content?.DisposeChild(Label, true);
+                chart.Canvas?.DisposeChild(Shape, true);
+                chart.Canvas?.DisposeChild(Label, true);
                 animation.Dispose();
                 animation = null;
                 _lastTimeLine = null;

@@ -1,8 +1,8 @@
-﻿using LiveCharts.Core.Drawing;
+﻿using LiveCharts.Drawing;
 using System;
 using System.Drawing;
 
-namespace LiveCharts.Core.Animations
+namespace LiveCharts.Animations
 {
     /// <summary>
     /// Defines the animation builder helper object.

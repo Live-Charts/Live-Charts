@@ -24,15 +24,11 @@
 #endregion
 #region
 
-#endregion
-
-#region
-
-using LiveCharts.Core.Charts;
+using LiveCharts.Charts;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// Disposing resource delegate.

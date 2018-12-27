@@ -29,7 +29,7 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Themes
+namespace LiveCharts.Themes
 {
     /// <summary>
     /// Colors extensions.

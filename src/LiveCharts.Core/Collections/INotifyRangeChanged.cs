@@ -29,7 +29,7 @@ using System.Collections.Specialized;
 
 #endregion
 
-namespace LiveCharts.Core.Collections
+namespace LiveCharts.Collections
 {
     /// <summary>
     /// An extended <see cref="INotifyCollectionChanged"/> that implements AddRange and RemoveRange methods.

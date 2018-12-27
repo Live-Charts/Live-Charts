@@ -26,10 +26,10 @@
 
 #endregion
 
-using LiveCharts.Core.Drawing.Brushes;
+using LiveCharts.Drawing.Brushes;
 using System.Collections.Generic;
 
-namespace LiveCharts.Core.Drawing.Styles
+namespace LiveCharts.Drawing.Styles
 {
     /// <summary>
     /// Defines a shape style.

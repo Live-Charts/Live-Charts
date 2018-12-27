@@ -28,12 +28,12 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// A scatter view model.
     /// </summary>
-    public struct GeometryPointViewModel
+    internal struct GeometryPointViewModel
     {
         /// <summary>
         /// Gets or sets the location.

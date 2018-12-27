@@ -1,12 +1,12 @@
-﻿using LiveCharts.Core.Animations;
-using LiveCharts.Core.Drawing.Brushes;
+﻿using LiveCharts.Animations;
+using LiveCharts.Drawing.Brushes;
 
-namespace LiveCharts.Core.Drawing.Shapes
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines an element in the user interface.
     /// </summary>
-    public interface IUiElement
+    public interface IUIElement
     {
         /// <summary>
         /// Paints the shape with the given stroke and fill.

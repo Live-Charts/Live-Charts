@@ -24,15 +24,15 @@
 #endregion
 #region
 
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction.ChartAreas;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.DataSeries;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction.Areas;
+using LiveCharts.Interaction.Events;
 #endregion
 
-namespace LiveCharts.Core.Interaction.Points
+namespace LiveCharts.Interaction.Points
 {
     /// <summary>
     /// Represents a point int he chart.

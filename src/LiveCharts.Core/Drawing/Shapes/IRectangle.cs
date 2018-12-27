@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Drawing.Shapes
+﻿namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// De3fines a rectangle shape in the user interface.

@@ -1,6 +1,6 @@
-﻿using LiveCharts.Core.Collections;
+﻿using LiveCharts.Collections;
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// Just a <see cref="ChartingCollection{T}"/> of <see cref="ISeries"/> to make XAML easier.

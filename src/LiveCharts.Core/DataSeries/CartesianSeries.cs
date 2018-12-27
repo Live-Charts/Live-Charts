@@ -28,14 +28,13 @@
 
 #region
 
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// A series that requires at least a cartesian coordinate (X, Y).

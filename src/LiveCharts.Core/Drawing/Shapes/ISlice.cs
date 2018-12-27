@@ -1,6 +1,6 @@
-﻿using LiveCharts.Core.Drawing.Shapes;
+﻿using LiveCharts.Drawing.Shapes;
 
-namespace LiveCharts.Core.Drawing.Shapes
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a slice shape in the user interface.

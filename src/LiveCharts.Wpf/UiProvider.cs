@@ -82,7 +82,7 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IChartContent GetChartContent(IChartView view)
+        public IChartCanvas GetChartContent(IChartView view)
         {
             return new ChartContent(view);
         }

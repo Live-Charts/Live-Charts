@@ -26,11 +26,11 @@
 #region
 
 using System.Collections.Generic;
-using LiveCharts.Core.DataSeries;
+using LiveCharts.DataSeries;
 
 #endregion
 
-namespace LiveCharts.Core.Updating
+namespace LiveCharts.Updating
 {
     /// <summary>
     /// Stacking helper class.

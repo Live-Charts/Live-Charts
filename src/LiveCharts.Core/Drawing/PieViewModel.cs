@@ -29,12 +29,12 @@ using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// The Pie view model.
     /// </summary>
-    public struct PieViewModel
+    internal struct PieViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PieViewModel"/> struct.

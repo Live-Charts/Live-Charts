@@ -28,19 +28,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Input;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Animations;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Events;
 
 #endregion
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <summary>
     /// Defines a chart view
@@ -133,7 +131,7 @@ namespace LiveCharts.Core.Charts
         /// <value>
         /// The content.
         /// </value>
-        IChartContent Content { get; set; }
+        IChartCanvas Canvas { get; set; }
         
         /// <summary>
         /// Gets the size of the control.

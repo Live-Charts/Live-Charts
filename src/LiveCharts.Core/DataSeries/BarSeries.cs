@@ -26,19 +26,19 @@
 
 using System;
 using System.Drawing;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The bar series class.
@@ -56,7 +56,7 @@ namespace LiveCharts.Core.DataSeries
         }
 
         /// <inheritdoc />
-        protected override RectangleViewModel BuildModel(
+        internal override RectangleViewModel BuildModel(
             ChartPoint<TModel, PointCoordinate, IRectangle> current,
             UpdateContext context,
             ChartModel chart,

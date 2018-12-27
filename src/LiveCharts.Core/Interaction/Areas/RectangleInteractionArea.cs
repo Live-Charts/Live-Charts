@@ -26,12 +26,12 @@
 
 using System;
 using System.Drawing;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Drawing;
+using LiveCharts.Interaction.Controls;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.ChartAreas
+namespace LiveCharts.Interaction.Areas
 {
     /// <summary>
     /// The rectangle interaction area class.

@@ -22,12 +22,12 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// The Slice view model.
     /// </summary>
-    public struct SliceViewModel
+    internal struct SliceViewModel
     {
         /// <summary>
         /// Gets the outer radius.

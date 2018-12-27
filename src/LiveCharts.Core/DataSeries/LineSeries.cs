@@ -24,23 +24,23 @@
 #endregion
 #region
 
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.ChartAreas;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Areas;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 using System;
 using System.Collections.Generic;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The line series class.
@@ -137,7 +137,7 @@ namespace LiveCharts.Core.DataSeries
             if (cartesianPath == null)
             {
                 cartesianPath = UIFactory.GetNewCartesianPath(chart);
-                chart.View.Content.AddChild(cartesianPath, true);
+                chart.View.Canvas.AddChild(cartesianPath, true);
                 Content[chart][PathKey] = cartesianPath;
             }
 
@@ -374,7 +374,7 @@ namespace LiveCharts.Core.DataSeries
             if (current.Shape == null)
             {
                 current.Shape = UIFactory.GetNewBezierSegment(current.Chart.Model);
-                current.Chart.Content.AddChild(current.Shape, true);
+                current.Chart.Canvas.AddChild(current.Shape, true);
                 current.Shape.PointShape.Left = (float)vm.Location.X;
                 current.Shape.PointShape.Top = (float)vm.Location.Y;
                 current.Shape.PointShape.Width = 0;

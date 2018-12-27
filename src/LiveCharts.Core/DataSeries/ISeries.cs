@@ -29,29 +29,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Interaction.Series;
-using LiveCharts.Core.Updating;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Interaction.Series;
+using LiveCharts.Updating;
 #if NET45 || NET46
-using Font = LiveCharts.Core.Drawing.Styles.Font;
+using Font = LiveCharts.Drawing.Styles.Font;
 #endif
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// A series with a defined coordinate.
     /// </summary>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="global::LiveCharts.Core.DataSeries.ISeries" />
+    /// <seealso cref="Core.DataSeries.ISeries" />
     public interface ISeries<TCoordinate> : ISeries
         where TCoordinate : ICoordinate
     {

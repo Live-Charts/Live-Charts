@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Interaction
+﻿namespace LiveCharts.Interaction
 {
     /// <summary>
     /// The zooming options.

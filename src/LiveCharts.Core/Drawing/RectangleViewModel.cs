@@ -25,16 +25,16 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.Drawing.Styles;
+using LiveCharts.Drawing.Styles;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// The column view model.
     /// </summary>
-    public struct RectangleViewModel
+    internal struct RectangleViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleViewModel"/> struct.

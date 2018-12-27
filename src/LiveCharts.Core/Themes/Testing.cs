@@ -25,15 +25,15 @@
 #region
 
 using System.Drawing;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Styles;
-using Font = LiveCharts.Core.Drawing.Styles.Font;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Styles;
+using Font = LiveCharts.Drawing.Styles.Font;
 
 #endregion
 
-namespace LiveCharts.Core.Themes
+namespace LiveCharts.Themes
 {
     /// <summary>
     /// Testing theme.

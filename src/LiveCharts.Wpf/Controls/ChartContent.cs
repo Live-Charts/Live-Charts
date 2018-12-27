@@ -31,7 +31,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using LiveCharts.Core.Charts;
-using LiveCharts.Core.Drawing;
+using LiveCharts.Core.Drawing.Shapes;
 using LiveCharts.Core.Interaction;
 using LiveCharts.Core.Interaction.Events;
 using Brushes = System.Windows.Media.Brushes;
@@ -42,8 +42,8 @@ using Size = System.Windows.Size;
 
 namespace LiveCharts.Wpf.Controls
 {
-    /// <inheritdoc cref="IChartContent" />
-    public class ChartContent : Canvas, IChartContent
+    /// <inheritdoc cref="IChartCanvas" />
+    public class ChartContent : Canvas, IChartCanvas
     {
         #region fields
 
@@ -63,7 +63,6 @@ namespace LiveCharts.Wpf.Controls
 
             MouseMove += OnMouseMove;
             MouseLeftButtonDown += OnLeftButtonDown;
-
             Loaded += OnLoaded;
 
             if (view is ICartesianChartView)
@@ -96,7 +95,7 @@ namespace LiveCharts.Wpf.Controls
 
         private event PointerHandler PointerMovedOverPlot;
 
-        event PointerHandler IChartContent.PointerMoved
+        event PointerHandler IChartCanvas.PointerMoved
         {
             add => PointerMovedOverPlot += value;
             remove => PointerMovedOverPlot -= value;
@@ -104,7 +103,7 @@ namespace LiveCharts.Wpf.Controls
 
         private event PointerHandler PointerDownOverPlot;
 
-        event PointerHandler IChartContent.PointerDown
+        event PointerHandler IChartCanvas.PointerDown
         {
             add => PointerDownOverPlot += value;
             remove => PointerDownOverPlot -= value;
@@ -112,7 +111,7 @@ namespace LiveCharts.Wpf.Controls
 
         private event ChartEventHandler ChartViewLoaded;
 
-        event ChartEventHandler IChartContent.ContentLoaded
+        event ChartEventHandler IChartCanvas.ContentLoaded
         {
             add => ChartViewLoaded += value;
             remove => ChartViewLoaded -= value;
@@ -127,7 +126,7 @@ namespace LiveCharts.Wpf.Controls
             {
                 if (child is IShape iShape)
                 {
-                    _drawMargin.Children.Add((UIElement) iShape.Shape);
+                    _drawMargin.Children.Add((UIElement) iShape);
                     return;
                 }
 
@@ -191,7 +190,7 @@ namespace LiveCharts.Wpf.Controls
         /// Called when [loaded].
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="eventArgs">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        /// <param name="eventArgs">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected virtual void OnLoaded(object sender, EventArgs eventArgs)
         {
             ChartViewLoaded?.Invoke(View);

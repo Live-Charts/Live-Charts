@@ -26,7 +26,7 @@
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Controls
+namespace LiveCharts.Interaction.Controls
 {
     /// <summary>
     /// Tooltip selection mode.

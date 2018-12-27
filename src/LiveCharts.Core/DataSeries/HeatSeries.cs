@@ -25,23 +25,23 @@
 
 #region
 
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.ChartAreas;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Areas;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// The heat series class.
@@ -237,7 +237,7 @@ namespace LiveCharts.Core.DataSeries
             if (current.Shape == null)
             {
                 current.Shape = UIFactory.GetNewColoredShape(current.Chart.Model);
-                current.Chart.Content.AddChild(current.Shape, true);
+                current.Chart.Canvas.AddChild(current.Shape, true);
                 current.Shape.Color = vm.From;
             }
 

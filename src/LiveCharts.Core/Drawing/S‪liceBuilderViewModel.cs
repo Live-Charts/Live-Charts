@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace LiveCharts.Core.Drawing
+namespace LiveCharts.Drawing
 {
     /// <summary>
     /// Slice Builder

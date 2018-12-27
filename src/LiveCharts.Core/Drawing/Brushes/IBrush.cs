@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Drawing.Brushes
+﻿namespace LiveCharts.Drawing.Brushes
 {
     /// <summary>
     /// Defines a brush to paint the fill or stroke of a shape/text.

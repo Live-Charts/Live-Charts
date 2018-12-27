@@ -28,16 +28,16 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Interaction;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <inheritdoc />
     public class PieChartModel : ChartModel
@@ -96,7 +96,7 @@ namespace LiveCharts.Core.Charts
                 return;
             }
 
-            View.Content.DrawArea = new RectangleF(
+            View.Canvas.DrawArea = new RectangleF(
                 new PointF(DrawAreaLocation[0], DrawAreaLocation[1]),
                 new SizeF(DrawAreaSize[0], DrawAreaSize[1]));
 

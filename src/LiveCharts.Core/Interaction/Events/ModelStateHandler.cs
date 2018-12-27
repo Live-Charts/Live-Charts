@@ -24,11 +24,11 @@
 #endregion
 #region
 
-using LiveCharts.Core.Coordinates;
+using LiveCharts.Coordinates;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// Defines a model state action.

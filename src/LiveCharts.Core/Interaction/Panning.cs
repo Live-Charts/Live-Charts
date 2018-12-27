@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Interaction
+﻿namespace LiveCharts.Interaction
 {
     /// <summary>
     /// The panning options.
@@ -6,7 +6,7 @@
     public enum Panning
     {
         /// <summary>
-        /// By default chart Panning is Unset, this means it will be based the chart zoom property.
+        /// By default chart Panning is Unset, this means it will be based on the chart zoom property.
         /// </summary>
         Unset,
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Interaction.Controls
+﻿namespace LiveCharts.Interaction.Controls
 {
     /// <summary>
     /// 

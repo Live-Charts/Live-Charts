@@ -26,12 +26,12 @@
 
 using System;
 using System.Collections.Generic;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Charts;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
-namespace LiveCharts.Core.Interaction.Events
+namespace LiveCharts.Interaction.Events
 {
     /// <summary>
     /// A handler related with user interaction with a chart point.

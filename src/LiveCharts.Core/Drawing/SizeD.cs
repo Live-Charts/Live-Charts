@@ -1,4 +1,4 @@
-﻿namespace LiveCharts.Core.Drawing
+﻿namespace LiveCharts.Drawing
 {
     /// <summary>
     /// A size with double precision.

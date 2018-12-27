@@ -25,17 +25,15 @@
 
 #region
 
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Coordinates;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Brushes;
-using LiveCharts.Core.Drawing.Shapes;
+using LiveCharts.Charts;
+using LiveCharts.Coordinates;
+using LiveCharts.Drawing.Brushes;
+using LiveCharts.Drawing.Shapes;
 using System.Collections.Generic;
-using System.Linq;
 
 #endregion
 
-namespace LiveCharts.Core.DataSeries
+namespace LiveCharts.DataSeries
 {
     /// <summary>
     /// An <see cref="ISeries"/> that has <see cref="Stroke"/> and <see cref="Fill"/> properties.

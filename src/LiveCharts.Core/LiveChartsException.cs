@@ -31,7 +31,7 @@ using System.Reflection;
 
 #endregion
 
-namespace LiveCharts.Core
+namespace LiveCharts
 {
     /// <summary>
     /// An Exception thrown when there is an error related with LiveCharts.

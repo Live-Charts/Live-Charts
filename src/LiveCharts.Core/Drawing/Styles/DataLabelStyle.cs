@@ -1,6 +1,6 @@
-﻿using LiveCharts.Core.Drawing.Brushes;
+﻿using LiveCharts.Drawing.Brushes;
 
-namespace LiveCharts.Core.Drawing.Styles
+namespace LiveCharts.Drawing.Styles
 {
     /// <summary>
     /// Defines a data label style.

@@ -36,7 +36,7 @@ using System.Reflection;
 
 #endregion
 
-namespace LiveCharts.Core.Drawing.Brushes
+namespace LiveCharts.Drawing.Brushes
 {
     /// <summary>
     /// A predefined brushes collection, based on system.windows.media brushes.

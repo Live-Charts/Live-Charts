@@ -34,18 +34,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Styles;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Events;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Core.Updating;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Events;
+using LiveCharts.Interaction.Points;
+using LiveCharts.Updating;
 
 #endregion
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     /// <summary>
     /// Defines a chart.
@@ -69,11 +69,11 @@ namespace LiveCharts.Core.Charts
         protected ChartModel(IChartView view)
         {
             View = view;
-            View.Content = UIFactory.GetNewChartContent(view);
-            view.Content.ContentLoaded += OnContentOnContentLoaded;
+            View.Canvas = UIFactory.GetNewChartContent(view);
+            view.Canvas.ContentLoaded += OnContentOnContentLoaded;
             view.ViewResized += OnViewOnChartViewResized;
-            view.Content.PointerMoved += ViewOnPointerMoved;
-            view.Content.PointerDown += ViewOnPointerDown;
+            view.Canvas.PointerMoved += ViewOnPointerMoved;
+            view.Canvas.PointerDown += ViewOnPointerDown;
             view.PropertyChanged += InvalidatePropertyChanged;
             ToolTipTimeoutTimer = new Timer();
             ToolTipTimeoutTimer.Elapsed += OnToolTipTimeoutTimerOnElapsed;
@@ -809,13 +809,13 @@ namespace LiveCharts.Core.Charts
 
             _previousHovered = null;
 
-            View.Content.ContentLoaded -= OnContentOnContentLoaded;
+            View.Canvas.ContentLoaded -= OnContentOnContentLoaded;
             View.ViewResized -= OnViewOnChartViewResized;
-            View.Content.PointerMoved -= ViewOnPointerMoved;
-            View.Content.PointerDown -= ViewOnPointerDown;
+            View.Canvas.PointerMoved -= ViewOnPointerMoved;
+            View.Canvas.PointerDown -= ViewOnPointerDown;
             ToolTipTimeoutTimer.Elapsed -= OnToolTipTimeoutTimerOnElapsed;
 
-            View.Content.Dispose();
+            View.Canvas.Dispose();
         }
 
         /// <summary>

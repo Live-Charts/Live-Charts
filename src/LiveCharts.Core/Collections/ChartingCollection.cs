@@ -31,7 +31,7 @@ using System.ComponentModel;
 
 #endregion
 
-namespace LiveCharts.Core.Collections
+namespace LiveCharts.Collections
 {
     /// <summary>
     /// An extended observable collection that implements AddRange, RemoveRange methods optimized for LiveCharts.

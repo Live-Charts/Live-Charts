@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-namespace LiveCharts.Core.Charts
+namespace LiveCharts.Charts
 {
     internal class EnumerableResource
     {
