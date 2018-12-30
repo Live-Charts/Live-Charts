@@ -6,7 +6,7 @@ namespace LiveCharts.Drawing.Brushes
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="global::LiveCharts.Core.Drawing.Brushes.IBrush" />
+    /// <seealso cref="IBrush" />
     public interface ISolidColorBrush : IBrush
     {
         /// <summary>
@@ -22,6 +22,6 @@ namespace LiveCharts.Drawing.Brushes
         /// </summary>
         /// <param name="timeline">The time line.</param>
         /// <returns></returns>
-        IAnimationBuilder Animate(TimeLine timeline);
+        IAnimationBuilder Animate(Transition timeline);
     }
 }

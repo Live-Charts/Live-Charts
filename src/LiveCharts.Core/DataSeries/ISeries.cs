@@ -51,7 +51,7 @@ namespace LiveCharts.DataSeries
     /// A series with a defined coordinate.
     /// </summary>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="Core.DataSeries.ISeries" />
+    /// <seealso cref="ISeries" />
     public interface ISeries<TCoordinate> : ISeries
         where TCoordinate : ICoordinate
     {

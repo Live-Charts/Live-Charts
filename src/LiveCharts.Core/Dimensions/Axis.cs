@@ -264,7 +264,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The animation line.
         /// </value>
-        public IEnumerable<KeyFrame> AnimationLine { get; set; } = TimeLine.Completed;
+        public IEnumerable<KeyFrame> AnimationLine { get; set; } = Transition.Completed;
 
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
@@ -278,7 +278,7 @@ namespace LiveCharts.Dimensions
             return $"{d} at {Position}, from {FormatValue(ActualMinValue)} to {FormatValue(ActualMaxValue)} @ {FormatValue(ActualStep)}";
         }
 
-        internal Margin CalculateAxisMargin(ChartModel chart, Axis axis)
+        internal Padding CalculateAxisMargin(ChartModel chart, Axis axis)
         {
             #region note
             // we'll ask the axis to generate a label every 5px to estimate its size
@@ -338,7 +338,7 @@ namespace LiveCharts.Dimensions
 
             chart.View.Canvas.DisposeChild(dummyControl, false);
 
-            return new Margin(t, r, b, l);
+            return new Padding(t, r, b, l);
         }
 
         internal void DrawSeparators(ChartModel chart)
@@ -379,10 +379,10 @@ namespace LiveCharts.Dimensions
                     viewHolder.Add(key, separator);
                 }
 
-                var animation = new TimeLine
+                var animation = new Transition
                 {
-                    Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                    AnimationLine = AnimationLine ?? chart.View.AnimationLine
+                    Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                    KeyFrames = AnimationLine ?? chart.View.AnimationLine
                 };
 
                 var labelModel = EvaluateAxisLabel(dummyControl, i, chart.DrawAreaSize, chart);
@@ -456,10 +456,10 @@ namespace LiveCharts.Dimensions
                 LabelsRotation = -90;
             }
 
-            var animation = new TimeLine
+            var animation = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.View.AnimationLine
             };
 
             foreach (var section in Sections)
@@ -536,7 +536,7 @@ namespace LiveCharts.Dimensions
                 var labelVm = new AxisSectionViewModel(
                         new PointF(x, y),
                         new PointF(0, 0),
-                        new Margin(0),
+                        new Padding(0),
                         section.LabelContent,
                         labelSize,
                         ActualLabelsRotation,
@@ -772,7 +772,7 @@ namespace LiveCharts.Dimensions
                     (float)x - ByStackMargin.Left + ByStackMargin.Right,
                     (float)y - ByStackMargin.Top + ByStackMargin.Bottom),
                 new PointF((float)xo, (float)yo),
-                new Margin(
+                new Padding(
                     (float)t,
                     (float)(xw + xh - l),
                     (float)(yw + yh - t),

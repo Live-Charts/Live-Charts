@@ -11,7 +11,7 @@ namespace LiveCharts.Interaction.Points
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate.</typeparam>
-    /// <seealso cref="Core.Interaction.Points.IChartPoint" />
+    /// <seealso cref="IChartPoint" />
     public interface IChartPoint<out TModel, out TCoordinate> : IChartPoint
         where TCoordinate : ICoordinate
     {
@@ -35,7 +35,7 @@ namespace LiveCharts.Interaction.Points
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="Core.Interaction.Points.IChartPoint" />
+    /// <seealso cref="IChartPoint" />
     public interface IChartPoint
     {
         /// <summary>

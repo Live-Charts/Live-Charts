@@ -1,29 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-
-namespace LiveCharts.Drawing.Shapes
+﻿namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a shape in the user interface.
     /// </summary>
-    public interface IShape : IUIElement
+    public interface IShape : IPaintable, IDashable, IPlaceable
     {
-        /// <summary>
-        /// Gets or sets the left.
-        /// </summary>
-        /// <value>
-        /// The left.
-        /// </value>
-        double Left { get; set; }
-
-        /// <summary>
-        /// Gets or sets the top.
-        /// </summary>
-        /// <value>
-        /// The top.
-        /// </value>
-        double Top { get; set; }
-
         /// <summary>
         /// Gets or sets the width.
         /// </summary>
@@ -41,12 +22,9 @@ namespace LiveCharts.Drawing.Shapes
         double Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke thickness.
+        /// Gets or sets the rotation.
         /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
-        double StrokeThickness { get; set; }
+        double Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the z.
@@ -63,21 +41,5 @@ namespace LiveCharts.Drawing.Shapes
         /// The opacity.
         /// </value>
         double Opacity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke dash array.
-        /// </summary>
-        /// <value>
-        /// The stroke dash array.
-        /// </value>
-        IEnumerable<double>? StrokeDashArray { get; set; }
-
-        /// <summary>
-        /// Gets or sets the stroke dash offset.
-        /// </summary>
-        /// <value>
-        /// The stroke dash offset.
-        /// </value>
-        double StrokeDashOffset { get; set; }
     }
 }

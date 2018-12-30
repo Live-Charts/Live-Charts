@@ -36,7 +36,7 @@ using LiveCharts.Core.Interaction.Controls;
 
 namespace LiveCharts.Wpf.Views
 {
-    public class CartesianPath : ICartesianPath
+    public class CartesianPath 
     {
         public CartesianPath()
         {

@@ -25,13 +25,13 @@
 namespace LiveCharts.Drawing
 {
     /// <summary>
-    /// Represents a margin.
+    /// Represents the padding of a shape in its container.
     /// </summary>
-    public struct Margin
+    public struct Padding
     {
         private readonly bool _isEmpty;
 
-        private Margin(bool isEmpty)
+        private Padding(bool isEmpty)
         {
             _isEmpty = isEmpty;
             Top = 0;
@@ -41,10 +41,10 @@ namespace LiveCharts.Drawing
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Margin"/> struct.
+        /// Initializes a new instance of the <see cref="Padding"/> struct.
         /// </summary>
         /// <param name="topRightBottomAndLeftMargin">The top right bottom and left margin.</param>
-        public Margin(float topRightBottomAndLeftMargin)
+        public Padding(float topRightBottomAndLeftMargin)
         {
             _isEmpty = false;
             Top = topRightBottomAndLeftMargin;
@@ -54,11 +54,11 @@ namespace LiveCharts.Drawing
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Margin"/> struct.
+        /// Initializes a new instance of the <see cref="Padding"/> struct.
         /// </summary>
         /// <param name="xMargin">The x margin.</param>
         /// <param name="yMargin">The y margin.</param>
-        public Margin(float xMargin, float yMargin)
+        public Padding(float xMargin, float yMargin)
         {
             _isEmpty = false;
             Top = yMargin;
@@ -68,13 +68,13 @@ namespace LiveCharts.Drawing
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Margin"/> struct.
+        /// Initializes a new instance of the <see cref="Padding"/> struct.
         /// </summary>
         /// <param name="top">The top.</param>
         /// <param name="right">The right.</param>
         /// <param name="bottom">The bottom.</param>
         /// <param name="left">The left.</param>
-        public Margin(float top, float right, float bottom, float left)
+        public Padding(float top, float right, float bottom, float left)
         {
             _isEmpty = false;
             Top = top;
@@ -86,7 +86,7 @@ namespace LiveCharts.Drawing
         /// <summary>
         /// An empty margin.
         /// </summary>
-        public static Margin Empty = new Margin(true);
+        public static Padding Empty = new Padding(true);
 
         /// <summary>
         /// Gets or sets the top.
@@ -155,7 +155,7 @@ namespace LiveCharts.Drawing
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator ==(Margin c1, Margin c2)
+        public static bool operator ==(Padding c1, Padding c2)
         {
             return c1.Equals(c2);
         }
@@ -168,7 +168,7 @@ namespace LiveCharts.Drawing
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static bool operator !=(Margin c1, Margin c2)
+        public static bool operator !=(Padding c1, Padding c2)
         {
             return !c1.Equals(c2);
         }
@@ -181,9 +181,9 @@ namespace LiveCharts.Drawing
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static Margin operator +(Margin c1, Margin c2)
+        public static Padding operator +(Padding c1, Padding c2)
         {
-            return new Margin(c1.Top + c2.Top, c1.Right + c2.Right, c1.Bottom + c2.Bottom, c1.Left + c2.Left);
+            return new Padding(c1.Top + c2.Top, c1.Right + c2.Right, c1.Bottom + c2.Bottom, c1.Left + c2.Left);
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace LiveCharts.Drawing
         /// <returns>
         /// The result of the operator.
         /// </returns>
-        public static Margin operator -(Margin c1, Margin c2)
+        public static Padding operator -(Padding c1, Padding c2)
         {
-            return new Margin(c1.Top - c2.Top, c1.Right - c2.Right, c1.Bottom - c2.Bottom, c1.Left - c2.Left);
+            return new Padding(c1.Top - c2.Top, c1.Right - c2.Right, c1.Bottom - c2.Bottom, c1.Left - c2.Left);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace LiveCharts.Drawing
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public bool Equals(Margin other)
+        public bool Equals(Padding other)
         {
             return _isEmpty == other._isEmpty && Top == other.Top && Left == other.Left && Right == other.Right && Bottom == other.Bottom;
         }
@@ -219,7 +219,7 @@ namespace LiveCharts.Drawing
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Margin && Equals((Margin)obj);
+            return obj is Padding && Equals((Padding)obj);
         }
 
         /// <summary>

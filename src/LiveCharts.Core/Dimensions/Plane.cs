@@ -56,7 +56,7 @@ namespace LiveCharts.Dimensions
         private double _labelsRotation;
         private Font _labelsFont;
         private IBrush _labelsForeground;
-        private Margin _labelsPadding;
+        private Padding _labelsPadding;
         private double _pointMargin;
         private bool _showLabels;
 
@@ -325,7 +325,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The labels padding.
         /// </value>
-        public Margin LabelsPadding
+        public Padding LabelsPadding
         {
             get => _labelsPadding;
             set
@@ -393,7 +393,7 @@ namespace LiveCharts.Dimensions
 
         internal bool ActualReverse { get; set; }
 
-        internal Margin ByStackMargin { get; set; }
+        internal Padding ByStackMargin { get; set; }
 
         /// <summary>
         /// Formats a given value according to the axis, <see cref="LabelFormatter"/> and <see cref="Labels"/> properties.

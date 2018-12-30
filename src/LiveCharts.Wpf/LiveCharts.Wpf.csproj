@@ -48,7 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animations\Extensions.cs" />
+    <Compile Include="Animations\LiveChartsEasing.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Controls\ChartContent.cs" />
     <Compile Include="Controls\DialogContent.cs" />
@@ -66,10 +66,14 @@
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
     <Compile Include="ChartTooltip.cs" />
     <Compile Include="ChartLegend.cs" />
-    <Compile Include="Controls\AxisLabel.cs" />
+    <Compile Include="Drawing\Shapes\ChartBezierSegment.cs" />
+    <Compile Include="Drawing\Shapes\ChartBezierShape.cs" />
+    <Compile Include="Drawing\Shapes\ChartCartesianPath.cs" />
+    <Compile Include="Drawing\Shapes\ChartLabel.cs" />
     <Compile Include="CoreToPlatform.cs" />
-    <Compile Include="Drawing\Label.cs" />
-    <Compile Include="Drawing\Rectangle.cs" />
+    <Compile Include="Drawing\Shapes\ChartRectangle.cs" />
+    <Compile Include="Drawing\Shapes\ChartShape.cs" />
+    <Compile Include="Drawing\Shapes\PaintablePath.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Shapes\DialogShape.cs" />
     <Compile Include="Shapes\Slice.cs" />
@@ -119,17 +123,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LiveCharts.Core\LiveCharts.csproj">
-      <Project>{8CAF054C-FB7C-405B-889D-59048650F4B4}</Project>
-      <Name>LiveCharts</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LiveCharts.Core\LiveCharts.csproj">
+      <Project>{8caf054c-fb7c-405b-889d-59048650f4b4}</Project>
+      <Name>LiveCharts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

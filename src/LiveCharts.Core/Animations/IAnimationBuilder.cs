@@ -1,4 +1,5 @@
-﻿using LiveCharts.Drawing;
+﻿using LiveCharts.Animations.Ease;
+using LiveCharts.Drawing;
 using System;
 using System.Drawing;
 
@@ -9,6 +10,8 @@ namespace LiveCharts.Animations
     /// </summary>
     public interface IAnimationBuilder
     {
+        IEasingFunction EasingFunction { get; set; }
+
         /// <summary>
         /// Gets or sets the duration.
         /// </summary>

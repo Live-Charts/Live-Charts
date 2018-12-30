@@ -467,9 +467,9 @@ namespace LiveCharts.Charts
             return new PointF(x, y);
         }
 
-        internal Margin EvaluateAxisAndGetDrawMargin(UpdateContext context, ChartModel chart)
+        internal Padding EvaluateAxisAndGetDrawMargin(UpdateContext context, ChartModel chart)
         {
-            bool requiresDrawMarginEvaluation = DrawMargin == Margin.Empty;
+            bool requiresDrawMarginEvaluation = DrawMargin == Padding.Empty;
 
             float xt = 0f, xr = 0f, xb = 0f, xl = 0f;
             float yt = 0f, yr = 0f, yb = 0f, yl = 0f;
@@ -562,7 +562,7 @@ namespace LiveCharts.Charts
                         {
                             var mj = axis.CalculateAxisMargin(dependentChart.Key, sharedAx);
 
-                            mi = new Margin(
+                            mi = new Padding(
                                 mj.Top > mi.Top ? mj.Top : mi.Top,
                                 mj.Right > mi.Top ? mj.Right : mi.Right,
                                 mj.Bottom > mi.Bottom ? mj.Bottom : mi.Bottom,
@@ -573,25 +573,25 @@ namespace LiveCharts.Charts
                     switch (axis.ActualPosition)
                     {
                         case AxisPosition.Top:
-                            plane.ByStackMargin = new Margin(yt, 0, 0, 0);
+                            plane.ByStackMargin = new Padding(yt, 0, 0, 0);
                             yt += mi.Top + mi.Bottom;
                             yl += mi.Left;
                             yr += mi.Right;
                             break;
                         case AxisPosition.Bottom:
-                            plane.ByStackMargin = new Margin(0, 0, yb, 0);
+                            plane.ByStackMargin = new Padding(0, 0, yb, 0);
                             yb += mi.Top + mi.Bottom;
                             yl += mi.Left;
                             yr += mi.Right;
                             break;
                         case AxisPosition.Left:
-                            plane.ByStackMargin = new Margin(0, 0, 0, xl);
+                            plane.ByStackMargin = new Padding(0, 0, 0, xl);
                             xl += mi.Left + mi.Right;
                             xb += mi.Bottom;
                             xt += mi.Top;
                             break;
                         case AxisPosition.Right:
-                            plane.ByStackMargin = new Margin(0, xr, 0, 0);
+                            plane.ByStackMargin = new Padding(0, xr, 0, 0);
                             xr += mi.Left + mi.Right;
                             xb += mi.Bottom;
                             xt += mi.Top;
@@ -607,7 +607,7 @@ namespace LiveCharts.Charts
             }
 
             return requiresDrawMarginEvaluation
-                ? new Margin(
+                ? new Padding(
                     xt > yt ? xt : yt,
                     xr > yr ? xr : yr,
                     xb > yb ? xb : yb,

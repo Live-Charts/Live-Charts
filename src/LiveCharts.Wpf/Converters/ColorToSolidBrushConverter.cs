@@ -31,6 +31,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts.Core;
 using LiveCharts.Core.Animations;
+using LiveCharts.Drawing.Brushes;
 using LiveCharts.Wpf.Controls;
 
 #endregion
@@ -58,12 +59,12 @@ namespace LiveCharts.Wpf.Converters
         {
             if (value == null) return null;
 
-            var coreBrush = (Core.Drawing.IBrush) value;
+            var coreBrush = (IBrush) value;
 
-            if (coreBrush is Core.Drawing.SolidColorBrush scb)
+            if (coreBrush is ISolidColorBrush scb)
             {
                 return new SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(
+                    Color.FromArgb(
                         scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B));
             }
 

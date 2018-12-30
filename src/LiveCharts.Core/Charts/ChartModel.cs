@@ -241,7 +241,7 @@ namespace LiveCharts.Charts
         /// <value>
         /// The draw margin.
         /// </value>
-        public Margin DrawMargin { get; internal set; }
+        public Padding DrawMargin { get; internal set; }
 
         /// <summary>
         /// Gets the animations speed.

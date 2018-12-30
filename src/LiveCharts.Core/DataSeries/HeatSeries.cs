@@ -50,7 +50,7 @@ namespace LiveCharts.DataSeries
     /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape, TBrush}" />
     /// <seealso cref="IHeatSeries" />
     public class HeatSeries<TModel>
-        : CartesianStrokeSeries<TModel, WeightedCoordinate, IColoredShape, ISolidColorBrush>, IHeatSeries
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, IHeatShape, ISolidColorBrush>, IHeatSeries
     {
         private IEnumerable<GradientStop>? _gradient;
 
@@ -121,17 +121,17 @@ namespace LiveCharts.DataSeries
             float minW = context.Ranges[2][ScalesAt[2]][0];
             float maxW = context.Ranges[2][ScalesAt[2]][1];
 
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.View.AnimationLine
             };
 
-            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
             int i = 0;
 
-            foreach (ChartPoint<TModel, WeightedCoordinate, IColoredShape> current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, WeightedCoordinate, IHeatShape> current in GetPoints(chart.View))
             {
                 float[] p = new[]
                 {
@@ -229,8 +229,8 @@ namespace LiveCharts.DataSeries
         }
 
         private void DrawPointShape(
-            ChartPoint<TModel, WeightedCoordinate, IColoredShape> current,
-            TimeLine timeline,
+            ChartPoint<TModel, WeightedCoordinate, IHeatShape> current,
+            Transition timeline,
             HeatViewModel vm)
         {
             // initialize shape
@@ -251,7 +251,7 @@ namespace LiveCharts.DataSeries
             // animate
             current.Shape.Animate(timeline)
                 .Property(
-                    nameof(IColoredShape.Color),
+                    nameof(IHeatShape.Color),
                     current.Shape.Color,
                     vm.To)
                 .Begin();

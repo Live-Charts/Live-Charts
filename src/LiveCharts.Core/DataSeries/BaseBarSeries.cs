@@ -154,13 +154,13 @@ namespace LiveCharts.DataSeries
 
             float pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.View.AnimationLine
             };
-            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
             int i = 0;
 
             foreach (ChartPoint<TModel, TCoordinate, IRectangle> current in GetPoints(chart.View))
@@ -222,7 +222,7 @@ namespace LiveCharts.DataSeries
 
         private void DrawPointShape(
             ChartPoint<TModel, TCoordinate, IRectangle> current,
-            TimeLine timeline,
+            Transition timeline,
             RectangleViewModel vm,
             float pivot)
         {

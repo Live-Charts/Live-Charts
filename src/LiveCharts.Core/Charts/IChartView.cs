@@ -148,7 +148,7 @@ namespace LiveCharts.Charts
         /// <value>
         /// The draw margin.
         /// </value>
-        Margin DrawMargin { get; }
+        Padding DrawMargin { get; }
 
         /// <summary>
         /// Gets the plane sets.

@@ -26,6 +26,7 @@
 
 using System.Drawing;
 using LiveCharts.Charts;
+using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction.Events;
 
 #endregion
@@ -78,12 +79,12 @@ namespace LiveCharts.Interaction.Controls
         /// <summary>
         /// Adds a child child.
         /// </summary>
-        void AddChild(object child, bool isClipped);
+        void AddChild(IUIContent child, bool isClipped);
 
         /// <summary>
         /// Removes the child.
         /// </summary>
-        void DisposeChild(object child, bool isClipped);
+        void DisposeChild(IUIContent child, bool isClipped);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.

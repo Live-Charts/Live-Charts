@@ -45,7 +45,7 @@ namespace LiveCharts.Dimensions
         /// </summary>
         public ILabel? Label { get; internal set; }
 
-        internal void DrawLabel(IChartView chart, TimeLine timeLine, PointF pos)
+        internal void DrawLabel(IChartView chart, Transition timeLine, PointF pos)
         {
             if (Label == null)
             {
@@ -64,7 +64,7 @@ namespace LiveCharts.Dimensions
         }
 
         internal void DrawShape(
-            IChartView chart, TimeLine timeLine, RectangleViewModel vm)
+            IChartView chart, Transition timeLine, RectangleViewModel vm)
         {
             if (Shape == null)
             {

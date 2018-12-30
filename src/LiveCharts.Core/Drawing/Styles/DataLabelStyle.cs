@@ -29,7 +29,7 @@ namespace LiveCharts.Drawing.Styles
         /// <value>
         /// The padding.
         /// </value>
-        public Margin Padding { get; set; }
+        public Padding Padding { get; set; }
 
         /// <summary>
         /// Gets or sets the labels rotation.

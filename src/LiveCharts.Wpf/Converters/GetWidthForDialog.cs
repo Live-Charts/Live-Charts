@@ -2,8 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Interaction.Controls;
 using LiveCharts.Wpf.Shapes;
 
 namespace LiveCharts.Wpf.Converters

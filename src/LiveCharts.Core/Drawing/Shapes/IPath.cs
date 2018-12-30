@@ -1,7 +1,7 @@
-#region License
+﻿#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 Alberto Rodr�guez Orozco & LiveCharts contributors
+// Copyright (c) 2016 Alberto Rodríguez Orozco & LiveCharts contributors
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to deal 
@@ -24,45 +24,51 @@
 #endregion
 #region
 
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media.Animation;
-using LiveCharts.Core.Animations;
 
 #endregion
 
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
-    /// The animations extensions.
+    /// Defines a path in the user interface.
     /// </summary>
-    public static class Extensions
+    public interface IPath : IPaintable, IDashable
     {
         /// <summary>
-        /// Animates the specified element.
+        /// Gets or sets the index of the z.
         /// </summary>
-        /// <param name="element">The element.</param>
-        /// <param name="timeLine">The animation.</param>
-        /// <returns></returns>
-        public static AnimationBuilder Animate(
-            this FrameworkElement element, TimeLine timeLine)
-        {
-            return new AnimationBuilder(
-                element, timeLine.Duration, timeLine.AnimationLine, true);
-        }
+        /// <value>
+        /// The index of the z.
+        /// </value>
+        int ZIndex { get; set; }
 
         /// <summary>
-        /// Animates the specified element.
+        /// Gets or sets the opacity.
         /// </summary>
-        /// <param name="animatable">The animatable.</param>
-        /// <param name="timeLine">The animation vector.</param>
-        /// <returns></returns>
-        public static AnimationBuilder Animate(
-            this Animatable animatable, TimeLine timeLine)
-        {
-            return new AnimationBuilder(
-                animatable, timeLine.Duration, timeLine.AnimationLine, false);
-        }
+        /// <value>
+        /// The opacity.
+        /// </value>
+        double Opacity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the start point.
+        /// </summary>
+        /// <value>
+        /// The start point.
+        /// </value>
+        PointD StartPoint { get; set; }
+
+        /// <summary>
+        /// Adds a segment to the path.
+        /// </summary>
+        /// <param name="segment">The segment instance.</param>
+        /// <param name="index">The index to insert the segment at.</param>
+        void InsertSegment(ISegment segment, int index);
+
+        /// <summary>
+        /// Removes the segment from the path.
+        /// </summary>
+        /// <param name="segment">The segment.</param>
+        void RemoveSegment(ISegment segment);
     }
 }

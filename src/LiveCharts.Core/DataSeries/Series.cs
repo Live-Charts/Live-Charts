@@ -190,7 +190,7 @@ namespace LiveCharts.DataSeries
         public TimeSpan AnimationsSpeed { get; set; }
 
         /// <inheritdoc />
-        public IEnumerable<KeyFrame> AnimationLine { get; set; } = TimeLine.Completed;
+        public IEnumerable<KeyFrame> AnimationLine { get; set; } = Transition.Completed;
 
         /// <inheritdoc />
         public DelayRules DelayRule { get; set; }
@@ -276,10 +276,10 @@ namespace LiveCharts.DataSeries
         /// <inheritdoc />
         void ISeries.UpdateStarted(IChartView chart)
         {
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.AnimationLine
             };
 
         }
@@ -287,10 +287,10 @@ namespace LiveCharts.DataSeries
         /// <inheritdoc />
         void ISeries.UpdateFinished(IChartView chart)
         {
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.AnimationLine
             };
         }
 
@@ -385,19 +385,19 @@ namespace LiveCharts.DataSeries
 
         void ISeries.OnPointHighlight(IChartPoint point, IChartView chart)
         {
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.AnimationLine
             };
         }
 
         void ISeries.RemovePointHighlight(IChartPoint point, IChartView chart)
         {
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.AnimationLine
             };
         }
 
@@ -456,7 +456,7 @@ namespace LiveCharts.DataSeries
         /// </exception>
         protected PointF GetLabelPosition(
             PointF pointLocation,
-            Margin pointMargin,
+            Padding pointMargin,
             float betweenBottomLimit,
             Size labelModel,
             DataLabelsPosition labelsPosition)
@@ -537,7 +537,7 @@ namespace LiveCharts.DataSeries
                 IsObservable = typeof(INotifyPropertyChanged).IsAssignableFrom(t)
             };
             AnimationsSpeed = TimeSpan.MaxValue;
-            AnimationLine = TimeLine.Completed;
+            AnimationLine = Transition.Completed;
             DelayRule = DelayRules.None;
             Global.Settings.BuildFromTheme<ISeries>(this);
         }

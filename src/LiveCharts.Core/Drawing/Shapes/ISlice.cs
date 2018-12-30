@@ -1,6 +1,4 @@
-﻿using LiveCharts.Drawing.Shapes;
-
-namespace LiveCharts.Drawing.Shapes
+﻿namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a slice shape in the user interface.
@@ -28,12 +26,8 @@ namespace LiveCharts.Drawing.Shapes
         /// </summary>
         double PushOut { get; set; }
         /// <summary>
-        /// Gets or sets the rotation.
-        /// </summary>
-        float Rotation { get; set; }
-        /// <summary>
         /// Gets or sets the wedge.
         /// </summary>
-        float Wedge { get; set; }
+        double Wedge { get; set; }
     }
 }

@@ -45,6 +45,7 @@ namespace LiveCharts.Interaction.Points
         : IResource, IChartPoint<TModel, TCoordinate>
         where TCoordinate : ICoordinate
         where TPointShape : class, IShape
+
     {
         private static readonly TModel _defaultModel = default;
         private static readonly TCoordinate _defaultCoordinate = default;

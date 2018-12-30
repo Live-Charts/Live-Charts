@@ -111,13 +111,13 @@ namespace LiveCharts.DataSeries
             float r = (float)GeometrySize * .5f;
 
             ChartPoint<TModel, PointCoordinate, ISvgPath>? previous = null;
-            var timeLine = new TimeLine
+            var timeLine = new Transition
             {
-                Duration = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                AnimationLine = AnimationLine ?? chart.View.AnimationLine
+                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
+                KeyFrames = AnimationLine ?? chart.View.AnimationLine
             };
-            float originalDuration = (float)timeLine.Duration.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.AnimationLine;
+            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
+            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
             int i = 0;
 
             foreach (ChartPoint<TModel, PointCoordinate, ISvgPath> current in GetPoints(chart.View))
@@ -164,7 +164,7 @@ namespace LiveCharts.DataSeries
 
         private void DrawPointShape(
             ChartPoint<TModel, PointCoordinate, ISvgPath> current,
-            TimeLine timeline,
+            Transition timeline,
             GeometryPointViewModel vm)
         {
             var shape = current.Shape;

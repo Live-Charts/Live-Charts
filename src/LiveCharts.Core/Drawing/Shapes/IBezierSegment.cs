@@ -1,11 +1,9 @@
-﻿using System.Drawing;
-
-namespace LiveCharts.Drawing.Shapes
+﻿namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a bezier segment.
     /// </summary>
-    public interface IBezierSegment : IShape
+    public interface IBezierSegment : ISegment
     {
         /// <summary>
         /// Gets or sets the Point 1 vertex.
@@ -19,9 +17,5 @@ namespace LiveCharts.Drawing.Shapes
         /// Gets or sets the Point 1 vertex.
         /// </summary>
         PointD Point3 { get; set; }
-        /// <summary>
-        /// Gets or sets the point shape.
-        /// </summary>
-        ISvgPath PointShape { get; }
     }
 }

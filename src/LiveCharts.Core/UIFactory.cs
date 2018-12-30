@@ -43,15 +43,17 @@ namespace LiveCharts
 
         internal static ILabel GetNewLabel(ChartModel context) => WhenDrawingLabels(context);
 
-        internal static ICartesianPath GetNewCartesianPath(ChartModel context) => WhenDrawingCartesianPaths(context);
+        internal static IPath GetNewCartesianPath(ChartModel context) => WhenDrawingCartesianPaths(context);
 
         internal static IRectangle GetNewRectangle(ChartModel context) => WhenDrawingRectangles(context);
 
-        internal static IColoredShape GetNewColoredShape(ChartModel context) => WhenDrawingColoredShapes(context);
+        internal static IHeatShape GetNewColoredShape(ChartModel context) => WhenDrawingHeatShapes(context);
 
         internal static ISvgPath GetNewSvgPath(ChartModel context) => WhenDrawingSvgPaths(context);
 
-        internal static IBezierSegment GetNewBezierSegment(ChartModel context) => WhenDrawingBezierSegments(context);
+        internal static ILineSegment GetNewLineSegment(ChartModel context) => WhenDrawingLineSegments(context);
+
+        internal static IBezierShape GetNewBezierShape(ChartModel context) => WhenDrawingBezierShapes(context);
 
         internal static ISlice GetNewSlice(ChartModel context) => WhenDrawingSlices(context);
 
@@ -72,7 +74,7 @@ namespace LiveCharts
         /// Gets the new path.
         /// </summary>
         /// <returns></returns>
-        public static event Func<ChartModel, ICartesianPath> WhenDrawingCartesianPaths;
+        public static event Func<ChartModel, IPath> WhenDrawingCartesianPaths;
 
         /// <summary>
         /// Gets a new rectangle.
@@ -83,7 +85,7 @@ namespace LiveCharts
         /// <summary>
         /// Called when a colored shape needs to be added to the UI.
         /// </summary>
-        public static event Func<ChartModel, IColoredShape> WhenDrawingColoredShapes;
+        public static event Func<ChartModel, IHeatShape> WhenDrawingHeatShapes;
 
         /// <summary>
         /// Gets the new sg path.
@@ -92,10 +94,15 @@ namespace LiveCharts
         public static event Func<ChartModel, ISvgPath> WhenDrawingSvgPaths;
 
         /// <summary>
+        /// Called when a new line segment is required.
+        /// </summary>
+        public static event Func<ChartModel, ILineSegment> WhenDrawingLineSegments;
+
+        /// <summary>
         /// Gets the new bezier segment.
         /// </summary>
         /// <returns></returns>
-        public static event Func<ChartModel, IBezierSegment> WhenDrawingBezierSegments;
+        public static event Func<ChartModel, IBezierShape> WhenDrawingBezierShapes;
 
         /// <summary>
         /// Gets the new slice.

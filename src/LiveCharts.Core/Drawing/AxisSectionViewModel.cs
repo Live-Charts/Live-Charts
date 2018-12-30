@@ -50,7 +50,7 @@ namespace LiveCharts.Drawing
         public AxisSectionViewModel(
             PointF pointer,
             PointF offset,
-            Margin margin,
+            Padding margin,
             object content,
             SizeF size,
             double actuaLabelsRotation,
@@ -114,6 +114,6 @@ namespace LiveCharts.Drawing
         /// <value>
         /// The margin.
         /// </value>
-        public Margin Margin { get; set; }
+        public Padding Margin { get; set; }
     }
 }

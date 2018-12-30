@@ -24,6 +24,9 @@
 #endregion
 #region
 
+using LiveCharts.Animations;
+using LiveCharts.Drawing;
+using LiveCharts.Drawing.Shapes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,10 +34,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LiveCharts.Core;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Drawing.Shapes;
 
 #endregion
 
@@ -43,10 +42,9 @@ namespace LiveCharts.Wpf.Animations
     /// <summary>
     /// A storyboard builder.
     /// </summary>
-    public class AnimationBuilder : IAnimationBuilder
+    public class AnimationBuilder<T> : IAnimationBuilder
     {
         private readonly bool _isFrameworkElement;
-        private readonly IEnumerable<KeyFrame> _animationLine;
         private List<Tuple<DependencyProperty, Timeline>> _animations = new List<Tuple<DependencyProperty, Timeline>>();
 
         /// <summary>
@@ -57,15 +55,15 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="animationLine">The animation vector.</param>
         /// <param name="isFrameworkElement">if set to <c>true</c> [is framework element].</param>
         public AnimationBuilder(
-            DependencyObject target, 
-            TimeSpan duration, 
-            IEnumerable<KeyFrame> animationLine, 
+            DependencyObject[] targets,
+            TimeSpan duration,
+            LiveCharts.Animations.Ease.IEasingFunction animationLine,
             bool isFrameworkElement)
         {
-            Target = target;
+            Targets = targets;
             Duration = duration;
             _isFrameworkElement = isFrameworkElement;
-            _animationLine = animationLine;
+            EasingFunction = animationLine;
             Storyboard = new Storyboard();
         }
 
@@ -83,7 +81,7 @@ namespace LiveCharts.Wpf.Animations
         /// <value>
         /// The target.
         /// </value>
-        public DependencyObject Target { get; }
+        public DependencyObject[] Targets { get; }
 
         /// <summary>
         /// Gets or sets the storyboard.
@@ -92,6 +90,8 @@ namespace LiveCharts.Wpf.Animations
         /// The storyboard.
         /// </value>
         protected Storyboard Storyboard { get; set; }
+
+        public LiveCharts.Animations.Ease.IEasingFunction EasingFunction { get; set; }
 
         /// <summary>
         /// Runs this instance.
@@ -105,16 +105,19 @@ namespace LiveCharts.Wpf.Animations
             }
             else
             {
-                // I think this in an error in the WPF framework design
                 // this is just a work around.
                 // storyboards do not work on all Animatable objects, only in FrameworkElements.
+                // I think this in an error in the WPF framework design
                 if (_animations.Count > 0)
                 {
                     _animations[0].Item2.Completed += OnFinished;
                 }
                 foreach (Tuple<DependencyProperty, Timeline> x in _animations)
                 {
-                    ((Animatable) Target).BeginAnimation(x.Item1, (AnimationTimeline) x.Item2);
+                    foreach (var target in Targets)
+                    {
+                        ((Animatable)target).BeginAnimation(x.Item1, (AnimationTimeline)x.Item2);
+                    }
                 }
             }
         }
@@ -131,7 +134,7 @@ namespace LiveCharts.Wpf.Animations
                     p = Canvas.TopProperty;
                     break;
                 default:
-                    p = DependencyPropertyDescriptor.FromName(property, Target.GetType(), Target.GetType())
+                    p = DependencyPropertyDescriptor.FromName(property, typeof(T), typeof(T))
                         .DependencyProperty;
                     break;
             }
@@ -141,20 +144,20 @@ namespace LiveCharts.Wpf.Animations
 
         IAnimationBuilder IAnimationBuilder.Property(string property, PointD from, PointD to, double delay)
         {
-            var p = DependencyPropertyDescriptor.FromName(property, Target.GetType(), Target.GetType());
+            var p = DependencyPropertyDescriptor.FromName(property, typeof(T), typeof(T));
             return Property(p.DependencyProperty, new Point(from.X, from.Y), new Point(to.X, to.Y), delay);
         }
 
         IAnimationBuilder IAnimationBuilder.Property
             (string property, System.Drawing.Color from, System.Drawing.Color to, double delay)
         {
-            var p = DependencyPropertyDescriptor.FromName(property, Target.GetType(), Target.GetType());
+            var p = DependencyPropertyDescriptor.FromName(property, typeof(T), typeof(T));
             return Property(
                 p.DependencyProperty,
                 Color.FromArgb(from.A, from.R, from.G, from.B),
                 Color.FromArgb(to.A, to.R, to.G, to.B),
                 delay);
-        }
+        }        
 
         /// <summary>
         /// Animates the specified property.
@@ -164,35 +167,17 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="from">Where the animation starts.</param>
         /// <param name="delay">The delay in proportion of the time line duration, form 0 to 1.</param>
         /// <returns></returns>
-        public AnimationBuilder Property(
-            DependencyProperty property, double from, double to, double delay = 0)
+        public AnimationBuilder<T> Property(
+        DependencyProperty property, double from, double to, double delay = 0)
         {
-            var animation = new DoubleAnimationUsingKeyFrames
+            var animation = new DoubleAnimation()
             {
                 RepeatBehavior = new RepeatBehavior(1),
-                Duration = Duration
+                Duration = Duration,
+                EasingFunction = new LiveChartsEasingFunction(EasingFunction)
             };
 
-            IEnumerable<KeyFrame> frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
-
-            foreach (var frame in frames)
-            {
-                animation.KeyFrames.Add(
-                    new LinearDoubleKeyFrame(
-                        from + frame.Value * (to - from),
-                        KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * frame.Time))));
-            }
-
-            if (_isFrameworkElement)
-            {
-                Storyboard.Children.Add(animation);
-                Storyboard.SetTarget(animation, Target);
-                Storyboard.SetTargetProperty(animation, new PropertyPath(property));
-            }
-            else
-            {
-               _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
-            }
+            SetTarget(animation, property);
 
             return this;
         }
@@ -205,37 +190,17 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="to">To.</param>
         /// /// <param name="delay">The delay in proportion of the time line duration, form 0 to 1.</param>
         /// <returns></returns>
-        public AnimationBuilder Property(
+        public AnimationBuilder<T> Property(
             DependencyProperty property, Point from, Point to, double delay = 0)
         {
-            var animation = new PointAnimationUsingKeyFrames
+            var animation = new PointAnimation
             {
                 RepeatBehavior = new RepeatBehavior(1),
-                Duration = Duration
+                Duration = Duration,
+                EasingFunction = new LiveChartsEasingFunction(EasingFunction)
             };
 
-            IEnumerable<KeyFrame> frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
-
-            foreach (var frame in frames)
-            {
-                animation.KeyFrames.Add(
-                    new LinearPointKeyFrame(
-                        new Point(
-                            from.X + frame.Value * (to.X - from.X),
-                            from.Y + frame.Value * (to.Y - from.Y)),
-                        KeyTime.FromPercent(frame.Time)));
-            }
-
-            if (_isFrameworkElement)
-            {
-                Storyboard.Children.Add(animation);
-                Storyboard.SetTarget(animation, Target);
-                Storyboard.SetTargetProperty(animation, new PropertyPath(property));
-            }
-            else
-            {
-                _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
-            }
+            SetTarget(animation, property);
 
             return this;
         }
@@ -248,39 +213,17 @@ namespace LiveCharts.Wpf.Animations
         /// <param name="to">To.</param>
         /// /// <param name="delay">The delay in proportion of the time line duration, form 0 to 1.</param>
         /// <returns></returns>
-        public AnimationBuilder Property(
+        public AnimationBuilder<T> Property(
             DependencyProperty property, Color from, Color to, double delay = 0)
         {
-            var animation = new ColorAnimationUsingKeyFrames
+            var animation = new ColorAnimation
             {
                 RepeatBehavior = new RepeatBehavior(1),
-                Duration = Duration
+                Duration = Duration,
+                EasingFunction = new LiveChartsEasingFunction(EasingFunction)
             };
 
-            IEnumerable<KeyFrame> frames = delay > 0 ? _animationLine.Delay((float) delay) : _animationLine;
-
-            foreach (var frame in frames)
-            {
-                animation.KeyFrames.Add(
-                    new LinearColorKeyFrame(
-                        Color.FromArgb(
-                            (byte) (from.A + frame.Value * (to.A - from.A)),
-                            (byte) (from.R + frame.Value * (to.R - from.R)),
-                            (byte) (from.G + frame.Value * (to.G - from.G)),
-                            (byte) (from.B + frame.Value * (to.B - from.B))),
-                        KeyTime.FromPercent(frame.Time)));
-            }
-
-            if (_isFrameworkElement)
-            {
-                Storyboard.Children.Add(animation);
-                Storyboard.SetTarget(animation, Target);
-                Storyboard.SetTargetProperty(animation, new PropertyPath(property));
-            }
-            else
-            {
-                _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
-            }
+            SetTarget(animation, property);
 
             return this;
         }
@@ -320,6 +263,23 @@ namespace LiveCharts.Wpf.Animations
         {
             Storyboard = null;
             _animations = null;
+        }
+
+        private void SetTarget(AnimationTimeline animation, DependencyProperty property)
+        {
+            if (_isFrameworkElement)
+            {
+                foreach (var target in Targets)
+                {
+                    Storyboard.Children.Add(animation);
+                    Storyboard.SetTarget(animation, target);
+                    Storyboard.SetTargetProperty(animation, new PropertyPath(property));
+                }
+            }
+            else
+            {
+                _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
+            }
         }
     }
 }

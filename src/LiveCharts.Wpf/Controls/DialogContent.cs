@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Points;
+using LiveCharts.Interaction.Controls;
 
 namespace LiveCharts.Wpf.Controls
 {

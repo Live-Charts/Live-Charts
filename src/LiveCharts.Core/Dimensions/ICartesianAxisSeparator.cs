@@ -61,14 +61,14 @@ namespace LiveCharts.Dimensions
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <param name="timeLine">The animation.</param>
-        void DrawShape(CartesianAxisSectionArgs args, TimeLine timeLine);
+        void DrawShape(CartesianAxisSectionArgs args, Transition timeLine);
 
         /// <summary>
         /// Draws the label.
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <param name="timeLine">The animation.</param>
-        void DrawLabel(CartesianAxisSectionArgs args, TimeLine timeLine);
+        void DrawLabel(CartesianAxisSectionArgs args, Transition timeLine);
 
         /// <summary>
         /// Disposes the specified view.

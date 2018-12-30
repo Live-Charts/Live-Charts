@@ -8,7 +8,7 @@ namespace LiveCharts.Animations
     /// </summary>
     public static class AnimationExtensions
     {
-        private static readonly KeySpline DelaySpline = new KeySpline(0.25f, 0.1f, 0.25f, 1.0f);
+        private static readonly CubicBezierFunction DelaySpline = new CubicBezierFunction(0.25f, 0.1f, 0.25f, 1.0f);
         private static readonly Random Random = new Random();
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace LiveCharts.Animations
         /// <param name="x">The x to interpolate.</param>
         /// <param name="rule">the delay rule.</param>
         /// <returns></returns>
-        public static TimeLine Delay(float duration, IEnumerable<KeyFrame> animationLine, float x, DelayRules rule)
+        public static Transition Delay(float duration, IEnumerable<KeyFrame> animationLine, float x, DelayRules rule)
         {
             float delayTime;
 
@@ -65,10 +65,10 @@ namespace LiveCharts.Animations
                     throw new ArgumentOutOfRangeException(nameof(rule), rule, null);
             }
 
-            return new TimeLine
+            return new Transition
             {
-                AnimationLine = animationLine.Delay(delayTime / (duration + delayTime)),
-                Duration = TimeSpan.FromMilliseconds(duration + delayTime)
+                KeyFrames = animationLine.Delay(delayTime / (duration + delayTime)),
+                Time = TimeSpan.FromMilliseconds(duration + delayTime)
             };
         }
     }

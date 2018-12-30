@@ -1,4 +1,5 @@
-﻿using LiveCharts.Drawing.Styles;
+﻿
+using LiveCharts.Drawing.Styles;
 using System.Drawing;
 using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 
@@ -7,23 +8,17 @@ namespace LiveCharts.Drawing.Shapes
     /// <summary>
     /// Defines a label in the user interface.
     /// </summary>
-    public interface ILabel : IUIElement
+    public interface ILabel : IPaintable, IPlaceable
     {
         /// <summary>
-        /// Gets or sets the left.
+        /// Gets or set the label rotation.
         /// </summary>
-        /// <value>
-        /// The left.
-        /// </value>
-        float Left { get; set; }
-        
+        double Rotation { get; set; }
+
         /// <summary>
-        /// Gets or sets the top.
+        /// Gets or sets the padding.
         /// </summary>
-        /// <value>
-        /// The top.
-        /// </value>
-        float Top { get; set; }
+        Padding Padding { get; set; }
 
         /// <summary>
         /// Gets or sets the content.
@@ -47,7 +42,7 @@ namespace LiveCharts.Drawing.Shapes
         /// <value>
         /// The size of the font.
         /// </value>
-        float FontSize { get; set; }
+        double FontSize { get; set; }
 
         /// <summary>
         /// Gets or sets the font style.
