@@ -45,7 +45,7 @@ namespace LiveCharts.Dimensions
         /// </summary>
         public ILabel? Label { get; internal set; }
 
-        internal void DrawLabel(IChartView chart, Transition timeLine, PointF pos)
+        internal void DrawLabel(IChartView chart, AnimatableArguments animationArgs, PointF pos)
         {
             if (Label == null)
             {
@@ -57,14 +57,13 @@ namespace LiveCharts.Dimensions
 
             Label.Paint(Stroke, Fill);
 
-            Label.Animate(timeLine)
+            Label.Animate(animationArgs)
                 .Property(nameof(ILabel.Left), Label.Left, pos.X)
                 .Property(nameof(ILabel.Top), Label.Top, pos.Y)
                 .Begin();
         }
 
-        internal void DrawShape(
-            IChartView chart, Transition timeLine, RectangleViewModel vm)
+        internal void DrawShape(IChartView chart, AnimatableArguments animationArgs, RectangleViewModel vm)
         {
             if (Shape == null)
             {
@@ -76,7 +75,7 @@ namespace LiveCharts.Dimensions
                 Shape.Height = vm.From.Height;
                 Shape.ZIndex = int.MinValue + 1;
 
-                Shape.Animate(timeLine)
+                Shape.Animate(animationArgs)
                     .Property(nameof(IShape.Opacity), 0, 1)
                     .Begin();
             }
@@ -85,7 +84,7 @@ namespace LiveCharts.Dimensions
             Shape.StrokeThickness = StrokeThickness;
             Shape.Paint(Stroke, Fill);
 
-            Shape.Animate(timeLine)
+            Shape.Animate(animationArgs)
                 .Property(nameof(IShape.Top), Shape.Top, vm.To.Top)
                 .Property(nameof(IShape.Left), Shape.Left, vm.To.Left)
                 .Property(nameof(IShape.Height),

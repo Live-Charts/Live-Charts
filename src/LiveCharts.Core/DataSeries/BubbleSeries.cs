@@ -25,6 +25,7 @@
 #region
 
 using LiveCharts.Animations;
+using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing;
@@ -117,13 +118,7 @@ namespace LiveCharts.DataSeries
             }
 
             ChartPoint<TModel, WeightedCoordinate, ISvgPath>? previous = null;
-            var timeLine = new Transition
-            {
-                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                KeyFrames = AnimationLine ?? chart.View.AnimationLine
-            };
-            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
+            var animationArgs = AnimatableArguments.BuildFrom(chart.View, this);
             int i = 0;
 
             foreach (ChartPoint<TModel, WeightedCoordinate, ISvgPath> current in GetPoints(chart.View))
@@ -145,12 +140,10 @@ namespace LiveCharts.DataSeries
 
                 if (DelayRule != DelayRules.None)
                 {
-                    timeLine = AnimationExtensions.Delay(
-                        // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
+                    animationArgs.SetDelay(DelayRule, i / (double)PointsCount);
                 }
 
-                DrawPointShape(current, timeLine, vm);
+                DrawPointShape(current, animationArgs, vm);
 
                 if (DataLabels)
                 {
@@ -172,7 +165,7 @@ namespace LiveCharts.DataSeries
 
         private void DrawPointShape(
             ChartPoint<TModel, WeightedCoordinate, ISvgPath> current,
-            Transition timeline,
+            AnimatableArguments animationArgs,
             GeometryPointViewModel vm)
         {
             var isNew = current.Shape == null;
@@ -197,7 +190,7 @@ namespace LiveCharts.DataSeries
 
             if (isNew)
             {
-                current.Shape.Animate(timeline)
+                current.Shape.Animate(animationArgs)
                     .Property(nameof(ISvgPath.Left), vm.Location.X + r, vm.Location.X)
                     .Property(nameof(ISvgPath.Top), vm.Location.Y + r, vm.Location.Y)
                     .Property(nameof(ISvgPath.Width), 0, vm.Diameter)
@@ -206,7 +199,7 @@ namespace LiveCharts.DataSeries
             }
             else
             {
-                current.Shape.Animate(timeline)
+                current.Shape.Animate(animationArgs)
                     .Property(nameof(ISvgPath.Left), current.Shape.Left, vm.Location.X)
                     .Property(nameof(ISvgPath.Top), current.Shape.Top, vm.Location.Y)
                     .Begin();

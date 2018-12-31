@@ -43,7 +43,7 @@ namespace LiveCharts.Charts
     /// <summary>
     /// Defines a chart view
     /// </summary>
-    public interface IChartView : INotifyPropertyChanged, IDisposable
+    public interface IChartView : INotifyPropertyChanged, ICoreParentAnimatable, IDisposable
     {
         #region Events and Commands
 
@@ -173,22 +173,6 @@ namespace LiveCharts.Charts
         /// The state of the updater.
         /// </value>
         UpdaterStates UpdaterState { get; set; }
-
-        /// <summary>
-        /// Gets or sets the animations speed.
-        /// </summary>
-        /// <value>
-        /// The animations speed.
-        /// </value>
-        TimeSpan AnimationsSpeed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the animation line.
-        /// </summary>
-        /// <value>
-        /// The animation line.
-        /// </value>
-        IEnumerable<KeyFrame> AnimationLine { get; set; }
 
         /// <summary>
         /// Gets or sets the tooltip time out.

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using LiveCharts.Animations;
+using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Shapes;
@@ -43,7 +44,7 @@ namespace LiveCharts.Dimensions
     /// <summary>
     /// Defines a cartesian linear axis.
     /// </summary>
-    public class Axis : Plane
+    public class Axis : Plane, ICoreChildAnimatable
     {
         internal Dictionary<ChartModel, Dictionary<double, PlaneSeparator>> DependentCharts =
             new Dictionary<ChartModel, Dictionary<double, PlaneSeparator>>();
@@ -256,7 +257,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The animations speed.
         /// </value>
-        public TimeSpan AnimationsSpeed { get; set; }
+        public TimeSpan? AnimationsSpeed { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the animation line.
@@ -264,7 +265,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The animation line.
         /// </value>
-        public IEnumerable<KeyFrame> AnimationLine { get; set; } = Transition.Completed;
+        public IEasingFunction? EasingFunction { get; set; } = null;
 
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
@@ -379,11 +380,7 @@ namespace LiveCharts.Dimensions
                     viewHolder.Add(key, separator);
                 }
 
-                var animation = new Transition
-                {
-                    Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                    KeyFrames = AnimationLine ?? chart.View.AnimationLine
-                };
+                var animation = AnimatableArguments.BuildFrom(chart.View, this);
 
                 var labelModel = EvaluateAxisLabel(dummyControl, i, chart.DrawAreaSize, chart);
 
@@ -456,11 +453,7 @@ namespace LiveCharts.Dimensions
                 LabelsRotation = -90;
             }
 
-            var animation = new Transition
-            {
-                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                KeyFrames = AnimationLine ?? chart.View.AnimationLine
-            };
+            var animation = AnimatableArguments.BuildFrom(chart.View, this);
 
             foreach (var section in Sections)
             {

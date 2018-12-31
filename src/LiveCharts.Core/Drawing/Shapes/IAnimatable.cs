@@ -10,8 +10,8 @@ namespace LiveCharts.Drawing.Shapes
         /// <summary>
         /// Returns an animation builder for the given time line.
         /// </summary>
-        /// <param name="timeline">The timeline.</param>
+        /// <param name="args">The animation arguments.</param>
         /// <returns></returns>
-        IAnimationBuilder Animate(Transition timeline);
+        IAnimationBuilder Animate(AnimatableArguments args);
     }
 }

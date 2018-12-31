@@ -121,14 +121,7 @@ namespace LiveCharts.DataSeries
             float minW = context.Ranges[2][ScalesAt[2]][0];
             float maxW = context.Ranges[2][ScalesAt[2]][1];
 
-            var timeLine = new Transition
-            {
-                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                KeyFrames = AnimationLine ?? chart.View.AnimationLine
-            };
-
-            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
+            var animation = AnimatableArguments.BuildFrom(chart.View, this);
             int i = 0;
 
             foreach (ChartPoint<TModel, WeightedCoordinate, IHeatShape> current in GetPoints(chart.View))
@@ -148,12 +141,10 @@ namespace LiveCharts.DataSeries
 
                 if (DelayRule != DelayRules.None)
                 {
-                    timeLine = AnimationExtensions.Delay(
-                        // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
+                    animation.SetDelay(DelayRule, i / (double)PointsCount);
                 }
 
-                DrawPointShape(current, timeLine, vm);
+                DrawPointShape(current, animation, vm);
                 if (DataLabels)
                 {
                     DrawPointLabel(current);
@@ -230,7 +221,7 @@ namespace LiveCharts.DataSeries
 
         private void DrawPointShape(
             ChartPoint<TModel, WeightedCoordinate, IHeatShape> current,
-            Transition timeline,
+            AnimatableArguments animationArgs,
             HeatViewModel vm)
         {
             // initialize shape
@@ -249,7 +240,7 @@ namespace LiveCharts.DataSeries
             current.Shape.ZIndex = ZIndex;
 
             // animate
-            current.Shape.Animate(timeline)
+            current.Shape.Animate(animationArgs)
                 .Property(
                     nameof(IHeatShape.Color),
                     current.Shape.Color,

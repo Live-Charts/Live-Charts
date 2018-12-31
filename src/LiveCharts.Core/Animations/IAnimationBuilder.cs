@@ -10,6 +10,9 @@ namespace LiveCharts.Animations
     /// </summary>
     public interface IAnimationBuilder
     {
+        /// <summary>
+        /// Getsor sets the esing function.
+        /// </summary>
         IEasingFunction EasingFunction { get; set; }
 
         /// <summary>

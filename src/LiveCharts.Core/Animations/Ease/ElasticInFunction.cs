@@ -12,7 +12,7 @@ namespace LiveCharts.Animations.Ease
         private readonly double _frequency;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ElascticIn"/> class.
+        /// Initializes a new instance of the <see cref="ElasticInFunction"/> class.
         /// Calculates the progress based on d3 elasticIn function -> https://github.com/d3/d3-ease/blob/master/src/elastic.js#L5
         /// </summary>
         public ElasticInFunction(double? tau = 2 * Math.PI, double? amplitude = 1, double? period = .3)

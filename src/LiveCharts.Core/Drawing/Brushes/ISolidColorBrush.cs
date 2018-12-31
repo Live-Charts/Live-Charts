@@ -1,4 +1,5 @@
 ﻿using LiveCharts.Animations;
+using LiveCharts.Drawing.Shapes;
 using System.Drawing;
 
 namespace LiveCharts.Drawing.Brushes
@@ -16,12 +17,5 @@ namespace LiveCharts.Drawing.Brushes
         /// The color.
         /// </value>
         Color Color { get; set; }
-
-        /// <summary>
-        /// Animates according to the specified time line.
-        /// </summary>
-        /// <param name="timeline">The time line.</param>
-        /// <returns></returns>
-        IAnimationBuilder Animate(Transition timeline);
     }
 }

@@ -25,6 +25,7 @@
 #region
 
 using LiveCharts.Animations;
+using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Dimensions;
@@ -121,14 +122,7 @@ namespace LiveCharts.DataSeries
             var y = chart.Dimensions[1][ScalesAt[1]];
 
             BezierViewModel? previous = null;
-            var timeLine = new Transition
-            {
-                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                KeyFrames = AnimationLine ?? chart.View.AnimationLine
-            };
-
-            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
+            var animation = AnimatableArguments.BuildFrom(chart.View, this);
             int k = 0;
 
             Content[chart].TryGetValue(PathKey, out var pathObject);
@@ -175,9 +169,7 @@ namespace LiveCharts.DataSeries
 
                 if (DelayRule != DelayRules.None)
                 {
-                    timeLine = AnimationExtensions.Delay(
-                        // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, k / (float)PointsCount, DelayRule);
+                    animation.SetDelay(DelayRule, currentBezier.ViewModel.Index / (double)PointsCount);
                 }
 
                 currentBezier.ChartPoint.InteractionArea = new RectangleInteractionArea(
@@ -188,7 +180,7 @@ namespace LiveCharts.DataSeries
                         GeometrySize));
 
                 DrawPointShape(
-                    currentBezier.ChartPoint, path, timeLine, currentBezier.ViewModel);
+                    currentBezier.ChartPoint, path, animation, currentBezier.ViewModel);
 
                 if (DataLabels)
                 {
@@ -230,7 +222,7 @@ namespace LiveCharts.DataSeries
             }
             var effect = Effects.GetAnimatedDashArray(StrokeDashArray, l + remaining);
             path.StrokeDashArray = effect;
-            path.Animate(timeLine)
+            path.Animate(animation)
                 .Property(nameof(path.StrokeDashOffset), 0f, (float)(tl + remaining));
             // cartesianPath.Close(chart.View, closePivot, (float)length, i, j);
             _previousLenght = length;
@@ -370,7 +362,7 @@ namespace LiveCharts.DataSeries
         private void DrawPointShape(
             ChartPoint<TModel, PointCoordinate, IBezierShape> current,
             IPath path,
-            Transition timeline,
+            AnimatableArguments animationArgs,
             BezierViewModel vm)
         {
             bool isNew = current.Shape == null;
@@ -389,11 +381,9 @@ namespace LiveCharts.DataSeries
                 current.Shape.Segment.Point3 = vm.Point3;
                 path.InsertSegment(current.Shape.Segment, vm.Index);
 
-                var geometryAnimation = new Transition
-                {
-                    KeyFrames = timeline.KeyFrames,
-                    Time = TimeSpan.FromMilliseconds(timeline.Time.TotalMilliseconds * 2)
-                };
+                var geometryAnimation = new AnimatableArguments(
+                    TimeSpan.FromMilliseconds(animationArgs.Duration.TotalMilliseconds * 2),
+                    new DelayedFunction(animationArgs.EasingFunction, .5));
 
                 float r = vm.GeometrySize * .5f;
 
@@ -410,13 +400,13 @@ namespace LiveCharts.DataSeries
 
             if (!isNew)
             {
-                current.Shape.Animate(timeline)
+                current.Shape.Animate(animationArgs)
                     .Property(nameof(IShape.Left), current.Shape.Left, (float)vm.Location.X)
                     .Property(nameof(IShape.Top), current.Shape.Top, (float)vm.Location.Y)
                     .Begin();
             }
 
-            current.Shape.Segment.Animate(timeline)
+            current.Shape.Segment.Animate(animationArgs)
                 .Property(nameof(IBezierSegment.Point1), current.Shape.Segment.Point1, vm.Point1)
                 .Property(nameof(IBezierSegment.Point2), current.Shape.Segment.Point2, vm.Point2)
                 .Property(nameof(IBezierSegment.Point3), current.Shape.Segment.Point3, vm.Point3)

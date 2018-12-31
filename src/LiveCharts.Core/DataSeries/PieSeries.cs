@@ -26,7 +26,6 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Animations;
 using LiveCharts.Charts;
@@ -120,14 +119,7 @@ namespace LiveCharts.DataSeries
                     ? 0f
                     : (float)pieChart.StartingRotationAngle);
 
-            ChartPoint<TModel, StackedPointCoordinate, ISlice>? previous = null;
-            var timeLine = new Transition
-            {
-                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                KeyFrames = AnimationLine ?? chart.View.AnimationLine
-            };
-            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
+            var animation = AnimatableArguments.BuildFrom(chart.View, this);
             int i = 0;
 
             foreach (ChartPoint<TModel, StackedPointCoordinate, ISlice> current in GetPoints(chart.View))
@@ -155,14 +147,12 @@ namespace LiveCharts.DataSeries
 
                 if (DelayRule != DelayRules.None)
                 {
-                    timeLine = AnimationExtensions.Delay(
-                        // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
+                    animation.SetDelay(DelayRule, i / (double)PointsCount);
                 }
 
                 current.Coordinate.TotalStack = stack;
 
-                DrawPointShape(current, timeLine, vm);
+                DrawPointShape(current, animation, vm);
 
                 if (DataLabels)
                 {
@@ -172,15 +162,13 @@ namespace LiveCharts.DataSeries
                 Mapper.EvaluateModelDependentActions(current.Model, current.Shape, current);
                 current.InteractionArea = new PolarInteractionArea(
                     vm.To.OuterRadius, innerRadius, vm.To.Rotation, vm.To.Rotation + vm.To.Wedge, centerPoint);
-
-                previous = current;
                 i++;
             }
         }
 
         private void DrawPointShape(
            ChartPoint<TModel, StackedPointCoordinate, ISlice> current,
-           Transition timeline,
+           AnimatableArguments animationArgs,
            PieViewModel vm)
         {
             var shape = current.Shape;
@@ -211,7 +199,7 @@ namespace LiveCharts.DataSeries
 
             // animate
 
-            var shapeAnimation = shape.Animate(timeline);
+            var shapeAnimation = shape.Animate(animationArgs);
 
             if (isNew)
             {

@@ -5,8 +5,17 @@
     /// </summary>
     public class BounceOutFunction : IEasingFunction
     {
-        private static readonly double b1 = 4 / 11d, b2 = 6 / 11d, b3 = 8 / 11d, b4 = 3 / 4d, b5 = 9 / 11d, b6 = 10 / 11d,
-            b7 = 15 / 16d, b8 = 21 / 22d, b9 = 63 / 64d, b0 = 1 / b1 / b1;
+        private static readonly double 
+            b1 = 4 / 11d,
+            b2 = 6 / 11d,
+            b3 = 8 / 11d,
+            b4 = 3 / 4d,
+            b5 = 9 / 11d,
+            b6 = 10 / 11d,
+            b7 = 15 / 16d,
+            b8 = 21 / 22d,
+            b9 = 63 / 64d,
+            b0 = 1 / b1 / b1;
 
         /// <inheritdoc></inheritdoc>
         public double GetProgress(double t)

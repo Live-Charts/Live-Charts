@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using LiveCharts.Animations;
 using LiveCharts.Charts;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Brushes;

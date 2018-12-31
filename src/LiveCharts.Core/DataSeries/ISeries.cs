@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using LiveCharts.Animations;
+using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing.Brushes;
@@ -76,7 +77,7 @@ namespace LiveCharts.DataSeries
     /// <summary>
     /// The series interface.
     /// </summary>
-    public interface ISeries : IResource, INotifyPropertyChanged
+    public interface ISeries : IResource, INotifyPropertyChanged, ICoreChildAnimatable
     {
         /// <summary>
         /// Gets the resource key, the type used to style this element.
@@ -178,30 +179,6 @@ namespace LiveCharts.DataSeries
         string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets the animations speed.
-        /// </summary>
-        /// <value>
-        /// The animations speed.
-        /// </value>
-        TimeSpan AnimationsSpeed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the animation line.
-        /// </summary>
-        /// <value>
-        /// The animation line.
-        /// </value>
-        IEnumerable<KeyFrame> AnimationLine { get; set; }
-
-        /// <summary>
-        /// Gets or sets the delay rule.
-        /// </summary>
-        /// <value>
-        /// The delay rule.
-        /// </value>
-        DelayRules DelayRule { get; set; }
-
-        /// <summary>
         /// Gets the index of the group, -1 indicates that the series is not grouped.
         /// </summary>
         /// <value>
@@ -225,6 +202,14 @@ namespace LiveCharts.DataSeries
         /// The point margin.
         /// </value>
         float PointMargin { get; }
+
+        /// <summary>
+        /// Gets or sets the delay rule.
+        /// </summary>
+        /// <value>
+        /// The delay rule.
+        /// </value>
+        DelayRules DelayRule { get; set; }
 
         /// <summary>
         /// Fetches the specified chart.

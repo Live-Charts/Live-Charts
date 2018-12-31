@@ -26,7 +26,6 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using LiveCharts.Animations;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
@@ -154,22 +153,14 @@ namespace LiveCharts.DataSeries
 
             float pivot = GetColumnStart(chart, scaleAxis, directionAxis);
 
-            var timeLine = new Transition
-            {
-                Time = AnimationsSpeed == TimeSpan.MaxValue ? chart.View.AnimationsSpeed : AnimationsSpeed,
-                KeyFrames = AnimationLine ?? chart.View.AnimationLine
-            };
-            float originalDuration = (float)timeLine.Time.TotalMilliseconds;
-            IEnumerable<KeyFrame> originalAnimationLine = timeLine.KeyFrames;
+            var animation = AnimatableArguments.BuildFrom(chart.View, this);
             int i = 0;
 
             foreach (ChartPoint<TModel, TCoordinate, IRectangle> current in GetPoints(chart.View))
             {
                 if (DelayRule != DelayRules.None)
                 {
-                    timeLine = AnimationExtensions.Delay(
-                        // ReSharper disable once PossibleMultipleEnumeration
-                        originalDuration, originalAnimationLine, i / (float)PointsCount, DelayRule);
+                    animation.SetDelay(DelayRule, i / (double)PointsCount);
                 }
 
                 var vm = BuildModel(
@@ -177,7 +168,7 @@ namespace LiveCharts.DataSeries
                     scaleAxis, cw, pivot, byBarOffset,
                     positionOffset, orientation, h, w);
 
-                DrawPointShape(current, timeLine, vm, pivot);
+                DrawPointShape(current, animation, vm, pivot);
 
                 if (DataLabels)
                 {
@@ -222,7 +213,7 @@ namespace LiveCharts.DataSeries
 
         private void DrawPointShape(
             ChartPoint<TModel, TCoordinate, IRectangle> current,
-            Transition timeline,
+            AnimatableArguments animationArgs,
             RectangleViewModel vm,
             float pivot)
         {
@@ -252,7 +243,7 @@ namespace LiveCharts.DataSeries
             shape.YRadius = radius;
 
             shape
-                .Animate(timeline)
+                .Animate(animationArgs)
                 .Property(nameof(shape.Left), shape.Left, vm.To.Left)
                 .Property(nameof(shape.Width), shape.Width, vm.To.Width)
                 .Property(nameof(shape.Top), shape.Top, vm.To.Top)
