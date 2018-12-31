@@ -131,7 +131,7 @@ namespace LiveCharts.Charts
         /// <value>
         /// The content.
         /// </value>
-        IChartCanvas Canvas { get; set; }
+        ICanvas Canvas { get; set; }
         
         /// <summary>
         /// Gets the size of the control.

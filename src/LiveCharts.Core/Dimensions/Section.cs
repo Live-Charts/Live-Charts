@@ -152,7 +152,7 @@ namespace LiveCharts.Dimensions
             if (Label == null)
             {
                 Label = UIFactory.GetNewLabel(chart.Model);
-                chart.Canvas.AddChild(Label, false);
+                Label.FlushToCanvas(chart.Canvas, false);
                 Label.Left = pos.X;
                 Label.Top = pos.Y;
             }
@@ -171,7 +171,7 @@ namespace LiveCharts.Dimensions
             if (Shape == null)
             {
                 Shape = UIFactory.GetNewRectangle(chart.Model);
-                chart.Canvas.AddChild(Shape, true);
+                Shape.FlushToCanvas(chart.Canvas, true);
                 Shape.Left = vm.From.Left;
                 Shape.Top = vm.From.Top;
                 Shape.Width = vm.From.Width;

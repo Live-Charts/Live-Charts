@@ -29,16 +29,6 @@ namespace LiveCharts.Wpf.Drawing
             set => _segment.Point3 = new Point(value.X, value.Y);
         }
 
-        public IAnimationBuilder Animate(Transition timeline)
-        {
-            return new AnimationBuilder<BezierSegment>(new[] { _segment }, timeline.Time, timeline.KeyFrames, false);
-        }
-    }
-
-    public class ChartLineSegment
-    {
-        private readonly LineSegment _segment = new LineSegment();
-
-
+        public IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<BezierSegment>(_segment, args);
     }
 }

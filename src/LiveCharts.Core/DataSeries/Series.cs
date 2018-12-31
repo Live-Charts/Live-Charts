@@ -392,7 +392,7 @@ namespace LiveCharts.DataSeries
             if (chartPoint.Label == null)
             {
                 chartPoint.Label = UIFactory.GetNewLabel(chartPoint.Chart.Model);
-                chart.Canvas.AddChild(chartPoint.Label, true);
+                chartPoint.Label.FlushToCanvas(chartPoint.Chart.Canvas, true);
             }
 
             chartPoint.Label.Content = chartPoint.Series.GetDataLabel(chartPoint.Coordinate);

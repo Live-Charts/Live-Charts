@@ -131,7 +131,7 @@ namespace LiveCharts.DataSeries
             if (path == null)
             {
                 path = UIFactory.GetNewCartesianPath(chart);
-                chart.View.Canvas.AddChild(path, true);
+                path.FlushToCanvas(chart.View.Canvas, true);
                 Content[chart][PathKey] = path;
             }
 
@@ -154,7 +154,7 @@ namespace LiveCharts.DataSeries
 
                 if (isFist)
                 {
-                    path.StartPoint = currentBezier.ViewModel.Point1;
+                    path.StartPoint = currentBezier.ViewModel.Point1; // animate to start point
                     var startSegment = UIFactory.GetNewLineSegment(chart);
                     startSegment.Point = chart.InvertXy
                         ? new PointD(chart.ScaleToUi(Pivot, y), currentBezier.ViewModel.Point1.Y)
@@ -370,7 +370,7 @@ namespace LiveCharts.DataSeries
             if (current.Shape == null)
             {
                 current.Shape = UIFactory.GetNewBezierShape(current.Chart.Model);
-                current.Chart.Canvas.AddChild(current.Shape, true);
+                current.Shape.FlushToCanvas(current.Chart.Canvas, true);
                 current.Shape.Left = vm.Location.X;
                 current.Shape.Top = vm.Location.Y;
                 current.Shape.Width = 0;

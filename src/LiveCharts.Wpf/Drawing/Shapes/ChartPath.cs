@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using LiveCharts.Animations;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
+using LiveCharts.Wpf.Animations;
 
 namespace LiveCharts.Wpf.Drawing
 {
     public class ChartPath : IPath
     {
-        private readonly PaintablePath _stroke = new PaintablePath();
-        private readonly PaintablePath _fill = new PaintablePath();
-        private int _zIndex;
-        private double _opacity;
-        private PointD _startPoint = new PointD();
+        internal readonly PathHelper _stroke = new PathHelper();
+        internal readonly PathHelper _fill = new PathHelper();
 
         public int ZIndex
         {
-            get => _zIndex;
+            get => Panel.GetZIndex(_stroke.Path);
             set
             {
-                _zIndex = value;
                 Panel.SetZIndex(_stroke.Path, value);
                 Panel.SetZIndex(_fill.Path, value);
             }
@@ -28,10 +26,9 @@ namespace LiveCharts.Wpf.Drawing
 
         public double Opacity
         {
-            get => _opacity;
+            get => _stroke.Path.Opacity;
             set
             {
-                _opacity = value;
                 _stroke.Path.Opacity = value;
                 _fill.Path.Opacity = value;
             }
@@ -39,30 +36,37 @@ namespace LiveCharts.Wpf.Drawing
 
         public PointD StartPoint
         {
-            get => _startPoint;
+            get => new PointD(_stroke.Figure.StartPoint.X, _stroke.Figure.StartPoint.Y);
             set
             {
-                _startPoint = value;
                 _stroke.Figure.StartPoint = new System.Windows.Point(value.X, value.Y);
                 _fill.Figure.StartPoint = new System.Windows.Point(value.X, value.Y);
             }
         }
 
-        public double StrokeThickness { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-        public IEnumerable<double> StrokeDashArray { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-        public double StrokeDashOffset { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-        public IAnimationBuilder Animate(Transition timeline)
+        public double StrokeThickness
         {
-            throw new System.NotImplementedException();
+            get => _stroke.Path.StrokeThickness;
+            set => _stroke.Path.StrokeThickness = value;
         }
 
-        public IEnumerable<IPaintable> GetPaintables()
+        public IEnumerable<double> StrokeDashArray
         {
-            yield return _fill;
-            yield return _stroke;
+            get => _stroke.Path.StrokeDashArray.Select(x => x);
+            set => _stroke.Path.StrokeDashArray = new System.Windows.Media.DoubleCollection(value);
+        }
+
+        public double StrokeDashOffset
+        {
+            get => _stroke.Path.StrokeDashOffset;
+            set => _stroke.Path.StrokeDashOffset = value;
+        }
+
+        public IAnimationBuilder Animate(AnimatableArguments arguments) => new PathAnimationBuilder(this, arguments);
+
+        public IEnumerable<IPaintable> GetVisuals()
+        {
+            throw new System.NotImplementedException();
         }
 
         public void InsertSegment(ISegment segment, int index)

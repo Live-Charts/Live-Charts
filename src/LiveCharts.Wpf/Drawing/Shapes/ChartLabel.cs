@@ -158,10 +158,7 @@ namespace LiveCharts.Wpf.Drawing.Shapes
             }
         }
 
-        public IAnimationBuilder Animate(Transition timeline)
-        {
-            return new AnimationBuilder(this, timeline.Time, timeline.KeyFrames, true);
-        }
+        public IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<ChartLabel>(this, args);
 
         IEnumerable<IPaintable> IUIContent.GetPaintables()
         {

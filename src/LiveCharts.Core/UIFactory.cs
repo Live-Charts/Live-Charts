@@ -39,7 +39,7 @@ namespace LiveCharts
     /// </summary>
     public static class UIFactory
     {
-        internal static IChartCanvas GetNewChartContent(IChartView view) => WhenDrawingChartContents(view);
+        internal static ICanvas GetNewChartContent(IChartView view) => WhenDrawingChartContents(view);
 
         internal static ILabel GetNewLabel(ChartModel context) => WhenDrawingLabels(context);
 
@@ -62,7 +62,7 @@ namespace LiveCharts
         /// <summary>
         /// Called when a chart host is required in the UI.
         /// </summary>
-        public static event Func<IChartView, IChartCanvas> WhenDrawingChartContents;
+        public static event Func<IChartView, ICanvas> WhenDrawingChartContents;
 
         /// <summary>
         /// Gets the new label.

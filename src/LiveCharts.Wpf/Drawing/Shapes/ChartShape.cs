@@ -47,9 +47,9 @@ namespace LiveCharts.Wpf.Drawing
             set => SetValue(RotationProperty, value);
         }
 
-        public IAnimationBuilder Animate(Transition timeline)
+        public virtual IAnimationBuilder Animate(AnimatableArguments args)
         {
-            return new AnimationBuilder(this, timeline.Time, timeline.KeyFrames, true);
+            return new AnimationBuilder<FrameworkElement>(new[] { this }, args, true);
         }
 
         protected virtual Transform GetTransform()

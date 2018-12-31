@@ -178,7 +178,7 @@ namespace LiveCharts.DataSeries
             {
                 current.Shape = UIFactory.GetNewSlice(current.Chart.Model);
                 shape = current.Shape;
-                current.Chart.Canvas.AddChild(shape, true);
+                current.Shape.FlushToCanvas(current.Chart.Canvas, true);
                 shape.Left = current.Chart.Model.DrawAreaSize[0] / 2 - vm.To.OuterRadius;
                 shape.Top = current.Chart.Model.DrawAreaSize[1] / 2 - vm.To.OuterRadius;
                 shape.Rotation = 0f;

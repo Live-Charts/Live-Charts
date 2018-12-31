@@ -228,7 +228,7 @@ namespace LiveCharts.DataSeries
             if (current.Shape == null)
             {
                 current.Shape = UIFactory.GetNewColoredShape(current.Chart.Model);
-                current.Chart.Canvas.AddChild(current.Shape, true);
+                current.Shape.FlushToCanvas(current.Chart.Canvas, true);
                 current.Shape.Color = vm.From;
             }
 

@@ -27,6 +27,8 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>

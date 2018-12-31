@@ -43,8 +43,8 @@ using Size = System.Windows.Size;
 
 namespace LiveCharts.Wpf.Controls
 {
-    /// <inheritdoc cref="IChartCanvas" />
-    public class ChartContent : Canvas, IChartCanvas
+    /// <inheritdoc cref="ICanvas" />
+    public class ChartContent : Canvas, ICanvas
     {
         #region fields
 
@@ -96,7 +96,7 @@ namespace LiveCharts.Wpf.Controls
 
         private event PointerHandler PointerMovedOverPlot;
 
-        event PointerHandler IChartCanvas.PointerMoved
+        event PointerHandler ICanvas.PointerMoved
         {
             add => PointerMovedOverPlot += value;
             remove => PointerMovedOverPlot -= value;
@@ -104,7 +104,7 @@ namespace LiveCharts.Wpf.Controls
 
         private event PointerHandler PointerDownOverPlot;
 
-        event PointerHandler IChartCanvas.PointerDown
+        event PointerHandler ICanvas.PointerDown
         {
             add => PointerDownOverPlot += value;
             remove => PointerDownOverPlot -= value;
@@ -112,7 +112,7 @@ namespace LiveCharts.Wpf.Controls
 
         private event ChartEventHandler ChartViewLoaded;
 
-        event ChartEventHandler IChartCanvas.ContentLoaded
+        event ChartEventHandler ICanvas.ContentLoaded
         {
             add => ChartViewLoaded += value;
             remove => ChartViewLoaded -= value;

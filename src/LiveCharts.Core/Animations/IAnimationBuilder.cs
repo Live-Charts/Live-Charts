@@ -11,19 +11,6 @@ namespace LiveCharts.Animations
     public interface IAnimationBuilder
     {
         /// <summary>
-        /// Getsor sets the esing function.
-        /// </summary>
-        IEasingFunction EasingFunction { get; set; }
-
-        /// <summary>
-        /// Gets or sets the duration.
-        /// </summary>
-        /// <value>
-        /// The duration.
-        /// </value>
-        TimeSpan Duration { get; set; }
-
-        /// <summary>
         /// Begins the animation.
         /// </summary>
         void Begin();

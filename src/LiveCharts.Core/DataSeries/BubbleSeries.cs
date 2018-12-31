@@ -25,7 +25,6 @@
 #region
 
 using LiveCharts.Animations;
-using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing;
@@ -36,7 +35,6 @@ using LiveCharts.Interaction.Areas;
 using LiveCharts.Interaction.Points;
 using LiveCharts.Updating;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 #endregion
@@ -173,7 +171,7 @@ namespace LiveCharts.DataSeries
             if (current.Shape == null)
             {
                 current.Shape = UIFactory.GetNewSvgPath(current.Chart.Model);
-                current.Chart.Canvas.AddChild(current.Shape, true);
+                current.Shape.FlushToCanvas(current.Chart.Canvas, true);
                 current.Shape.Left = vm.Location.X;
                 current.Shape.Top = vm.Location.Y;
                 current.Shape.Width = 0;

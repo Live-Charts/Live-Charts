@@ -314,7 +314,7 @@ namespace LiveCharts.Dimensions
             float l = 0f, r = 0f, t = 0f, b = 0f;
 
             var dummyControl = UIFactory.GetNewLabel(chart);
-            chart.View.Canvas.AddChild(dummyControl, false);
+            dummyControl.FlushToCanvas(chart.View.Canvas, false);
 
             for (float i = 0f; i < dimension; i += step)
             {
@@ -337,7 +337,7 @@ namespace LiveCharts.Dimensions
                 if (bi > space[1] && b < bi - space[1]) b = bi - space[1];
             }
 
-            chart.View.Canvas.DisposeChild(dummyControl, false);
+            dummyControl.RemoveFromCanvas(chart.View.Canvas);
 
             return new Padding(t, r, b, l);
         }
@@ -354,7 +354,7 @@ namespace LiveCharts.Dimensions
             bool alternate = false;
 
             var dummyControl = UIFactory.GetNewLabel(chart);
-            chart.View.Canvas.AddChild(dummyControl, false);
+            dummyControl.FlushToCanvas(chart.View.Canvas, true);
 
             float delta = (float)ActualStep;
 
@@ -426,7 +426,7 @@ namespace LiveCharts.Dimensions
                 chart.RegisterINotifyPropertyChanged(separator);
             }
 
-            chart.View.Canvas.DisposeChild(dummyControl, false);
+            dummyControl.RemoveFromCanvas(chart.View.Canvas);
 
             // remove unnecessary elements from cache
             // the visual element will be removed by the chart's resource collector
@@ -472,7 +472,7 @@ namespace LiveCharts.Dimensions
                     : new RectangleD(new PointD(0, t), new SizeD(chart.DrawAreaSize[0], h));
 
                 var dummyLabel = UIFactory.GetNewLabel(chart);
-                chart.View.Canvas.AddChild(dummyLabel, false);
+                dummyLabel.FlushToCanvas(chart.View.Canvas, true);
                 dummyLabel.Content = section.LabelContent;
                 dummyLabel.FontStyle = section.Font.Style;
                 dummyLabel.FontFamily = section.Font.FamilyName;
@@ -539,7 +539,7 @@ namespace LiveCharts.Dimensions
                 section.DrawLabel(chart.View, animation, Perform.Sum(labelVm.UiPosition, chart.View.Canvas.DrawArea.Location));
 
                 chart.RegisterINotifyPropertyChanged(section);
-                chart.View.Canvas.DisposeChild(dummyLabel, false);
+                dummyLabel.RemoveFromCanvas(chart.View.Canvas);
             }
         }
 
@@ -550,7 +550,7 @@ namespace LiveCharts.Dimensions
             {
                 foreach (KeyValuePair<double, PlaneSeparator> separator in holder.Value)
                 {
-                    ((IResource) separator.Value).Dispose(chart, force);
+                    ((IResource)separator.Value).Dispose(chart, force);
                 }
             }
 

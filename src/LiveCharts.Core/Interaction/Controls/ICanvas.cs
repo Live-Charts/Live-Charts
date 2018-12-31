@@ -36,7 +36,7 @@ namespace LiveCharts.Interaction.Controls
     /// <summary>
     /// Defines the chart content view.
     /// </summary>
-    public interface IChartCanvas
+    public interface ICanvas
     {
         // as a suggestion do a Explicit implementation
         // of the following events, these events are used by the core
@@ -75,16 +75,6 @@ namespace LiveCharts.Interaction.Controls
         /// The draw area.
         /// </value>
         RectangleF DrawArea { get; set; }
-
-        /// <summary>
-        /// Adds a child child.
-        /// </summary>
-        void AddChild(IUIContent child, bool isClipped);
-
-        /// <summary>
-        /// Removes the child.
-        /// </summary>
-        void DisposeChild(IUIContent child, bool isClipped);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.

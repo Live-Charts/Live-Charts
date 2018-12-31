@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animations\PathAnimationBuilder.cs" />
     <Compile Include="Animations\LiveChartsEasing.cs" />
     <Compile Include="Chart.cs" />
     <Compile Include="Controls\ChartContent.cs" />
@@ -68,12 +69,13 @@
     <Compile Include="ChartLegend.cs" />
     <Compile Include="Drawing\Shapes\ChartBezierSegment.cs" />
     <Compile Include="Drawing\Shapes\ChartBezierShape.cs" />
-    <Compile Include="Drawing\Shapes\ChartCartesianPath.cs" />
+    <Compile Include="Drawing\Shapes\ChartPath.cs" />
     <Compile Include="Drawing\Shapes\ChartLabel.cs" />
     <Compile Include="CoreToPlatform.cs" />
+    <Compile Include="Drawing\Shapes\ChartLineSegment.cs" />
     <Compile Include="Drawing\Shapes\ChartRectangle.cs" />
     <Compile Include="Drawing\Shapes\ChartShape.cs" />
-    <Compile Include="Drawing\Shapes\PaintablePath.cs" />
+    <Compile Include="Drawing\Shapes\PathHelper.cs" />
     <Compile Include="PieChart.cs" />
     <Compile Include="Shapes\DialogShape.cs" />
     <Compile Include="Shapes\Slice.cs" />

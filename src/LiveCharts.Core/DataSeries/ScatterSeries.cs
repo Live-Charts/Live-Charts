@@ -165,7 +165,7 @@ namespace LiveCharts.DataSeries
             {
                 current.Shape = UIFactory.GetNewSvgPath(current.Chart.Model);
                 shape = current.Shape;
-                current.Chart.Canvas.AddChild(shape, true);
+                current.Shape.FlushToCanvas(current.Chart.Canvas, true);
                 shape.Left = vm.Location.X;
                 shape.Top = vm.Location.Y;
                 shape.Width = 0;

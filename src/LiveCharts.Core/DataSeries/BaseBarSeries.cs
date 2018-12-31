@@ -217,37 +217,35 @@ namespace LiveCharts.DataSeries
             RectangleViewModel vm,
             float pivot)
         {
-            var shape = current.Shape;
             var isNewShape = false;
 
-            if (shape == null)
+            if (current.Shape == null)
             {
                 current.Shape = UIFactory.GetNewRectangle(current.Chart.Model);
-                shape = current.Shape;
-                current.Chart.Canvas.AddChild(shape, true);
-                shape.Left = vm.From.Left;
-                shape.Top = vm.From.Top;
-                shape.Width = vm.From.Width;
-                shape.Height = vm.From.Height;
+                current.Shape.FlushToCanvas(current.Chart.Canvas, true);
+                current.Shape.Left = vm.From.Left;
+                current.Shape.Top = vm.From.Top;
+                current.Shape.Width = vm.From.Width;
+                current.Shape.Height = vm.From.Height;
                 isNewShape = true;
             }
 
             // map properties
-            shape.StrokeDashArray = StrokeDashArray;
-            shape.StrokeThickness = StrokeThickness;
-            shape.ZIndex = ZIndex;
-            shape.Paint(Stroke, Fill);
+            current.Shape.StrokeDashArray = StrokeDashArray;
+            current.Shape.StrokeThickness = StrokeThickness;
+            current.Shape.ZIndex = ZIndex;
+            current.Shape.Paint(Stroke, Fill);
 
             var radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
-            shape.XRadius = radius;
-            shape.YRadius = radius;
+            current.Shape.XRadius = radius;
+            current.Shape.YRadius = radius;
 
-            shape
+            current.Shape
                 .Animate(animationArgs)
-                .Property(nameof(shape.Left), shape.Left, vm.To.Left)
-                .Property(nameof(shape.Width), shape.Width, vm.To.Width)
-                .Property(nameof(shape.Top), shape.Top, vm.To.Top)
-                .Property(nameof(shape.Height), !isNewShape ? shape.Height : vm.From.Height, vm.To.Height)
+                .Property(nameof(IShape.Left), current.Shape.Left, vm.To.Left)
+                .Property(nameof(IShape.Width), current.Shape.Width, vm.To.Width)
+                .Property(nameof(IShape.Top), current.Shape.Top, vm.To.Top)
+                .Property(nameof(IShape.Height), !isNewShape ? current.Shape.Height : vm.From.Height, vm.To.Height)
                 .Begin();
         }
     }

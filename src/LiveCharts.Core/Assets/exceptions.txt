@@ -7,6 +7,7 @@
 104, A Cartesian chart is not able to handle dimension {0}.
 105, Axis.LabelFormatter property can not be null.
 106, An axis at dimension {0} can not be positioned at {1}.
+107, LiveCharts was not able to animate the type '{0}'.
 
 0, series exceptions
 
@@ -23,6 +24,7 @@
 144, The TimeLine was not defined properly, please specify '{0}' in your animation constructor.
 145, Could not animate the property '{0}', with the given time line, because the property is of type '{1}' and the animation targets the type '{2}', please use the a time line that targets '{1}' type.
 146, A time line can only be used by a unique property.
+147, Livecharts was not able to animate the property {0}.
 
 0, geared exceptions
 
