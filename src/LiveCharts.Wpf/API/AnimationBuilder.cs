@@ -36,7 +36,7 @@ using System.Windows.Media.Animation;
 
 #endregion
 
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// An animation builder for WPF.
@@ -44,7 +44,7 @@ namespace LiveCharts.Wpf.Animations
     public class AnimationBuilder<T> : IAnimationBuilder
     {
         private static readonly bool _isFrameworkElement;
-        private List<Tuple<DependencyProperty, Timeline>> _animations = new List<Tuple<DependencyProperty, Timeline>>();
+        private List<AnimationTarget> _animations = new List<AnimationTarget>();
         private readonly T _target;
         private readonly Storyboard _storyboard;
         private readonly AnimatableArguments _animatableArguments;
@@ -84,20 +84,21 @@ namespace LiveCharts.Wpf.Animations
                 // I think this in an error in the WPF framework design
                 if (_animations.Count > 0)
                 {
-                    _animations[0].Item2.Completed += OnFinished;
+                    _animations[0].Timeline.Completed += OnFinished;
                 }
-                foreach (Tuple<DependencyProperty, Timeline> x in _animations)
+                foreach (var x in _animations)
                 {
-                    Animatable animatable = _target as Animatable;
+                    var t = x.Target ?? _target;
+                    Animatable animatable = t as Animatable;
                     if (animatable == null) throw new LiveChartsException(107, typeof(T).Name);
-                    animatable.BeginAnimation(x.Item1, (AnimationTimeline)x.Item2);
+                    animatable.BeginAnimation(x.Property, x.Timeline);
                 }
             }
         }
 
         /// <inheritdoc></inheritdoc>
-        public IAnimationBuilder Property(
-            string property, double from, double to, double delay)
+        public virtual IAnimationBuilder Property(
+            string property, double from, double to, double delay = 0)
         {
             DependencyProperty p;
             switch (property)
@@ -128,8 +129,8 @@ namespace LiveCharts.Wpf.Animations
         }
 
         /// <inheritdoc></inheritdoc>
-        public IAnimationBuilder Property(
-            string property, PointD from, PointD to, double delay)
+        public virtual IAnimationBuilder Property(
+            string property, PointD from, PointD to, double delay = 0)
         {
             var p = DependencyPropertyDescriptor.FromName(property, typeof(T), typeof(T)).DependencyProperty;
 
@@ -148,8 +149,8 @@ namespace LiveCharts.Wpf.Animations
         }
 
         /// <inheritdoc></inheritdoc>
-        public IAnimationBuilder Property(
-            string property, System.Drawing.Color from, System.Drawing.Color to, double delay)
+        public virtual IAnimationBuilder Property(
+            string property, System.Drawing.Color from, System.Drawing.Color to, double delay = 0)
         {
             var p = DependencyPropertyDescriptor.FromName(property, typeof(T), typeof(T)).DependencyProperty;
 
@@ -176,7 +177,7 @@ namespace LiveCharts.Wpf.Animations
                 {
                     throw new LiveChartsException(141);
                 }
-                _animations[0].Item2.Completed += callback;
+                _animations[0].Timeline.Completed += callback;
             }
             else
             {
@@ -197,24 +198,39 @@ namespace LiveCharts.Wpf.Animations
             _storyboard.Completed -= OnFinished;
             if (_animations.Count > 0)
             {
-                _animations[0].Item2.Completed -= OnFinished;
+                _animations[0].Timeline.Completed -= OnFinished;
             }
             _animations.Clear();
             _animations = null;
         }
 
-        private void SetTarget(AnimationTimeline animation, DependencyProperty property)
+        protected void SetTarget(AnimationTimeline animation, DependencyProperty property, object target = null)
         {
             if (_isFrameworkElement)
             {
                 _storyboard.Children.Add(animation);
-                Storyboard.SetTarget(animation, _target as DependencyObject);
+                var t = target ?? _target;
+                Storyboard.SetTarget(animation, t as DependencyObject);
                 Storyboard.SetTargetProperty(animation, new PropertyPath(property));
             }
             else
             {
-                _animations.Add(new Tuple<DependencyProperty, Timeline>(property, animation));
+                _animations.Add(new AnimationTarget
+                {
+                    Property = property,
+                    Timeline = animation,
+                    Target = target
+                });
             }
+        }
+
+        private class AnimationTarget
+        {
+            public DependencyProperty Property { get; set; }
+
+            public AnimationTimeline Timeline { get; set; }
+
+            public object Target { get; set; }
         }
     }
 }

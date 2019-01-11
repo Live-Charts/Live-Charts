@@ -28,6 +28,7 @@ using System.Drawing;
 using LiveCharts.DataSeries;
 using LiveCharts.Dimensions;
 using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Styles;
 using Font = LiveCharts.Drawing.Styles.Font;
 
@@ -48,13 +49,13 @@ namespace LiveCharts.Themes
         public static Settings UsingTestingTheme(this Settings charting)
         {
             var sepStyle = new ShapeStyle(
-                UIFactory.GetNewSolidColorBrush(255, 230, 230, 230),
-                UIFactory.GetNewSolidColorBrush(150, 245, 245, 245),
+                new SolidColorBrush(255, 230, 230, 230),
+                new SolidColorBrush(150, 245, 245, 245),
                 1,
                 null);
             var altStyle = new ShapeStyle(
-                UIFactory.GetNewSolidColorBrush(0, 220, 220, 220),
-                UIFactory.GetNewSolidColorBrush(150, 220, 220, 220),
+                new SolidColorBrush(0, 220, 220, 220),
+                new SolidColorBrush(150, 220, 220, 220),
                 1,
                 null);
 

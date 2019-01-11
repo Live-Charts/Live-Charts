@@ -36,6 +36,7 @@ using LiveCharts.Drawing.Styles;
 using LiveCharts.Interaction.Events;
 #if NET45 || NET46
 using Font = LiveCharts.Drawing.Styles.Font;
+using Brush = LiveCharts.Drawing.Brushes.Brush;
 #endif
 
 #endregion
@@ -79,7 +80,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The stroke.
         /// </value>
-        public IBrush? Stroke { get; set; }
+        public Brush? Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -103,7 +104,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The fill.
         /// </value>
-        public IBrush? Fill { get; set; }
+        public Brush? Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the font.
@@ -157,7 +158,8 @@ namespace LiveCharts.Dimensions
                 Label.Top = pos.Y;
             }
 
-            Label.Paint(Stroke, Fill);
+            Label.Foreground = Stroke;
+            Label.Paint();
 
             Label.Animate(animationArgs)
                 .Property(nameof(ILabel.Left), Label.Left, pos.X)
@@ -185,7 +187,9 @@ namespace LiveCharts.Dimensions
 
             Shape.StrokeDashArray = StrokeDashArray;
             Shape.StrokeThickness = StrokeThickness;
-            Shape.Paint(Stroke, Fill);
+            Shape.Fill = Fill;
+            Shape.Stroke = Stroke;
+            Shape.Paint();
 
             Shape.Animate(animationArgs)
                 .Property(nameof(IShape.Top), Shape.Top, vm.To.Top)

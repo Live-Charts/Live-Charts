@@ -56,7 +56,7 @@ namespace LiveCharts.Dimensions
         private IEnumerable<Section>? _sections;
         private double _labelsRotation;
         private Font _labelsFont;
-        private IBrush _labelsForeground;
+        private Brush _labelsForeground;
         private Padding _labelsPadding;
         private double _pointMargin;
         private bool _showLabels;
@@ -72,7 +72,7 @@ namespace LiveCharts.Dimensions
             _showLabels = true;
             _labelFormatter = Format.AsMetricNumber;
             _labelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            _labelsForeground = UIFactory.GetNewSolidColorBrush(255, 30, 30, 30);
+            _labelsForeground = new SolidColorBrush(255, 30, 30, 30);
             Global.Settings.BuildFromTheme(this);
         }
 
@@ -268,7 +268,7 @@ namespace LiveCharts.Dimensions
         /// <value>
         /// The labels foreground.
         /// </value>
-        public IBrush LabelsForeground
+        public Brush LabelsForeground
         {
             get => _labelsForeground;
             set

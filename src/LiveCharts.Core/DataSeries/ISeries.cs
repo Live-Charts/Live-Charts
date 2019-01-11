@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using LiveCharts.Animations;
-using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing.Brushes;
@@ -42,6 +41,7 @@ using LiveCharts.Interaction.Series;
 using LiveCharts.Updating;
 #if NET45 || NET46
 using Font = LiveCharts.Drawing.Styles.Font;
+using Brush = LiveCharts.Drawing.Brushes.Brush;
 #endif
 
 #endregion
@@ -125,7 +125,7 @@ namespace LiveCharts.DataSeries
         /// <value>
         /// The data labels foreground.
         /// </value>
-        IBrush DataLabelsForeground { get; set; }
+        Brush DataLabelsForeground { get; set; }
 
         /// <summary>
         /// Gets or sets the default fill opacity, this property is used to determine the fill opacity of a point when 

@@ -29,11 +29,9 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Points;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Charts;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Points;
 
 #endregion
 
@@ -73,11 +71,11 @@ namespace LiveCharts.Wpf
             "Position", typeof(ToolTipPosition), typeof(ChartToolTip),
             new FrameworkPropertyMetadata(default(ToolTipPosition), FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-               /// <summary>
+        /// <summary>
         /// The default group style property
         /// </summary>
         public static readonly DependencyProperty DefaultGroupStyleProperty = DependencyProperty.Register(
-            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartToolTip), 
+            nameof(DefaultGroupStyle), typeof(GroupStyle), typeof(ChartToolTip),
             new PropertyMetadata(default(GroupStyle), OnDefaultGroupStyleChanged));
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             nameof(CornerRadius), typeof(double), typeof(ChartToolTip), new PropertyMetadata(default(double)));
-        
+
         /// <summary>
         /// The show series names property
         /// </summary>
@@ -129,10 +127,10 @@ namespace LiveCharts.Wpf
         /// </value>
         public double GeometrySize
         {
-            get => (double) GetValue(GeometrySizeProperty);
+            get => (double)GetValue(GeometrySizeProperty);
             set => SetValue(GeometrySizeProperty, value);
         }
- 
+
         /// <summary>
         /// Gets or sets the selection mode.
         /// </summary>
@@ -141,17 +139,17 @@ namespace LiveCharts.Wpf
         /// </value>
         public ToolTipSelectionMode SelectionMode
         {
-            get => (ToolTipSelectionMode) GetValue(SelectionModeProperty);
+            get => (ToolTipSelectionMode)GetValue(SelectionModeProperty);
             set => SetValue(SelectionModeProperty, value);
         }
 
         /// <inheritdoc />
         public ToolTipPosition Position
         {
-            get => (ToolTipPosition) GetValue(PositionProperty);
+            get => (ToolTipPosition)GetValue(PositionProperty);
             set => SetValue(PositionProperty, value);
         }
- 
+
         /// <summary>
         /// Gets or sets the default group style.
         /// </summary>
@@ -160,10 +158,10 @@ namespace LiveCharts.Wpf
         /// </value>
         public GroupStyle DefaultGroupStyle
         {
-            get => (GroupStyle) GetValue(DefaultGroupStyleProperty);
+            get => (GroupStyle)GetValue(DefaultGroupStyleProperty);
             set => SetValue(DefaultGroupStyleProperty, value);
         }
-        
+
         /// <summary>
         /// Gets or sets the corner radius.
         /// </summary>
@@ -172,16 +170,16 @@ namespace LiveCharts.Wpf
         /// </value>
         public double CornerRadius
         {
-            get => (double) GetValue(CornerRadiusProperty);
+            get => (double)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether the series name should be displayed in the tooltip.
         /// </summary>
         public bool ShowSeriesNames
         {
-            get => (bool) GetValue(ShowSeriesNamesProperty);
+            get => (bool)GetValue(ShowSeriesNamesProperty);
             set => SetValue(ShowSeriesNamesProperty, value);
         }
 
@@ -193,10 +191,10 @@ namespace LiveCharts.Wpf
         /// </value>
         public bool ShowSeriesGeometry
         {
-            get => (bool) GetValue(ShowSeriesGeometryProperty);
+            get => (bool)GetValue(ShowSeriesGeometryProperty);
             set => SetValue(ShowSeriesGeometryProperty, value);
         }
-      
+
         /// <summary>
         /// Gets or sets the wedge, in degrees.
         /// </summary>
@@ -205,10 +203,10 @@ namespace LiveCharts.Wpf
         /// </value>
         public double Wedge
         {
-            get => (double) GetValue(WedgeProperty);
+            get => (double)GetValue(WedgeProperty);
             set => SetValue(WedgeProperty, value);
         }
-  
+
         /// <summary>
         /// Gets or sets the wedge hypotenuse.
         /// </summary>
@@ -217,14 +215,14 @@ namespace LiveCharts.Wpf
         /// </value>
         public double WedgeHypotenuse
         {
-            get => (double) GetValue(WedgeHypotenuseProperty);
+            get => (double)GetValue(WedgeHypotenuseProperty);
             set => SetValue(WedgeHypotenuseProperty, value);
         }
-        
+
         /// <inheritdoc />
         public bool SnapToClosest
         {
-            get => (bool) GetValue(SnapToClosestProperty);
+            get => (bool)GetValue(SnapToClosestProperty);
             set => SetValue(SnapToClosestProperty, value);
         }
 
@@ -246,7 +244,7 @@ namespace LiveCharts.Wpf
 
         SizeF IDataToolTip.ShowAndMeasure(IEnumerable<IChartPoint> selected, IChartView chart)
         {
-            var wpfChart = (Chart) chart;
+            var wpfChart = (Chart)chart;
 
             if (Parent == null)
             {
@@ -257,35 +255,34 @@ namespace LiveCharts.Wpf
             wpfChart.TooltipPopup.IsOpen = true;
             UpdateLayout();
 
-            return new SizeF((float) DesiredSize.Width, (float) DesiredSize.Height);
+            return new SizeF((float)DesiredSize.Width, (float)DesiredSize.Height);
         }
 
         /// <inheritdoc />
         void IDataToolTip.Hide(IChartView chart)
         {
-            var wpfChart = (Chart) chart;
+            var wpfChart = (Chart)chart;
             wpfChart.TooltipPopup.IsOpen = false;
         }
 
         void IDataToolTip.Move(PointF location, IChartView chart)
         {
-            var wpfChart = (Chart) chart;
+            var wpfChart = (Chart)chart;
 
             float x = location.X + chart.Canvas.DrawArea.X;
             float y = location.Y + chart.Canvas.DrawArea.Y;
 
             location = new PointF(x, y);
 
-            wpfChart.TooltipPopup.Animate(
-                    new TimeLine
-                    {
-                        Duration = chart.AnimationsSpeed,
-                        AnimationLine = chart.AnimationLine
-                    })
+            var animation = new AnimationBuilder<Popup>(
+                wpfChart.TooltipPopup,
+                new LiveCharts.Animations.AnimatableArguments(chart.AnimationsSpeed, chart.EasingFunction));
+
+            animation
                 .Property(
-                    Popup.HorizontalOffsetProperty, wpfChart.TooltipPopup.HorizontalOffset, location.X)
+                    nameof(wpfChart.TooltipPopup.HorizontalOffset), wpfChart.TooltipPopup.HorizontalOffset, location.X)
                 .Property(
-                    Popup.VerticalOffsetProperty, wpfChart.TooltipPopup.VerticalOffset, location.Y)
+                    nameof(wpfChart.TooltipPopup.VerticalOffset), wpfChart.TooltipPopup.VerticalOffset, location.Y)
                 .Begin();
         }
     }

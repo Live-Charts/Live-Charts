@@ -6,11 +6,10 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using LiveCharts.Animations;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Interaction.Controls;
 
-namespace LiveCharts.Wpf.Drawing
+namespace LiveCharts.Wpf
 {
     public abstract class ChartShape : Shape, IShape
     {
@@ -46,11 +45,11 @@ namespace LiveCharts.Wpf.Drawing
             get => (double)GetValue(RotationProperty);
             set => SetValue(RotationProperty, value);
         }
+        Drawing.Brushes.Brush IShape.Fill { get; set; }
 
-        public virtual IAnimationBuilder Animate(AnimatableArguments args)
-        {
-            return new AnimationBuilder<FrameworkElement>(new[] { this }, args, true);
-        }
+        Drawing.Brushes.Brush IShape.Stroke { get; set; }
+
+        public virtual IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<Shape>(this, args);
 
         protected virtual Transform GetTransform()
         {
@@ -68,15 +67,15 @@ namespace LiveCharts.Wpf.Drawing
             return transform;
         }
 
-        IEnumerable<IPaintable> IUIContent.GetPaintables()
-        {
-            yield return this;
-        }
+        void ICanvasElement.FlushToCanvas(ICanvas canvas, bool clippedToDrawMargin) => canvas.AddChild(this, clippedToDrawMargin);
 
-        void IPaintable.Paint(IBrush stroke, IBrush fill)
+        void ICanvasElement.RemoveFromCanvas(ICanvas canvas) => canvas.RemoveChild(this);
+
+        void ICanvasElement.Paint()
         {
-            Fill = stroke.AsWpfBrush();
-            Fill = stroke.AsWpfBrush();
+            var iShape = (IShape) this;
+            Fill = iShape.Fill.AsWpfBrush();
+            Stroke = iShape.Stroke.AsWpfBrush();
         }
     }
 }

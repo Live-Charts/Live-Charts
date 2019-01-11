@@ -26,7 +26,6 @@
 
 using System.Drawing;
 using LiveCharts.Charts;
-using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction.Events;
 
 #endregion
@@ -38,15 +37,12 @@ namespace LiveCharts.Interaction.Controls
     /// </summary>
     public interface ICanvas
     {
-        // as a suggestion do a Explicit implementation
-        // of the following events, these events are used by the core
-        // of the library and they are not necessary for the user.
         #region events
 
         /// <summary>
         /// Occurs when the charts is initialized.
         /// </summary>
-        event ChartEventHandler ContentLoaded;
+        event ChartEventHandler CanvasLoaded;
 
         /// <summary>
         /// Occurs when the pointer moves.
@@ -57,6 +53,11 @@ namespace LiveCharts.Interaction.Controls
         /// Occurs when the pointer goes down.
         /// </summary>
         event PointerHandler PointerDown;
+
+        /// <summary>
+        /// Occurs when the pointer goes up.
+        /// </summary>
+        event PointerHandler PointerUp;
 
         #endregion
 

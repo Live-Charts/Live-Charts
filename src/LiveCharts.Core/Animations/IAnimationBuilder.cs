@@ -1,5 +1,4 @@
-﻿using LiveCharts.Animations.Ease;
-using LiveCharts.Drawing;
+﻿using LiveCharts.Drawing;
 using System;
 using System.Drawing;
 

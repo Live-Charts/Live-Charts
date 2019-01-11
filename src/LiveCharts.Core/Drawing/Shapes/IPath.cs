@@ -22,20 +22,26 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-#region
 
-
-#endregion
-
-using System.Collections.Generic;
+using LiveCharts.Drawing.Brushes;
 
 namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a path in the user interface.
     /// </summary>
-    public interface IPath : IPaintable, IDashable
+    public interface IPath : ICanvasElement, IDashable
     {
+        /// <summary>
+        /// Gets or sets the fill brush.
+        /// </summary>
+        Brush? Fill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke brush.
+        /// </summary>
+        Brush? Stroke { get; set; }
+
         /// <summary>
         /// Gets or sets the index of the z.
         /// </summary>
@@ -65,12 +71,12 @@ namespace LiveCharts.Drawing.Shapes
         /// </summary>
         /// <param name="segment">The segment instance.</param>
         /// <param name="index">The index to insert the segment at.</param>
-        void InsertSegment(ISegment segment, int index);
+        void InsertSegment(IPathSegment segment, int index);
 
         /// <summary>
         /// Removes the segment from the path.
         /// </summary>
         /// <param name="segment">The segment.</param>
-        void RemoveSegment(ISegment segment);
+        void RemoveSegment(IPathSegment segment);
     }
 }

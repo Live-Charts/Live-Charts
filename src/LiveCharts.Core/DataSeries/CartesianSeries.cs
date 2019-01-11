@@ -29,7 +29,6 @@
 #region
 
 using LiveCharts.Coordinates;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 
 #endregion
@@ -44,11 +43,10 @@ namespace LiveCharts.DataSeries
     /// <typeparam name="TPointShape">The type of the point shape in the UI.</typeparam>
     /// <typeparam name="TBrush">The type of the brush.</typeparam>
     /// <seealso cref="Series{TModel, TCoordinate, TPointShape}" />
-    public abstract class CartesianStrokeSeries<TModel, TCoordinate, TPointShape, TBrush> 
-        : StrokeSeries<TModel, TCoordinate, TPointShape, TBrush>, ICartesianSeries
+    public abstract class CartesianStrokeSeries<TModel, TCoordinate, TPointShape>
+        : StrokeSeries<TModel, TCoordinate, TPointShape>, ICartesianSeries
         where TCoordinate : ICoordinate
         where TPointShape : class, IShape
-        where TBrush : class, IBrush
     {
         private int _zIndex;
 
@@ -66,7 +64,7 @@ namespace LiveCharts.DataSeries
             //      see: https://lvcharts.net/App/examples/v1/wf/Multiple%20Axes
             // The ScaleAt array, for a cartesian series has 2 dimensions:
             //               {x, y}
-            ScalesAt = new[] {0, 0};
+            ScalesAt = new[] { 0, 0 };
 
             // This means that by default, any cartesian series is scaled at
             // the first element in the axis array for both, X and Y dimensions.
@@ -106,7 +104,7 @@ namespace LiveCharts.DataSeries
             get => ScalesAt[1];
             set
             {
-                ScalesAt[1] = value; 
+                ScalesAt[1] = value;
                 OnPropertyChanged(nameof(ScalesYAt));
             }
         }

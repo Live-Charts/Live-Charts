@@ -30,7 +30,6 @@ using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Dimensions;
 using LiveCharts.Drawing;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction;
 using LiveCharts.Interaction.Areas;
@@ -48,7 +47,7 @@ namespace LiveCharts.DataSeries
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     public class LineSeries<TModel>
-        : CartesianStrokeSeries<TModel, PointCoordinate, IBezierShape, IBrush>, ILineSeries
+        : CartesianStrokeSeries<TModel, PointCoordinate, IBezierShape>, ILineSeries
     {
         private double _lineSmoothness;
         private double _geometrySize;
@@ -211,7 +210,9 @@ namespace LiveCharts.DataSeries
                 ? new PointD(chart.ScaleToUi(Pivot, y), previous.Point1.Y)
                 : new PointD(previous.Point1.X, chart.ScaleToUi(Pivot, y));
             path.InsertSegment(endSegment, k + 1);
-            path.Paint(Stroke, Fill);
+            path.Stroke = Stroke;
+            path.Fill = Fill;
+            path.Paint();
 
             double l = length / StrokeThickness;
             double tl = l - _previousLenght;
@@ -396,7 +397,9 @@ namespace LiveCharts.DataSeries
             }
 
             current.Shape.StrokeThickness = StrokeThickness;
-            current.Shape.Paint(Stroke, Fill);
+            current.Shape.Fill = Fill;
+            current.Shape.Stroke = Stroke;
+            current.Shape.Paint();
 
             if (!isNew)
             {

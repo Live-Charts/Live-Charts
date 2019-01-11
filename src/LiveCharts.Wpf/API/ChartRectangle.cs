@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using Geometry = System.Windows.Media.Geometry;
 
-namespace LiveCharts.Wpf.Drawing
+namespace LiveCharts.Wpf
 {
     public class ChartRectangle : ChartShape, IRectangle
     {

@@ -48,10 +48,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animations\PathAnimationBuilder.cs" />
-    <Compile Include="Animations\LiveChartsEasing.cs" />
-    <Compile Include="Chart.cs" />
-    <Compile Include="Controls\ChartContent.cs" />
+    <Compile Include="API\ChartHeatShape.cs" />
+    <Compile Include="API\HeatAnimationBuilder.cs" />
+    <Compile Include="API\Initialize.cs" />
+    <Compile Include="API\PathAnimationBuilder.cs" />
+    <Compile Include="API\LiveChartsEasing.cs" />
+    <Compile Include="API\Chart.cs" />
+    <Compile Include="API\ChartCanvas.cs" />
     <Compile Include="Controls\DialogContent.cs" />
     <Compile Include="Controls\HorizontalDraggable.cs" />
     <Compile Include="Controls\HorizontalDraggableThumb.cs" />
@@ -65,40 +68,42 @@
     <Compile Include="Converters\GetHeightForDialog.cs" />
     <Compile Include="Converters\GetWidthForDialog.cs" />
     <Compile Include="Converters\SvgToGeometryDataConverter.cs" />
-    <Compile Include="ChartTooltip.cs" />
-    <Compile Include="ChartLegend.cs" />
-    <Compile Include="Drawing\Shapes\ChartBezierSegment.cs" />
-    <Compile Include="Drawing\Shapes\ChartBezierShape.cs" />
-    <Compile Include="Drawing\Shapes\ChartPath.cs" />
-    <Compile Include="Drawing\Shapes\ChartLabel.cs" />
-    <Compile Include="CoreToPlatform.cs" />
-    <Compile Include="Drawing\Shapes\ChartLineSegment.cs" />
-    <Compile Include="Drawing\Shapes\ChartRectangle.cs" />
-    <Compile Include="Drawing\Shapes\ChartShape.cs" />
-    <Compile Include="Drawing\Shapes\PathHelper.cs" />
-    <Compile Include="PieChart.cs" />
+    <Compile Include="API\ChartTooltip.cs" />
+    <Compile Include="API\ChartLegend.cs" />
+    <Compile Include="API\CanvasHelper.cs" />
+    <Compile Include="API\ChartBezierSegment.cs" />
+    <Compile Include="API\ChartBezierShape.cs" />
+    <Compile Include="API\ChartPath.cs" />
+    <Compile Include="API\ChartLabel.cs" />
+    <Compile Include="API\CoreToPlatform.cs" />
+    <Compile Include="API\ChartLineSegment.cs" />
+    <Compile Include="API\ChartRectangle.cs" />
+    <Compile Include="API\ChartSegment.cs" />
+    <Compile Include="API\ChartShape.cs" />
+    <Compile Include="API\ChartSlice.cs" />
+    <Compile Include="API\ChartSvgPath.cs" />
+    <Compile Include="API\PathHelper.cs" />
+    <Compile Include="API\PieChart.cs" />
     <Compile Include="Shapes\DialogShape.cs" />
-    <Compile Include="Shapes\Slice.cs" />
-    <Compile Include="Views\HeatPointView.cs" />
-    <Compile Include="Views\PiePointView.cs" />
-    <Compile Include="Views\PlaneView.cs" />
-    <Compile Include="Views\Providers\BarSeriesViewProvider.cs" />
-    <Compile Include="Views\Providers\SelfDrawnBezierSeriesViewProvider.cs" />
-    <Compile Include="Views\Providers\FromPivotBezierSeriesViewProvider.cs" />
-    <Compile Include="Views\Providers\HeatViewSeriesProvider.cs" />
-    <Compile Include="Views\Providers\PieSeriesViewProvider.cs" />
-    <Compile Include="Views\Providers\PlaneViewProvider.cs" />
-    <Compile Include="Views\Providers\GeometryPointSeriesViewProvider.cs" />
-    <Compile Include="Views\BezierPointView.cs" />
-    <Compile Include="Views\CartesianPath.cs" />
-    <Compile Include="Views\PointView.cs" />
-    <Compile Include="Animations\AnimationBuilder.cs" />
-    <Compile Include="Views\GeometryPointView.cs" />
-    <Compile Include="UiProvider.cs" />
-    <Compile Include="CartesianChart.cs">
+    <None Include="Views\HeatPointView.cs" />
+    <None Include="Views\PiePointView.cs" />
+    <None Include="Views\PlaneView.cs" />
+    <None Include="Views\Providers\BarSeriesViewProvider.cs" />
+    <None Include="Views\Providers\SelfDrawnBezierSeriesViewProvider.cs" />
+    <None Include="Views\Providers\FromPivotBezierSeriesViewProvider.cs" />
+    <None Include="Views\Providers\HeatViewSeriesProvider.cs" />
+    <None Include="Views\Providers\PieSeriesViewProvider.cs" />
+    <None Include="Views\Providers\PlaneViewProvider.cs" />
+    <None Include="Views\Providers\GeometryPointSeriesViewProvider.cs" />
+    <None Include="Views\BezierPointView.cs" />
+    <None Include="Views\CartesianPath.cs" />
+    <None Include="Views\PointView.cs" />
+    <Compile Include="API\AnimationBuilder.cs" />
+    <None Include="Views\GeometryPointView.cs" />
+    <Compile Include="API\CartesianChart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\SelfDrawnPath.cs" />
+    <None Include="Views\SelfDrawnPath.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -118,7 +123,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Config.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -136,5 +140,6 @@
       <Name>LiveCharts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

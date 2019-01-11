@@ -28,7 +28,6 @@ using LiveCharts.Animations;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction;
 using LiveCharts.Interaction.Areas;
@@ -36,8 +35,12 @@ using LiveCharts.Interaction.Points;
 using LiveCharts.Updating;
 using System;
 using System.Drawing;
+#if NET45 || NET46
+using Brush = LiveCharts.Drawing.Brushes.Brush;
+#endif
 
 #endregion
+
 
 namespace LiveCharts.DataSeries
 {
@@ -45,7 +48,7 @@ namespace LiveCharts.DataSeries
     /// The bubble series class.
     /// </summary>
     public class BubbleSeries<TModel>
-        : CartesianStrokeSeries<TModel, WeightedCoordinate, ISvgPath, IBrush>, IBubbleSeries
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, ISvgPath>, IBubbleSeries
     {
         private double _maxGeometrySize;
         private double _minGeometrySize;
@@ -182,7 +185,9 @@ namespace LiveCharts.DataSeries
             current.Shape.StrokeDashArray = StrokeDashArray;
             current.Shape.StrokeThickness = StrokeThickness;
             current.Shape.ZIndex = ZIndex;
-            current.Shape.Paint(Stroke, Fill);
+            current.Shape.Fill = Fill;
+            current.Shape.Stroke = Stroke;
+            current.Shape.Paint();
 
             var r = vm.Diameter * .5f;
 

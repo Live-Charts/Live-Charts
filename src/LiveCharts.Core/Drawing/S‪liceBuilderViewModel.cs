@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace LiveCharts.Drawing
+﻿namespace LiveCharts.Drawing
 {
     /// <summary>
     /// Slice Builder
@@ -15,7 +13,7 @@ namespace LiveCharts.Drawing
         /// <param name="cornerRadius">The corner radius.</param>
         /// <param name="isRadiusLargeArc">The is large arc.</param>
         /// <param name="isInnerRadiusLargeArc">The is inner radius large arc.</param>
-        public S‪liceBuilderViewModel(PointF[] points, float cornerRadius, bool isRadiusLargeArc, bool isInnerRadiusLargeArc)
+        public S‪liceBuilderViewModel(PointD[] points, float cornerRadius, bool isRadiusLargeArc, bool isInnerRadiusLargeArc)
         {
             Points = points;
             CornerRadius = cornerRadius;
@@ -29,7 +27,7 @@ namespace LiveCharts.Drawing
         /// <value>
         /// The points.
         /// </value>
-        public PointF[] Points { get; set; }
+        public PointD[] Points { get; set; }
 
         /// <summary>
         /// Gets or sets the corner radius.

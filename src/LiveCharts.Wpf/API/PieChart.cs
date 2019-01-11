@@ -27,8 +27,8 @@
 
 using System.Collections.Generic;
 using System.Windows;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.Dimensions;
+using LiveCharts.Charts;
+using LiveCharts.Dimensions;
 
 #endregion
 
@@ -37,7 +37,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Generates pie charts.
     /// </summary>
-    /// <seealso cref="LiveCharts.Wpf.Chart" />
+    /// <seealso cref="Chart" />
     /// <seealso cref="IPieChartView" />
     public class PieChart : Chart, IPieChartView
     {

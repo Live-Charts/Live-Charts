@@ -25,22 +25,20 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LiveCharts.Animations;
 using LiveCharts.Drawing;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Interaction.Controls;
 using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 using FontWeight = LiveCharts.Drawing.Styles.FontWeight;
 
 #endregion
 
-namespace LiveCharts.Wpf.Drawing.Shapes
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// a default label for a point.
@@ -51,7 +49,7 @@ namespace LiveCharts.Wpf.Drawing.Shapes
         private string _content = string.Empty;
         private string _fontFamily = string.Empty;
         private double _fontSize;
-        private IBrush _brush;
+        private Drawing.Brushes.Brush _brush;
         private Padding _padding = new Padding();
         private RotateTransform _transform = null;
         private FontStyle _fontStyle;
@@ -158,26 +156,28 @@ namespace LiveCharts.Wpf.Drawing.Shapes
             }
         }
 
+        LiveCharts.Drawing.Brushes.Brush ILabel.Foreground { get; set; }
+
         public IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<ChartLabel>(this, args);
 
-        IEnumerable<IPaintable> IUIContent.GetPaintables()
+        void ICanvasElement.Paint()
         {
-            yield return this;
-        }
-
-        void IPaintable.Paint(IBrush stroke, IBrush fill)
-        {
-            if (_brush != stroke)
-            {
-                Foreground = stroke.AsWpfBrush();
-                _brush = stroke;
-            }
+            Foreground = ((ILabel)this).Foreground.AsWpfBrush();
         }
 
         SizeF ILabel.Measure()
         {
             Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
             return new SizeF((float)DesiredSize.Width, (float)DesiredSize.Height);
+        }
+
+        public void FlushToCanvas(ICanvas canvas, bool clippedToDrawMargin) => canvas.AddChild(this, clippedToDrawMargin);
+
+        public void RemoveFromCanvas(ICanvas canvas) => canvas.RemoveChild(this);
+
+        public void Paint()
+        {
+            throw new NotImplementedException();
         }
     }
 }

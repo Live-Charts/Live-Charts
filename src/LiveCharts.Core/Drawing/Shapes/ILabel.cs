@@ -1,5 +1,4 @@
-﻿
-using LiveCharts.Drawing.Styles;
+﻿using LiveCharts.Drawing.Styles;
 using System.Drawing;
 using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 
@@ -8,8 +7,13 @@ namespace LiveCharts.Drawing.Shapes
     /// <summary>
     /// Defines a label in the user interface.
     /// </summary>
-    public interface ILabel : IPaintable, IPlaceable
+    public interface ILabel : ICanvasElement, IPlaceable
     {
+        /// <summary>
+        /// Gets or sets the foregrund.
+        /// </summary>
+        LiveCharts.Drawing.Brushes.Brush? Foreground { get; set; }
+
         /// <summary>
         /// Gets or set the label rotation.
         /// </summary>

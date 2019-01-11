@@ -6,14 +6,12 @@ namespace LiveCharts.Drawing.Shapes
     /// <summary>
     /// Defines an element in the user interface.
     /// </summary>
-    public interface IPaintable : IAnimatable
+    public interface ICanvasElement : IAnimatable
     {
         /// <summary>
-        /// Paints the shape with the given stroke and fill.
+        /// Draws the element in the user interface.
         /// </summary>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="fill">The fill.</param>
-        void Paint(IBrush? stroke, IBrush? fill);
+        void Paint();
 
         /// <summary>
         /// Flushes all the visuals to the canvas.

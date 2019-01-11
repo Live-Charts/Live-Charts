@@ -50,7 +50,7 @@ namespace LiveCharts.DataSeries
     /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape, TBrush}" />
     /// <seealso cref="IHeatSeries" />
     public class HeatSeries<TModel>
-        : CartesianStrokeSeries<TModel, WeightedCoordinate, IHeatShape, ISolidColorBrush>, IHeatSeries
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, IHeatShape>, IHeatSeries
     {
         private IEnumerable<GradientStop>? _gradient;
 

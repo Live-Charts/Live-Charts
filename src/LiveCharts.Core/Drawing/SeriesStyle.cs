@@ -43,7 +43,7 @@ namespace LiveCharts.Drawing
         /// <value>
         /// The stroke.
         /// </value>
-        public IBrush Stroke { get; set; }
+        public Brush Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -67,6 +67,6 @@ namespace LiveCharts.Drawing
         /// <value>
         /// The fill.
         /// </value>
-        public IBrush Fill { get; set; }
+        public Brush Fill { get; set; }
     }
 }

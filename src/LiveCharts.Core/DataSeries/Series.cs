@@ -47,6 +47,7 @@ using LiveCharts.Updating;
 using FontStyle = LiveCharts.Drawing.Styles.FontStyle;
 #if NET45 || NET46
 using Font = LiveCharts.Drawing.Styles.Font;
+using Brush = LiveCharts.Drawing.Brushes.Brush;
 #endif
 
 #endregion
@@ -75,7 +76,7 @@ namespace LiveCharts.DataSeries
         private double _defaultFillOpacity;
         private Geometry _geometry;
         private DataLabelsPosition _dataLabelsPosition;
-        private IBrush _dataLabelsForeground = UIFactory.GetNewSolidColorBrush(255, 0, 0, 0);
+        private Brush _dataLabelsForeground = new SolidColorBrush(255, 0, 0, 0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Series{TModel, TCoordinate, TShape}"/> class.
@@ -177,7 +178,7 @@ namespace LiveCharts.DataSeries
         }
 
         /// <inheritdoc />
-        public IBrush DataLabelsForeground
+        public Brush DataLabelsForeground
         {
             get => _dataLabelsForeground;
             set
@@ -401,8 +402,8 @@ namespace LiveCharts.DataSeries
             chartPoint.Label.FontSize = DataLabelsFont.Size;
             chartPoint.Label.FontStyle = DataLabelsFont.Style;
             chartPoint.Label.FontWeight = DataLabelsFont.Weight;
-
-            chartPoint.Label.Paint(DataLabelsForeground, null);
+            chartPoint.Label.Foreground = DataLabelsForeground;
+            chartPoint.Label.Paint();
             PlaceLabel(chartPoint, chartPoint.Label.Measure());
         }
 
@@ -507,7 +508,7 @@ namespace LiveCharts.DataSeries
             _isVisible = true;
             Content = new Dictionary<ChartModel, Dictionary<string, object>>();
             _dataLabelsFont = new Font("Arial", 11, FontStyle.Regular, FontWeight.Regular);
-            _dataLabelsForeground = UIFactory.GetNewSolidColorBrush(255, 30, 30, 30);
+            _dataLabelsForeground = new SolidColorBrush(255, 30, 30, 30);
             _values = itemsSource ?? new ChartingCollection<TModel>();
             var t = typeof(TModel);
             Metadata = new SeriesMetadata

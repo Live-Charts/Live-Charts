@@ -32,7 +32,6 @@ using LiveCharts.Coordinates;
 using LiveCharts.DataSeries;
 using LiveCharts.Dimensions;
 using LiveCharts.Drawing;
-using LiveCharts.Drawing.Styles;
 using LiveCharts.Interaction;
 using LiveCharts.Interaction.Controls;
 using LiveCharts.Interaction.Points;
@@ -45,6 +44,9 @@ namespace LiveCharts.Charts
     /// <inheritdoc />
     public class CartesianChartModel : ChartModel
     {
+        private bool _isDragging;
+        private PointF _previous;
+
         /// <inheritdoc />
         public CartesianChartModel(IChartView view)
             : base(view)
@@ -139,6 +141,27 @@ namespace LiveCharts.Charts
             float m = (p2.Y - p1.Y) / (p2.X - p1.X);
 
             return m * (value - p1.X) + p1.Y;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pivot"></param>
+        /// <param name="delta"></param>
+        public void Zoom(PointF pivot, int delta)
+        {
+            if (((ICartesianChartView)View).Zooming == Zooming.None) return;
+
+            var cartesianModel = (CartesianChartModel)View.Model;
+
+            if (delta > 0)
+            {
+                cartesianModel.ZoomIn(new PointF(pivot.X, pivot.Y));
+            }
+            else
+            {
+                cartesianModel.ZoomOut(new PointF(pivot.X, pivot.Y));
+            }
         }
 
         /// <summary>
@@ -329,6 +352,39 @@ namespace LiveCharts.Charts
                         (double.IsNaN(yPlane.MaxValue) ? yPlane.InternalMaxValue : yPlane.MaxValue) + dy);
                 }
             }
+        }
+
+        protected override void OnViewPointerDown(PointF pointerLocation, EventArgs args)
+        {
+            base.OnViewPointerDown(pointerLocation, args);
+
+            var cartesianView = (ICartesianChartView)View;
+            if (cartesianView.Panning == Panning.None) return;
+            _isDragging = true;
+            cartesianView.CapturePointer();
+        }
+
+        protected override void OnViewPointerUp()
+        {
+            base.OnViewPointerUp();
+
+            var cartesianView = (ICartesianChartView)View;
+            if (cartesianView.Panning == Panning.None) return;
+
+            _isDragging = false;
+            cartesianView.ReleasePointerCapture();
+        }
+
+        protected override void OnViewPointerMoved(PointF pointerLocation, EventArgs args)
+        {
+            base.OnViewPointerMoved(pointerLocation, args);
+
+            if (!_isDragging) return;
+
+            Drag(new PointF(
+                    _previous.X - pointerLocation.X,
+                    _previous.Y - pointerLocation.Y));
+            _previous = pointerLocation;
         }
 
         /// <inheritdoc cref="ChartModel.Update"/>

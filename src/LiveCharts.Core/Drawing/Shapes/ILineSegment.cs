@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines a line segment.
     /// </summary>
-    public interface ILineSegment: ISegment
+    public interface ILineSegment: IPathSegment
     {
         /// <summary>
         /// Gets or sets the reference point.

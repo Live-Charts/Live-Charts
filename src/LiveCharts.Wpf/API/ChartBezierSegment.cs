@@ -1,13 +1,12 @@
 ﻿using LiveCharts.Animations;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Shapes;
-using LiveCharts.Wpf.Animations;
 using System.Windows;
 using System.Windows.Media;
 
-namespace LiveCharts.Wpf.Drawing
+namespace LiveCharts.Wpf
 {
-    public class ChartBezierSegment : IBezierSegment
+    public class ChartBezierSegment : ChartSegment, IBezierSegment
     {
         private readonly BezierSegment _segment = new BezierSegment();
 
@@ -29,6 +28,8 @@ namespace LiveCharts.Wpf.Drawing
             set => _segment.Point3 = new Point(value.X, value.Y);
         }
 
-        public IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<BezierSegment>(_segment, args);
+        public override PathSegment PathSegment => _segment;
+
+        public override IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<BezierSegment>(_segment, args);
     }
 }

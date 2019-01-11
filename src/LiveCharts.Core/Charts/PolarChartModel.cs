@@ -66,7 +66,7 @@ namespace LiveCharts.Charts
         }
 
         /// <inheritdoc />
-        protected override void ViewOnPointerMoved(PointF pointerLocation, EventArgs args)
+        protected override void OnViewPointerMoved(PointF pointerLocation, EventArgs args)
         {
             throw new System.NotImplementedException();
         }

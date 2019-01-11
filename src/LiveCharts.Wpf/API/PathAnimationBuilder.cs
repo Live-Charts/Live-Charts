@@ -27,7 +27,6 @@
 using LiveCharts.Animations;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Shapes;
-using LiveCharts.Wpf.Drawing;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -37,7 +36,7 @@ using System.Windows.Shapes;
 
 #endregion
 
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// An animation builder for WPF.
@@ -87,8 +86,8 @@ namespace LiveCharts.Wpf.Animations
                     };
                     SetTargetToFillPath(a1, p);
                     SetTargetToStrokePath(a1.Clone(), p);
-                    break;                
-                
+                    break;
+
                 case nameof(IPath.StrokeDashOffset):
                 case nameof(IPath.StrokeThickness):
                     var a2 = new DoubleAnimation

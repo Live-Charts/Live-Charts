@@ -6,6 +6,9 @@ using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction.Events;
 using System.Collections.Generic;
 using System.Drawing;
+#if NET45 || NET46
+using Brush = LiveCharts.Drawing.Brushes.Brush;
+#endif
 
 namespace LiveCharts.Dimensions
 {
@@ -18,12 +21,12 @@ namespace LiveCharts.Dimensions
         /// <summary>
         /// Gets or sets the stroke.
         /// </summary>
-        public IBrush? Stroke { get; set; }
+        public Brush? Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the fill.
         /// </summary>
-        public IBrush? Fill { get; set; }
+        public Brush? Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the Stroke dash array.
@@ -55,7 +58,8 @@ namespace LiveCharts.Dimensions
                 Label.Top = pos.Y;
             }
 
-            Label.Paint(Stroke, Fill);
+            Label.Foreground = Stroke;
+            Label.Paint();
 
             Label.Animate(animationArgs)
                 .Property(nameof(ILabel.Left), Label.Left, pos.X)
@@ -82,7 +86,9 @@ namespace LiveCharts.Dimensions
 
             Shape.StrokeDashArray = StrokeDashArray;
             Shape.StrokeThickness = StrokeThickness;
-            Shape.Paint(Stroke, Fill);
+            Shape.Fill = Fill;
+            Shape.Stroke = Stroke;
+            Shape.Paint();
 
             Shape.Animate(animationArgs)
                 .Property(nameof(IShape.Top), Shape.Top, vm.To.Top)

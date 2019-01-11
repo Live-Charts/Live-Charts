@@ -227,6 +227,16 @@ namespace LiveCharts.Charts
         /// <param name="action">The action.</param>
         void InvokeOnUiThread(Action action);
 
+        /// <summary>
+        /// Attempts to capture the pointer.
+        /// </summary>
+        void CapturePointer();
+
+        /// <summary>
+        /// Releases the pointer capture.
+        /// </summary>
+        void ReleasePointerCapture();
+
         #endregion
     }
 }

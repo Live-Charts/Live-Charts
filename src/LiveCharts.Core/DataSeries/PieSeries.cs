@@ -31,12 +31,14 @@ using LiveCharts.Animations;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction;
 using LiveCharts.Interaction.Areas;
 using LiveCharts.Interaction.Points;
 using LiveCharts.Updating;
+#if NET45 || NET46
+using Brush = LiveCharts.Drawing.Brushes.Brush;
+#endif
 
 #endregion
 
@@ -49,7 +51,7 @@ namespace LiveCharts.DataSeries
     /// <seealso cref="DataSeries.Series{TModel, PieCoordinate, TPointShape}" />
     /// <seealso cref="IPieSeries" />
     public class PieSeries<TModel> :
-        StrokeSeries<TModel, StackedPointCoordinate, ISlice, IBrush>, IPieSeries
+        StrokeSeries<TModel, StackedPointCoordinate, ISlice>, IPieSeries
     {
         private double _pushOut;
         private double _cornerRadius;
@@ -195,7 +197,9 @@ namespace LiveCharts.DataSeries
             shape.ForceAngle = true;
             shape.CornerRadius = CornerRadius;
             shape.PushOut = PushOut;
-            shape.Paint(Stroke, Fill);
+            shape.Stroke = Stroke;
+            shape.Fill = Fill;
+            shape.Paint();
 
             // animate
 

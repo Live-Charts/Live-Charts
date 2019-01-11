@@ -33,13 +33,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using LiveCharts.Core.Animations;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Dimensions;
-using LiveCharts.Core.Drawing;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Events;
+using LiveCharts.Charts;
+using LiveCharts.DataSeries;
+using LiveCharts.Dimensions;
+using LiveCharts.Drawing;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Events;
 
 #endregion
 
@@ -68,7 +67,7 @@ namespace LiveCharts.Wpf
         protected Chart()
         {
             VisualDrawMargin = new ContentPresenter();
-            DrawMargin = Core.Drawing.Margin.Empty;
+            DrawMargin = Padding.Empty;
             SetValue(LegendProperty, new ChartLegend());
             SetValue(DataTooltipProperty, new ChartToolTip());
             Unloaded += OnUnloaded;
@@ -95,11 +94,11 @@ namespace LiveCharts.Wpf
         #region Dependency properties
 
         /// <summary>
-        /// The draw margin property, default is LiveCharts.Core.Drawing.Margin.Empty which means that the library will calculate it.
+        /// The draw margin property, default is LiveCharts.Drawing.Padding.Empty which means that the library will calculate it.
         /// </summary>
         public static readonly DependencyProperty DrawMarginProperty = DependencyProperty.Register(
-            nameof(DrawMargin), typeof(Margin), typeof(Chart), 
-            new PropertyMetadata(Core.Drawing.Margin.Empty, RaiseOnPropertyChanged(nameof(DrawMargin))));
+            nameof(DrawMargin), typeof(Padding), typeof(Chart),
+            new PropertyMetadata(Padding.Empty, RaiseOnPropertyChanged(nameof(DrawMargin))));
 
         /// <summary>
         /// The series property.
@@ -154,8 +153,8 @@ namespace LiveCharts.Wpf
         /// The animation line property, default is bounce medium.
         /// </summary>
         public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
-            nameof(AnimationLine), typeof(IEnumerable<KeyFrame>), typeof(Chart),
-            new PropertyMetadata(TimeLines.Ease));
+            nameof(EasingFunction), typeof(LiveCharts.Animations.Ease.IEasingFunction), typeof(Chart),
+            new PropertyMetadata(LiveCharts.Animations.EasingFunctions.Ease));
 
         /// <summary>
         /// The chart update preview command property
@@ -354,9 +353,9 @@ namespace LiveCharts.Wpf
             }
         }
 
-        public IChartCanvas Content
+        public ICanvas Canvas
         {
-            get => (IChartCanvas) VisualDrawMargin.Content;
+            get => (ICanvas) VisualDrawMargin.Content;
             set => VisualDrawMargin.Content = value;
         }
 
@@ -364,9 +363,9 @@ namespace LiveCharts.Wpf
         float[] IChartView.ControlSize => new[] {(float) ActualWidth, (float) ActualHeight};
 
         /// <inheritdoc cref="IChartView.DrawMargin"/>
-        public Margin DrawMargin
+        public Padding DrawMargin
         {
-            get => (Margin) GetValue(DrawMarginProperty);
+            get => (Padding) GetValue(DrawMarginProperty);
             set => SetValue(DrawMarginProperty, value);
         }
 
@@ -395,9 +394,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public IEnumerable<Core.Animations.KeyFrame> AnimationLine
+        public LiveCharts.Animations.Ease.IEasingFunction EasingFunction
         {
-            get => (IEnumerable<Core.Animations.KeyFrame>) GetValue(AnimationLineProperty);
+            get => (LiveCharts.Animations.Ease.IEasingFunction) GetValue(AnimationLineProperty);
             set => SetValue(AnimationLineProperty, value);
         }
 
@@ -472,7 +471,6 @@ namespace LiveCharts.Wpf
             Series = null;
             Children.Remove(TooltipPopup);
             Children.Remove(VisualDrawMargin);
-            DrawMargin = Core.Drawing.Margin.Empty;
             SetValue(LegendProperty, null);
             SetValue(DataTooltipProperty, null);
             TooltipPopup = null;
@@ -480,6 +478,16 @@ namespace LiveCharts.Wpf
             Unloaded -= OnUnloaded;
             SizeChanged -= OnSizeChanged;
             GC.Collect();
+        }
+
+        void IChartView.CapturePointer()
+        {
+            CaptureMouse();
+        }
+
+        void IChartView.ReleasePointerCapture()
+        {
+            ReleaseMouseCapture();
         }
     }
 }

@@ -27,7 +27,7 @@
 using System.Drawing;
 using LiveCharts.DataSeries;
 using LiveCharts.Dimensions;
-using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Drawing.Styles;
 using LiveCharts.Interaction;
@@ -118,7 +118,7 @@ namespace LiveCharts.Themes
                 .SetDefault<Plane>(plane =>
                 {
                     plane.LabelsFont = baseFont;
-                    plane.LabelsForeground = UIFactory.GetNewSolidColorBrush(255, 30, 30, 30);
+                    plane.LabelsForeground = new SolidColorBrush(255, 30, 30, 30);
                     plane.LabelsRotation = 0;
                     plane.LabelFormatter = Format.AsMetricNumber;
                 })
@@ -126,8 +126,8 @@ namespace LiveCharts.Themes
                 {
                     axis.XSeparatorStyle = null;
                     axis.YSeparatorStyle = new ShapeStyle(
-                        UIFactory.GetNewSolidColorBrush(0, 0, 0, 0),
-                        UIFactory.GetNewSolidColorBrush(255, 225, 225, 225),
+                        new SolidColorBrush(0, 0, 0, 0),
+                        new SolidColorBrush(255, 225, 225, 225),
                         0,
                         null);
                     axis.XAlternativeSeparatorStyle = null;

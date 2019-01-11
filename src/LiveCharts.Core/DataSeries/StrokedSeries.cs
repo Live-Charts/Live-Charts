@@ -30,6 +30,9 @@ using LiveCharts.Coordinates;
 using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using System.Collections.Generic;
+#if NET45 || NET46
+using Brush = LiveCharts.Drawing.Brushes.Brush;
+#endif
 
 #endregion
 
@@ -41,18 +44,16 @@ namespace LiveCharts.DataSeries
     /// <typeparam name="TModel">The type of the model to plot.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
     /// <typeparam name="TPointShape">The type of the point shape in the UI.</typeparam>
-    /// /// <typeparam name="TBrush">The type of the brush.</typeparam>
     /// <seealso cref="Series{TModel, TCoordinate, TPointShape}" />
     /// <seealso cref="IStrokeSeries" />
-    public abstract class StrokeSeries<TModel, TCoordinate, TPointShape, TBrush>
+    public abstract class StrokeSeries<TModel, TCoordinate, TPointShape>
         : Series<TModel, TCoordinate, TPointShape>, IStrokeSeries
         where TCoordinate : ICoordinate
         where TPointShape : class, IShape
-        where TBrush : class, IBrush
     {
-        private TBrush? _stroke;
+        private Brush? _stroke;
         private float _strokeThickness;
-        private TBrush? _fill;
+        private Brush? _fill;
         private IEnumerable<double>? _strokeDashArray;
 
         /// <inheritdoc />
@@ -62,7 +63,7 @@ namespace LiveCharts.DataSeries
         }
 
         /// <inheritdoc />
-        public TBrush? Stroke
+        public Brush? Stroke
         {
             get => _stroke;
             set
@@ -71,8 +72,6 @@ namespace LiveCharts.DataSeries
                 OnPropertyChanged(nameof(Stroke));
             }
         }
-
-        IBrush? IStrokeSeries.Stroke { get => _stroke; set => Stroke = (TBrush?) value; }
 
         /// <inheritdoc />
         public float StrokeThickness
@@ -97,7 +96,7 @@ namespace LiveCharts.DataSeries
         }
 
         /// <inheritdoc />
-        public TBrush? Fill
+        public Brush? Fill
         {
             get => _fill;
             set
@@ -106,8 +105,6 @@ namespace LiveCharts.DataSeries
                 OnPropertyChanged(nameof(Fill));
             }
         }
-
-        IBrush? IStrokeSeries.Fill { get => _fill; set => Fill = (TBrush?) value; }
 
         /// <inheritdoc />
         protected override void SetDefaultColors(ChartModel chart)
@@ -121,13 +118,13 @@ namespace LiveCharts.DataSeries
 
             if (Stroke == null)
             {
-                Stroke = (TBrush) UIFactory.GetNewSolidColorBrush(
+                Stroke = new SolidColorBrush(
                     nextColor.A, nextColor.R, nextColor.G, nextColor.B);
             }
 
             if (Fill == null)
             {
-                Fill = (TBrush) UIFactory.GetNewSolidColorBrush(
+                Fill = new SolidColorBrush(
                     (byte)(DefaultFillOpacity * 255), nextColor.R, nextColor.G, nextColor.B);
             }
         }

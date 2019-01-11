@@ -28,8 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using LiveCharts.Coordinates;
-using LiveCharts.Interaction;
-using LiveCharts.Interaction.Points;
 using LiveCharts.Interaction.Series;
 using LiveCharts.Updating;
 

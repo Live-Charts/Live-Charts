@@ -26,16 +26,14 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using LiveCharts.Core.Charts;
-using LiveCharts.Core.DataSeries;
-using LiveCharts.Core.Interaction.Controls;
-using LiveCharts.Core.Interaction.Events;
-using LiveCharts.Wpf.Controls;
-using Orientation = LiveCharts.Core.Drawing.Styles.Orientation;
+using LiveCharts.Charts;
+using LiveCharts.DataSeries;
+using LiveCharts.Interaction.Controls;
+using LiveCharts.Interaction.Events;
+using Orientation = LiveCharts.Drawing.Styles.Orientation;
 
 #endregion
 
@@ -44,7 +42,7 @@ namespace LiveCharts.Wpf
     /// <summary>
     /// Default legend class.
     /// </summary>
-    /// <seealso cref="System.Windows.Controls.WrapPanel" />
+    /// <seealso cref="WrapPanel" />
     /// <seealso cref="ILegend" />
     public class ChartLegend : ItemsControl, ILegend
     {
@@ -195,7 +193,7 @@ namespace LiveCharts.Wpf
         {
             var wpfChart = (Chart) chart;
             wpfChart.Children.Remove(this);
-            Disposed?.Invoke(chart, this);
+            Disposed?.Invoke(chart, this, force);
         }
 
         private static void ForceUiToUpdate()

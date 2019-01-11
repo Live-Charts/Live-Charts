@@ -13,7 +13,7 @@ namespace LiveCharts.Drawing.Styles
         /// <value>
         /// The color of the fore.
         /// </value>
-        public IBrush? Foreground { get; set; }
+        public Brush? Foreground { get; set; }
 
         /// <summary>
         /// Gets or sets the font of the label.

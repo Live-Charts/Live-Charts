@@ -32,6 +32,7 @@ using LiveCharts.Animations;
 using LiveCharts.Animations.Ease;
 using LiveCharts.Charts;
 using LiveCharts.Drawing;
+using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Drawing.Styles;
 #if NET45 || NET46
@@ -70,8 +71,8 @@ namespace LiveCharts.Dimensions
             SharedAxes = new List<Axis>();
             _xSeparatorStyle =
                 new ShapeStyle(
-                    UIFactory.GetNewSolidColorBrush(255, 250, 250, 250),
-                    UIFactory.GetNewSolidColorBrush(50, 240, 240, 240),
+                    new SolidColorBrush(255, 250, 250, 250),
+                    new SolidColorBrush(50, 240, 240, 240),
                     1,
                     null);
             _ySeparatorStyle = null;

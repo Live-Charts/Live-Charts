@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace LiveCharts.Wpf.Animations
+namespace LiveCharts.Wpf
 {
     /// <summary>
     /// LiveCharts easing functions for wpf.

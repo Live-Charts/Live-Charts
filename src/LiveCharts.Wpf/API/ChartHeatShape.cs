@@ -24,21 +24,17 @@
 #endregion
 #region
 
-using LiveCharts.Core;
-using LiveCharts.Core.Updating;
 
 #endregion
 
+using LiveCharts.Drawing.Shapes;
+
 namespace LiveCharts.Wpf
 {
-    public static class Config
+    public class ChartHeatShape : ChartShape, IHeatShape
     {
-        public static Charting UsingWpf(this Charting settings)
-        {
-            settings.DataFactory = new DataFactory();
-            settings.UiProvider = new UiProvider();
+        public System.Drawing.Color Color { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-            return settings;
-        }
+        protected override System.Windows.Media.Geometry DefiningGeometry => throw new System.NotImplementedException();
     }
 }

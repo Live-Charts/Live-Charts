@@ -1,10 +1,22 @@
-﻿namespace LiveCharts.Drawing.Shapes
+﻿using LiveCharts.Drawing.Brushes;
+
+namespace LiveCharts.Drawing.Shapes
 {
     /// <summary>
     /// Defines a shape in the user interface.
     /// </summary>
-    public interface IShape : IPaintable, IDashable, IPlaceable
+    public interface IShape : ICanvasElement, IDashable, IPlaceable
     {
+        /// <summary>
+        /// Gets or sets the Fill.
+        /// </summary>
+        Brush? Fill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stroke.
+        /// </summary>
+        Brush? Stroke { get; set; }
+
         /// <summary>
         /// Gets or sets the width.
         /// </summary>

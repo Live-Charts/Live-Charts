@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines a segment in a path.
     /// </summary>
-    public interface ISegment : IAnimatable
+    public interface IPathSegment : IAnimatable
     {
 
     }

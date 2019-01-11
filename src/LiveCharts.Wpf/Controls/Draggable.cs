@@ -7,7 +7,7 @@ namespace LiveCharts.Wpf.Controls
     /// <summary>
     /// The scroller class.
     /// </summary>
-    /// <seealso cref="System.Windows.Controls.ContentControl" />
+    /// <seealso cref="ContentControl" />
     public abstract class Draggable : ContentControl
     {
         private double _top;

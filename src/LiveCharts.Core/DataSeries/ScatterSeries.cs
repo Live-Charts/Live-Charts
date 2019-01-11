@@ -29,7 +29,6 @@ using LiveCharts.Animations;
 using LiveCharts.Charts;
 using LiveCharts.Coordinates;
 using LiveCharts.Drawing;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction;
 using LiveCharts.Interaction.Areas;
@@ -37,6 +36,9 @@ using LiveCharts.Interaction.Points;
 using LiveCharts.Updating;
 using System;
 using System.Drawing;
+#if NET45 || NET46
+using Brush = LiveCharts.Drawing.Brushes.Brush;
+#endif
 
 #endregion
 
@@ -46,10 +48,10 @@ namespace LiveCharts.DataSeries
     /// The scatter series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape,IBrush}" />
+    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape}" />
     /// <seealso cref="IScatterSeries" />
     public class ScatterSeries<TModel>
-        : CartesianStrokeSeries<TModel, PointCoordinate, ISvgPath, IBrush>, IScatterSeries
+        : CartesianStrokeSeries<TModel, PointCoordinate, ISvgPath>, IScatterSeries
     {
         private double _geometrySize;
 
@@ -176,7 +178,9 @@ namespace LiveCharts.DataSeries
             shape.StrokeDashArray = StrokeDashArray;
             shape.StrokeThickness = StrokeThickness;
             shape.ZIndex = ZIndex;
-            shape.Paint(Stroke, Fill);
+            shape.Fill = Fill;
+            shape.Stroke = Stroke;
+            shape.Paint();
 
             float r = vm.Diameter * .5f;
 

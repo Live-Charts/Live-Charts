@@ -26,7 +26,6 @@
 
 using LiveCharts.Drawing.Brushes;
 using System;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using Font = LiveCharts.Drawing.Styles.Font;
@@ -51,14 +50,14 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="brush">The color.</param>
         /// <returns></returns>
-        public static SolidColorBrush AsWpfBrush(this IBrush brush)
+        public static SolidColorBrush AsWpfBrush(this Drawing.Brushes.Brush brush)
         {
             if (brush == null) return null;
 
-            if (brush is ISolidColorBrush scb)
+            if (brush is Drawing.Brushes.SolidColorBrush scb)
             {
                 return new SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(
+                    Color.FromArgb(
                         scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B));
             }
 
@@ -71,7 +70,7 @@ namespace LiveCharts.Wpf
         /// <param name="style">The style.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static FontStyle AsWpf(this LiveCharts.Drawing.Styles.FontStyle style)
+        public static FontStyle AsWpf(this Drawing.Styles.FontStyle style)
         {
             FontStyle s;
 
@@ -132,7 +131,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns></returns>
-        public static Point AsWpf(this PointF point)
+        public static Point AsWpf(this LiveCharts.Drawing.PointD point)
         {
             return new Point(point.X, point.Y);
         }

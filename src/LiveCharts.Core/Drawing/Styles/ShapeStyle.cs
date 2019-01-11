@@ -43,7 +43,7 @@ namespace LiveCharts.Drawing.Styles
         /// <param name="fill">The fill.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="strokeDashArray">The stroke dash array.</param>
-        public ShapeStyle(IBrush? stroke, IBrush? fill, float strokeThickness, IEnumerable<double>? strokeDashArray)
+        public ShapeStyle(Brush? stroke, Brush? fill, float strokeThickness, IEnumerable<double>? strokeDashArray)
         {
             Stroke = stroke;
             Fill = fill;
@@ -57,7 +57,7 @@ namespace LiveCharts.Drawing.Styles
         /// <value>
         /// The stroke.
         /// </value>
-        public IBrush? Stroke { get; }
+        public Brush? Stroke { get; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -81,14 +81,14 @@ namespace LiveCharts.Drawing.Styles
         /// <value>
         /// The fill.
         /// </value>
-        public IBrush? Fill { get; }
+        public Brush? Fill { get; }
 
         /// <summary>
         /// Gets the default shape style.
         /// </summary>
         public static ShapeStyle Default => new ShapeStyle(
-            UIFactory.GetNewSolidColorBrush(255, 0, 0, 0),
-            UIFactory.GetNewSolidColorBrush(255, 0, 0, 0),
+            new SolidColorBrush(255, 0, 0, 0),
+            new SolidColorBrush(255, 0, 0, 0),
             2,
             null);
     }

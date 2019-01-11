@@ -1,16 +1,12 @@
 ﻿using LiveCharts.Drawing.Shapes;
 using System.Windows;
 
-namespace LiveCharts.Wpf.Drawing
+namespace LiveCharts.Wpf
 {
-    public class ChartBezierShape : ChartShape, IBezierShape
+    public class ChartSvgPath : ChartShape, ISvgPath
     {
-        private readonly ChartBezierSegment _segment = new ChartBezierSegment();
-
         public static readonly DependencyProperty SvgProperty =
             DependencyProperty.Register("Svg", typeof(string), typeof(ChartBezierShape), new UIPropertyMetadata(null));
-
-        public IBezierSegment Segment => _segment;
 
         public string Svg
         {

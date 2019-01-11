@@ -24,6 +24,7 @@
 #endregion
 #region
 
+using LiveCharts.Animations;
 using LiveCharts.Charts;
 using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
@@ -43,7 +44,7 @@ namespace LiveCharts
 
         internal static ILabel GetNewLabel(ChartModel context) => WhenDrawingLabels(context);
 
-        internal static IPath GetNewCartesianPath(ChartModel context) => WhenDrawingCartesianPaths(context);
+        internal static IPath GetNewCartesianPath(ChartModel context) => WhenDrawingPaths(context);
 
         internal static IRectangle GetNewRectangle(ChartModel context) => WhenDrawingRectangles(context);
 
@@ -57,7 +58,8 @@ namespace LiveCharts
 
         internal static ISlice GetNewSlice(ChartModel context) => WhenDrawingSlices(context);
 
-        internal static ISolidColorBrush GetNewSolidColorBrush(byte alpha, byte red, byte green, byte blue) => WhenPainting(alpha, red, green, blue);
+        internal static IAnimationBuilder AnimateSolidBrush(
+            IShape shape, SolidColorBrush brush, AnimatableArguments args) => WhenAnimatingSolidBrushes(shape, brush, args);
 
         /// <summary>
         /// Called when a chart host is required in the UI.
@@ -74,7 +76,7 @@ namespace LiveCharts
         /// Gets the new path.
         /// </summary>
         /// <returns></returns>
-        public static event Func<ChartModel, IPath> WhenDrawingCartesianPaths;
+        public static event Func<ChartModel, IPath> WhenDrawingPaths;
 
         /// <summary>
         /// Gets a new rectangle.
@@ -113,6 +115,6 @@ namespace LiveCharts
         /// <summary>
         /// Called when a solid color brush is required, the parameters are alpha, red, green and blue.
         /// </summary>
-        public static event Func<byte, byte, byte, byte, ISolidColorBrush> WhenPainting;
+        public static event Func<IShape, SolidColorBrush, AnimatableArguments, IAnimationBuilder> WhenAnimatingSolidBrushes;
     }
 }

@@ -26,13 +26,9 @@
 
 using System;
 using System.Globalization;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveCharts.Core;
-using LiveCharts.Core.Animations;
 using LiveCharts.Drawing.Brushes;
-using LiveCharts.Wpf.Controls;
 
 #endregion
 
@@ -41,7 +37,7 @@ namespace LiveCharts.Wpf.Converters
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="System.Windows.Data.IValueConverter" />
+    /// <seealso cref="IValueConverter" />
     public class CoreToWpfBrushConverter : IValueConverter
     {
         /// <summary>

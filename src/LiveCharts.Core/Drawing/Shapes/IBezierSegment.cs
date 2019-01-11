@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines a bezier segment.
     /// </summary>
-    public interface IBezierSegment : ISegment
+    public interface IBezierSegment : IPathSegment
     {
         /// <summary>
         /// Gets or sets the Point 1 vertex.

@@ -5,9 +5,9 @@ using LiveCharts.Animations;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
-using LiveCharts.Wpf.Animations;
+using LiveCharts.Interaction.Controls;
 
-namespace LiveCharts.Wpf.Drawing
+namespace LiveCharts.Wpf
 {
     public class ChartPath : IPath
     {
@@ -64,24 +64,34 @@ namespace LiveCharts.Wpf.Drawing
 
         public IAnimationBuilder Animate(AnimatableArguments arguments) => new PathAnimationBuilder(this, arguments);
 
-        public IEnumerable<IPaintable> GetVisuals()
+        public void InsertSegment(IPathSegment segment, int index)
         {
-            throw new System.NotImplementedException();
+            var chartSegment = (ChartSegment)segment;
+            _stroke.Figure.Segments.Insert(index, chartSegment.PathSegment);
         }
 
-        public void InsertSegment(ISegment segment, int index)
+        public void RemoveSegment(IPathSegment segment)
         {
-            throw new System.NotImplementedException();
+            var chartSegment = (ChartSegment)segment;
+            _stroke.Figure.Segments.Remove(chartSegment.PathSegment);
         }
 
         public void Paint(IBrush stroke, IBrush fill)
         {
-            throw new System.NotImplementedException();
+            _stroke.Path.Fill = fill.AsWpfBrush();
+            _fill.Path.Stroke = stroke.AsWpfBrush();
         }
 
-        public void RemoveSegment(ISegment segment)
+        void ICanvasElement.FlushToCanvas(ICanvas canvas, bool clippedToDrawMargin)
         {
-            throw new System.NotImplementedException();
+            canvas.AddChild(_stroke.Path, true);
+            canvas.AddChild(_fill.Path, true);
+        }
+
+        void ICanvasElement.RemoveFromCanvas(ICanvas canvas)
+        {
+            canvas.RemoveChild(_stroke.Path);
+            canvas.RemoveChild(_fill.Path);
         }
     }
 }

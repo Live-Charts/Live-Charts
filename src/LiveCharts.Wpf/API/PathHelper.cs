@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace LiveCharts.Wpf.Drawing
+namespace LiveCharts.Wpf
 {
     public class PathHelper
     {

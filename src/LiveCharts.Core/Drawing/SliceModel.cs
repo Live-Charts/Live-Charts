@@ -26,7 +26,6 @@
 #region
 
 using System;
-using System.Drawing;
 
 #endregion
 
@@ -50,7 +49,7 @@ namespace LiveCharts.Drawing
         /// <returns></returns>
         public static S‪liceBuilderViewModel Build(
             double wedge, double radius, double innerRadius, 
-            double cornerRadius, PointF center, bool forceAngle, double pushOut)
+            double cornerRadius, PointD center, bool forceAngle, double pushOut)
         {
             return GetPoints(
                 wedge, radius, innerRadius, cornerRadius, center, forceAngle, pushOut);
@@ -58,12 +57,12 @@ namespace LiveCharts.Drawing
 
         private static S‪liceBuilderViewModel GetPoints(
             double wedge, double outerRadius, double innerRadius,
-            double cornerRadius, PointF center, bool forceAngle, double pushOut)
+            double cornerRadius, PointD center, bool forceAngle, double pushOut)
         {
             // See docs/resources/slice.png
             // if you require to know more about the formulas in the geometry
 
-            PointF[] pts = new PointF[8];
+            PointD[] pts = new PointD[8];
 
             const double toRadians = Math.PI / 180d;
             double a = wedge;
@@ -116,26 +115,26 @@ namespace LiveCharts.Drawing
 
             unchecked
             {
-                pts[0] = new PointF((float) (center.X + xp), (float) (center.Y + o1 + yp));
-                pts[1] = new PointF((float) (center.X + xp), (float) (center.Y + o2 + yp));
-                pts[2] = new PointF(
-                    (float) (center.X + outerRadius * Math.Sin(outerRoundingAngle) + xp),
-                    (float) (center.Y + outerRadius * Math.Cos(outerRoundingAngle) + yp));
-                pts[3] = new PointF(
-                    (float) (center.X + outerRadius * Math.Sin(angle - outerRoundingAngle) + xp),
-                    (float) (center.Y + outerRadius * Math.Cos(angle - outerRoundingAngle) + yp));
-                pts[4] = new PointF(
-                    (float) (center.X + o3 * Math.Sin(angle) + xp),
-                    (float) (center.Y + o3 * Math.Cos(angle) + yp));
-                pts[5] = new PointF(
-                    (float) (center.X + o4 * Math.Sin(angle) + xp),
-                    (float) (center.Y + o4 * Math.Cos(angle) + yp));
-                pts[6] = new PointF(
-                    (float) (center.X + innerRadius * Math.Sin(angle - innerRoundingAngle) + xp),
-                    (float) (center.Y + innerRadius * Math.Cos(angle - innerRoundingAngle) + yp));
-                pts[7] = new PointF(
-                    (float) (center.X + innerRadius * Math.Sin(innerRoundingAngle) + xp),
-                    (float) (center.Y + innerRadius * Math.Cos(innerRoundingAngle) + yp));
+                pts[0] = new PointD( center.X + xp,  center.Y + o1 + yp);
+                pts[1] = new PointD( center.X + xp, center.Y + o2 + yp);
+                pts[2] = new PointD(
+                     center.X + outerRadius * Math.Sin(outerRoundingAngle) + xp,
+                    center.Y + outerRadius * Math.Cos(outerRoundingAngle) + yp);
+                pts[3] = new PointD(
+                    center.X + outerRadius * Math.Sin(angle - outerRoundingAngle) + xp,
+                    center.Y + outerRadius * Math.Cos(angle - outerRoundingAngle) + yp);
+                pts[4] = new PointD(
+                    center.X + o3 * Math.Sin(angle) + xp,
+                    center.Y + o3 * Math.Cos(angle) + yp);
+                pts[5] = new PointD(
+                    center.X + o4 * Math.Sin(angle) + xp,
+                    center.Y + o4 * Math.Cos(angle) + yp);
+                pts[6] = new PointD(
+                    center.X + innerRadius * Math.Sin(angle - innerRoundingAngle) + xp,
+                    center.Y + innerRadius * Math.Cos(angle - innerRoundingAngle) + yp);
+                pts[7] = new PointD(
+                    center.X + innerRadius * Math.Sin(innerRoundingAngle) + xp,
+                    center.Y + innerRadius * Math.Cos(innerRoundingAngle) + yp);
 
                 return new S‪liceBuilderViewModel(
                     pts,

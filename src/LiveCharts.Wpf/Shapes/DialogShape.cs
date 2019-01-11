@@ -4,14 +4,14 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using LiveCharts.Core.Interaction.Controls;
+using LiveCharts.Interaction.Controls;
 
 namespace LiveCharts.Wpf.Shapes
 {
     /// <summary>
     /// A bubble shape.
     /// </summary>
-    /// <seealso cref="System.Windows.Shapes.Shape" />
+    /// <seealso cref="Shape" />
     public class DialogShape : Shape, INotifyPropertyChanged
     {
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(

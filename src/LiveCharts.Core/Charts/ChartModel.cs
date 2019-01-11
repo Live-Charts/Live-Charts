@@ -38,6 +38,7 @@ using LiveCharts.DataSeries;
 using LiveCharts.Dimensions;
 using LiveCharts.Drawing;
 using LiveCharts.Drawing.Styles;
+using LiveCharts.Interaction;
 using LiveCharts.Interaction.Controls;
 using LiveCharts.Interaction.Events;
 using LiveCharts.Interaction.Points;
@@ -52,7 +53,7 @@ namespace LiveCharts.Charts
     /// </summary>
     public abstract class ChartModel : IDisposable
     {
-        private static int _colorCount;
+        private static int _colorCount;       
         private Task _delayer = Task.FromResult(false);
         private IList<Color> _colors = new List<Color>();
         private readonly HashSet<IResource> _resources = new HashSet<IResource>();
@@ -70,13 +71,13 @@ namespace LiveCharts.Charts
         {
             View = view;
             View.Canvas = UIFactory.GetNewChartContent(view);
-            view.Canvas.ContentLoaded += OnContentOnContentLoaded;
-            view.ViewResized += OnViewOnChartViewResized;
-            view.Canvas.PointerMoved += ViewOnPointerMoved;
-            view.Canvas.PointerDown += ViewOnPointerDown;
-            view.PropertyChanged += InvalidatePropertyChanged;
+            view.Canvas.CanvasLoaded += OnCanvasLoaded;
+            view.ViewResized += OnViewOResized;
+            view.Canvas.PointerMoved += OnViewPointerMoved;
+            view.Canvas.PointerDown += OnViewPointerDown;
+            view.PropertyChanged += InvalidateOnPropertyChanged;
             ToolTipTimeoutTimer = new Timer();
-            ToolTipTimeoutTimer.Elapsed += OnToolTipTimeoutTimerOnElapsed;
+            ToolTipTimeoutTimer.Elapsed += OnToolTipTimeoutElapsed;
             Global.Settings.BuildFromTheme(view);
         }
 
@@ -402,7 +403,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="pointerLocation">The dimensions.</param>
         /// <param name="args">The args.</param>
-        protected virtual void ViewOnPointerMoved(PointF pointerLocation, EventArgs args)
+        protected virtual void OnViewPointerMoved(PointF pointerLocation, EventArgs args)
         {
             if (Series == null) return;
             if (!IsViewInitialized) return;
@@ -426,7 +427,7 @@ namespace LiveCharts.Charts
         /// </summary>
         /// <param name="pointerLocation">The pointer location.</param>
         /// /// <param name="args">The event args.</param>
-        protected virtual void ViewOnPointerDown(PointF pointerLocation, EventArgs args)
+        protected virtual void OnViewPointerDown(PointF pointerLocation, EventArgs args)
         {
             if (Series == null) return;
             if (!IsViewInitialized) return;
@@ -448,7 +449,11 @@ namespace LiveCharts.Charts
             if (View.DataToolTip != null)
             {
                 ShowTooltip(query);
-            }
+            }            
+        }
+
+        protected virtual void OnViewPointerUp()
+        {
         }
 
         /// <summary>
@@ -584,11 +589,11 @@ namespace LiveCharts.Charts
                 // ReSharper disable once IdentifierTypo
                 if (resource is INotifyPropertyChanged inpc)
                 {
-                    inpc.PropertyChanged += InvalidatePropertyChanged;
+                    inpc.PropertyChanged += InvalidateOnPropertyChanged;
 
                     void DisposePropertyChanged(IChartView view, object instance, bool force)
                     {
-                        inpc.PropertyChanged -= InvalidatePropertyChanged;
+                        inpc.PropertyChanged -= InvalidateOnPropertyChanged;
                         resource.Disposed -= DisposePropertyChanged;
                     }
 
@@ -651,7 +656,7 @@ namespace LiveCharts.Charts
             }
         }
 
-        private void InvalidatePropertyChanged(
+        private void InvalidateOnPropertyChanged(
             object sender, PropertyChangedEventArgs args)
         {
             if (!IsViewInitialized) return;
@@ -764,18 +769,18 @@ namespace LiveCharts.Charts
             return new PointF(toolTipLocation.X + xCorrection, toolTipLocation.Y + yCorrection);
         }
 
-        private void OnToolTipTimeoutTimerOnElapsed(object sender, ElapsedEventArgs args)
+        private void OnToolTipTimeoutElapsed(object sender, ElapsedEventArgs args)
         {
             View.InvokeOnUiThread(() => { View.DataToolTip.Hide(View); });
             ToolTipTimeoutTimer.Stop();
         }
 
-        private void OnViewOnChartViewResized(IChartView sender)
+        private void OnViewOResized(IChartView sender)
         {
             Invalidate();
         }
 
-        private void OnContentOnContentLoaded(IChartView sender)
+        private void OnCanvasLoaded(IChartView sender)
         {
             IsViewInitialized = true;
             Invalidate();
@@ -809,11 +814,11 @@ namespace LiveCharts.Charts
 
             _previousHovered = null;
 
-            View.Canvas.ContentLoaded -= OnContentOnContentLoaded;
-            View.ViewResized -= OnViewOnChartViewResized;
-            View.Canvas.PointerMoved -= ViewOnPointerMoved;
-            View.Canvas.PointerDown -= ViewOnPointerDown;
-            ToolTipTimeoutTimer.Elapsed -= OnToolTipTimeoutTimerOnElapsed;
+            View.Canvas.CanvasLoaded -= OnCanvasLoaded;
+            View.ViewResized -= OnViewOResized;
+            View.Canvas.PointerMoved -= OnViewPointerMoved;
+            View.Canvas.PointerDown -= OnViewPointerDown;
+            ToolTipTimeoutTimer.Elapsed -= OnToolTipTimeoutElapsed;
 
             View.Canvas.Dispose();
         }

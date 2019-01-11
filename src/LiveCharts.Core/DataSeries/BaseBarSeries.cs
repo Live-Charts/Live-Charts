@@ -51,7 +51,7 @@ namespace LiveCharts.DataSeries
     /// <typeparam name="TModel">The type of the model to plot.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
     public abstract class BaseBarSeries<TModel, TCoordinate>
-        : CartesianStrokeSeries<TModel, TCoordinate, IRectangle, IBrush>, IBarSeries
+        : CartesianStrokeSeries<TModel, TCoordinate, IRectangle>, IBarSeries
         where TCoordinate : ICoordinate
     {
         private double _pivot;
@@ -234,7 +234,9 @@ namespace LiveCharts.DataSeries
             current.Shape.StrokeDashArray = StrokeDashArray;
             current.Shape.StrokeThickness = StrokeThickness;
             current.Shape.ZIndex = ZIndex;
-            current.Shape.Paint(Stroke, Fill);
+            current.Shape.Fill = Fill;
+            current.Shape.Stroke = Stroke;
+            current.Shape.Paint();
 
             var radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
             current.Shape.XRadius = radius;
