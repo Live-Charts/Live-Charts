@@ -180,7 +180,6 @@ namespace LiveCharts.DataSeries
             shape.ZIndex = ZIndex;
             shape.Fill = Fill;
             shape.Stroke = Stroke;
-            shape.Paint();
 
             float r = vm.Diameter * .5f;
 

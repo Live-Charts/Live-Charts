@@ -29,6 +29,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 using LiveCharts.Drawing.Brushes;
+using Brush = LiveCharts.Drawing.Brushes.Brush;
 
 #endregion
 
@@ -54,17 +55,8 @@ namespace LiveCharts.Wpf.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
-
-            var coreBrush = (IBrush) value;
-
-            if (coreBrush is ISolidColorBrush scb)
-            {
-                return new SolidColorBrush(
-                    Color.FromArgb(
-                        scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B));
-            }
-
-            throw new LiveChartsException(143, "WPF");
+            var coreBrush = (Brush) value;
+            return coreBrush.AsWpfBrush();
         }
 
         /// <summary>

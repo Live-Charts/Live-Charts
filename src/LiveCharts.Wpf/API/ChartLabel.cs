@@ -49,11 +49,11 @@ namespace LiveCharts.Wpf
         private string _content = string.Empty;
         private string _fontFamily = string.Empty;
         private double _fontSize;
-        private Drawing.Brushes.Brush _brush;
         private Padding _padding = new Padding();
         private RotateTransform _transform = null;
         private FontStyle _fontStyle;
         private FontWeight _fontWeight;
+        private Drawing.Brushes.Brush _foreground;
 
         static ChartLabel()
         {
@@ -156,14 +156,19 @@ namespace LiveCharts.Wpf
             }
         }
 
-        LiveCharts.Drawing.Brushes.Brush ILabel.Foreground { get; set; }
+        Drawing.Brushes.Brush ILabel.Foreground
+        {
+            get => _foreground;
+            set
+            {
+                if (_foreground != null) _foreground.Target = null;
+                _foreground = value;
+                Foreground = _foreground.AsWpfBrush();
+                _foreground.Target = Foreground;
+            }
+        }
 
         public IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<ChartLabel>(this, args);
-
-        void ICanvasElement.Paint()
-        {
-            Foreground = ((ILabel)this).Foreground.AsWpfBrush();
-        }
 
         SizeF ILabel.Measure()
         {
@@ -174,10 +179,5 @@ namespace LiveCharts.Wpf
         public void FlushToCanvas(ICanvas canvas, bool clippedToDrawMargin) => canvas.AddChild(this, clippedToDrawMargin);
 
         public void RemoveFromCanvas(ICanvas canvas) => canvas.RemoveChild(this);
-
-        public void Paint()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

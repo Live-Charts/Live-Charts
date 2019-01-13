@@ -41,7 +41,6 @@ namespace LiveCharts.DataSeries
     /// <typeparam name="TModel">The type of the model to plot.</typeparam>
     /// <typeparam name="TCoordinate">The type of the coordinate required by the series.</typeparam>
     /// <typeparam name="TPointShape">The type of the point shape in the UI.</typeparam>
-    /// <typeparam name="TBrush">The type of the brush.</typeparam>
     /// <seealso cref="Series{TModel, TCoordinate, TPointShape}" />
     public abstract class CartesianStrokeSeries<TModel, TCoordinate, TPointShape>
         : StrokeSeries<TModel, TCoordinate, TPointShape>, ICartesianSeries
@@ -51,7 +50,7 @@ namespace LiveCharts.DataSeries
         private int _zIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CartesianStrokeSeries{TModel,TCoordinate, TPointShape, TBrush}"/> class.
+        /// Initializes a new instance of the <see cref="CartesianStrokeSeries{TModel,TCoordinate, TPointShape}"/> class.
         /// </summary>
         protected CartesianStrokeSeries()
         {

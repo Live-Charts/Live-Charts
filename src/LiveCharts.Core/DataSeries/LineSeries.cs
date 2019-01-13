@@ -212,7 +212,6 @@ namespace LiveCharts.DataSeries
             path.InsertSegment(endSegment, k + 1);
             path.Stroke = Stroke;
             path.Fill = Fill;
-            path.Paint();
 
             double l = length / StrokeThickness;
             double tl = l - _previousLenght;
@@ -399,7 +398,6 @@ namespace LiveCharts.DataSeries
             current.Shape.StrokeThickness = StrokeThickness;
             current.Shape.Fill = Fill;
             current.Shape.Stroke = Stroke;
-            current.Shape.Paint();
 
             if (!isNew)
             {

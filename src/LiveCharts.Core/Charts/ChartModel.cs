@@ -452,6 +452,9 @@ namespace LiveCharts.Charts
             }            
         }
 
+        /// <summary>
+        /// Called when the pointer gors up.
+        /// </summary>
         protected virtual void OnViewPointerUp()
         {
         }
@@ -586,7 +589,6 @@ namespace LiveCharts.Charts
             {
                 _resources.Add(resource);
 
-                // ReSharper disable once IdentifierTypo
                 if (resource is INotifyPropertyChanged inpc)
                 {
                     inpc.PropertyChanged += InvalidateOnPropertyChanged;

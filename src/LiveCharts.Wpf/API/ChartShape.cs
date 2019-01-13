@@ -13,6 +13,9 @@ namespace LiveCharts.Wpf
 {
     public abstract class ChartShape : Shape, IShape
     {
+        private Drawing.Brushes.Brush _stroke;
+        private Drawing.Brushes.Brush _fill;
+
         public static readonly DependencyProperty RotationProperty =
             DependencyProperty.Register("Rotation", typeof(double), typeof(ChartRectangle), new UIPropertyMetadata(0d));
 
@@ -45,9 +48,29 @@ namespace LiveCharts.Wpf
             get => (double)GetValue(RotationProperty);
             set => SetValue(RotationProperty, value);
         }
-        Drawing.Brushes.Brush IShape.Fill { get; set; }
+        Drawing.Brushes.Brush IShape.Fill
+        {
+            get => _fill;
+            set
+            {
+                if (_fill != null) _fill.Target = null;
+                _fill = value;
+                Fill = _fill.AsWpfBrush();
+                _fill.Target = Fill;
+            }
+        }
 
-        Drawing.Brushes.Brush IShape.Stroke { get; set; }
+        Drawing.Brushes.Brush IShape.Stroke
+        {
+            get => _stroke;
+            set
+            {
+                if (_stroke != null) _stroke.Target = null;
+                _stroke = value;
+                Stroke = _stroke.AsWpfBrush();
+                _stroke.Target = Stroke;
+            }
+        }
 
         public virtual IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<Shape>(this, args);
 
@@ -70,12 +93,5 @@ namespace LiveCharts.Wpf
         void ICanvasElement.FlushToCanvas(ICanvas canvas, bool clippedToDrawMargin) => canvas.AddChild(this, clippedToDrawMargin);
 
         void ICanvasElement.RemoveFromCanvas(ICanvas canvas) => canvas.RemoveChild(this);
-
-        void ICanvasElement.Paint()
-        {
-            var iShape = (IShape) this;
-            Fill = iShape.Fill.AsWpfBrush();
-            Stroke = iShape.Stroke.AsWpfBrush();
-        }
     }
 }

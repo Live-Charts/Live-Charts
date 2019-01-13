@@ -48,8 +48,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\ChartHeatShape.cs" />
-    <Compile Include="API\HeatAnimationBuilder.cs" />
     <Compile Include="API\Initialize.cs" />
     <Compile Include="API\PathAnimationBuilder.cs" />
     <Compile Include="API\LiveChartsEasing.cs" />
@@ -85,25 +83,10 @@
     <Compile Include="API\PathHelper.cs" />
     <Compile Include="API\PieChart.cs" />
     <Compile Include="Shapes\DialogShape.cs" />
-    <None Include="Views\HeatPointView.cs" />
-    <None Include="Views\PiePointView.cs" />
-    <None Include="Views\PlaneView.cs" />
-    <None Include="Views\Providers\BarSeriesViewProvider.cs" />
-    <None Include="Views\Providers\SelfDrawnBezierSeriesViewProvider.cs" />
-    <None Include="Views\Providers\FromPivotBezierSeriesViewProvider.cs" />
-    <None Include="Views\Providers\HeatViewSeriesProvider.cs" />
-    <None Include="Views\Providers\PieSeriesViewProvider.cs" />
-    <None Include="Views\Providers\PlaneViewProvider.cs" />
-    <None Include="Views\Providers\GeometryPointSeriesViewProvider.cs" />
-    <None Include="Views\BezierPointView.cs" />
-    <None Include="Views\CartesianPath.cs" />
-    <None Include="Views\PointView.cs" />
     <Compile Include="API\AnimationBuilder.cs" />
-    <None Include="Views\GeometryPointView.cs" />
     <Compile Include="API\CartesianChart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Views\SelfDrawnPath.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

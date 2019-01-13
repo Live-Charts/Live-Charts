@@ -187,7 +187,6 @@ namespace LiveCharts.DataSeries
             current.Shape.ZIndex = ZIndex;
             current.Shape.Fill = Fill;
             current.Shape.Stroke = Stroke;
-            current.Shape.Paint();
 
             var r = vm.Diameter * .5f;
 

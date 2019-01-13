@@ -47,10 +47,10 @@ namespace LiveCharts.DataSeries
     /// The heat series class.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
-    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape, TBrush}" />
+    /// <seealso cref="CartesianStrokeSeries{TModel,TCoordinate,TPointShape}" />
     /// <seealso cref="IHeatSeries" />
     public class HeatSeries<TModel>
-        : CartesianStrokeSeries<TModel, WeightedCoordinate, IHeatShape>, IHeatSeries
+        : CartesianStrokeSeries<TModel, WeightedCoordinate, IShape>, IHeatSeries
     {
         private IEnumerable<GradientStop>? _gradient;
 
@@ -124,7 +124,7 @@ namespace LiveCharts.DataSeries
             var animation = AnimatableArguments.BuildFrom(chart.View, this);
             int i = 0;
 
-            foreach (ChartPoint<TModel, WeightedCoordinate, IHeatShape> current in GetPoints(chart.View))
+            foreach (ChartPoint<TModel, WeightedCoordinate, IShape> current in GetPoints(chart.View))
             {
                 float[] p = new[]
                 {
@@ -132,10 +132,12 @@ namespace LiveCharts.DataSeries
                     chart.ScaleToUi(current.Coordinate[1][0], y) - uw[1] *.5f
                 };
 
+                var scb = current.Shape?.Fill as SolidColorBrush;
+
                 var vm = new HeatViewModel
                 {
                     Rectangle = new RectangleD(p[xi], p[yi], wp, hp),
-                    From = current.Shape?.Color ?? Color.FromArgb(0, 255, 255, 255),
+                    From = scb?.Color ?? Color.FromArgb(255, 0, 0, 0),
                     To = ColorInterpolation(minW, maxW, current.Coordinate.Weight)
                 };
 
@@ -220,16 +222,16 @@ namespace LiveCharts.DataSeries
         }
 
         private void DrawPointShape(
-            ChartPoint<TModel, WeightedCoordinate, IHeatShape> current,
+            ChartPoint<TModel, WeightedCoordinate, IShape> current,
             AnimatableArguments animationArgs,
             HeatViewModel vm)
         {
             // initialize shape
             if (current.Shape == null)
             {
-                current.Shape = UIFactory.GetNewColoredShape(current.Chart.Model);
+                current.Shape = UIFactory.GetNewRectangle(current.Chart.Model);
                 current.Shape.FlushToCanvas(current.Chart.Canvas, true);
-                current.Shape.Color = vm.From;
+                current.Shape.Fill = new SolidColorBrush(vm.From);
             }
 
             // map properties
@@ -240,10 +242,11 @@ namespace LiveCharts.DataSeries
             current.Shape.ZIndex = ZIndex;
 
             // animate
-            current.Shape.Animate(animationArgs)
+            if (!(current.Shape.Fill is SolidColorBrush solidColorBrush)) throw new LiveChartsException(148);
+            current.Shape.Fill?.Animate(animationArgs)
                 .Property(
-                    nameof(IHeatShape.Color),
-                    current.Shape.Color,
+                    nameof(SolidColorBrush.Color),
+                    solidColorBrush.Color,
                     vm.To)
                 .Begin();
         }

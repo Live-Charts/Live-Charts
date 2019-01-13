@@ -26,7 +26,6 @@
 
 using LiveCharts.Animations;
 using LiveCharts.Charts;
-using LiveCharts.Drawing.Brushes;
 using LiveCharts.Drawing.Shapes;
 using LiveCharts.Interaction.Controls;
 using System;
@@ -48,8 +47,6 @@ namespace LiveCharts
 
         internal static IRectangle GetNewRectangle(ChartModel context) => WhenDrawingRectangles(context);
 
-        internal static IHeatShape GetNewColoredShape(ChartModel context) => WhenDrawingHeatShapes(context);
-
         internal static ISvgPath GetNewSvgPath(ChartModel context) => WhenDrawingSvgPaths(context);
 
         internal static ILineSegment GetNewLineSegment(ChartModel context) => WhenDrawingLineSegments(context);
@@ -58,8 +55,8 @@ namespace LiveCharts
 
         internal static ISlice GetNewSlice(ChartModel context) => WhenDrawingSlices(context);
 
-        internal static IAnimationBuilder AnimateSolidBrush(
-            IShape shape, SolidColorBrush brush, AnimatableArguments args) => WhenAnimatingSolidBrushes(shape, brush, args);
+        internal static IAnimationBuilder GetSolidColorBrushAnimation(object target, AnimatableArguments args)
+            => WhenAnimatingSolidColorBrushes(target, args);
 
         /// <summary>
         /// Called when a chart host is required in the UI.
@@ -85,11 +82,6 @@ namespace LiveCharts
         public static event Func<ChartModel, IRectangle> WhenDrawingRectangles;
 
         /// <summary>
-        /// Called when a colored shape needs to be added to the UI.
-        /// </summary>
-        public static event Func<ChartModel, IHeatShape> WhenDrawingHeatShapes;
-
-        /// <summary>
         /// Gets the new sg path.
         /// </summary>
         /// <returns></returns>
@@ -113,8 +105,8 @@ namespace LiveCharts
         public static event Func<ChartModel, ISlice> WhenDrawingSlices;
 
         /// <summary>
-        /// Called when a solid color brush is required, the parameters are alpha, red, green and blue.
+        /// 
         /// </summary>
-        public static event Func<IShape, SolidColorBrush, AnimatableArguments, IAnimationBuilder> WhenAnimatingSolidBrushes;
+        public static event Func<object, AnimatableArguments, IAnimationBuilder> WhenAnimatingSolidColorBrushes;
     }
 }

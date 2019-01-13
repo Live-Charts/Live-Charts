@@ -354,6 +354,11 @@ namespace LiveCharts.Charts
             }
         }
 
+        /// <summary>
+        /// Called when the pointer goes down.
+        /// </summary>
+        /// <param name="pointerLocation"></param>
+        /// <param name="args"></param>
         protected override void OnViewPointerDown(PointF pointerLocation, EventArgs args)
         {
             base.OnViewPointerDown(pointerLocation, args);
@@ -364,6 +369,9 @@ namespace LiveCharts.Charts
             cartesianView.CapturePointer();
         }
 
+        /// <summary>
+        /// Called when the pointer goes up.
+        /// </summary>
         protected override void OnViewPointerUp()
         {
             base.OnViewPointerUp();
@@ -375,6 +383,11 @@ namespace LiveCharts.Charts
             cartesianView.ReleasePointerCapture();
         }
 
+        /// <summary>
+        /// Called when the ppinter moves.
+        /// </summary>
+        /// <param name="pointerLocation"></param>
+        /// <param name="args"></param>
         protected override void OnViewPointerMoved(PointF pointerLocation, EventArgs args)
         {
             base.OnViewPointerMoved(pointerLocation, args);

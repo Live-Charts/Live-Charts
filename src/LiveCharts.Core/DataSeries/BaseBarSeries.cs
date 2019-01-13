@@ -236,7 +236,6 @@ namespace LiveCharts.DataSeries
             current.Shape.ZIndex = ZIndex;
             current.Shape.Fill = Fill;
             current.Shape.Stroke = Stroke;
-            current.Shape.Paint();
 
             var radius = (vm.Orientation == Orientation.Horizontal ? vm.To.Width : vm.To.Height) * .4;
             current.Shape.XRadius = radius;

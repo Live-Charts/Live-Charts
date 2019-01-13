@@ -25,6 +25,8 @@
 145, Could not animate the property '{0}', with the given time line, because the property is of type '{1}' and the animation targets the type '{2}', please use the a time line that targets '{1}' type.
 146, A time line can only be used by a unique property.
 147, Livecharts was not able to animate the property {0}.
+148, There is no target to animate.
+148, A heat shape requires a SolidColorBrush, cast failed.
 
 0, geared exceptions
 

@@ -11,55 +11,80 @@ namespace LiveCharts.Wpf
 {
     public class ChartPath : IPath
     {
-        internal readonly PathHelper _stroke = new PathHelper();
-        internal readonly PathHelper _fill = new PathHelper();
+        internal readonly PathHelper _strokePath = new PathHelper();
+        internal readonly PathHelper _fillPath = new PathHelper();
+        private Brush _fill;
+        private Brush _stroke;
 
         public int ZIndex
         {
-            get => Panel.GetZIndex(_stroke.Path);
+            get => Panel.GetZIndex(_strokePath.Path);
             set
             {
-                Panel.SetZIndex(_stroke.Path, value);
-                Panel.SetZIndex(_fill.Path, value);
+                Panel.SetZIndex(_strokePath.Path, value);
+                Panel.SetZIndex(_fillPath.Path, value);
             }
         }
 
         public double Opacity
         {
-            get => _stroke.Path.Opacity;
+            get => _strokePath.Path.Opacity;
             set
             {
-                _stroke.Path.Opacity = value;
-                _fill.Path.Opacity = value;
+                _strokePath.Path.Opacity = value;
+                _fillPath.Path.Opacity = value;
             }
         }
 
         public PointD StartPoint
         {
-            get => new PointD(_stroke.Figure.StartPoint.X, _stroke.Figure.StartPoint.Y);
+            get => new PointD(_strokePath.Figure.StartPoint.X, _strokePath.Figure.StartPoint.Y);
             set
             {
-                _stroke.Figure.StartPoint = new System.Windows.Point(value.X, value.Y);
-                _fill.Figure.StartPoint = new System.Windows.Point(value.X, value.Y);
+                _strokePath.Figure.StartPoint = new System.Windows.Point(value.X, value.Y);
+                _fillPath.Figure.StartPoint = new System.Windows.Point(value.X, value.Y);
             }
         }
 
         public double StrokeThickness
         {
-            get => _stroke.Path.StrokeThickness;
-            set => _stroke.Path.StrokeThickness = value;
+            get => _strokePath.Path.StrokeThickness;
+            set => _strokePath.Path.StrokeThickness = value;
         }
 
         public IEnumerable<double> StrokeDashArray
         {
-            get => _stroke.Path.StrokeDashArray.Select(x => x);
-            set => _stroke.Path.StrokeDashArray = new System.Windows.Media.DoubleCollection(value);
+            get => _strokePath.Path.StrokeDashArray.Select(x => x);
+            set => _strokePath.Path.StrokeDashArray = new System.Windows.Media.DoubleCollection(value);
         }
 
         public double StrokeDashOffset
         {
-            get => _stroke.Path.StrokeDashOffset;
-            set => _stroke.Path.StrokeDashOffset = value;
+            get => _strokePath.Path.StrokeDashOffset;
+            set => _strokePath.Path.StrokeDashOffset = value;
+        }
+
+        public Brush Fill
+        {
+            get => _fill; set
+            {
+                if (_fill != null) _fill.Target = null;
+                _fill = value;
+                _fillPath.Path.Fill = _fill.AsWpfBrush();
+                _fill.Target = _fillPath.Path.Fill;
+            }
+        }
+
+        public Brush Stroke
+        {
+            get => _stroke;
+            set
+            {
+                if (_stroke != null) _stroke.Target = null;
+                _stroke = value;
+                _strokePath.Path.Stroke = _stroke.AsWpfBrush();
+                _stroke.Target = _strokePath.Path.Stroke;
+            }
         }
 
         public IAnimationBuilder Animate(AnimatableArguments arguments) => new PathAnimationBuilder(this, arguments);
@@ -67,31 +92,25 @@ namespace LiveCharts.Wpf
         public void InsertSegment(IPathSegment segment, int index)
         {
             var chartSegment = (ChartSegment)segment;
-            _stroke.Figure.Segments.Insert(index, chartSegment.PathSegment);
+            _strokePath.Figure.Segments.Insert(index, chartSegment.PathSegment);
         }
 
         public void RemoveSegment(IPathSegment segment)
         {
             var chartSegment = (ChartSegment)segment;
-            _stroke.Figure.Segments.Remove(chartSegment.PathSegment);
-        }
-
-        public void Paint(IBrush stroke, IBrush fill)
-        {
-            _stroke.Path.Fill = fill.AsWpfBrush();
-            _fill.Path.Stroke = stroke.AsWpfBrush();
+            _strokePath.Figure.Segments.Remove(chartSegment.PathSegment);
         }
 
         void ICanvasElement.FlushToCanvas(ICanvas canvas, bool clippedToDrawMargin)
         {
-            canvas.AddChild(_stroke.Path, true);
-            canvas.AddChild(_fill.Path, true);
+            canvas.AddChild(_strokePath.Path, true);
+            canvas.AddChild(_fillPath.Path, true);
         }
 
         void ICanvasElement.RemoveFromCanvas(ICanvas canvas)
         {
-            canvas.RemoveChild(_stroke.Path);
-            canvas.RemoveChild(_fill.Path);
+            canvas.RemoveChild(_strokePath.Path);
+            canvas.RemoveChild(_fillPath.Path);
         }
     }
 }

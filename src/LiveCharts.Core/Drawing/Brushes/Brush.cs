@@ -6,14 +6,11 @@ namespace LiveCharts.Drawing.Brushes
     /// <summary>
     /// Defines an object thyat defines how a shape is painted in the UI.
     /// </summary>
-    public abstract class Brush
+    public abstract class Brush : IAnimatable
     {
-        /// <summary>
-        /// Animates the fill/stroke of a shape.
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public abstract IAnimationBuilder Animate(IShape shape, AnimatableArguments args);
+        internal object? Target { get; set; }
+
+        /// <inheritdoc></inheritdoc>
+        public abstract IAnimationBuilder Animate(AnimatableArguments args);
     }
 }

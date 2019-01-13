@@ -149,28 +149,28 @@ namespace LiveCharts.Wpf
         private void SetTargetToFillPath(AnimationTimeline animation, DependencyProperty property)
         {
             _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _path._fill.Path);
+            Storyboard.SetTarget(animation, _path._fillPath.Path);
             Storyboard.SetTargetProperty(animation, new PropertyPath(property));
         }
 
         private void SetTargetToStrokePath(AnimationTimeline animation, DependencyProperty property)
         {
             _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _path._stroke.Path);
+            Storyboard.SetTarget(animation, _path._strokePath.Path);
             Storyboard.SetTargetProperty(animation, new PropertyPath(property));
         }
 
         private void SetTargetToFillFigure(AnimationTimeline animation, DependencyProperty property)
         {
             _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _path._fill.Figure);
+            Storyboard.SetTarget(animation, _path._fillPath.Figure);
             Storyboard.SetTargetProperty(animation, new PropertyPath(property));
         }
 
         private void SetTargetToStrokeFigure(AnimationTimeline animation, DependencyProperty property)
         {
             _storyboard.Children.Add(animation);
-            Storyboard.SetTarget(animation, _path._stroke.Figure);
+            Storyboard.SetTarget(animation, _path._strokePath.Figure);
             Storyboard.SetTargetProperty(animation, new PropertyPath(property));
         }
     }

@@ -59,7 +59,6 @@ namespace LiveCharts.Dimensions
             }
 
             Label.Foreground = Stroke;
-            Label.Paint();
 
             Label.Animate(animationArgs)
                 .Property(nameof(ILabel.Left), Label.Left, pos.X)
@@ -88,7 +87,6 @@ namespace LiveCharts.Dimensions
             Shape.StrokeThickness = StrokeThickness;
             Shape.Fill = Fill;
             Shape.Stroke = Stroke;
-            Shape.Paint();
 
             Shape.Animate(animationArgs)
                 .Property(nameof(IShape.Top), Shape.Top, vm.To.Top)

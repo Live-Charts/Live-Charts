@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using LiveCharts.Animations;
-using LiveCharts.Drawing.Shapes;
 
 namespace LiveCharts.Drawing.Brushes
 {
@@ -39,7 +38,10 @@ namespace LiveCharts.Drawing.Brushes
         public Color Color { get; set; } = Color.Black;
 
         /// <inheritdoc></inheritdoc>
-        public override IAnimationBuilder Animate(IShape shape, AnimatableArguments args) => 
-            UIFactory.AnimateSolidBrush(shape, this, args);
+        public override IAnimationBuilder Animate(AnimatableArguments args)
+        {
+            if (Target == null) throw new LiveChartsException(148);
+            return UIFactory.GetSolidColorBrushAnimation(Target, args);
+        }
     }
 }

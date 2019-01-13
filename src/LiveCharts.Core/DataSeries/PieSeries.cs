@@ -199,7 +199,6 @@ namespace LiveCharts.DataSeries
             shape.PushOut = PushOut;
             shape.Stroke = Stroke;
             shape.Fill = Fill;
-            shape.Paint();
 
             // animate
 

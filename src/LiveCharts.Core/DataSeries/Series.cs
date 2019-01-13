@@ -403,7 +403,6 @@ namespace LiveCharts.DataSeries
             chartPoint.Label.FontStyle = DataLabelsFont.Style;
             chartPoint.Label.FontWeight = DataLabelsFont.Weight;
             chartPoint.Label.Foreground = DataLabelsForeground;
-            chartPoint.Label.Paint();
             PlaceLabel(chartPoint, chartPoint.Label.Measure());
         }
 

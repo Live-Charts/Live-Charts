@@ -153,8 +153,8 @@ namespace LiveCharts.Wpf
         /// The animation line property, default is bounce medium.
         /// </summary>
         public static readonly DependencyProperty AnimationLineProperty = DependencyProperty.Register(
-            nameof(EasingFunction), typeof(LiveCharts.Animations.Ease.IEasingFunction), typeof(Chart),
-            new PropertyMetadata(LiveCharts.Animations.EasingFunctions.Ease));
+            nameof(EasingFunction), typeof(Animations.Ease.IEasingFunction), typeof(Chart),
+            new PropertyMetadata(Animations.EasingFunctions.Ease));
 
         /// <summary>
         /// The chart update preview command property
@@ -269,20 +269,14 @@ namespace LiveCharts.Wpf
 
         private void OnSizeChanged(object sender1, SizeChangedEventArgs sizeChangedEventArgs)
         {
-            ChartViewResized?.Invoke(this);
+            ViewResized?.Invoke(this);
         }
 
         #endregion
 
         #region IChartView implementation
 
-        private event ChartEventHandler ChartViewResized;
-
-        event ChartEventHandler IChartView.ViewResized
-        {
-            add => ChartViewResized += value;
-            remove => ChartViewResized -= value;
-        }
+        public event ChartEventHandler ViewResized;
 
         /// <inheritdoc />
         public event ChartEventHandler ChartUpdatePreview
@@ -394,9 +388,9 @@ namespace LiveCharts.Wpf
         }
 
         /// <inheritdoc />
-        public LiveCharts.Animations.Ease.IEasingFunction EasingFunction
+        public Animations.Ease.IEasingFunction EasingFunction
         {
-            get => (LiveCharts.Animations.Ease.IEasingFunction) GetValue(AnimationLineProperty);
+            get => (Animations.Ease.IEasingFunction) GetValue(AnimationLineProperty);
             set => SetValue(AnimationLineProperty, value);
         }
 

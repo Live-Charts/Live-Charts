@@ -1,5 +1,4 @@
-﻿using LiveCharts.Drawing.Brushes;
-using LiveCharts.Interaction.Controls;
+﻿using LiveCharts.Interaction.Controls;
 
 namespace LiveCharts.Drawing.Shapes
 {
@@ -8,11 +7,6 @@ namespace LiveCharts.Drawing.Shapes
     /// </summary>
     public interface ICanvasElement : IAnimatable
     {
-        /// <summary>
-        /// Draws the element in the user interface.
-        /// </summary>
-        void Paint();
-
         /// <summary>
         /// Flushes all the visuals to the canvas.
         /// </summary>
@@ -24,7 +18,6 @@ namespace LiveCharts.Drawing.Shapes
         /// Removes the element from the canvas.
         /// </summary>
         /// <param name="canvas"></param>
-        /// <param name="isclipped"></param>
         void RemoveFromCanvas(ICanvas canvas);
     }
 }

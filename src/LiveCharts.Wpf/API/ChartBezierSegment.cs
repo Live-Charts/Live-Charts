@@ -30,6 +30,7 @@ namespace LiveCharts.Wpf
 
         public override PathSegment PathSegment => _segment;
 
-        public override IAnimationBuilder Animate(AnimatableArguments args) => new AnimationBuilder<BezierSegment>(_segment, args);
+        public override IAnimationBuilder Animate(AnimatableArguments args) => 
+            new AnimationBuilder<BezierSegment>(_segment, args);
     }
 }
