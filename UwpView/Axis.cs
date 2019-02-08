@@ -337,6 +337,23 @@ namespace LiveCharts.Uwp
         }
 
         /// <summary>
+        /// The RoundSeparatorsToUnit property
+        /// </summary>
+        public static readonly DependencyProperty RoundSeparatorsToUnitProperty = DependencyProperty.Register(
+            "RoundSeparatorsToUnit", typeof(bool), typeof(Axis), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets whether separator values are rounded to the nearest Unit.
+        /// </summary>
+        /// <value>
+        /// Should separator values be rounded to the nearest Unit?
+        /// </value>
+        public bool RoundSeparatorsToUnit
+        {
+            get { return (bool) GetValue(RoundSeparatorsToUnitProperty); }
+            set { SetValue(RoundSeparatorsToUnitProperty, value); }
+        }
+        
+        /// <summary>
         /// The unit property
         /// </summary>
         public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(
