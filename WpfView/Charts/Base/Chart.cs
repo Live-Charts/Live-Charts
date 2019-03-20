@@ -1122,8 +1122,8 @@ namespace LiveCharts.Wpf.Charts.Base
             var xt = senderPoint.ChartLocation.X;
             var yt = senderPoint.ChartLocation.Y;
 
-            xt = xt > DrawMargin.Width / 2 ? xt - DataTooltip.ActualWidth - 5 : xt + 5;
-            yt = yt > DrawMargin.Height / 2 ? yt - DataTooltip.ActualHeight - 5 : yt + 5;
+            xt = xt + 5;
+            yt = yt + 5;
 
             return new Point(xt, yt);
         }
