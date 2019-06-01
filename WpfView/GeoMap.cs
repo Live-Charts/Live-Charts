@@ -547,9 +547,9 @@ namespace LiveCharts.Wpf
             var land = Lands.Values.FirstOrDefault(x => x.Shape == sender);
             if (land == null) return;
 
-            double value;
+            double value = 0d;
 
-            if (!HeatMap.TryGetValue(land.Id, out value)) return;
+            if (HeatMap?.TryGetValue(land.Id, out value) != true) return;
             if (!Hoverable) return;
 
             GeoMapTooltip.Visibility = Visibility.Visible;
