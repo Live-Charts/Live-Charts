@@ -289,11 +289,14 @@ namespace LiveCharts
 
             InitializeGarbageCollector();
 
-            var m = !double.IsNaN(View.BarUnit)
-                ? View.BarUnit
-                : (!double.IsNaN(View.Unit)
-                    ? View.Unit
-                    : Magnitude);
+            // prevent infinite loop when S < Unit and S < Magnitude
+            var m = Math.Min(
+                !double.IsNaN(View.BarUnit)
+                    ? View.BarUnit
+                    : (!double.IsNaN(View.Unit)
+                        ? View.Unit
+                        : Magnitude),
+                S);
 
             var u = !double.IsNaN(View.BarUnit)
                 ? View.BarUnit
