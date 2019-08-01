@@ -1259,6 +1259,11 @@ namespace LiveCharts.Wpf.Charts.Base
             DragOrigin = end;
         }
 
+        private void OnDraggingEnd(object sender, MouseEventArgs e)
+        {
+            if (!IsPanning) return;
+            IsPanning = false;
+        }
         private void OnDraggingEnd(object sender, MouseButtonEventArgs e)
         {
             if (!IsPanning) return;
