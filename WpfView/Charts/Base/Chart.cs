@@ -106,6 +106,7 @@ namespace LiveCharts.Wpf.Charts.Base
             DrawMargin.Background = Brushes.Transparent; // if this line is not set, then it does not detect mouse down event...
             DrawMargin.MouseDown += OnDraggingStart;
             DrawMargin.MouseUp += OnDraggingEnd;
+            DrawMargin.MouseLeave += OnDraggingEnd;
             DrawMargin.MouseMove += DragSection;
             DrawMargin.MouseMove += PanOnMouseMove;
             MouseUp += DisableSectionDragMouseUp;
