@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.DynamicVisibility.DynamicVisibilityExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:dynamicVisibility="clr-namespace:Wpf.CartesianChart.DynamicVisibility"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance dynamicVisibility:DynamicVisibilityExample}">   
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="bvc"></BooleanToVisibilityConverter>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding MariaSeriesVisibility}">
+                Maria Series
+            </CheckBox>
+            <CheckBox IsChecked="{Binding CharlesSeriesVisibility}">
+                Charles Series
+            </CheckBox>
+            <CheckBox IsChecked="{Binding JohnSeriesVisibility}">
+                John Series
+            </CheckBox>
+        </StackPanel>
+        <lvc:CartesianChart Grid.Row="1" Hoverable="False">
+            <lvc:CartesianChart.Series>
+                <lvc:ColumnSeries Title="Maria" Values="4,7,2,9,3" Visibility="{Binding MariaSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
+                <lvc:ColumnSeries Title="Charles" Values="6,2,6,3,8" Visibility="{Binding CharlesSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
+                <lvc:ColumnSeries Title="John" Values="7,2,8,3,9" Visibility="{Binding JohnSeriesVisibility, Converter={StaticResource bvc}}" MaxWidth="1000" ColumnPadding="0"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Labels="January, February, March, April, May">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="1"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lvc="clr-namespace:LiveCharts.Wpf">
+
+    <Style TargetType="lvc:CartesianChart">
+        <Setter Property="AnimationsSpeed" Value="0:0:0.420"></Setter>
+        <Setter Property="SeriesColors" Value="{StaticResource ColorsCollection}"/>
+    </Style>
+
+    <Style TargetType="lvc:Axis">
+        <Setter Property="FontSize" Value="{StaticResource Size}"></Setter>
+        <Setter Property="FontFamily" Value="Calibri"></Setter>
+        <Setter Property="Foreground" Value="#99303030"></Setter>
+    </Style>
+
+    <Style TargetType="lvc:Separator">
+        <Setter Property="StrokeThickness" Value="{StaticResource SeparatorStrokeThickness}"></Setter>
+        <Setter Property="StrokeDashArray" Value="{StaticResource SeparatorStrokeDashArray}"></Setter>
+        <Setter Property="Stroke" Value="#1A303030"></Setter>
+        <Style.Triggers>
+            <Trigger Property="AxisOrientation" Value="X">
+                <Setter Property="IsEnabled" Value="False"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="lvc:Series" x:Key="SeriesStyle">
+        <Setter Property="FontFamily" Value="Calibri"></Setter>
+        <Setter Property="FontSize" Value="{StaticResource Size}"></Setter>
+        <Setter Property="StrokeThickness" Value="{StaticResource SeriesStrokeThickness}"></Setter>
+    </Style>
+
+    <Style TargetType="lvc:CandleSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:ColumnSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:HeatSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:LineSeries" BasedOn="{StaticResource SeriesStyle}">
+        <Setter Property="PointGeometrySize" Value="{StaticResource Size}"></Setter>
+    </Style>
+    <Style TargetType="lvc:StepLineSeries" BasedOn="{StaticResource SeriesStyle}">
+        <Setter Property="PointGeometrySize" Value="{StaticResource Size}"></Setter>
+    </Style>
+    <Style TargetType="lvc:VerticalLineSeries" BasedOn="{StaticResource SeriesStyle}">
+        <Setter Property="PointGeometrySize" Value="{StaticResource Size}"></Setter>
+    </Style>
+    <Style TargetType="lvc:OhlcSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:RowSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:ScatterSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:StackedAreaSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:StackedColumnSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:StackedRowSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:VerticalStackedAreaSeries" BasedOn="{StaticResource SeriesStyle}"/>
+    <Style TargetType="lvc:PieSeries" BasedOn="{StaticResource SeriesStyle}"></Style>
+
+</ResourceDictionary>

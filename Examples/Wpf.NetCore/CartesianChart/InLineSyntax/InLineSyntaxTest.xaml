@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.InLineSyntaxTest"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:liveCharts="clr-namespace:LiveCharts;assembly=LiveCharts"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock>This chart is totally built with XAML.</TextBlock>
+        <lc:CartesianChart Grid.Row="1">
+            <lc:CartesianChart.Series>
+                <lc:LineSeries Values="1,2,3,5" />
+                <lc:LineSeries Values="4,6,2,5" />
+            </lc:CartesianChart.Series>
+            <lc:CartesianChart.AxisX>
+                <lc:Axis Labels="Jan, Feb, Mar, Apr,  May, Jun, Ago, Sep, Oct"/>
+            </lc:CartesianChart.AxisX>
+        </lc:CartesianChart>
+    </Grid>
+</UserControl>

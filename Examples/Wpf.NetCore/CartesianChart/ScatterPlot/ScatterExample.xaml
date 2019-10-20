@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.ScatterPlot.ScatterExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wpf.CartesianChart.ScatterPlot"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:ScatterExample}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Margin="10" Click="RandomizeOnClick">Randomize</Button>
+        <lvc:CartesianChart Grid.Row="1" LegendLocation="Bottom">
+            <lvc:CartesianChart.Series>
+                <lvc:ScatterSeries Title="Series A" Values="{Binding ValuesA}" />
+                <lvc:ScatterSeries Title="Series B" Values="{Binding ValuesB}"
+                                   PointGeometry="{x:Static lvc:DefaultGeometries.Diamond}" />
+                <lvc:ScatterSeries Title="Series C" Values="{Binding ValuesC}"
+                                   PointGeometry="{x:Static lvc:DefaultGeometries.Triangle}"
+                                   StrokeThickness="2" Fill="Transparent"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisY>
+                <!--setting the axis unit improved the labels rounding rule-->
+                <lvc:Axis Unit="1"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>
