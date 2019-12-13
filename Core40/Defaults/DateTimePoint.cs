@@ -29,7 +29,7 @@ namespace LiveCharts.Defaults
     /// <summary>
     /// An already configured chart point with a date time and a double properties, this class notifies the chart to update every time a property changes
     /// </summary>
-    public class DateTimePoint : INotifyPropertyChanged
+    public class DateTimePoint : INotifyPropertyChanged, IComparable
     {
         private DateTime _dateTime;
         private double _value;
@@ -95,6 +95,24 @@ namespace LiveCharts.Defaults
             if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #endregion
+
+        #region
+        /// <summary>
+        /// Compares this to the object using the DateTime property
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            DateTimePoint otherDateTimePoint = obj as DateTimePoint;
+            if (otherDateTimePoint != null)
+                return this.DateTime.CompareTo(otherDateTimePoint.DateTime);
+            else
+                throw new ArgumentException("Object is not a DateTimePoint");
+        }
         #endregion
     }
 }
