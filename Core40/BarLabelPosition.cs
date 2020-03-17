@@ -39,12 +39,20 @@ namespace LiveCharts
         [Obsolete("Instead use BarLabelPosition.Parallel")]
         Merged,
         /// <summary>
-        /// Places a labels in a parallel orientation to the bar height.
+        /// Places a labels in a parallel orientation to the bar height, at the center.
         /// </summary>
         Parallel,
-        /// <summary>
-        /// Places a labels in a perpendicular orientation to the bar height.
-        /// </summary>
-        Perpendicular
-    }
+		/// <summary>
+		/// If the bar is a column, places labels in parallel orientation to the bar height, at the top. If the bar is a row, places labels in parallel orientation to the bar width, at the right.
+		/// </summary>
+		ParallelTopRight,
+		/// <summary>
+		/// If the bar is a column, places labels in parallel orientation to the bar height, at the bottom. If the bar is a row, places labels in parallel orientation to the bar width, at the left.
+		/// </summary>
+		ParallelBottomLeft,
+		/// <summary>
+		/// Places a labels in a perpendicular orientation to the bar height.
+		/// </summary>
+		Perpendicular
+	}
 }

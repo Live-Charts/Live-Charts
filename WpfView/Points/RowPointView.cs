@@ -87,6 +87,14 @@ namespace LiveCharts.Wpf.Points
                 {
                     r = Data.Left + Data.Width/2 - DataLabel.ActualWidth/2;
                 }
+				else if (LabelPosition == BarLabelPosition.ParallelTopRight)
+				{
+					r = Data.Left + Data.Width - DataLabel.ActualWidth;
+				}
+				else if (LabelPosition == BarLabelPosition.ParallelBottomLeft)
+				{
+					r = Data.Left;
+				}
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
                     r = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
