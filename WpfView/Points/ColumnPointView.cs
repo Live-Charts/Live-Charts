@@ -68,21 +68,21 @@ namespace LiveCharts.Wpf.Points
                     if (Transform == null)
                         Transform = new RotateTransform(270);
 
-					DataLabel.RenderTransform = Transform;
+                    DataLabel.RenderTransform = Transform;
 
-					if (LabelPosition == BarLabelPosition.ParallelTopRight)
-					{
-						y = Data.Top + DataLabel.ActualWidth;
-					}
-					else if (LabelPosition == BarLabelPosition.ParallelBottomLeft)
-					{
-						y = Data.Top + Data.Height;
-					}
-					else
-					{
-						y = Data.Top + Data.Height / 2 + DataLabel.ActualWidth * .5;
-					}
-				}
+                    if (LabelPosition == BarLabelPosition.ParallelTopRight)
+                    {
+                        y = Data.Top + DataLabel.ActualWidth;
+                    }
+                    else if (LabelPosition == BarLabelPosition.ParallelBottomLeft)
+                    {
+                        y = Data.Top + Data.Height;
+                    }
+                    else
+                    {
+                        y = Data.Top + Data.Height / 2 + DataLabel.ActualWidth * .5;
+                    }
+                }
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
                     y = Data.Top + Data.Height/2 - DataLabel.ActualHeight * .5;
