@@ -100,7 +100,7 @@ namespace LiveCharts.Wpf.Points
                 CloseLine.Y1 = Close;
                 CloseLine.Y2 = Close;
                 CloseLine.X1 = center;
-                CloseLine.X2 = Left;
+                CloseLine.X2 = Left + Width;
 
                 if (DataLabel != null)
                 {
