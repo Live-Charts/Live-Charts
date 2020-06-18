@@ -45,6 +45,7 @@
     <Compile Include="AxisOrientation.cs" />
     <Compile Include="AxisPosition.cs" />
     <Compile Include="AxisSectionCore.cs" />
+    <Compile Include="AxisType.cs" />
     <Compile Include="AxisWindow.cs" />
     <Compile Include="AxisWindows.cs" />
     <Compile Include="BarLabelPosition.cs" />

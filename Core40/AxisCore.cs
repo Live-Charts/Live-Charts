@@ -56,6 +56,10 @@ namespace LiveCharts
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets or sets the axistype
+        /// </summary>
+        public AxisType AxisType { get; set; }
 
         /// <summary>
         /// Gets or sets the chart.

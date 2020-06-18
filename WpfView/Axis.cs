@@ -57,7 +57,7 @@ namespace LiveCharts.Wpf
             SetCurrentValue(ForegroundProperty, new SolidColorBrush(Color.FromRgb(170, 170, 170)));
 
             TitleBlock.SetBinding(TextBlock.TextProperty,
-                new Binding {Path = new PropertyPath(TitleProperty), Source = this});
+                new Binding { Path = new PropertyPath(TitleProperty), Source = this });
         }
         #endregion
 
@@ -80,7 +80,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public ICommand RangeChangedCommand
         {
-            get { return (ICommand) GetValue(RangeChangedCommandProperty); }
+            get { return (ICommand)GetValue(RangeChangedCommandProperty); }
             set { SetValue(RangeChangedCommandProperty, value); }
         }
 
@@ -102,7 +102,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public ICommand PreviewRangeChangedCommand
         {
-            get { return (ICommand) GetValue(PreviewRangeChangedCommandProperty); }
+            get { return (ICommand)GetValue(PreviewRangeChangedCommandProperty); }
             set { SetValue(PreviewRangeChangedCommandProperty, value); }
         }
 
@@ -128,10 +128,29 @@ namespace LiveCharts.Wpf
         #region Dependency Properties
 
         /// <summary>
+        /// Get or sets this axis type
+        /// </summary>
+        /// <value>
+        /// The axisType
+        /// </value>
+        public AxisType AxisType
+        {
+            get { return (AxisType)GetValue(AxisTypeProperty); }
+            set { SetValue(AxisTypeProperty, value); }
+        }
+
+        /// <summary>
+        /// The axisType property
+        /// </summary>
+        public static readonly DependencyProperty AxisTypeProperty =
+            DependencyProperty.Register("AxisType", typeof(AxisType), typeof(Axis), new PropertyMetadata(AxisType.Actual, UpdateChart()));
+
+
+        /// <summary>
         /// The labels property
         /// </summary>
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
-            "Labels", typeof (IList<string>), typeof (Axis), 
+            "Labels", typeof(IList<string>), typeof(Axis),
             new PropertyMetadata(default(IList<string>), UpdateChart()));
         /// <summary>
         /// Gets or sets axis labels, labels property stores the array to map for each index and value, for example if axis value is 0 then label will be labels[0], when value 1 then labels[1], value 2 then labels[2], ..., value n labels[n], use this property instead of a formatter when there is no conversion between value and label for example names, if you are plotting sales vs salesman name.
@@ -147,13 +166,13 @@ namespace LiveCharts.Wpf
         /// The sections property
         /// </summary>
         public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
-            "Sections", typeof (SectionsCollection), typeof (Axis), new PropertyMetadata(default(SectionsCollection)));
+            "Sections", typeof(SectionsCollection), typeof(Axis), new PropertyMetadata(default(SectionsCollection)));
         /// <summary>
         /// Gets or sets the axis sectionsCollection, a section is useful to highlight ranges or values in a chart.
         /// </summary>
         public SectionsCollection Sections
         {
-            get { return (SectionsCollection) GetValue(SectionsProperty); }
+            get { return (SectionsCollection)GetValue(SectionsProperty); }
             set { SetValue(SectionsProperty, value); }
         }
 
@@ -161,14 +180,14 @@ namespace LiveCharts.Wpf
         /// The label formatter property
         /// </summary>
         public static readonly DependencyProperty LabelFormatterProperty = DependencyProperty.Register(
-            "LabelFormatter", typeof (Func<double, string>), typeof (Axis),
+            "LabelFormatter", typeof(Func<double, string>), typeof(Axis),
             new PropertyMetadata(default(Func<double, string>), UpdateChart()));
         /// <summary>
         /// Gets or sets the function to convert a value to label, for example when you need to display your chart as currency ($1.00) or as degrees (10°), if Labels property is not null then formatter is ignored, and label will be pulled from Labels prop.
         /// </summary>
         public Func<double, string> LabelFormatter
         {
-            get { return (Func<double, string>) GetValue(LabelFormatterProperty); }
+            get { return (Func<double, string>)GetValue(LabelFormatterProperty); }
             set { SetValue(LabelFormatterProperty, value); }
         }
 
@@ -176,28 +195,28 @@ namespace LiveCharts.Wpf
         /// The separator property
         /// </summary>
         public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(
-            "Separator", typeof (Separator), typeof (Axis),
+            "Separator", typeof(Separator), typeof(Axis),
             new PropertyMetadata(default(Separator), UpdateChart()));
         /// <summary>
         /// Get or sets configuration for parallel lines to axis.
         /// </summary>
         public Separator Separator
         {
-            get { return (Separator) GetValue(SeparatorProperty); }
+            get { return (Separator)GetValue(SeparatorProperty); }
             set { SetValue(SeparatorProperty, value); }
         }
         /// <summary>
         /// The show labels property
         /// </summary>
         public static readonly DependencyProperty ShowLabelsProperty = DependencyProperty.Register(
-            "ShowLabels", typeof (bool), typeof (Axis), 
+            "ShowLabels", typeof(bool), typeof(Axis),
             new PropertyMetadata(default(bool), LabelsVisibilityChanged));
         /// <summary>
         /// Gets or sets if labels are shown in the axis.
         /// </summary>
         public bool ShowLabels
         {
-            get { return (bool) GetValue(ShowLabelsProperty); }
+            get { return (bool)GetValue(ShowLabelsProperty); }
             set { SetValue(ShowLabelsProperty, value); }
         }
 
@@ -205,14 +224,14 @@ namespace LiveCharts.Wpf
         /// The maximum value property
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof (double), typeof (Axis), 
+            "MaxValue", typeof(double), typeof(Axis),
             new PropertyMetadata(double.NaN, UpdateChart()));
         /// <summary>
         /// Gets or sets axis max value, set it to double.NaN to make this property Auto, default value is double.NaN
         /// </summary>
         public double MaxValue
         {
-            get { return (double) GetValue(MaxValueProperty); }
+            get { return (double)GetValue(MaxValueProperty); }
             set { SetValue(MaxValueProperty, value); }
         }
 
@@ -220,7 +239,7 @@ namespace LiveCharts.Wpf
         /// The minimum value property
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof (double), typeof (Axis),
+            "MinValue", typeof(double), typeof(Axis),
             new PropertyMetadata(double.NaN, UpdateChart()));
         /// <summary>
         /// Gets or sets axis min value, set it to double.NaN to make this property Auto, default value is double.NaN
@@ -263,7 +282,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public double MaxRange
         {
-            get { return (double) GetValue(MaxRangeProperty); }
+            get { return (double)GetValue(MaxRangeProperty); }
             set { SetValue(MaxRangeProperty, value); }
         }
 
@@ -277,7 +296,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public double MinRange
         {
-            get { return (double) GetValue(MinRangeProperty); }
+            get { return (double)GetValue(MinRangeProperty); }
             set { SetValue(MinRangeProperty, value); }
         }
 
@@ -285,7 +304,7 @@ namespace LiveCharts.Wpf
         /// The title property
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            "Title", typeof(string), typeof(Axis), 
+            "Title", typeof(string), typeof(Axis),
             new PropertyMetadata(null, UpdateChart()));
         /// <summary>
         /// Gets or sets axis title, the title will be displayed only if this property is not null, default is null.
@@ -300,14 +319,14 @@ namespace LiveCharts.Wpf
         /// The position property
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", typeof (AxisPosition), typeof (Axis), 
+            "Position", typeof(AxisPosition), typeof(Axis),
             new PropertyMetadata(default(AxisPosition), UpdateChart()));
         /// <summary>
         /// Gets or sets the axis position, default is Axis.Position.LeftBottom, when the axis is at Y and Position is LeftBottom, then axis will be placed at left, RightTop position will place it at Right, when the axis is at X and position LeftBottom, the axis will be placed at bottom, if position is RightTop then it will be placed at top.
         /// </summary>
         public AxisPosition Position
         {
-            get { return (AxisPosition) GetValue(PositionProperty); }
+            get { return (AxisPosition)GetValue(PositionProperty); }
             set { SetValue(PositionProperty, value); }
         }
 
@@ -315,14 +334,14 @@ namespace LiveCharts.Wpf
         /// The is merged property
         /// </summary>
         public static readonly DependencyProperty IsMergedProperty = DependencyProperty.Register(
-            "IsMerged", typeof (bool), typeof (Axis), 
+            "IsMerged", typeof(bool), typeof(Axis),
             new PropertyMetadata(default(bool), UpdateChart()));
         /// <summary>
         /// Gets or sets if the axis labels should me placed inside the chart, this is useful to save some space.
         /// </summary>
         public bool IsMerged
         {
-            get { return (bool) GetValue(IsMergedProperty); }
+            get { return (bool)GetValue(IsMergedProperty); }
             set { SetValue(IsMergedProperty, value); }
         }
 
@@ -330,13 +349,13 @@ namespace LiveCharts.Wpf
         /// The disable animations property
         /// </summary>
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
-            "DisableAnimations", typeof (bool), typeof (Axis), new PropertyMetadata(default(bool), UpdateChart(true)));
+            "DisableAnimations", typeof(bool), typeof(Axis), new PropertyMetadata(default(bool), UpdateChart(true)));
         /// <summary>
         /// Gets or sets if the axis is animated.
         /// </summary>
         public bool DisableAnimations
         {
-            get { return (bool) GetValue(DisableAnimationsProperty); }
+            get { return (bool)GetValue(DisableAnimationsProperty); }
             set { SetValue(DisableAnimationsProperty, value); }
         }
 
@@ -437,13 +456,13 @@ namespace LiveCharts.Wpf
         /// The labels rotation property
         /// </summary>
         public static readonly DependencyProperty LabelsRotationProperty = DependencyProperty.Register(
-            "LabelsRotation", typeof (double), typeof (Axis), new PropertyMetadata(default(double), UpdateChart()));
+            "LabelsRotation", typeof(double), typeof(Axis), new PropertyMetadata(default(double), UpdateChart()));
         /// <summary>
         /// Gets or sets the labels rotation in the axis, the angle starts as a horizontal line, you can use any angle in degrees, even negatives.
         /// </summary>
         public double LabelsRotation
         {
-            get { return (double) GetValue(LabelsRotationProperty); }
+            get { return (double)GetValue(LabelsRotationProperty); }
             set { SetValue(LabelsRotationProperty, value); }
         }
 
@@ -458,7 +477,7 @@ namespace LiveCharts.Wpf
         [Obsolete("PThis property was renamed, please use Unit property instead.")]
         public double BarUnit
         {
-            get { return (double) GetValue(BarUnitProperty); }
+            get { return (double)GetValue(BarUnitProperty); }
             set { SetValue(BarUnitProperty, value); }
         }
 
@@ -475,7 +494,7 @@ namespace LiveCharts.Wpf
         /// </value>
         public double Unit
         {
-            get { return (double) GetValue(UnitProperty); }
+            get { return (double)GetValue(UnitProperty); }
             set { SetValue(UnitProperty, value); }
         }
 
@@ -489,7 +508,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public AxisOrientation AxisOrientation
         {
-            get { return (AxisOrientation) GetValue(AxisOrientationProperty); }
+            get { return (AxisOrientation)GetValue(AxisOrientationProperty); }
             internal set { SetValue(AxisOrientationProperty, value); }
         }
 
@@ -532,7 +551,7 @@ namespace LiveCharts.Wpf
             }
             else
             {
-                ase = (AxisSeparatorElement) model.View;
+                ase = (AxisSeparatorElement)model.View;
             }
 
             ase.Line.Visibility = !Separator.IsEnabled ? Visibility.Collapsed : Visibility.Visible;
@@ -634,6 +653,7 @@ namespace LiveCharts.Wpf
             Model.Separator = Separator.AsCoreElement(Model, source);
             Model.DisableAnimations = DisableAnimations;
             Model.Sections = Sections.Select(x => x.AsCoreElement(Model, source)).ToList();
+            Model.AxisType = AxisType;
 
             return Model;
         }
@@ -706,13 +726,13 @@ namespace LiveCharts.Wpf
             if (s == null) return l;
 
             l.SetBinding(Shape.StrokeProperty,
-                new Binding {Path = new PropertyPath(Wpf.Separator.StrokeProperty), Source = s});
+                new Binding { Path = new PropertyPath(Wpf.Separator.StrokeProperty), Source = s });
             l.SetBinding(Shape.StrokeDashArrayProperty,
-                new Binding {Path = new PropertyPath(Wpf.Separator.StrokeDashArrayProperty), Source = s});
+                new Binding { Path = new PropertyPath(Wpf.Separator.StrokeDashArrayProperty), Source = s });
             l.SetBinding(Shape.StrokeThicknessProperty,
-                new Binding {Path = new PropertyPath(Wpf.Separator.StrokeThicknessProperty), Source = s});
+                new Binding { Path = new PropertyPath(Wpf.Separator.StrokeThicknessProperty), Source = s });
             l.SetBinding(VisibilityProperty,
-                new Binding {Path = new PropertyPath(VisibilityProperty), Source = s});
+                new Binding { Path = new PropertyPath(VisibilityProperty), Source = s });
 
             return l;
         }
@@ -737,12 +757,12 @@ namespace LiveCharts.Wpf
 
         private static void LabelsVisibilityChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var axis = (Axis) dependencyObject;
+            var axis = (Axis)dependencyObject;
             if (axis.Model == null) return;
-            
+
             foreach (var separator in axis.Model.CurrentSeparators)
             {
-                var s = (AxisSeparatorElement) separator.View;
+                var s = (AxisSeparatorElement)separator.View;
                 s.TextBlock.Visibility = axis.ShowLabels
                     ? Visibility.Visible
                     : Visibility.Collapsed;
