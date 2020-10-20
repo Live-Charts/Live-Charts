@@ -608,7 +608,8 @@ namespace LiveCharts.Helpers
             OnPropertyChanged(IndexerString);
             OnNoisyCollectionChanged(new List<T>{(T) original}, new List<T>{(T) item});
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Replace, original, item, index));
+                NotifyCollectionChangedAction.Replace, item, original, index));
+                //NotifyCollectionChangedAction.Replace, original, item, index));
         }
         #endregion
     }

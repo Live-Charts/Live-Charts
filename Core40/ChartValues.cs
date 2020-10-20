@@ -43,6 +43,27 @@ namespace LiveCharts
     {
         #region Constructors
 
+        static bool isClass;
+        static bool isObservable;
+        static bool notifies;
+
+        static ChartValues()
+        {
+#if NET40
+            isClass = typeof(T).IsClass;
+            isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+            notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
+
+#endif
+#if NET45
+            isClass = typeof(T).GetTypeInfo().IsClass;
+            isObservable = isClass &&
+                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+            notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
+                               .IsAssignableFrom(typeof(T).GetTypeInfo());
+#endif
+        }
+
         /// <summary>
         /// Initializes a new instance of chart values
         /// </summary>
@@ -169,47 +190,15 @@ namespace LiveCharts
 
             var config = GetConfig(seriesView);
 
-#if NET40
-            var isClass = typeof(T).IsClass;
-            var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
-            var notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
-
-#endif
-#if NET45
-            var isClass = typeof(T).GetTypeInfo().IsClass;
-            var isObservable = isClass &&
-                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
-            var notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
-                               .IsAssignableFrom(typeof(T).GetTypeInfo());
-#endif
-
             var tracker = GetTracker(seriesView);
             var gci = tracker.Gci;
 
             var index = 0;
             foreach (var value in this)
             {
-                if (isObservable)
-                {
-                    var observable = (IObservableChartPoint) value;
-                    if (observable != null)
-                    {
-                        observable.PointChanged -= ObservableOnPointChanged;
-                        observable.PointChanged += ObservableOnPointChanged;
-                    }
-                }
 
-                if (notifies)
-                {
-                    var notify = (INotifyPropertyChanged) value;
-                    if (notify != null)
-                    {
-                        notify.PropertyChanged -= NotifyOnPropertyChanged;
-                        notify.PropertyChanged += NotifyOnPropertyChanged;
-                    }
-                }
 
-                var cp = GetChartPoint(isClass, tracker, index, value);
+                var cp = GetChartPoint(tracker, index, value);
 
                 cp.Gci = gci;
                 cp.Instance = value;
@@ -237,12 +226,6 @@ namespace LiveCharts
         /// </summary>
         public void CollectGarbage(ISeriesView seriesView)
         {
-#if NET40
-            var isclass = typeof(T).IsClass;
-#endif
-#if NET45
-            var isclass = typeof(T).GetTypeInfo().IsClass;
-#endif
 
             var tracker = GetTracker(seriesView);
 
@@ -251,12 +234,26 @@ namespace LiveCharts
                 if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
                     garbage.View.RemoveFromView(seriesView.Model.Chart);
 
-                if (!isclass)
+                if (!isClass)
                 {
                     tracker.Indexed.Remove(garbage.Key);
                 }
                 else
                 {
+                    //before removing the instance, you need to disconnect it.
+                    if (garbage.Instance != null)
+                    {
+                        if (isObservable)
+                        {
+                            (garbage.Instance as IObservableChartPoint).PointChanged -= ObservableOnPointChanged;
+                        }
+
+                        if (notifies)
+                        {
+                            (garbage.Instance as INotifyPropertyChanged).PropertyChanged -= NotifyOnPropertyChanged;
+                        }
+                    }
+
                     tracker.Referenced.Remove(garbage.Instance);
                 }
             }
@@ -301,7 +298,7 @@ namespace LiveCharts
                        ChartCore.Configurations.GetConfig<T>(view.Model.SeriesOrientation) as IPointEvaluator<T>);
         }
 
-        private static ChartPoint GetChartPoint(bool isClass, PointTracker tracker, int index, T value)
+        private ChartPoint GetChartPoint(PointTracker tracker, int index, T value)
         {
             ChartPoint cp;
 
@@ -324,6 +321,21 @@ namespace LiveCharts
                     Key = index
                 };
                 tracker.Referenced[value] = cp;
+
+                //if value is new and a class, you need to connect to it.
+                if (value != null)
+                {
+                    if (isObservable)
+                    {
+                        (value as IObservableChartPoint).PointChanged += ObservableOnPointChanged;
+                    }
+
+                    if (notifies)
+                    {
+                        (value as INotifyPropertyChanged).PropertyChanged += NotifyOnPropertyChanged;
+                    }
+                }
+
             }
             return cp;
         }

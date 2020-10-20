@@ -896,11 +896,66 @@ namespace LiveCharts.Wpf.Charts.Base
             element.MouseDown -= DataMouseDown;
             element.MouseEnter -= DataMouseEnter;
             element.MouseLeave -= DataMouseLeave;
+            element.MouseEnter -= _AsAccel_DataMouseEnterMove;
+            element.MouseLeave -= _AsAccel_DataMouseLeave;
 
-            element.MouseDown += DataMouseDown;
-            element.MouseEnter += DataMouseEnter;
-            element.MouseLeave += DataMouseLeave;
+            if (element is ISeriesAccelView)
+            {
+                element.MouseDown += _AsAccel_DataMouseDown;
+                element.MouseEnter += _AsAccel_DataMouseEnterMove;
+                element.MouseMove += _AsAccel_DataMouseEnterMove;
+                element.MouseLeave += _AsAccel_DataMouseLeave;
+            }
+            else
+            {
+                element.MouseDown += DataMouseDown;
+                element.MouseEnter += DataMouseEnter;
+                element.MouseLeave += DataMouseLeave;
+            }
         }
+
+        private void _AsAccel_DataMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var accelSeriesDrawView = sender as ISeriesAccelView;
+            System.Diagnostics.Debug.Assert(accelSeriesDrawView != null, "you need IAccelSeriesDrawView for sender");
+
+            var mousePt = e.GetPosition(sender as FrameworkElement);
+            var senderPoint = accelSeriesDrawView.HitTest(new CorePoint(mousePt.X, mousePt.Y));
+
+            OnDataClick(sender, senderPoint);
+        }
+
+        private void _AsAccel_DataMouseEnterMove(object sender, MouseEventArgs e)
+        {
+            var accelSeriesDrawView = sender as ISeriesAccelView;
+            System.Diagnostics.Debug.Assert(accelSeriesDrawView!=null, "you need IAccelSeriesDrawView for sender");
+
+            var mousePt = e.GetPosition(sender as FrameworkElement);
+            var senderPoint = accelSeriesDrawView.HitTest(new CorePoint(mousePt.X, mousePt.Y));
+
+            if (senderPoint == null)
+            {
+                OnDataLeave();
+            }
+            else
+            {
+                OnDataHover(sender, senderPoint);
+
+                if (Hoverable) accelSeriesDrawView.OnHover(senderPoint);
+            }
+        }
+
+        private void _AsAccel_DataMouseLeave(object sender, EventArgs e)
+        {
+            var accelSeriesDrawView = sender as ISeriesAccelView;
+            System.Diagnostics.Debug.Assert(accelSeriesDrawView != null, "you need IAccelSeriesDrawView for sender");
+
+            OnDataLeave();
+
+            if (Hoverable) accelSeriesDrawView.OnHoverLeave();
+        }
+
+
 
         private void DataMouseDown(object sender, MouseEventArgs e)
         {
@@ -913,7 +968,7 @@ namespace LiveCharts.Wpf.Charts.Base
             OnDataClick(sender, result);
         }
 
-        internal void OnDataClick(object sender, ChartPoint point)
+        private void OnDataClick(object sender, ChartPoint point)
         {
             if (DataClick != null) DataClick.Invoke(sender, point);
             if (DataClickCommand != null && DataClickCommand.CanExecute(point)) DataClickCommand.Execute(point);
@@ -925,18 +980,26 @@ namespace LiveCharts.Wpf.Charts.Base
 
             var source = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x)).ToList();
             var senderPoint = source.FirstOrDefault(x => x.View != null &&
-                                                         Equals(((PointView) x.View).HoverShape, sender));
+                                                        Equals(((PointView) x.View).HoverShape, sender));
 
             if (senderPoint == null) return;
 
-            if (Hoverable) senderPoint.View.OnHover(senderPoint);
+            OnDataHover(sender, senderPoint);
+        }
+
+        /// <summary>when mouse enter on ChartPoint</summary>
+        private void OnDataHover(object sender, ChartPoint point)
+        {
+            TooltipTimeoutTimer.Stop();
+
+            if (Hoverable) point.View.OnHover(point);
 
             if (DataTooltip != null)
             {
                 if (DataTooltip.Parent == null)
                 {
                     Panel.SetZIndex(DataTooltip, int.MaxValue);
-                    TooltipContainer = new Popup {AllowsTransparency = true, Placement = PlacementMode.RelativePoint};
+                    TooltipContainer = new Popup { AllowsTransparency = true, Placement = PlacementMode.RelativePoint };
                     AddToView(TooltipContainer);
                     TooltipContainer.Child = DataTooltip;
                     Canvas.SetTop(DataTooltip, 0d);
@@ -949,16 +1012,16 @@ namespace LiveCharts.Wpf.Charts.Base
                         "The current tooltip is not valid, ensure it implements IChartsTooltip");
 
                 if (lcTooltip.SelectionMode == null)
-                    lcTooltip.SelectionMode = senderPoint.SeriesView.Model.PreferredSelectionMode;
+                    lcTooltip.SelectionMode = point.SeriesView.Model.PreferredSelectionMode;
 
-                var coreModel = ChartFunctions.GetTooltipData(senderPoint, Model, lcTooltip.SelectionMode.Value);
+                var coreModel = ChartFunctions.GetTooltipData(point, Model, lcTooltip.SelectionMode.Value);
 
                 lcTooltip.Data = new TooltipData
                 {
                     XFormatter = coreModel.XFormatter,
                     YFormatter = coreModel.YFormatter,
                     SharedValue = coreModel.Shares,
-                    SenderSeries = (Series) senderPoint.SeriesView,
+                    SenderSeries = (Series) point.SeriesView,
                     SelectionMode = lcTooltip.SelectionMode ?? TooltipSelectionMode.OnlySender,
                     Points = coreModel.Points.Select(x => new DataPointViewModel
                     {
@@ -982,7 +1045,7 @@ namespace LiveCharts.Wpf.Charts.Base
                 TooltipContainer.IsOpen = true;
                 DataTooltip.UpdateLayout();
 
-                var location = GetTooltipPosition(senderPoint);
+                var location = GetTooltipPosition(point);
                 location = new Point(Canvas.GetLeft(DrawMargin) + location.X, Canvas.GetTop(DrawMargin) + location.Y);
 
                 if (DisableAnimations)
@@ -999,28 +1062,30 @@ namespace LiveCharts.Wpf.Charts.Base
                 }
             }
 
-            OnDataHover(sender, senderPoint);
-        }
-
-        internal void OnDataHover(object sender, ChartPoint point)
-        {
             if (DataHover != null) DataHover.Invoke(sender, point);
             if (DataHoverCommand != null && DataHoverCommand.CanExecute(point)) DataHoverCommand.Execute(point);
         }
 
         private void DataMouseLeave(object sender, EventArgs e)
         {
-            TooltipTimeoutTimer.Stop();
-            TooltipTimeoutTimer.Start();
+            OnDataLeave();
 
             var source = ActualSeries.SelectMany(x => x.ActualValues.GetPoints(x));
             var senderPoint = source.FirstOrDefault(x => x.View != null &&
-                                                         Equals(((PointView) x.View).HoverShape, sender));
+                                                Equals(((PointView) x.View).HoverShape, sender));
 
             if (senderPoint == null) return;
 
             if (Hoverable) senderPoint.View.OnHoverLeave(senderPoint);
         }
+
+        /// <summary>when mouse leave</summary>
+        private void OnDataLeave()
+        {
+            TooltipTimeoutTimer.Stop();
+            TooltipTimeoutTimer.Start();
+        }
+
 
         private void TooltipTimeoutTimerOnTick(object sender, EventArgs eventArgs)
         {

@@ -215,7 +215,7 @@ namespace LiveCharts.Wpf
                 if (point.Stroke != null) pbv.Shape.Stroke = (Brush) point.Stroke;
                 if (point.Fill != null) pbv.Shape.Fill = (Brush) point.Fill;
             }
-
+            
             if (Model.Chart.RequiresHoverShape && pbv.HoverShape == null)
             {
                 pbv.HoverShape = new Rectangle
@@ -233,7 +233,7 @@ namespace LiveCharts.Wpf
             }
 
             if (pbv.HoverShape != null) pbv.HoverShape.Visibility = Visibility;
-
+            
             if (DataLabels)
             {
                 pbv.DataLabel = UpdateLabelContent(new DataLabelViewModel
