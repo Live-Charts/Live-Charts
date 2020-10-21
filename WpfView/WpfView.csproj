@@ -67,6 +67,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccelCandleSeries.cs" />
     <Compile Include="AccelLineSeries.cs" />
     <Compile Include="AngularGauge.cs" />
     <Compile Include="AngularSection.cs" />

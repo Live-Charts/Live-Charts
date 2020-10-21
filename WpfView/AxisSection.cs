@@ -314,6 +314,34 @@ namespace LiveCharts.Wpf
                 _rectangle.Width = 0;
                 Canvas.SetLeft(_rectangle, 0d);
                 Canvas.SetTop(_rectangle, Model.Chart.DrawMargin.Height);
+
+
+                //Label Visibility have to be shown  when AxisSection is viewed and 
+                //DataLabel property is  true
+                MultiBinding multiBinding = new MultiBinding();
+                multiBinding.Converter = new LiveCharts.Wpf.Components.FunctionalMultiValueConverter().Convert(
+                    (values, targetType, parameter, culture) =>
+                    {
+                        if (values.Length >= 2)
+                        {
+                            if (values[0] != null && values[1] != null)
+                            {
+                                if ((bool)values[0] == false)
+                                {
+                                    return Visibility.Collapsed;
+                                }
+                                return (Visibility)values[1];
+                            }
+                        }
+                        return Visibility.Collapsed;
+                    }
+                );
+                multiBinding.Bindings.Add(new Binding(nameof(this.DataLabel)) { Source = this });
+                multiBinding.Bindings.Add(new Binding(nameof(this.Visibility)) { Source = this });
+                multiBinding.NotifyOnSourceUpdated = true;
+                _label.SetBinding(UIElement.VisibilityProperty, multiBinding);
+
+
                 #region Obsolete
                 Canvas.SetTop(_label, Model.Chart.DrawMargin.Height);
                 Canvas.SetLeft(_label, 0d);
@@ -389,10 +417,13 @@ namespace LiveCharts.Wpf
         /// </summary>
         public void Remove()
         {
-            Model.Chart.View.RemoveFromDrawMargin(_label);
-            Model.Chart.View.RemoveFromView(_label);
-            Model.Chart.View.RemoveFromDrawMargin(_rectangle);
-            Model.Chart.View.RemoveFromView(this);
+            if (Model != null)
+            {
+                Model.Chart.View.RemoveFromDrawMargin(_label);
+                Model.Chart.View.RemoveFromView(_label);
+                Model.Chart.View.RemoveFromDrawMargin(_rectangle);
+                Model.Chart.View.RemoveFromView(this);
+            }
         }
 
         /// <summary>

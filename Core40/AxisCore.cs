@@ -301,6 +301,10 @@ namespace LiveCharts
                     ? View.Unit
                     : 1);
 
+            //スクロール時のセパレータが直感的でない動きになるので、
+            //最初のセパレータ位置割り出しに、BarUnitなんて使わないほうがベター
+            m = S;
+
             if (TopLimit <= 0 && BotLimit < 0)
             {
                 var l = TopLimit - (EvaluatesUnitWidth ? u : 0);

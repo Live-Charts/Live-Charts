@@ -115,13 +115,6 @@ namespace LiveCharts.Definitions.Series
         /// <param name="label">The label.</param>
         /// <returns></returns>
         IChartPointView GetPointView(ChartPoint point, string label);
-
-        /// <summary>
-        /// Get the series drawing view
-        /// </summary>
-        /// <returns></returns>
-        ISeriesAccelView GetSeriesAccelView();
-
         /// <summary>
         /// Called when [series update start].
         /// </summary>

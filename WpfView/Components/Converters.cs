@@ -65,4 +65,43 @@ namespace LiveCharts.Wpf.Components
             throw new NotImplementedException();
         }
     }
+
+
+
+    /// <summary>
+    /// IMultiValueConverter that uses Lambda expression 
+    /// </summary>
+    internal class FunctionalMultiValueConverter : IMultiValueConverter
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            return _ConverFunc?.Invoke(values, targetType, parameter, culture);
+        }
+
+        /// <summary>
+        /// NotImplemented
+        /// </summary>
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return null;
+
+        }
+
+        /// <summary>
+        /// Set the function for Convert
+        /// </summary>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public FunctionalMultiValueConverter Convert(Func<object[], Type, object, CultureInfo, object> func)
+        {
+            _ConverFunc = func;
+            return this;
+        }
+        private Func<object[], Type, object, CultureInfo, object> _ConverFunc;
+    }
+
+
 }

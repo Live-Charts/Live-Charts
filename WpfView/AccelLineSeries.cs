@@ -128,17 +128,14 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
-        #endregion
-
-
-
 
         /// <summary>
-        /// Get the view of a series drawing
+        /// This method runs when the update finishes
         /// </summary>
-        /// <returns></returns>
-        public override ISeriesAccelView GetSeriesAccelView()
+        public override void OnSeriesUpdatedFinish()
         {
+            base.OnSeriesUpdatedFinish();
+
             if (m_SeriesAccelView == null)
             {
                 m_SeriesAccelView = new _AccelViewElement(this);
@@ -148,9 +145,15 @@ namespace LiveCharts.Wpf
                 var wpfChart = Model.Chart.View as Chart;
                 wpfChart.AttachHoverableEventTo(m_SeriesAccelView);
             }
-            return m_SeriesAccelView;
+            m_SeriesAccelView.InvalidateVisual();
         }
         private _AccelViewElement m_SeriesAccelView;
+
+
+        #endregion
+
+
+
 
 
 

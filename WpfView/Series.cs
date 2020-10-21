@@ -454,16 +454,6 @@ namespace LiveCharts.Wpf
         }
 
         /// <summary>
-        /// Get the series drawing view
-        /// </summary>
-        /// <returns></returns>
-        public virtual ISeriesAccelView GetSeriesAccelView()
-        {
-            return null;
-        }
-
-
-        /// <summary>
         /// This method runs when the update starts
         /// </summary>
         public virtual void OnSeriesUpdateStart()

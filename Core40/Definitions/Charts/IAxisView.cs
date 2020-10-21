@@ -132,6 +132,16 @@ namespace LiveCharts.Definitions.Charts
         AxisOrientation AxisOrientation { get; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is symmetry scale or not.
+        /// </summary>
+        bool IsSymmetryScale { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value of symmetry scale origin.
+        /// </summary>
+        double SymmetryScaleOrigin { get; set; }
+
+        /// <summary>
         /// Updates the title.
         /// </summary>
         /// <param name="chart">The chart.</param>

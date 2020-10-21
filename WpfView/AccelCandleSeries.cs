@@ -7,10 +7,8 @@ using LiveCharts.Definitions.Points;
 using LiveCharts.Definitions.Series;
 using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
-using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 using LiveCharts.Dtos;
-
 
 namespace LiveCharts.Wpf
 {
@@ -19,18 +17,12 @@ namespace LiveCharts.Wpf
     using System.Runtime.CompilerServices;
 
 
-    /// <summary>
-    /// ChartPoint側にはLine, Shapeなどの描画オブジェクトを持たせない
-    /// </summary>
-    internal class AccelStepLinePointView : PointView, IStepPointView
+    internal class AccelCandlePointView : CandlePointView
     {
-        public double DeltaX { get; set; }
-        public double DeltaY { get; set; }
-
         public string Label { get; set; }
 
 
-
+        
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
         }
@@ -38,34 +30,27 @@ namespace LiveCharts.Wpf
         public override void RemoveFromView(ChartCore chart)
         {
         }
+        
     }
 
 
-
-
-    /// <summary>
-    /// The Step line series that suppots accel view.
-    /// 
-    /// 
-    /// </summary>
-    public class AccelStepLineSeries : StepLineSeries
+    public class AccelCandleSeries : CandleSeries
     {
-
         #region Overridden Methods
 
         /// <summary>
-        /// Get the view of a chart point
+        /// Gets the view of a given point
         /// </summary>
         /// <param name="point"></param>
         /// <param name="label"></param>
         /// <returns></returns>
         public override IChartPointView GetPointView(ChartPoint point, string label)
         {
-            var pbv = (AccelStepLinePointView)point.View;
+            var pbv = (AccelCandlePointView)point.View;
 
             if (pbv == null)
             {
-                pbv = new AccelStepLinePointView
+                pbv = new AccelCandlePointView
                 {
                     IsNew = true,
                 };
@@ -79,7 +64,6 @@ namespace LiveCharts.Wpf
 
             return pbv;
         }
-
 
         /// <summary>
         /// This method runs when the update finishes
@@ -101,7 +85,11 @@ namespace LiveCharts.Wpf
         }
         private _AccelViewElement m_SeriesAccelView;
 
+
         #endregion
+
+
+
 
 
 
@@ -113,7 +101,7 @@ namespace LiveCharts.Wpf
             get { return m_HoverringChartPoint; }
             set
             {
-                if ( m_HoverringChartPoint != value )
+                if (m_HoverringChartPoint != value)
                 {
                     m_HoverringChartPoint = value;
                     m_SeriesAccelView?.InvalidateVisual();
@@ -126,18 +114,19 @@ namespace LiveCharts.Wpf
         private ChartPoint _HitTest(CorePoint pt)
         {
             ChartPoint hitChartPoint = null;
-
+/*
             var chartPointList = this.ActualValues.GetPoints(this,
                 new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
             foreach (var current in chartPointList)
             {
-                if( current.HitTest(pt, GetPointDiameter() + StrokeThickness))
+                if (current.HitTest(pt, GetPointDiameter() + StrokeThickness))
                 {
                     hitChartPoint = current;
                     break;
                 }
             }
+*/
             return hitChartPoint;
         }
 
@@ -156,11 +145,14 @@ namespace LiveCharts.Wpf
 
         private void _Render(DrawingContext drawingContext)
         {
-            if( Visibility == Visibility.Visible)
+            if (Visibility == Visibility.Visible)
             {
                 Brush brushStroke = Stroke.Clone();
                 brushStroke.Freeze();
 
+                Brush brushFill = Fill.Clone();
+                brushFill.Freeze();
+                /*
                 Brush brushPointForeground = PointForeground.Clone();
                 brushPointForeground.Freeze();
 
@@ -172,63 +164,14 @@ namespace LiveCharts.Wpf
                     new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
 
-                // Draw step line
+                // Draw path line
 
-                Pen penAlternativeStroke = penStroke.Clone();
-                penAlternativeStroke.Brush = AlternativeStroke;
-                penAlternativeStroke.Freeze();
+                drawingContext.DrawGeometry(brushFill, penStroke, Path.Data);
 
-
-                ChartPoint previous = null;
-                foreach (var current in chartPointList)
-                {
-                    if (previous != null)
-                    {
-                        var currentView = current.View as AccelStepLinePointView;
-
-                        if (InvertedMode)
-                        {
-                            drawingContext.DrawLine(penAlternativeStroke
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y)
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y));
-
-                            drawingContext.DrawLine(penStroke
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y)
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY));
-                        }
-                        else
-                        {
-                            drawingContext.DrawLine(penAlternativeStroke
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y)
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
-
-                            drawingContext.DrawLine(penStroke
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY)
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
-
-                        }
-                    }
-
-                    previous = current;
-                }
 
 
                 // Draw point geometry
-                /*
-                if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1)
-                {
-                    foreach (var current in chartPointList)
-                    {
-                        //var pointView = current.View as AccelStepLinePointView;
 
-                        drawingContext.DrawEllipse(
-                            Object.ReferenceEquals(current, m_HoverringChartPoint) ? brushStroke : brushPointForeground
-                            , penStroke
-                            , new Point(current.ChartLocation.X, current.ChartLocation.Y)
-                            , GetPointDiameter(), GetPointDiameter());
-                    }
-                }
-                */
                 if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1)
                 {
                     var rect = PointGeometry.Bounds;
@@ -274,7 +217,7 @@ namespace LiveCharts.Wpf
 
                     foreach (var current in chartPointList)
                     {
-                        var pointView = current.View as AccelStepLinePointView;
+                        var pointView = current.View as AccelHorizontalBezierPointView;
 
                         FormattedText formattedText = new FormattedText(
                                 pointView.Label,
@@ -292,7 +235,7 @@ namespace LiveCharts.Wpf
                     }
 
                 }
-
+                */
             }
 
         }
@@ -312,8 +255,6 @@ namespace LiveCharts.Wpf
 
         private double CorrectYLabel(double desiredPosition, ChartCore chart, Double textHeight)
         {
-            desiredPosition -= (PointGeometry == null ? 0 : GetPointDiameter()) + textHeight * .5 + 2;
-
             if (desiredPosition + textHeight > chart.DrawMargin.Height)
                 desiredPosition -= desiredPosition + textHeight - chart.DrawMargin.Height + 2;
 
@@ -326,14 +267,13 @@ namespace LiveCharts.Wpf
 
         private class _AccelViewElement : FrameworkElement, ISeriesAccelView
         {
-            public _AccelViewElement(AccelStepLineSeries owner)
+            public _AccelViewElement(AccelCandleSeries owner)
             {
                 _owner = owner;
             }
-            private AccelStepLineSeries _owner;
+            private AccelCandleSeries _owner;
 
 
-            /*
             public void DrawOrMove()
             {
                 this.InvalidateVisual();
@@ -343,8 +283,8 @@ namespace LiveCharts.Wpf
                     //await Task.Delay(1);
                     await Dispatcher.BeginInvoke((Action)this.InvalidateVisual);
                 });
+                */
             }
-            */
 
             protected override void OnRender(DrawingContext drawingContext)
             {

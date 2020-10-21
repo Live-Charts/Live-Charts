@@ -19,7 +19,7 @@ namespace LiveCharts.Definitions.Series
         /// 
         /// シリーズ自体の描画を行う
         /// </summary>
-        void DrawOrMove();
+        //void DrawOrMove();
 
 
         /// <summary>

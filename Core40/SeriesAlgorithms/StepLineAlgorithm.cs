@@ -76,9 +76,6 @@ namespace LiveCharts.SeriesAlgorithms
                 i++;
                 previous = current;
             }
-
-            //if the view support AccelView, call DrawOrMove
-            View.GetSeriesAccelView()?.DrawOrMove();
         }
 
         double ICartesianSeries.GetMinX(AxisCore axis)

@@ -147,7 +147,9 @@ namespace LiveCharts.Wpf
         /// The sections property
         /// </summary>
         public static readonly DependencyProperty SectionsProperty = DependencyProperty.Register(
-            "Sections", typeof (SectionsCollection), typeof (Axis), new PropertyMetadata(default(SectionsCollection)));
+        //    "Sections", typeof (SectionsCollection), typeof (Axis), new PropertyMetadata(default(SectionsCollection)));
+            "Sections", typeof (SectionsCollection), typeof (Axis)
+            , new PropertyMetadata(default(SectionsCollection), _On_SectionChanged));
         /// <summary>
         /// Gets or sets the axis sectionsCollection, a section is useful to highlight ranges or values in a chart.
         /// </summary>
@@ -156,6 +158,33 @@ namespace LiveCharts.Wpf
             get { return (SectionsCollection) GetValue(SectionsProperty); }
             set { SetValue(SectionsProperty, value); }
         }
+        private static void _On_SectionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var oldCollection = e.OldValue as SectionsCollection;
+            if (oldCollection != null)
+            {
+                foreach (var oldSection in oldCollection)
+                {
+                    //maybe never come here
+                    oldSection.Remove();
+                }
+            }
+
+            var newCollection = e.NewValue as SectionsCollection;
+            if (newCollection != null)
+            {
+                // if new collection is child of the other element ,
+                // you can't see it on canvas.
+                // so new section are must be removed once. 
+                //新しく接続するコレクションの中身が、既に、どこかの子要素に設定されていた場合
+                //Canvasに表示されないので、接続は強制的に、切る
+                foreach (var newSection in newCollection)
+                {
+                    newSection.Remove();
+                }
+            }
+        }
+
 
         /// <summary>
         /// The label formatter property
@@ -493,6 +522,37 @@ namespace LiveCharts.Wpf
             internal set { SetValue(AxisOrientationProperty, value); }
         }
 
+        /// <summary>
+        /// The is symmetry property
+        /// </summary>
+        public static readonly DependencyProperty IsSymmetryScaleProperty = DependencyProperty.Register(
+            nameof(IsSymmetryScale), typeof(bool), typeof(Axis),
+            new PropertyMetadata(false, UpdateChart()));
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is symmetry or not.
+        /// </summary>
+        public bool IsSymmetryScale
+        {
+            get { return (bool)GetValue(IsSymmetryScaleProperty); }
+            set { SetValue(IsSymmetryScaleProperty, value); }
+        }
+
+        /// <summary>
+        /// The is symmetry property
+        /// </summary>
+        public static readonly DependencyProperty SymmetryScaleOriginProperty = DependencyProperty.Register(
+            nameof(SymmetryScaleOrigin), typeof(double), typeof(Axis),
+            new PropertyMetadata(0d, UpdateChart()));
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is symmetry or not.
+        /// </summary>
+        public double SymmetryScaleOrigin
+        {
+            get { return (double)GetValue(SymmetryScaleOriginProperty); }
+            set { SetValue(SymmetryScaleOriginProperty, value); }
+        }
+
+
         #endregion
 
         #region Public Methods
@@ -529,6 +589,9 @@ namespace LiveCharts.Wpf
                 chart.View.AddToView(ase.Line);
                 chart.View.AddToView(ase.TextBlock);
                 Panel.SetZIndex(ase.Line, -1);
+
+                Panel.SetZIndex(ase.TextBlock, -1);
+
             }
             else
             {
