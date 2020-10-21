@@ -50,6 +50,9 @@ namespace LiveCharts.Wpf
     /// </summary>
     public class AccelStepLineSeries : StepLineSeries
     {
+
+        #region Overridden Methods
+
         /// <summary>
         /// Get the view of a chart point
         /// </summary>
@@ -66,7 +69,6 @@ namespace LiveCharts.Wpf
                 {
                     IsNew = true,
                 };
-
             }
             else
             {
@@ -78,6 +80,9 @@ namespace LiveCharts.Wpf
             return pbv;
         }
 
+        #endregion
+
+
         /// <summary>
         /// Get the view of a series drawing
         /// </summary>
@@ -86,16 +91,12 @@ namespace LiveCharts.Wpf
         {
             if (m_SeriesAccelView == null)
             {
-                m_SeriesAccelView = new _AccelViewElement(_Render, _HitTest, _OnHover, _OnHoverLeave);
+                m_SeriesAccelView = new _AccelViewElement(this);
 
                 Model.Chart.View.AddToDrawMargin(m_SeriesAccelView);
 
                 var wpfChart = Model.Chart.View as Chart;
                 wpfChart.AttachHoverableEventTo(m_SeriesAccelView);
-                //m_SeriesDrawView.MouseDown += _SeriesDrawView_MouseDown;
-                //m_SeriesDrawView.MouseEnter += _SeriesDrawView_MouseEnter;
-                //m_SeriesDrawView.MouseMove += _SeriesDrawView_MouseMove;
-                //m_SeriesDrawView.MouseLeave += _SeriesDrawView_MouseLeave;
             }
             return m_SeriesAccelView;
         }
@@ -103,22 +104,13 @@ namespace LiveCharts.Wpf
 
 
 
+        #region Bulk rendering element and method
+
         private ChartPoint HoverringChartPoint
         {
             get { return m_HoverringChartPoint; }
             set
             {
-                
-                if(m_HoverringChartPoint == null && value != null)
-                {
-                    StrokeThickness = StrokeThickness + 1;
-                }
-                else if(m_HoverringChartPoint != null && value == null)
-                {
-                    StrokeThickness = StrokeThickness - 1;
-                }
-                
-
                 if ( m_HoverringChartPoint != value )
                 {
                     m_HoverringChartPoint = value;
@@ -132,7 +124,11 @@ namespace LiveCharts.Wpf
         private ChartPoint _HitTest(CorePoint pt)
         {
             ChartPoint hitChartPoint = null;
-            foreach (var current in this.ActualValues.GetPoints(this))
+
+            var chartPointList = this.ActualValues.GetPoints(this,
+                new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
+
+            foreach (var current in chartPointList)
             {
                 if( current.HitTest(pt, GetPointDiameter() + StrokeThickness))
                 {
@@ -146,14 +142,12 @@ namespace LiveCharts.Wpf
 
         private void _OnHover(ChartPoint point)
         {
-            System.Diagnostics.Debug.Print("_OnHover");
             HoverringChartPoint = point;
         }
 
 
         private void _OnHoverLeave()
         {
-            System.Diagnostics.Debug.Print("_OnHoverLeave");
             HoverringChartPoint = null;
         }
 
@@ -168,21 +162,20 @@ namespace LiveCharts.Wpf
                 Brush brushPointForeground = PointForeground.Clone();
                 brushPointForeground.Freeze();
 
-                var w = Model.Chart.DrawMargin.Width;
-                var chartPointList = this.ActualValues.GetPoints(this)
-                    .Where(o=> 
-                    {
-                        return (o.ChartLocation.X > 0) && (o.ChartLocation.X < w); 
-                    }).ToArray();
+                Pen penStroke = new Pen(Stroke, StrokeThickness + (HoverringChartPoint != null ? 1d : 0));
+                penStroke.DashStyle = new DashStyle(StrokeDashArray, 0);
+                penStroke.Freeze();
+
+                var chartPointList = this.ActualValues.GetPoints(this,
+                    new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
 
                 // Draw step line
 
-                Pen penAlt = new Pen(AlternativeStroke, StrokeThickness);
-                penAlt.Freeze();
-                Pen penMain = new Pen(Stroke, StrokeThickness);
-                penMain.Freeze();
-                Pen pen3 = new Pen(PointForeground, StrokeThickness);
+                Pen penAlternativeStroke = penStroke.Clone();
+                penAlternativeStroke.Brush = AlternativeStroke;
+                penAlternativeStroke.Freeze();
+
 
                 ChartPoint previous = null;
                 foreach (var current in chartPointList)
@@ -193,21 +186,21 @@ namespace LiveCharts.Wpf
 
                         if (InvertedMode)
                         {
-                            drawingContext.DrawLine(penAlt
+                            drawingContext.DrawLine(penAlternativeStroke
                                 , new Point(current.ChartLocation.X, current.ChartLocation.Y)
                                 , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y));
 
-                            drawingContext.DrawLine(penMain
+                            drawingContext.DrawLine(penStroke
                                 , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y)
                                 , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY));
                         }
                         else
                         {
-                            drawingContext.DrawLine(penAlt
+                            drawingContext.DrawLine(penAlternativeStroke
                                 , new Point(current.ChartLocation.X, current.ChartLocation.Y)
                                 , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
 
-                            drawingContext.DrawLine(penMain
+                            drawingContext.DrawLine(penStroke
                                 , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY)
                                 , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
 
@@ -219,19 +212,52 @@ namespace LiveCharts.Wpf
 
 
                 // Draw point geometry
-
-                foreach (var current in chartPointList)
+                /*
+                if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1)
                 {
-                    if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1)
+                    foreach (var current in chartPointList)
                     {
                         //var pointView = current.View as AccelStepLinePointView;
 
                         drawingContext.DrawEllipse(
                             Object.ReferenceEquals(current, m_HoverringChartPoint) ? brushStroke : brushPointForeground
-                            , penMain
+                            , penStroke
                             , new Point(current.ChartLocation.X, current.ChartLocation.Y)
                             , GetPointDiameter(), GetPointDiameter());
                     }
+                }
+                */
+                if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1)
+                {
+                    var rect = PointGeometry.Bounds;
+                    var offsetX = rect.X + rect.Width / 2d;
+                    var offsetY = rect.Y + rect.Height / 2d;
+
+                    var pgeoRate = Math.Max(0.1d, Math.Abs(PointGeometrySize) - StrokeThickness) / Math.Max(1d, Math.Max(rect.Width, rect.Height));
+
+                    //prepate pen for scaled
+                    Pen pgeoPenStroke = penStroke.Clone();
+                    pgeoPenStroke.Thickness /= pgeoRate;
+                    pgeoPenStroke.Freeze();
+
+                    //prepare transforms
+                    Transform transformOffset = new TranslateTransform(-offsetX, -offsetY);
+                    transformOffset.Freeze();
+                    Transform transformScale = new ScaleTransform(-pgeoRate, pgeoRate, offsetX, offsetY);
+                    transformScale.Freeze();
+
+                    drawingContext.PushTransform(transformOffset);
+                    foreach (var current in chartPointList)
+                    {
+                        drawingContext.PushTransform(new TranslateTransform(current.ChartLocation.X, current.ChartLocation.Y));
+                        drawingContext.PushTransform(transformScale);
+                        drawingContext.DrawGeometry(
+                            Object.ReferenceEquals(current, m_HoverringChartPoint) ? brushStroke : brushPointForeground
+                            , pgeoPenStroke, PointGeometry);
+                        drawingContext.Pop();
+                        drawingContext.Pop();
+                    }
+                    drawingContext.Pop();
                 }
 
 
@@ -296,25 +322,13 @@ namespace LiveCharts.Wpf
 
 
 
-
         private class _AccelViewElement : FrameworkElement, ISeriesAccelView
         {
-            public _AccelViewElement(
-                Action<DrawingContext> _func_OnRender,
-                Func<CorePoint, ChartPoint> _func_HitTest,
-                Action<ChartPoint> _func_OnHover,
-                Action _func_OnHoverLeave
-                )
+            public _AccelViewElement(AccelStepLineSeries owner)
             {
-                m_Func_OnRender = _func_OnRender;
-                m_Func_HitTest = _func_HitTest;
-                m_Func_OnHover = _func_OnHover;
-                m_Func_OnHoverLeave = _func_OnHoverLeave;
+                _owner = owner;
             }
-            private Action<DrawingContext> m_Func_OnRender;
-            private Func<CorePoint, ChartPoint> m_Func_HitTest;
-            private Action<ChartPoint> m_Func_OnHover;
-            private Action m_Func_OnHoverLeave;
+            private AccelStepLineSeries _owner;
 
 
             public void DrawOrMove()
@@ -334,25 +348,26 @@ namespace LiveCharts.Wpf
                 System.Diagnostics.Debug.Print($"Called OnRender {DateTime.Now}");
 
                 base.OnRender(drawingContext);
-
-                m_Func_OnRender( drawingContext );
+                _owner._Render(drawingContext);
             }
 
             public ChartPoint HitTest(CorePoint pt)
             {
-                return m_Func_HitTest(pt);
+                return _owner._HitTest(pt);
             }
 
             public void OnHover(ChartPoint point)
             {
-                m_Func_OnHover(point);
+                _owner._OnHover(point);
             }
 
             public void OnHoverLeave()
             {
-                m_Func_OnHoverLeave();
+                _owner._OnHoverLeave();
             }
         }
+
+        #endregion
 
     }
 }

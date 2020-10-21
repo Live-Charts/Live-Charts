@@ -81,5 +81,7 @@ namespace LiveCharts
         /// The referenced.
         /// </value>
         public Dictionary<object, ChartPoint> Referenced { get; set; }
+
+
     }
 }

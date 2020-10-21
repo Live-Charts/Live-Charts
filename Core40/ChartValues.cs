@@ -35,6 +35,63 @@ using System.Reflection;
 
 namespace LiveCharts
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class IChartValues_Extensions
+    {
+        /// <summary>
+        /// enumerate chart points that are in the rectangele or connected to them.
+        /// </summary>
+        /// <param name="chartValues"></param>
+        /// <param name="seriesView"></param>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        public static IEnumerable<ChartPoint> GetPoints(
+            this IChartValues chartValues, 
+            ISeriesView seriesView, CoreRectangle rect)
+        {
+
+            ChartPoint previous = null;
+            bool previousIsIn = false;
+
+            foreach (var point in chartValues.GetPoints(seriesView))
+            {
+                //check the point if it is in the rectangle or not
+                if(
+                    (rect.Left <= point.ChartLocation.X)
+                    && (point.ChartLocation.X <= rect.Left + rect.Width)
+                    && (rect.Top <= point.ChartLocation.Y)
+                    && (point.ChartLocation.Y <= rect.Top + rect.Height)
+                )
+                {
+                    if (!previousIsIn && previous != null)
+                    {
+                        yield return previous;
+                    }
+
+                    previousIsIn = true;
+                    yield return point;
+                }
+                else
+                {
+                    if (previousIsIn)
+                    {
+                        yield return point;
+                    }
+ 
+                    previousIsIn = false;
+                }
+
+                previous = point;
+            }
+        }
+
+    }
+
+
+
     /// <summary>
     /// Creates a collection of chart values
     /// </summary>
@@ -196,8 +253,6 @@ namespace LiveCharts
             var index = 0;
             foreach (var value in this)
             {
-
-
                 var cp = GetChartPoint(tracker, index, value);
 
                 cp.Gci = gci;
@@ -240,20 +295,6 @@ namespace LiveCharts
                 }
                 else
                 {
-                    //before removing the instance, you need to disconnect it.
-                    if (garbage.Instance != null)
-                    {
-                        if (isObservable)
-                        {
-                            (garbage.Instance as IObservableChartPoint).PointChanged -= ObservableOnPointChanged;
-                        }
-
-                        if (notifies)
-                        {
-                            (garbage.Instance as INotifyPropertyChanged).PropertyChanged -= NotifyOnPropertyChanged;
-                        }
-                    }
-
                     tracker.Referenced.Remove(garbage.Instance);
                 }
             }
@@ -321,21 +362,6 @@ namespace LiveCharts
                     Key = index
                 };
                 tracker.Referenced[value] = cp;
-
-                //if value is new and a class, you need to connect to it.
-                if (value != null)
-                {
-                    if (isObservable)
-                    {
-                        (value as IObservableChartPoint).PointChanged += ObservableOnPointChanged;
-                    }
-
-                    if (notifies)
-                    {
-                        (value as INotifyPropertyChanged).PropertyChanged += NotifyOnPropertyChanged;
-                    }
-                }
-
             }
             return cp;
         }
@@ -347,6 +373,28 @@ namespace LiveCharts
 
         private void NotifyOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            //TODO:ここは、要素の値が変化しただけなので、
+            //要素の再評価と、SeriesViewへの通知だけでよいはず
+            // ここに来るのはTがクラスの時だけ
+            //
+            // chartのupdateではなくSeriesViewへのDrawOrMoveがせいぜいだろ
+            //
+            //しかし、現在のUpdateシステムは、ChartからDispatchタイマーを使った方法で、
+            //Updateの方法が一気通貫しかないため、この処理を見直すなら、大きな変更が必要
+
+            /*
+            // here comes only when T is class
+            ChartPoint cp;
+            Trackers.ForEach(kv => 
+            {
+                if( kv.Value.Referenced.TryGetValue(sender, out cp))
+                {
+                    var config = GetConfig(kv.Key);
+                    config.Evaluate(cp.Key, (T)sender, cp);
+                }
+            });
+            */
+
             Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }
 
@@ -378,6 +426,57 @@ namespace LiveCharts
 
         private void OnChanged(IEnumerable<T> oldItems, IEnumerable<T> newItems)
         {
+            if (isClass)
+            {
+                //before removing the instance, you need to disconnect it
+                if (oldItems != null)
+                {
+                    foreach (var item in oldItems)
+                    {
+                        if (item != null)
+                        {
+                            if (isObservable)
+                            {
+                                (item as IObservableChartPoint).PointChanged -= ObservableOnPointChanged;
+                            }
+
+                            if (notifies)
+                            {
+                                (item as INotifyPropertyChanged).PropertyChanged -= NotifyOnPropertyChanged;
+                            }
+                        }
+
+                    }
+                }
+
+                //if value is new and a class, you need to connect to it.
+                if (newItems != null)
+                {
+                    foreach (var item in newItems)
+                    {
+                        if (item != null)
+                        {
+                            if (isObservable)
+                            {
+                                (item as IObservableChartPoint).PointChanged += ObservableOnPointChanged;
+                            }
+
+                            if (notifies)
+                            {
+                                (item as INotifyPropertyChanged).PropertyChanged += NotifyOnPropertyChanged;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+            //TODO:ここは、ChartValueの要素数が変化した状態なので、チャートの再描画とかするのはおかしい
+            //新しい要素の評価の実施と、SeriesViewへの通知が正しい
+            //しかし、現在のUpdateシステムは、ChartからDispatchタイマーを使った方法で、
+            //Updateの方法が一気通貫しかないため、この処理を見直すなら、大きな変更が必要
+
             if (Trackers.Keys.All(x => x != null && x.Model.Chart != null))
                 Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }
