@@ -152,18 +152,86 @@ namespace LiveCharts.Wpf
 
                 Brush brushFill = Fill.Clone();
                 brushFill.Freeze();
+
+
+
                 /*
                 Brush brushPointForeground = PointForeground.Clone();
                 brushPointForeground.Freeze();
+                */
 
-                Pen penStroke = new Pen(Stroke, StrokeThickness + (HoverringChartPoint != null ? 1d : 0));
-                penStroke.DashStyle = new DashStyle(StrokeDashArray, 0);
-                penStroke.Freeze();
+                Brush brushIncrease = IncreaseBrush.Clone();
+                brushIncrease.Freeze();
+
+                Brush brushDecrease = DecreaseBrush.Clone();
+                brushDecrease.Freeze();
+
+
+                Pen penIncrease = new Pen(IncreaseBrush, StrokeThickness + (HoverringChartPoint != null ? 1d : 0));
+                penIncrease.DashStyle = new DashStyle(StrokeDashArray, 0);
+                penIncrease.Freeze();
+
+                Pen penDecrease = new Pen(DecreaseBrush, StrokeThickness + (HoverringChartPoint != null ? 1d : 0));
+                penDecrease.DashStyle = new DashStyle(StrokeDashArray, 0);
+                penDecrease.Freeze();
+
 
                 var chartPointList = this.ActualValues.GetPoints(this,
                     new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
 
+                // Draw candle
+
+                ChartPoint previous = null;
+                foreach (var current in chartPointList)
+                {
+                    var currentView = current.View as AccelCandlePointView;
+
+                    var center = currentView.Left + currentView.Width / 2;
+
+                    var penLine = current.Open <= current.Close ? penIncrease : penDecrease;
+                    var brushRect= current.Open <= current.Close ? brushIncrease : brushDecrease;
+                    var penRect = current.Open <= current.Close ? penIncrease : penDecrease;
+
+                    if (this.ColoringRules != null)
+                    {
+                        foreach (var rule in this.ColoringRules)
+                        {
+                            if (!rule.Condition(current, previous)) continue;
+
+                            penLine = penLine.Clone();
+                            penLine.Brush = rule.Stroke;
+                            penLine.Freeze();
+
+                            brushRect = rule.Fill.Clone();
+                            brushRect.Freeze();
+
+                            penRect = penRect.Clone();
+                            penRect.Brush = rule.Stroke;
+                            penRect.Freeze();
+
+                            break;
+                        }
+                    }
+
+                    drawingContext.DrawLine(
+                        penLine
+                        , new Point(center, currentView.High)
+                        , new Point(center, currentView.Low));
+
+
+                    drawingContext.DrawRectangle(brushRect, penRect, 
+                        new Rect(
+                            currentView.Left
+                            , Math.Min(currentView.Open, currentView.Close)
+                            , currentView.Width
+                            , Math.Abs(currentView.Open - currentView.Close)
+                        ));
+
+                    previous = current;
+                }
+
+                /*
                 // Draw path line
 
                 drawingContext.DrawGeometry(brushFill, penStroke, Path.Data);

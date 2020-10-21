@@ -68,12 +68,12 @@ namespace LiveCharts.Wpf
             if (IsPathInitialized)
             {
                 //Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
-                Path.Stroke = Stroke;
-                Path.StrokeThickness = StrokeThickness;
-                Path.Fill = Fill;
-                Path.Visibility = Visibility;
-                Path.StrokeDashArray = StrokeDashArray;
-                Panel.SetZIndex(Path, Panel.GetZIndex(this));
+                //Path.Stroke = Stroke;
+                //Path.StrokeThickness = StrokeThickness;
+                //Path.Fill = Fill;
+                //Path.Visibility = Visibility;
+                //Path.StrokeDashArray = StrokeDashArray;
+                //Panel.SetZIndex(Path, Panel.GetZIndex(this));
                 return;
             }
 
@@ -81,11 +81,11 @@ namespace LiveCharts.Wpf
 
             Path = new Path
             {
-                Stroke = Stroke,
-                StrokeThickness = StrokeThickness,
-                Fill = Fill,
-                Visibility = Visibility,
-                StrokeDashArray = StrokeDashArray
+                //Stroke = Stroke,
+                //StrokeThickness = StrokeThickness,
+                //Fill = Fill,
+                //Visibility = Visibility,
+                //StrokeDashArray = StrokeDashArray
             };
 
             Panel.SetZIndex(Path, Panel.GetZIndex(this));
