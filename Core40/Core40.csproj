@@ -78,7 +78,8 @@
     <Compile Include="Definitions\Series\IGroupedStackedSeriesView.cs" />
     <Compile Include="Definitions\Series\ISeriesAccelView.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="Helpers\ChartPoint_Extensions.cs" />
+    <Compile Include="Dtos\CorePoint_Extensions.cs" />
+    <Compile Include="Dtos\CoreRectangle_Extensions.cs" />
     <Compile Include="WindowAxisCore.cs" />
     <Compile Include="DateAxisWindows.cs" />
     <Compile Include="DateSeparatorElementCore.cs" />

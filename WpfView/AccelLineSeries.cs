@@ -10,40 +10,38 @@ using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 using LiveCharts.Dtos;
+using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf
 {
-    using LiveCharts.Charts;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-
-
-
+    /// <summary>
+    /// ChartPointView for Bulk rendering
+    /// this dosen' have UIElement
+    /// </summary>
     internal class AccelHorizontalBezierPointView : HorizontalBezierPointView
     {
         public string Label { get; set; }
 
 
-        /*
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
+            base.DrawOrMove(previousDrawn, current, index, chart);
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
+            base.RemoveFromView(chart);
         }
-        */
     }
 
 
     /// <summary>
-    /// The line series that suppots accel view.
+    /// The line series that suppots Bulk rendering.
     /// 
     /// 
     /// </summary>
     public class AccelLineSeries : LineSeries
     {
-
         #region Overridden Methods
 
         /// <summary>
@@ -153,11 +151,6 @@ namespace LiveCharts.Wpf
         #endregion
 
 
-
-
-
-
-
         #region Bulk rendering element and method
 
         private ChartPoint HoverringChartPoint
@@ -182,9 +175,11 @@ namespace LiveCharts.Wpf
             var chartPointList = this.ActualValues.GetPoints(this,
                 new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
+            double hittestMargin = GetPointDiameter() + StrokeThickness;
+
             foreach (var current in chartPointList)
             {
-                if( current.HitTest(pt, GetPointDiameter() + StrokeThickness))
+                if( current.ChartLocation.HitTest(pt, hittestMargin) )
                 {
                     hitChartPoint = current;
                     break;
@@ -376,7 +371,6 @@ namespace LiveCharts.Wpf
         }
 
         #endregion
-
 
     }
 }

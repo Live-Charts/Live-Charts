@@ -9,31 +9,34 @@ using LiveCharts.SeriesAlgorithms;
 using LiveCharts.Wpf.Charts.Base;
 using LiveCharts.Wpf.Points;
 using LiveCharts.Dtos;
+using LiveCharts.Charts;
 
 namespace LiveCharts.Wpf
 {
-    using LiveCharts.Charts;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-
-
+    /// <summary>
+    /// ChartPointView for Bulk rendering
+    /// this dosen' have UIElement
+    /// </summary>
     internal class AccelCandlePointView : CandlePointView
     {
         public string Label { get; set; }
 
-
         
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
+            //nothing to do
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
+            //nothing to do
         }
-        
     }
 
 
+    /// <summary>
+    /// The Candle series that suppots Bulk rendering.
+    /// </summary>
     public class AccelCandleSeries : CandleSeries
     {
         #region Overridden Methods
@@ -89,11 +92,6 @@ namespace LiveCharts.Wpf
         #endregion
 
 
-
-
-
-
-
         #region Bulk rendering element and method
 
         private ChartPoint HoverringChartPoint
@@ -114,19 +112,27 @@ namespace LiveCharts.Wpf
         private ChartPoint _HitTest(CorePoint pt)
         {
             ChartPoint hitChartPoint = null;
-/*
+
             var chartPointList = this.ActualValues.GetPoints(this,
                 new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
+            double hittestMargin = Math.Max(0d, 1d + StrokeThickness);
+
             foreach (var current in chartPointList)
             {
-                if (current.HitTest(pt, GetPointDiameter() + StrokeThickness))
+                var currentView = current.View as AccelCandlePointView;
+                //var center = currentView.Left + currentView.Width / 2;
+
+                CoreRectangle rectBox = new CoreRectangle(
+                                    currentView.Left, Math.Min(currentView.High, currentView.Low),
+                                    currentView.Width, Math.Abs(currentView.Low - currentView.High));
+
+                if (rectBox.HitTest(pt, hittestMargin))
                 {
                     hitChartPoint = current;
-                    break;
                 }
+
             }
-*/
             return hitChartPoint;
         }
 
@@ -153,12 +159,7 @@ namespace LiveCharts.Wpf
                 Brush brushFill = Fill.Clone();
                 brushFill.Freeze();
 
-
-
-                /*
-                Brush brushPointForeground = PointForeground.Clone();
-                brushPointForeground.Freeze();
-                */
+                
 
                 Brush brushIncrease = IncreaseBrush.Clone();
                 brushIncrease.Freeze();
@@ -186,7 +187,6 @@ namespace LiveCharts.Wpf
                 foreach (var current in chartPointList)
                 {
                     var currentView = current.View as AccelCandlePointView;
-
                     var center = currentView.Left + currentView.Width / 2;
 
                     var penLine = current.Open <= current.Close ? penIncrease : penDecrease;
@@ -231,47 +231,6 @@ namespace LiveCharts.Wpf
                     previous = current;
                 }
 
-                /*
-                // Draw path line
-
-                drawingContext.DrawGeometry(brushFill, penStroke, Path.Data);
-
-
-
-                // Draw point geometry
-
-                if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1)
-                {
-                    var rect = PointGeometry.Bounds;
-                    var offsetX = rect.X + rect.Width / 2d;
-                    var offsetY = rect.Y + rect.Height / 2d;
-
-                    var pgeoRate = Math.Max(0.1d, Math.Abs(PointGeometrySize) - StrokeThickness) / Math.Max(1d, Math.Max(rect.Width, rect.Height));
-
-                    //prepate pen for scaled
-                    Pen pgeoPenStroke = penStroke.Clone();
-                    pgeoPenStroke.Thickness /= pgeoRate;
-                    pgeoPenStroke.Freeze();
-
-                    //prepare transforms
-                    Transform transformOffset = new TranslateTransform(-offsetX, -offsetY);
-                    transformOffset.Freeze();
-                    Transform transformScale = new ScaleTransform(-pgeoRate, pgeoRate, offsetX, offsetY);
-                    transformScale.Freeze();
-
-                    drawingContext.PushTransform(transformOffset);
-                    foreach (var current in chartPointList)
-                    {
-                        drawingContext.PushTransform(new TranslateTransform(current.ChartLocation.X, current.ChartLocation.Y));
-                        drawingContext.PushTransform(transformScale);
-                        drawingContext.DrawGeometry(
-                            Object.ReferenceEquals(current, m_HoverringChartPoint) ? brushStroke : brushPointForeground
-                            , pgeoPenStroke, PointGeometry);
-                        drawingContext.Pop();
-                        drawingContext.Pop();
-                    }
-                    drawingContext.Pop();
-                }
 
 
                 //Draw label
@@ -285,7 +244,7 @@ namespace LiveCharts.Wpf
 
                     foreach (var current in chartPointList)
                     {
-                        var pointView = current.View as AccelHorizontalBezierPointView;
+                        var pointView = current.View as AccelCandlePointView;
 
                         FormattedText formattedText = new FormattedText(
                                 pointView.Label,
@@ -303,7 +262,7 @@ namespace LiveCharts.Wpf
                     }
 
                 }
-                */
+
             }
 
         }
@@ -379,6 +338,5 @@ namespace LiveCharts.Wpf
         }
 
         #endregion
-
     }
 }
