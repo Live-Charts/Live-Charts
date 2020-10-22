@@ -78,6 +78,7 @@
     <Compile Include="FinancialColoringRule.cs" />
     <Compile Include="IChartLegend.cs" />
     <Compile Include="IChartTooltip.cs" />
+    <Compile Include="IrregularAxis.cs" />
     <Compile Include="LogarithmicAxis.cs" />
     <Compile Include="ScatterSeries.cs" />
     <Compile Include="DefaultGeoMapTooltip.xaml.cs">
