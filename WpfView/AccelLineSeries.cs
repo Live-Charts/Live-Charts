@@ -149,6 +149,20 @@ namespace LiveCharts.Wpf
         }
         private _AccelViewElement m_SeriesAccelView;
 
+        /// <summary>
+        /// Erases series
+        /// </summary>
+        /// <param name="removeFromView"></param>
+        public override void Erase(bool removeFromView = true)
+        {
+            if (m_SeriesAccelView != null)
+            {
+                Model?.Chart?.View?.RemoveFromDrawMargin(m_SeriesAccelView);
+                m_SeriesAccelView = null;
+            }
+
+            base.Erase(removeFromView);
+        }
 
         #endregion
 
