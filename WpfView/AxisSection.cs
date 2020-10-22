@@ -296,6 +296,7 @@ namespace LiveCharts.Wpf
             _rectangle.Stroke = Stroke;
             _rectangle.StrokeDashArray = StrokeDashArray;
             _rectangle.StrokeThickness = StrokeThickness;
+            _rectangle.IsHitTestVisible = IsHitTestVisible;
             Panel.SetZIndex(_rectangle, Panel.GetZIndex(this));
             BindingOperations.SetBinding(_rectangle, VisibilityProperty,
                 new Binding {Path = new PropertyPath(VisibilityProperty), Source = this});
