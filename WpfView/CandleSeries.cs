@@ -237,7 +237,12 @@ namespace LiveCharts.Wpf
             SetCurrentValue(DecreaseBrushProperty, new SolidColorBrush(Color.FromRgb(238, 83, 80)));
 
             Func<ChartPoint, string> defaultLabel = x =>
-                string.Format("O: {0}, H: {1}, L: {2} C: {3}", x.Open, x.High, x.Low, x.Close);
+            {
+                Func<double, string> _func = Model?.CurrentYAxis?.GetFormatter() ?? (o => o.ToString());
+                return string.Format("O: {0}\r\n"+ "H: {1}\r\n" + "L: {2}\r\n" + "C: {3}"
+                    , _func(x.Open), _func(x.High), _func(x.Low), _func(x.Close));
+            };
+
             SetCurrentValue(LabelPointProperty, defaultLabel);
 
             DefaultFillOpacity = 1;

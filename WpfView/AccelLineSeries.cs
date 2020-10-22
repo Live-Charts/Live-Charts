@@ -142,6 +142,8 @@ namespace LiveCharts.Wpf
 
                 var wpfChart = Model.Chart.View as Chart;
                 wpfChart.AttachHoverableEventTo(m_SeriesAccelView);
+
+                Panel.SetZIndex(m_SeriesAccelView, Panel.GetZIndex(this));
             }
             m_SeriesAccelView.InvalidateVisual();
         }
@@ -333,23 +335,8 @@ namespace LiveCharts.Wpf
             }
             private AccelLineSeries _owner;
 
-
-            public void DrawOrMove()
-            {
-                this.InvalidateVisual();
-                /*
-                Task.Run(async () =>
-                {
-                    //await Task.Delay(1);
-                    await Dispatcher.BeginInvoke((Action)this.InvalidateVisual);
-                });
-                */
-            }
-
             protected override void OnRender(DrawingContext drawingContext)
             {
-                System.Diagnostics.Debug.Print($"Called OnRender {DateTime.Now}");
-
                 base.OnRender(drawingContext);
                 _owner._Render(drawingContext);
             }

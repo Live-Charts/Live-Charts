@@ -241,7 +241,7 @@ namespace LiveCharts.Wpf
             Func<ChartPoint, string> defaultLabel = x =>
             {
                 Func<double, string> _func = Model?.CurrentYAxis?.GetFormatter() ?? (o => o.ToString());
-                return string.Format("O: {0}, H: {1}, L: {2} C: {3}"
+                return string.Format("O: {0}\r\n"+ "H: {1}\r\n" + "L: {2}\r\n" + "C: {3}"
                     , _func(x.Open), _func(x.High), _func(x.Low), _func(x.Close));
             };
             SetCurrentValue(LabelPointProperty, defaultLabel);
