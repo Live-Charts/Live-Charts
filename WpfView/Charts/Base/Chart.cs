@@ -893,14 +893,13 @@ namespace LiveCharts.Wpf.Charts.Base
 
         internal void AttachHoverableEventTo(FrameworkElement element)
         {
-            element.MouseDown -= DataMouseDown;
-            element.MouseEnter -= DataMouseEnter;
-            element.MouseLeave -= DataMouseLeave;
-            element.MouseEnter -= _AsAccel_DataMouseEnterMove;
-            element.MouseLeave -= _AsAccel_DataMouseLeave;
-
             if (element is ISeriesAccelView)
             {
+                element.MouseDown -= _AsAccel_DataMouseDown;
+                element.MouseEnter -= _AsAccel_DataMouseEnterMove;
+                element.MouseMove -= _AsAccel_DataMouseEnterMove;
+                element.MouseLeave -= _AsAccel_DataMouseLeave;
+
                 element.MouseDown += _AsAccel_DataMouseDown;
                 element.MouseEnter += _AsAccel_DataMouseEnterMove;
                 element.MouseMove += _AsAccel_DataMouseEnterMove;
@@ -908,6 +907,10 @@ namespace LiveCharts.Wpf.Charts.Base
             }
             else
             {
+                element.MouseDown -= DataMouseDown;
+                element.MouseEnter -= DataMouseEnter;
+                element.MouseLeave -= DataMouseLeave;
+
                 element.MouseDown += DataMouseDown;
                 element.MouseEnter += DataMouseEnter;
                 element.MouseLeave += DataMouseLeave;
@@ -920,7 +923,7 @@ namespace LiveCharts.Wpf.Charts.Base
             System.Diagnostics.Debug.Assert(accelSeriesDrawView != null, "you need IAccelSeriesDrawView for sender");
 
             var mousePt = e.GetPosition(sender as FrameworkElement);
-            var senderPoint = accelSeriesDrawView.HitTest(new CorePoint(mousePt.X, mousePt.Y));
+            var senderPoint = accelSeriesDrawView.HitTestChartPoint(new CorePoint(mousePt.X, mousePt.Y));
 
             OnDataClick(sender, senderPoint);
         }
@@ -931,7 +934,7 @@ namespace LiveCharts.Wpf.Charts.Base
             System.Diagnostics.Debug.Assert(accelSeriesDrawView!=null, "you need IAccelSeriesDrawView for sender");
 
             var mousePt = e.GetPosition(sender as FrameworkElement);
-            var senderPoint = accelSeriesDrawView.HitTest(new CorePoint(mousePt.X, mousePt.Y));
+            var senderPoint = accelSeriesDrawView.HitTestChartPoint(new CorePoint(mousePt.X, mousePt.Y));
 
             if (senderPoint == null)
             {

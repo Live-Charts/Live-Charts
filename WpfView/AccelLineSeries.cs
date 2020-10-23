@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -169,6 +170,9 @@ namespace LiveCharts.Wpf
 
         #region Bulk rendering element and method
 
+        /// <summary>
+        /// chart point that mouse is over on
+        /// </summary>
         private ChartPoint HoverringChartPoint
         {
             get { return m_HoverringChartPoint; }
@@ -184,37 +188,10 @@ namespace LiveCharts.Wpf
         private ChartPoint m_HoverringChartPoint;
 
 
-        private ChartPoint _HitTest(CorePoint pt)
-        {
-            ChartPoint hitChartPoint = null;
-
-            var chartPointList = this.ActualValues.GetPoints(this,
-                new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
-
-            double hittestMargin = GetPointDiameter() + StrokeThickness;
-
-            foreach (var current in chartPointList)
-            {
-                if( current.ChartLocation.HitTest(pt, hittestMargin) )
-                {
-                    hitChartPoint = current;
-                    break;
-                }
-            }
-            return hitChartPoint;
-        }
-
-
-        private void _OnHover(ChartPoint point)
-        {
-            HoverringChartPoint = point;
-        }
-
-
-        private void _OnHoverLeave()
-        {
-            HoverringChartPoint = null;
-        }
+        /// <summary>
+        /// prepate rendered chart points for quick access
+        /// </summary>
+        private IEnumerable<ChartPoint> RenderdChartPointList { get; set; }
 
 
         private void _Render(DrawingContext drawingContext)
@@ -234,7 +211,9 @@ namespace LiveCharts.Wpf
                 penStroke.DashStyle = new DashStyle(StrokeDashArray, 0);
                 penStroke.Freeze();
 
-                var chartPointList = this.ActualValues.GetPoints(this,
+
+                //prepat chart point list 
+                this.RenderdChartPointList = this.ActualValues.GetPoints(this,
                     new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
 
 
@@ -266,7 +245,7 @@ namespace LiveCharts.Wpf
                     transformScale.Freeze();
 
                     drawingContext.PushTransform(transformOffset);
-                    foreach (var current in chartPointList)
+                    foreach (var current in this.RenderdChartPointList)
                     {
                         drawingContext.PushTransform(new TranslateTransform(current.ChartLocation.X , current.ChartLocation.Y));
                         drawingContext.PushTransform(transformScale);
@@ -289,7 +268,7 @@ namespace LiveCharts.Wpf
                     Brush brushFg = Foreground.Clone();
                     brushFg.Freeze();
 
-                    foreach (var current in chartPointList)
+                    foreach (var current in this.RenderdChartPointList)
                     {
                         var pointView = current.View as AccelHorizontalBezierPointView;
 
@@ -313,7 +292,6 @@ namespace LiveCharts.Wpf
             }
 
         }
-
 
         private double CorrectXLabel(double desiredPosition, ChartCore chart, Double textWidth)
         {
@@ -340,6 +318,28 @@ namespace LiveCharts.Wpf
         }
 
 
+        private ChartPoint _HitTest(CorePoint pt)
+        {
+            ChartPoint hitChartPoint = null;
+
+            double hittestMargin = GetPointDiameter() + StrokeThickness + 2d;
+
+            double currentDistance = Double.MaxValue;
+            foreach (var current in this.RenderdChartPointList)
+            {
+                if (current.ChartLocation.HitTest(pt, hittestMargin))
+                {
+                    var d = (current.ChartLocation.X - pt.X) * (current.ChartLocation.X - pt.X)
+                            + (current.ChartLocation.Y - pt.Y) * (current.ChartLocation.Y - pt.Y);
+                    if (d < currentDistance)
+                    {
+                        currentDistance = d;
+                        hitChartPoint = current;
+                    }
+                }
+            }
+            return hitChartPoint;
+        }
 
         private class _AccelViewElement : FrameworkElement, ISeriesAccelView
         {
@@ -354,20 +354,32 @@ namespace LiveCharts.Wpf
                 base.OnRender(drawingContext);
                 _owner._Render(drawingContext);
             }
+            
+            protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
+            {
+                Point pt = hitTestParameters.HitPoint;
 
-            public ChartPoint HitTest(CorePoint pt)
+                var cp = _owner._HitTest(new CorePoint(pt.X, pt.Y));
+                if (cp != null)
+                {
+                    return new PointHitTestResult(this, pt);
+                }
+                return null;
+            }
+
+            public ChartPoint HitTestChartPoint(CorePoint pt)
             {
                 return _owner._HitTest(pt);
             }
 
             public void OnHover(ChartPoint point)
             {
-                _owner._OnHover(point);
+                _owner.HoverringChartPoint = point;
             }
 
             public void OnHoverLeave()
             {
-                _owner._OnHoverLeave();
+                _owner.HoverringChartPoint = null;
             }
         }
 

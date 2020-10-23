@@ -29,7 +29,7 @@ namespace LiveCharts.Definitions.Series
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        ChartPoint HitTest(CorePoint pt);
+        ChartPoint HitTestChartPoint(CorePoint pt);
 
         /// <summary>
         /// Called when [hover].
