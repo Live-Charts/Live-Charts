@@ -270,21 +270,23 @@ namespace LiveCharts.Wpf
 
                     foreach (var current in this.RenderdChartPointList)
                     {
-                        var pointView = current.View as AccelHorizontalBezierPointView;
+                        var currentView = current.View as AccelHorizontalBezierPointView;
+                        if (currentView != null)
+                        {
+                            FormattedText formattedText = new FormattedText(
+                                    currentView.Label,
+                                    System.Globalization.CultureInfo.CurrentCulture,
+                                    FlowDirection.LeftToRight,
+                                    typeFace,
+                                    FontSize,
+                                    brushFg);
 
-                        FormattedText formattedText = new FormattedText(
-                                pointView.Label,
-                                System.Globalization.CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeFace,
-                                FontSize,
-                                brushFg);
+                            var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
+                            var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
 
-                        var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
-                        var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
-
-                        drawingContext.DrawText(formattedText,
-                            new Point(xl, yl));
+                            drawingContext.DrawText(formattedText,
+                                new Point(xl, yl));
+                        }
                     }
 
                 }

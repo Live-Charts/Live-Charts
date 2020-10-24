@@ -173,27 +173,29 @@ namespace LiveCharts.Wpf
                     if (previous != null)
                     {
                         var currentView = current.View as AccelStepLinePointView;
-
-                        if (InvertedMode)
+                        if (currentView != null)
                         {
-                            drawingContext.DrawLine(penAlternativeStroke
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y)
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y));
+                            if (InvertedMode)
+                            {
+                                drawingContext.DrawLine(penAlternativeStroke
+                                    , new Point(current.ChartLocation.X, current.ChartLocation.Y)
+                                    , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y));
 
-                            drawingContext.DrawLine(penStroke
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y)
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY));
-                        }
-                        else
-                        {
-                            drawingContext.DrawLine(penAlternativeStroke
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y)
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
+                                drawingContext.DrawLine(penStroke
+                                    , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y)
+                                    , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY));
+                            }
+                            else
+                            {
+                                drawingContext.DrawLine(penAlternativeStroke
+                                    , new Point(current.ChartLocation.X, current.ChartLocation.Y)
+                                    , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
 
-                            drawingContext.DrawLine(penStroke
-                                , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY)
-                                , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
+                                drawingContext.DrawLine(penStroke
+                                    , new Point(current.ChartLocation.X - currentView.DeltaX, current.ChartLocation.Y - currentView.DeltaY)
+                                    , new Point(current.ChartLocation.X, current.ChartLocation.Y - currentView.DeltaY));
 
+                            }
                         }
                     }
 
@@ -248,21 +250,23 @@ namespace LiveCharts.Wpf
 
                     foreach (var current in this.RenderdChartPointList)
                     {
-                        var pointView = current.View as AccelStepLinePointView;
+                        var currentView = current.View as AccelStepLinePointView;
+                        if (currentView != null)
+                        { 
+                            FormattedText formattedText = new FormattedText(
+                                    currentView.Label,
+                                    System.Globalization.CultureInfo.CurrentCulture,
+                                    FlowDirection.LeftToRight,
+                                    typeFace,
+                                    FontSize,
+                                    brushFg);
 
-                        FormattedText formattedText = new FormattedText(
-                                pointView.Label,
-                                System.Globalization.CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeFace,
-                                FontSize,
-                                brushFg);
+                            var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
+                            var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
 
-                        var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
-                        var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
-
-                        drawingContext.DrawText(formattedText,
-                            new Point(xl, yl));
+                            drawingContext.DrawText(formattedText,
+                                new Point(xl, yl));
+                        }
                     }
 
                 }

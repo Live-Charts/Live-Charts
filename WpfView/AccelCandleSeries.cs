@@ -173,7 +173,6 @@ namespace LiveCharts.Wpf
                     var currentView = current.View as AccelCandlePointView;
                     if (currentView != null)
                     {
-
                         var center = currentView.Left + currentView.Width / 2;
 
                         var penLine = current.Open <= current.Close ? penIncrease : penDecrease;
@@ -234,20 +233,22 @@ namespace LiveCharts.Wpf
                     foreach (var current in this.RenderdChartPointList)
                     {
                         var pointView = current.View as AccelCandlePointView;
+                        if (pointView != null)
+                        {
+                            FormattedText formattedText = new FormattedText(
+                                    pointView.Label,
+                                    System.Globalization.CultureInfo.CurrentCulture,
+                                    FlowDirection.LeftToRight,
+                                    typeFace,
+                                    FontSize,
+                                    brushFg);
 
-                        FormattedText formattedText = new FormattedText(
-                                pointView.Label,
-                                System.Globalization.CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                typeFace,
-                                FontSize,
-                                brushFg);
+                            var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
+                            var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
 
-                        var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
-                        var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
-
-                        drawingContext.DrawText(formattedText,
-                            new Point(xl, yl));
+                            drawingContext.DrawText(formattedText,
+                                new Point(xl, yl));
+                        }
                     }
 
                 }
@@ -289,18 +290,20 @@ namespace LiveCharts.Wpf
             foreach (var current in this.RenderdChartPointList)
             {
                 var currentView = current.View as AccelCandlePointView;
-
-                CoreRectangle rectBox = new CoreRectangle(
-                                    currentView.Left, Math.Min(currentView.High, currentView.Low),
-                                    currentView.Width, Math.Abs(currentView.Low - currentView.High));
-                if (rectBox.HitTest(pt, hittestMargin))
+                if (currentView != null)
                 {
-                    var center = currentView.Left + currentView.Width / 2;
-                    var d = Math.Abs(center - pt.X);
-                    if (d < currentDistance)
+                    CoreRectangle rectBox = new CoreRectangle(
+                                        currentView.Left, Math.Min(currentView.High, currentView.Low),
+                                        currentView.Width, Math.Abs(currentView.Low - currentView.High));
+                    if (rectBox.HitTest(pt, hittestMargin))
                     {
-                        currentDistance = d;
-                        hitChartPoint = current;
+                        var center = currentView.Left + currentView.Width / 2;
+                        var d = Math.Abs(center - pt.X);
+                        if (d < currentDistance)
+                        {
+                            currentDistance = d;
+                            hitChartPoint = current;
+                        }
                     }
                 }
 
