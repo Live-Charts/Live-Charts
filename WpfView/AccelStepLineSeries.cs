@@ -36,6 +36,14 @@ namespace LiveCharts.Wpf
         {
             //nothing to do
         }
+        public override void OnHover(ChartPoint point)
+        {
+            //nothing to do
+        }
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            //nothing to do
+        }
     }
 
 

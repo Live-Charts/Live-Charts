@@ -56,15 +56,33 @@ namespace LiveCharts
             ChartPoint previous = null;
             bool previousIsIn = false;
 
+            var seriesOrientation = seriesView.Model?.SeriesOrientation ?? SeriesOrientation.Horizontal;
+
             foreach (var point in chartValues.GetPoints(seriesView))
             {
+
                 //check the point if it is in the rectangle or not
-                if(
-                    (rect.Left <= point.ChartLocation.X)
-                    && (point.ChartLocation.X <= rect.Left + rect.Width)
-                    && (rect.Top <= point.ChartLocation.Y)
-                    && (point.ChartLocation.Y <= rect.Top + rect.Height)
-                )
+                bool isIn = false;
+                if (seriesOrientation == SeriesOrientation.Horizontal)
+                {
+                    isIn = (rect.Left <= point.ChartLocation.X) && (point.ChartLocation.X <= rect.Left + rect.Width);
+
+                }
+                else if (seriesOrientation == SeriesOrientation.Vertical)
+                {
+                    isIn = (rect.Top <= point.ChartLocation.Y) && (point.ChartLocation.Y <= rect.Top + rect.Height);
+
+                }
+                else
+                {
+                    isIn = (rect.Left <= point.ChartLocation.X)
+                        && (point.ChartLocation.X <= rect.Left + rect.Width)
+                        && (rect.Top <= point.ChartLocation.Y)
+                        && (point.ChartLocation.Y <= rect.Top + rect.Height);
+                }
+
+
+                if ( isIn )
                 {
                     if (!previousIsIn && previous != null)
                     {
@@ -87,6 +105,8 @@ namespace LiveCharts
                 previous = point;
             }
         }
+
+
 
     }
 

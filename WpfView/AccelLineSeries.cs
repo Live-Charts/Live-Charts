@@ -12,6 +12,7 @@ using LiveCharts.Wpf.Components;
 using LiveCharts.Wpf.Points;
 using LiveCharts.Dtos;
 using LiveCharts.Charts;
+using System.Linq;
 
 namespace LiveCharts.Wpf
 {
@@ -23,15 +24,28 @@ namespace LiveCharts.Wpf
     {
         public string Label { get; set; }
 
+        public int SegmentPosition { get; private set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
         {
-            base.DrawOrMove(previousDrawn, current, index, chart);
+            //indexは、segment内での位置を示している（全体の位置ではない）
+            //1なら最初のセグメント、２なら、２番目以降のセグメントのスタート
+            //つまり2以下なら、新しいセグメントがスタートしたことを意味する
+            SegmentPosition = index;
         }
 
         public override void RemoveFromView(ChartCore chart)
         {
-            base.RemoveFromView(chart);
+            //nothing to do
+        }
+
+        public override void OnHover(ChartPoint point)
+        {
+            //nothing to do
+        }
+        public override void OnHoverLeave(ChartPoint point)
+        {
+            //nothing to do
         }
     }
 
@@ -53,48 +67,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public override void OnSeriesUpdateStart()
         {
-            ActiveSplitters = 0;
-
-            if (SplittersCollector == int.MaxValue - 1)
-            {
-                //just in case!
-                Splitters.ForEach(s => s.SplitterCollectorIndex = 0);
-                SplittersCollector = 0;
-            }
-
-            SplittersCollector++;
-
-            if (IsPathInitialized)
-            {
-                //Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
-                //Path.Stroke = Stroke;
-                //Path.StrokeThickness = StrokeThickness;
-                //Path.Fill = Fill;
-                //Path.Visibility = Visibility;
-                //Path.StrokeDashArray = StrokeDashArray;
-                //Panel.SetZIndex(Path, Panel.GetZIndex(this));
-                return;
-            }
-
-            IsPathInitialized = true;
-
-            Path = new Path
-            {
-                //Stroke = Stroke,
-                //StrokeThickness = StrokeThickness,
-                //Fill = Fill,
-                //Visibility = Visibility,
-                //StrokeDashArray = StrokeDashArray
-            };
-
-            Panel.SetZIndex(Path, Panel.GetZIndex(this));
-
-            var geometry = new PathGeometry();
-            Figure = new PathFigure();
-            geometry.Figures.Add(Figure);
-            Path.Data = geometry;
-
-            //Model.Chart.View.EnsureElementBelongsToCurrentDrawMargin(Path);
+            //nothing to do
         }
 
 
@@ -133,6 +106,7 @@ namespace LiveCharts.Wpf
         /// </summary>
         public override void OnSeriesUpdatedFinish()
         {
+            //本当はコールしたくないが、ベースクラスのベースクラス、の処理が欲しい故
             base.OnSeriesUpdatedFinish();
 
             if (m_SeriesAccelView == null)
@@ -165,6 +139,20 @@ namespace LiveCharts.Wpf
             base.Erase(removeFromView);
         }
 
+        /// <summary> segments would be considerd when rendering </summary>
+        public override void StartSegment(int atIndex, CorePoint location)
+        {
+            //nothing to do
+        }
+
+        /// <summary> segments would be considerd when rendering </summary>
+        public override void EndSegment(int atIndex, CorePoint location)
+        {
+            //nothing to do
+        }
+
+
+
         #endregion
 
 
@@ -191,7 +179,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// prepate rendered chart points for quick access
         /// </summary>
-        private IEnumerable<ChartPoint> RenderdChartPointList { get; set; }
+        private IList<ChartPoint> RenderdChartPointList { get; set; }
 
 
         private void _Render(DrawingContext drawingContext)
@@ -214,13 +202,77 @@ namespace LiveCharts.Wpf
 
                 //prepat chart point list 
                 this.RenderdChartPointList = this.ActualValues.GetPoints(this,
-                    new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height));
+                    new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height)).ToList();
 
 
                 // Draw path line
 
-                drawingContext.DrawGeometry(brushFill, penStroke, Path.Data);
+                var seriesOrientation = Model?.SeriesOrientation ?? SeriesOrientation.Horizontal;
 
+                foreach (var segmentedList in SegmentedRenderdChartPointList(this.RenderdChartPointList))
+                {
+
+                    StreamGeometry geometry = new StreamGeometry();
+                    using (StreamGeometryContext ctx = geometry.Open())
+                    {
+                        AccelHorizontalBezierPointView lastPointView = null;
+                        bool isFirst = true;
+                        foreach (var current in segmentedList)
+                        {
+                            var currentView = current.View as AccelHorizontalBezierPointView;
+                            if (currentView != null)
+                            {
+                                if (isFirst)
+                                {
+                                    isFirst = false;
+
+                                    var firstPoint = currentView.Data.Point1;
+                                    if(seriesOrientation== SeriesOrientation.Horizontal)
+                                    {
+                                        firstPoint.Y = Model.Chart.DrawMargin.Top + Model.Chart.DrawMargin.Height;
+                                    }
+                                    else
+                                    {
+                                        firstPoint.X = Model.Chart.DrawMargin.Left;
+                                    }
+
+                                    //start point of segment
+                                    ctx.BeginFigure(firstPoint.AsPoint(), true, true);
+                                    ctx.LineTo(currentView.Data.Point1.AsPoint(), false, true);
+                                }
+
+                                ctx.BezierTo(
+                                    currentView.Data.Point1.AsPoint(),
+                                    currentView.Data.Point2.AsPoint(),
+                                    currentView.Data.Point3.AsPoint(),
+                                    true, false);
+
+                                lastPointView = currentView;
+                            }
+                        }
+
+                        //close segment
+                        if (lastPointView != null)
+                        {
+                            var lastPoint = lastPointView.Data.Point3;
+                            if (seriesOrientation == SeriesOrientation.Horizontal)
+                            {
+                                lastPoint.Y = Model.Chart.DrawMargin.Top + Model.Chart.DrawMargin.Height;
+                            }
+                            else
+                            {
+                                lastPoint.X = Model.Chart.DrawMargin.Left;
+                            }
+
+                            ctx.LineTo(lastPoint.AsPoint(), false, true);
+                        }
+                    }
+
+                    // draw one segment
+                    geometry.Freeze();
+                    drawingContext.DrawGeometry(brushFill, penStroke, geometry);
+
+                }
 
 
                 // Draw point geometry
@@ -294,6 +346,39 @@ namespace LiveCharts.Wpf
             }
 
         }
+
+        /// <summary>
+        /// Splits a collection of points every double.Nan
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        private IEnumerable<IEnumerable<ChartPoint>> SegmentedRenderdChartPointList(IEnumerable<ChartPoint> list)
+        {
+            var segList = new List<ChartPoint>();
+
+            foreach(var p in list)
+            {
+                if (double.IsNaN(p.X) || double.IsNaN(p.Y))
+                {
+                    if (segList.Count > 0)
+                    {
+                        yield return segList;
+                    }
+                    segList.Clear();
+                }
+                else
+                {
+                    segList.Add(p);
+                }
+            }
+
+            if (segList.Count > 0)
+            {
+                yield return segList;
+            }
+        }
+
+
 
         private double CorrectXLabel(double desiredPosition, ChartCore chart, Double textWidth)
         {
