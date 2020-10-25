@@ -43,6 +43,27 @@ namespace LiveCharts
     {
         #region Constructors
 
+        static bool isClass;
+        static bool isObservable;
+        static bool notifies;
+
+        static ChartValues()
+        {
+#if NET40
+            isClass = typeof(T).IsClass;
+            isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+            notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
+
+#endif
+#if NET45
+            isClass = typeof(T).GetTypeInfo().IsClass;
+            isObservable = isClass &&
+                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+            notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
+                               .IsAssignableFrom(typeof(T).GetTypeInfo());
+#endif
+        }
+
         /// <summary>
         /// Initializes a new instance of chart values
         /// </summary>
@@ -169,47 +190,13 @@ namespace LiveCharts
 
             var config = GetConfig(seriesView);
 
-#if NET40
-            var isClass = typeof(T).IsClass;
-            var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
-            var notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
-
-#endif
-#if NET45
-            var isClass = typeof(T).GetTypeInfo().IsClass;
-            var isObservable = isClass &&
-                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
-            var notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
-                               .IsAssignableFrom(typeof(T).GetTypeInfo());
-#endif
-
             var tracker = GetTracker(seriesView);
             var gci = tracker.Gci;
 
             var index = 0;
             foreach (var value in this)
             {
-                if (isObservable)
-                {
-                    var observable = (IObservableChartPoint) value;
-                    if (observable != null)
-                    {
-                        observable.PointChanged -= ObservableOnPointChanged;
-                        observable.PointChanged += ObservableOnPointChanged;
-                    }
-                }
-
-                if (notifies)
-                {
-                    var notify = (INotifyPropertyChanged) value;
-                    if (notify != null)
-                    {
-                        notify.PropertyChanged -= NotifyOnPropertyChanged;
-                        notify.PropertyChanged += NotifyOnPropertyChanged;
-                    }
-                }
-
-                var cp = GetChartPoint(isClass, tracker, index, value);
+                var cp = GetChartPoint(tracker, index, value);
 
                 cp.Gci = gci;
                 cp.Instance = value;
@@ -237,12 +224,6 @@ namespace LiveCharts
         /// </summary>
         public void CollectGarbage(ISeriesView seriesView)
         {
-#if NET40
-            var isclass = typeof(T).IsClass;
-#endif
-#if NET45
-            var isclass = typeof(T).GetTypeInfo().IsClass;
-#endif
 
             var tracker = GetTracker(seriesView);
 
@@ -251,7 +232,7 @@ namespace LiveCharts
                 if (garbage.View != null) //yes null, double.Nan Values, will generate null views.
                     garbage.View.RemoveFromView(seriesView.Model.Chart);
 
-                if (!isclass)
+                if (!isClass)
                 {
                     tracker.Indexed.Remove(garbage.Key);
                 }
@@ -301,7 +282,7 @@ namespace LiveCharts
                        ChartCore.Configurations.GetConfig<T>(view.Model.SeriesOrientation) as IPointEvaluator<T>);
         }
 
-        private static ChartPoint GetChartPoint(bool isClass, PointTracker tracker, int index, T value)
+        private ChartPoint GetChartPoint(PointTracker tracker, int index, T value)
         {
             ChartPoint cp;
 
@@ -335,6 +316,28 @@ namespace LiveCharts
 
         private void NotifyOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            //TODO:ここは、要素の値が変化しただけなので、
+            //要素の再評価と、SeriesViewへの通知だけでよいはず
+            // ここに来るのはTがクラスの時だけ
+            //
+            // chartのupdateではなくSeriesViewへのDrawOrMoveがせいぜいだろ
+            //
+            //しかし、現在のUpdateシステムは、ChartからDispatchタイマーを使った方法で、
+            //Updateの方法が一気通貫しかないため、この処理を見直すなら、大きな変更が必要
+
+            /*
+            // here comes only when T is class
+            ChartPoint cp;
+            Trackers.ForEach(kv => 
+            {
+                if( kv.Value.Referenced.TryGetValue(sender, out cp))
+                {
+                    var config = GetConfig(kv.Key);
+                    config.Evaluate(cp.Key, (T)sender, cp);
+                }
+            });
+            */
+
             Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }
 
@@ -366,6 +369,57 @@ namespace LiveCharts
 
         private void OnChanged(IEnumerable<T> oldItems, IEnumerable<T> newItems)
         {
+            if (isClass)
+            {
+                //before removing the instance, you need to disconnect it
+                if (oldItems != null)
+                {
+                    foreach (var item in oldItems)
+                    {
+                        if (item != null)
+                        {
+                            if (isObservable)
+                            {
+                                (item as IObservableChartPoint).PointChanged -= ObservableOnPointChanged;
+                            }
+
+                            if (notifies)
+                            {
+                                (item as INotifyPropertyChanged).PropertyChanged -= NotifyOnPropertyChanged;
+                            }
+                        }
+
+                    }
+                }
+
+                //if value is new and a class, you need to connect to it.
+                if (newItems != null)
+                {
+                    foreach (var item in newItems)
+                    {
+                        if (item != null)
+                        {
+                            if (isObservable)
+                            {
+                                (item as IObservableChartPoint).PointChanged += ObservableOnPointChanged;
+                            }
+
+                            if (notifies)
+                            {
+                                (item as INotifyPropertyChanged).PropertyChanged += NotifyOnPropertyChanged;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+            //TODO:ここは、ChartValueの要素数が変化した状態なので、チャートの再描画とかするのはおかしい
+            //新しい要素の評価の実施と、SeriesViewへの通知が正しい
+            //しかし、現在のUpdateシステムは、ChartからDispatchタイマーを使った方法で、
+            //Updateの方法が一気通貫しかないため、この処理を見直すなら、大きな変更が必要
+
             if (Trackers.Keys.All(x => x != null && x.Model.Chart != null))
                 Trackers.Keys.ForEach(x => x.Model.Chart.Updater.Run());
         }

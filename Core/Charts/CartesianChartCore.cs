@@ -215,6 +215,17 @@ namespace LiveCharts.Charts
                 if (radius > boundries[2]) boundries[2] = radius;
             }
 
+            //check if axis is symmetry scale
+            if ((ax?.View?.IsSymmetryScale) ?? false == true)
+            {
+                var org = ax?.View?.SymmetryScaleOrigin ?? 0d;
+                org = (Double.IsInfinity(org) || Double.IsNaN(org)) ? 0d : ax.View.SymmetryScaleOrigin;
+
+                var sinWidth = Math.Max(Math.Abs(boundries[0] - org), Math.Abs(boundries[1] - org));
+                boundries[0] = org + sinWidth;
+                boundries[1] = org - sinWidth;
+            }
+
             ax.TopSeriesLimit = boundries[0];
             ax.BotSeriesLimit = boundries[1];
 

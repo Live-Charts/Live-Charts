@@ -56,6 +56,7 @@
     <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="ChartValues_Extensions.cs" />
     <Compile Include="Configurations\CartesianMapper.cs" />
     <Compile Include="Configurations\FinancialMapper.cs" />
     <Compile Include="Configurations\GanttMapper.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Definitions\Charts\ICartesianVisualElement.cs" />
     <Compile Include="Definitions\Charts\IChartView.cs" />
     <Compile Include="Definitions\Charts\IDateAxisView.cs" />
+    <Compile Include="Definitions\Charts\IIrregularAxisView.cs" />
     <Compile Include="Definitions\Charts\ILogarithmicAxisView.cs" />
     <Compile Include="Definitions\Charts\IPieChart.cs" />
     <Compile Include="Definitions\Charts\ISeparatorElementView.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Definitions\Series\IPieSeriesView.cs" />
     <Compile Include="Definitions\Series\IRowSeriesView.cs" />
     <Compile Include="Definitions\Series\IScatterSeriesView.cs" />
+    <Compile Include="Definitions\Series\ISeriesAccelView.cs" />
     <Compile Include="Definitions\Series\ISeriesView.cs" />
     <Compile Include="Definitions\Series\IStackedAreaSeriesView.cs" />
     <Compile Include="Definitions\Series\IStackedColumnSeriesView.cs" />
@@ -122,7 +125,9 @@
     <Compile Include="Dtos\CoreLimit.cs" />
     <Compile Include="Dtos\CoreMargin.cs" />
     <Compile Include="Dtos\CorePoint.cs" />
+    <Compile Include="Dtos\CorePoint_Extensions.cs" />
     <Compile Include="Dtos\CoreRectangle.cs" />
+    <Compile Include="Dtos\CoreRectangle_Extensions.cs" />
     <Compile Include="Dtos\CoreSize.cs" />
     <Compile Include="Dtos\LabelEvaluation.cs" />
     <Compile Include="Dtos\StackedSum.cs" />
@@ -135,6 +140,7 @@
     <Compile Include="Helpers\NoisyCollection.cs" />
     <Compile Include="IChartValues.cs" />
     <Compile Include="IObservableChartPoint.cs" />
+    <Compile Include="IrregularAxisCore.cs" />
     <Compile Include="LegendLocation.cs" />
     <Compile Include="LogarithmicAxisCore.cs" />
     <Compile Include="Maps\MapData.cs" />

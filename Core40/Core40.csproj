@@ -62,6 +62,7 @@
     <Compile Include="Charts\PieChartCore.cs" />
     <Compile Include="ChartUpdater.cs" />
     <Compile Include="ChartValues.cs" />
+    <Compile Include="ChartValues_Extensions.cs" />
     <Compile Include="Configurations\CartesianMapper.cs" />
     <Compile Include="Configurations\FinancialMapper.cs" />
     <Compile Include="Configurations\GanttMapper.cs" />
