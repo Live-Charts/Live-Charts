@@ -81,5 +81,19 @@ namespace LiveCharts.Wpf
         {
             return new Point(point.X, point.Y);
         }
+
+
+        /// <summary>
+        /// Covnerts a CoreRectangle to Rect
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        internal static Rect AsRect(this CoreRectangle rect)
+        {
+            return new Rect(rect.Left, rect.Top, rect.Width, rect.Height);
+        }
+
+
+
     }
 }

@@ -36,10 +36,12 @@ namespace LiveCharts.Wpf
         {
             //nothing to do
         }
+
         public override void OnHover(ChartPoint point)
         {
             //nothing to do
         }
+
         public override void OnHoverLeave(ChartPoint point)
         {
             //nothing to do
@@ -256,11 +258,18 @@ namespace LiveCharts.Wpf
                     Brush brushFg = Foreground.Clone();
                     brushFg.Freeze();
 
+                    CoreRectangle preRect = new CoreRectangle(0, 0, 0, 0);
                     foreach (var current in this.RenderdChartPointList)
                     {
                         var currentView = current.View as AccelStepLinePointView;
                         if (currentView != null)
-                        { 
+                        {
+                            //if text position is in the previous text rectange, skip draw it.
+                            if (preRect.HitTest(current.ChartLocation, 0))
+                            {
+                                continue;
+                            }
+
                             FormattedText formattedText = new FormattedText(
                                     currentView.Label,
                                     System.Globalization.CultureInfo.CurrentCulture,
@@ -271,6 +280,8 @@ namespace LiveCharts.Wpf
 
                             var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
                             var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
+
+                            preRect = new CoreRectangle(xl, yl, formattedText.Width, formattedText.Height);
 
                             drawingContext.DrawText(formattedText,
                                 new Point(xl, yl));

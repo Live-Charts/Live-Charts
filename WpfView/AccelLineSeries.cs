@@ -20,8 +20,10 @@ namespace LiveCharts.Wpf
     /// ChartPointView for Bulk rendering
     /// this dosen' have UIElement
     /// </summary>
-    internal class AccelHorizontalBezierPointView : HorizontalBezierPointView
+    internal class AccelHorizontalBezierPointView : PointView, IBezierPointView
     {
+        public BezierData Data { get; set; }
+
         public string Label { get; set; }
 
         public int SegmentPosition { get; private set; }
@@ -43,6 +45,7 @@ namespace LiveCharts.Wpf
         {
             //nothing to do
         }
+
         public override void OnHoverLeave(ChartPoint point)
         {
             //nothing to do
@@ -85,8 +88,6 @@ namespace LiveCharts.Wpf
             {
                 pbv = new AccelHorizontalBezierPointView
                 {
-                    Segment = new BezierSegment(),
-                    Container = Figure,
                     IsNew = true,
                 };
             }
@@ -320,11 +321,18 @@ namespace LiveCharts.Wpf
                     Brush brushFg = Foreground.Clone();
                     brushFg.Freeze();
 
+                    CoreRectangle preRect = new CoreRectangle(0, 0, 0, 0);
                     foreach (var current in this.RenderdChartPointList)
                     {
                         var currentView = current.View as AccelHorizontalBezierPointView;
                         if (currentView != null)
                         {
+                            //if text position is in the previous text rectange, skip draw it.
+                            if (preRect.HitTest(current.ChartLocation, 0))
+                            {
+                                continue;
+                            }
+
                             FormattedText formattedText = new FormattedText(
                                     currentView.Label,
                                     System.Globalization.CultureInfo.CurrentCulture,
@@ -335,6 +343,8 @@ namespace LiveCharts.Wpf
 
                             var xl = CorrectXLabel(current.ChartLocation.X - formattedText.Width * .5, Model.Chart, formattedText.Width);
                             var yl = CorrectYLabel(current.ChartLocation.Y - formattedText.Height * .5, Model.Chart, formattedText.Height);
+
+                            preRect = new CoreRectangle(xl, yl, formattedText.Width, formattedText.Height);
 
                             drawingContext.DrawText(formattedText,
                                 new Point(xl, yl));
