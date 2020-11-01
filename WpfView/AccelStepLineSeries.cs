@@ -20,32 +20,13 @@ namespace LiveCharts.Wpf
     /// ChartPointView for Bulk rendering
     /// this dosen' have UIElement
     /// </summary>
-    internal class AccelStepLinePointView : PointView, IStepPointView
+    internal class AccelStepLinePointView : AccelPointView, IStepPointView
     {
         public double DeltaX { get; set; }
         public double DeltaY { get; set; }
 
         public string Label { get; set; }
 
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
-        {
-            //nothing to do
-        }
-
-        public override void RemoveFromView(ChartCore chart)
-        {
-            //nothing to do
-        }
-
-        public override void OnHover(ChartPoint point)
-        {
-            //nothing to do
-        }
-
-        public override void OnHoverLeave(ChartPoint point)
-        {
-            //nothing to do
-        }
     }
 
 

@@ -20,7 +20,7 @@ namespace LiveCharts.Wpf
     /// ChartPointView for Bulk rendering
     /// this dosen' have UIElement
     /// </summary>
-    internal class AccelHorizontalBezierPointView : PointView, IBezierPointView
+    internal class AccelHorizontalBezierPointView : AccelPointView, IBezierPointView
     {
         public BezierData Data { get; set; }
 
@@ -36,20 +36,6 @@ namespace LiveCharts.Wpf
             SegmentPosition = index;
         }
 
-        public override void RemoveFromView(ChartCore chart)
-        {
-            //nothing to do
-        }
-
-        public override void OnHover(ChartPoint point)
-        {
-            //nothing to do
-        }
-
-        public override void OnHoverLeave(ChartPoint point)
-        {
-            //nothing to do
-        }
     }
 
 

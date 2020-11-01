@@ -15,20 +15,11 @@ using System.Threading.Tasks;
 
 namespace LiveCharts.Wpf
 {
- 
-    enum ViewShrinkState
-    {
-        Individual,     // must draw as view it's own
-        Shrinker,       // must draw as shrinker 
-        Shrinked,       // must not to draw
-    }
-
-
     /// <summary>
     /// ChartPointView for Bulk rendering
     /// this dosen' have UIElement
     /// </summary>
-    internal class AccelCandlePointView : PointView, IOhlcPointView
+    internal class AccelCandlePointView : AccelPointView, IOhlcPointView
     {
         public double Open { get; set; }
         public double High { get; set; }
@@ -41,26 +32,7 @@ namespace LiveCharts.Wpf
 
         public string Label { get; set; }
 
-        
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
-        {
-            //nothing to do
-        }
-
-        public override void RemoveFromView(ChartCore chart)
-        {
-            //nothing to do
-        }
-
-        public override void OnHover(ChartPoint point)
-        {
-            //nothing to do
-        }
-
-        public override void OnHoverLeave(ChartPoint point)
-        {
-            //nothing to do
-        }
+       
 
 
         #region shrink drawing
