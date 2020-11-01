@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4D253423-AE05-47F6-A59D-9162EC0BB1F2}</ProjectGuid>
+    <ProjectGuid>{D1927309-196F-41BB-B040-A9C59BB3E1EF}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveCharts.Wpf</RootNamespace>

@@ -281,7 +281,7 @@ namespace LiveCharts.Wpf
                         else
                         {
                             //compare with shrinkerView
-                            if (Math.Abs(shrinkerView.Left - currentView.Left) < 3d)
+                            if (Math.Abs(shrinkerView.Left - currentView.Left) < 2d)
                             {
                                 shrinkerView.ShrinkState = ViewShrinkState.Shrinker;
                                 currentView.ShrinkState = ViewShrinkState.Shrinked;

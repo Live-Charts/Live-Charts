@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D447642C-A85F-4AB0-96D9-C66CFF91AADA}</ProjectGuid>
+    <ProjectGuid>{4C61F7D3-6B17-4D46-8B72-B9A5D9F749D8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveCharts</RootNamespace>
