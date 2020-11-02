@@ -53,7 +53,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// 別のPointViewを自PointViewの縮約に取り込む
         /// </summary>
-        public void AddToShrinkView(AccelCandlePointView shrinkedPointView)
+        public void AddToShrinkView(ChartPoint shrinkedPoint, AccelCandlePointView shrinkedPointView)
         {
             shrinkedPointView.ShrinkState = ViewShrinkState.Shrinked;
 
@@ -73,7 +73,7 @@ namespace LiveCharts.Wpf
             this.ShrinkView.ShrinkerRectangle.Merge(new CorePoint(shrinkedPointView.Left, shrinkedPointView.High));
             this.ShrinkView.ShrinkerRectangle.Merge(new CorePoint(shrinkedPointView.Left + shrinkedPointView.Width, shrinkedPointView.Low));
 
-            this.ShrinkView.ShrinkerClose = shrinkedPointView.Close;
+            this.ShrinkView.LastShrinked = shrinkedPoint;
         }
 
         private _ShrinkView ShrinkView{ set; get;}
@@ -88,14 +88,13 @@ namespace LiveCharts.Wpf
             /// <summary>
             /// end point
             /// </summary>
-            public double ShrinkerClose { get; set; }
+            public ChartPoint LastShrinked { get; set; }
         }
 
         #endregion
 
 
-
-        public static void DrawCandle(
+        public void DrawCandle(
             ChartPoint current
             , DrawingContext drawingContext
             , Pen penIncrease , Pen penDecrease
@@ -104,67 +103,61 @@ namespace LiveCharts.Wpf
             , IList<FinancialColoringRule> coloringRules
             )
         {
-            var currentView = current.View as AccelCandlePointView;
-
-            if (currentView != null)
+            if (this.ShrinkState == ViewShrinkState.Individual)
             {
-                if (currentView.ShrinkState == ViewShrinkState.Individual)
+                //draw as nomal candle
+
+                var center = this.Left + this.Width / 2;
+
+                var penLine = current.Open <= current.Close ? penIncrease : penDecrease;
+                var brushRect = current.Open <= current.Close ? brushIncrease : brushDecrease;
+                var penRect = current.Open <= current.Close ? penIncrease : penDecrease;
+
+                if (coloringRules != null)
                 {
-                    //draw as nomal candle
-
-                    var center = currentView.Left + currentView.Width / 2;
-
-                    var penLine = current.Open >= current.Close ? penIncrease : penDecrease;
-                    var brushRect = current.Open >= current.Close ? brushIncrease : brushDecrease;
-                    var penRect = current.Open >= current.Close ? penIncrease : penDecrease;
-
-                    if (coloringRules != null)
+                    foreach (var rule in coloringRules)
                     {
-                        foreach (var rule in coloringRules)
-                        {
-                            if (!rule.Condition(current, previous)) continue;
+                        if (!rule.Condition(current, previous)) continue;
 
-                            penLine = penLine.Clone();
-                            penLine.Brush = rule.Stroke;
-                            penLine.Freeze();
+                        penLine = penLine.Clone();
+                        penLine.Brush = rule.Stroke;
+                        penLine.Freeze();
 
-                            brushRect = rule.Fill.Clone();
-                            brushRect.Freeze();
+                        brushRect = rule.Fill.Clone();
+                        brushRect.Freeze();
 
-                            penRect = penRect.Clone();
-                            penRect.Brush = rule.Stroke;
-                            penRect.Freeze();
+                        penRect = penRect.Clone();
+                        penRect.Brush = rule.Stroke;
+                        penRect.Freeze();
 
-                            break;
-                        }
-                    }
-
-                    drawingContext.DrawLine(
-                        penLine
-                        , new Point(center, currentView.High)
-                        , new Point(center, currentView.Low));
-
-
-                    drawingContext.DrawRectangle(brushRect, penRect,
-                        new Rect(
-                            currentView.Left
-                            , Math.Min(currentView.Open, currentView.Close)
-                            , currentView.Width
-                            , Math.Abs(currentView.Open - currentView.Close)
-                        ));
-
-
-                }
-                else if (currentView.ShrinkState == ViewShrinkState.Shrinker)
-                {
-                    //draw as shrinker
-                    if (currentView.ShrinkView != null)
-                    {
-                        var brushRect = currentView.Open >= currentView.ShrinkView.ShrinkerClose ? brushIncrease : brushDecrease;
-                        drawingContext.DrawRectangle(brushRect, null, currentView.ShrinkView.ShrinkerRectangle.AsRect());
+                        break;
                     }
                 }
 
+                drawingContext.DrawLine(
+                    penLine
+                    , new Point(center, this.High)
+                    , new Point(center, this.Low));
+
+
+                drawingContext.DrawRectangle(brushRect, penRect,
+                    new Rect(
+                        this.Left
+                        , Math.Min(this.Open, this.Close)
+                        , this.Width
+                        , Math.Abs(this.Open - this.Close)
+                    ));
+
+
+            }
+            else if (this.ShrinkState == ViewShrinkState.Shrinker)
+            {
+                //draw as shrinker
+                if (this.ShrinkView != null)
+                {
+                    var brushRect = current.Open <= this.ShrinkView.LastShrinked.Close ? brushIncrease : brushDecrease;
+                    drawingContext.DrawRectangle(brushRect, null, this.ShrinkView.ShrinkerRectangle.AsRect());
+                }
             }
         }
     }
@@ -319,7 +312,7 @@ namespace LiveCharts.Wpf
                             //compare with shrinkerView
                             if (Math.Abs(shrinkerView.Left - currentView.Left) < 1.5d)
                             {
-                                shrinkerView.AddToShrinkView( currentView );
+                                shrinkerView.AddToShrinkView(current, currentView);
                             }
                             else
                             {
@@ -336,12 +329,18 @@ namespace LiveCharts.Wpf
                 ChartPoint previous = null;
                 foreach (var current in this.RenderdChartPointList)
                 {
-                    AccelCandlePointView.DrawCandle(current,
-                        drawingContext,
-                        penIncrease, penDecrease, brushIncrease, brushDecrease,
-                        previous, this.ColoringRules);
+                    var currentView = current.View as AccelCandlePointView;
 
-                    previous = current;
+                    if (currentView != null)
+                    {
+                        currentView.DrawCandle(
+                            current,
+                            drawingContext,
+                            penIncrease, penDecrease, brushIncrease, brushDecrease,
+                            previous, this.ColoringRules);
+
+                        previous = current;
+                    }
                 }
 
 

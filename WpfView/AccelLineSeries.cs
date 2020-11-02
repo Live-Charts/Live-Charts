@@ -47,7 +47,7 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// 別のPointViewを自PointViewの縮約に取り込む
         /// </summary>
-        public void AddToShrinkView(AccelHorizontalBezierPointView shrinkedPointView, SeriesOrientation orientation)
+        public void AddToShrinkView(ChartPoint shrinkedPoint, AccelHorizontalBezierPointView shrinkedPointView, SeriesOrientation orientation)
         {
             shrinkedPointView.ShrinkState = ViewShrinkState.Shrinked;
 
@@ -98,33 +98,33 @@ namespace LiveCharts.Wpf
 
         #endregion
 
-        public static void DrawBezierTo(
-            AccelHorizontalBezierPointView currentView
+        public void DrawBezierTo(
+            ChartPoint current
             , StreamGeometryContext ctx
             )
         {
-            if (currentView.ShrinkState == ViewShrinkState.Individual)
+            if (this.ShrinkState == ViewShrinkState.Individual)
             {
                 ctx.BezierTo(
-                    currentView.Data.Point1.AsPoint(),
-                    currentView.Data.Point2.AsPoint(),
-                    currentView.Data.Point3.AsPoint(),
+                    this.Data.Point1.AsPoint(),
+                    this.Data.Point2.AsPoint(),
+                    this.Data.Point3.AsPoint(),
                     true, false);
             }
-            else if (currentView.ShrinkState == ViewShrinkState.Shrinker)
+            else if (this.ShrinkState == ViewShrinkState.Shrinker)
             {
                 //縮約での表示
-                if (currentView.ShrinkView.IsHighFirst)
+                if (this.ShrinkView.IsHighFirst)
                 {
-                    ctx.LineTo(currentView.ShrinkView.PointH.AsPoint(), true, false);
-                    ctx.LineTo(currentView.ShrinkView.PointL.AsPoint(), true, false);
+                    ctx.LineTo(this.ShrinkView.PointH.AsPoint(), true, false);
+                    ctx.LineTo(this.ShrinkView.PointL.AsPoint(), true, false);
                 }
                 else
                 {
-                    ctx.LineTo(currentView.ShrinkView.PointL.AsPoint(), true, false);
-                    ctx.LineTo(currentView.ShrinkView.PointH.AsPoint(), true, false);
+                    ctx.LineTo(this.ShrinkView.PointL.AsPoint(), true, false);
+                    ctx.LineTo(this.ShrinkView.PointH.AsPoint(), true, false);
                 }
-                ctx.LineTo(currentView.ShrinkView.PointC.AsPoint(), true, false);
+                ctx.LineTo(this.ShrinkView.PointC.AsPoint(), true, false);
             }
 
         }
@@ -307,7 +307,7 @@ namespace LiveCharts.Wpf
                             if (Math.Abs(shrinkerView.Data.Point1.X - currentView.Data.Point3.X) < 1.5d)
                             //if (false)
                             {
-                                shrinkerView.AddToShrinkView( currentView, seriesOrientation);
+                                shrinkerView.AddToShrinkView(current, currentView, seriesOrientation);
                             }
                             else
                             {
@@ -355,7 +355,7 @@ namespace LiveCharts.Wpf
                                     ctx.LineTo(currentView.Data.Point1.AsPoint(), false, true);
                                 }
 
-                                AccelHorizontalBezierPointView.DrawBezierTo(currentView, ctx);
+                                currentView.DrawBezierTo(current, ctx);
 
                                 lastPointView = currentView;
                             }
