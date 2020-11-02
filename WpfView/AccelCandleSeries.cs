@@ -48,7 +48,7 @@ namespace LiveCharts.Wpf
         public CoreRectangle ShrinkerRectangle { set; get; }
  
         /// <summary>
-        /// 
+        /// end point
         /// </summary>
         public double ShrinkerClose { get; set; }
 

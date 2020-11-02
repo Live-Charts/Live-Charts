@@ -26,6 +26,26 @@ namespace LiveCharts.Wpf
 
         public string Label { get; set; }
 
+        #region shrink drawing
+
+        /// <summary>
+        /// if this view is shrinking or not
+        /// </summary>
+        public ViewShrinkState ShrinkState { set; get; }
+
+        /// <summary>
+        /// if this view draws shrinking mode, this rectangle is representative.
+        /// </summary>
+        public CoreRectangle ShrinkerRectangle { set; get; }
+
+        /// <summary>
+        /// end point
+        /// </summary>
+        public double ShrinkerClose { get; set; }
+
+        #endregion
+
+        /*
         public int SegmentPosition { get; private set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
@@ -35,6 +55,9 @@ namespace LiveCharts.Wpf
             //つまり2以下なら、新しいセグメントがスタートしたことを意味する
             SegmentPosition = index;
         }
+        */
+
+
 
     }
 
@@ -173,6 +196,9 @@ namespace LiveCharts.Wpf
         {
             if( Visibility == Visibility.Visible)
             {
+                var seriesOrientation = Model?.SeriesOrientation ?? SeriesOrientation.Horizontal;
+
+
                 Brush brushStroke = Stroke.Clone();
                 brushStroke.Freeze();
 
@@ -192,9 +218,55 @@ namespace LiveCharts.Wpf
                     new CoreRectangle(0, 0, Model.Chart.DrawMargin.Width, Model.Chart.DrawMargin.Height)).ToList();
 
 
-                // Draw path line
+                // shrink draw items
+                AccelHorizontalBezierPointView shrinkerView = null;
+                foreach (var current in this.RenderdChartPointList)
+                {
+                    var currentView = current.View as AccelHorizontalBezierPointView;
+                    if (currentView != null)
+                    {
+                        currentView.ShrinkState = ViewShrinkState.Individual;
 
-                var seriesOrientation = Model?.SeriesOrientation ?? SeriesOrientation.Horizontal;
+                        if (shrinkerView == null)
+                        {
+                            shrinkerView = currentView;
+
+                            //縮約表示用の矩形を初期化
+                            shrinkerView.ShrinkerRectangle = new CoreRectangle(
+                                Math.Min(shrinkerView.Data.Point1.X, shrinkerView.Data.Point3.X),
+                                Math.Min(shrinkerView.Data.Point1.Y, shrinkerView.Data.Point3.Y),
+                                Math.Abs(shrinkerView.Data.Point3.X - shrinkerView.Data.Point1.X),
+                                Math.Abs(shrinkerView.Data.Point3.Y - shrinkerView.Data.Point1.Y)
+                                );
+                        }
+                        else
+                        {
+                            //compare with shrinkerView
+                            if (Math.Abs(shrinkerView.Data.Point1.X - currentView.Data.Point3.X) < 2d)
+                            //if (false)
+                            {
+                                shrinkerView.ShrinkState = ViewShrinkState.Shrinker;
+                                currentView.ShrinkState = ViewShrinkState.Shrinked;
+
+                                //縮約表示用の矩形に、縮約されるViewのViewをマージする
+                                shrinkerView.ShrinkerRectangle.Merge(currentView.Data.Point1);
+                                shrinkerView.ShrinkerRectangle.Merge(currentView.Data.Point3);
+
+                                shrinkerView.ShrinkerClose = seriesOrientation == SeriesOrientation.Horizontal 
+                                    ? currentView.Data.Point3.Y : currentView.Data.Point3.X;
+                            }
+                            else
+                            {
+                                shrinkerView = null;
+                            }
+                        }
+                    }
+
+                }
+                
+
+
+                // Draw path line
 
                 foreach (var segmentedList in SegmentedRenderdChartPointList(this.RenderdChartPointList))
                 {
@@ -228,11 +300,21 @@ namespace LiveCharts.Wpf
                                     ctx.LineTo(currentView.Data.Point1.AsPoint(), false, true);
                                 }
 
-                                ctx.BezierTo(
-                                    currentView.Data.Point1.AsPoint(),
-                                    currentView.Data.Point2.AsPoint(),
-                                    currentView.Data.Point3.AsPoint(),
-                                    true, false);
+
+                                if (currentView.ShrinkState == ViewShrinkState.Individual)
+                                {
+                                    ctx.BezierTo(
+                                        currentView.Data.Point1.AsPoint(),
+                                        currentView.Data.Point2.AsPoint(),
+                                        currentView.Data.Point3.AsPoint(),
+                                        true, false);
+                                }
+                                else if(currentView.ShrinkState== ViewShrinkState.Shrinker)
+                                {
+                                    //縮約での表示
+                                    ctx.LineTo(currentView.Data.Point3.AsPoint(), true, false);
+                                }
+
 
                                 lastPointView = currentView;
                             }
@@ -286,13 +368,20 @@ namespace LiveCharts.Wpf
                     drawingContext.PushTransform(transformOffset);
                     foreach (var current in this.RenderdChartPointList)
                     {
-                        drawingContext.PushTransform(new TranslateTransform(current.ChartLocation.X , current.ChartLocation.Y));
-                        drawingContext.PushTransform(transformScale);
-                        drawingContext.DrawGeometry(
-                            Object.ReferenceEquals(current, m_HoverringChartPoint) ? brushStroke : brushPointForeground
-                            , pgeoPenStroke, PointGeometry);
-                        drawingContext.Pop();
-                        drawingContext.Pop();
+                        var currentView = current.View as AccelHorizontalBezierPointView;
+                        if (currentView != null)
+                        {
+                            if (currentView.ShrinkState == ViewShrinkState.Individual)
+                            {
+                                drawingContext.PushTransform(new TranslateTransform(current.ChartLocation.X, current.ChartLocation.Y));
+                                drawingContext.PushTransform(transformScale);
+                                drawingContext.DrawGeometry(
+                                    Object.ReferenceEquals(current, m_HoverringChartPoint) ? brushStroke : brushPointForeground
+                                    , pgeoPenStroke, PointGeometry);
+                                drawingContext.Pop();
+                                drawingContext.Pop();
+                            }
+                        }
                     }
                     drawingContext.Pop();
                 }
@@ -318,6 +407,11 @@ namespace LiveCharts.Wpf
                             {
                                 continue;
                             }
+                            if (currentView.ShrinkState == ViewShrinkState.Shrinked)
+                            {
+                                continue;
+                            }
+
 
                             FormattedText formattedText = new FormattedText(
                                     currentView.Label,
