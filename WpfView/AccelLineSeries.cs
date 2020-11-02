@@ -26,38 +26,108 @@ namespace LiveCharts.Wpf
 
         public string Label { get; set; }
 
+
+
         #region shrink drawing
 
         /// <summary>
         /// if this view is shrinking or not
         /// </summary>
-        public ViewShrinkState ShrinkState { set; get; }
+        public ViewShrinkState ShrinkState { get; private set; }
 
         /// <summary>
-        /// if this view draws shrinking mode, this rectangle is representative.
+        /// 縮約表示の初期化（縮約表示しない状態にしておく）
         /// </summary>
-        public CoreRectangle ShrinkerRectangle { set; get; }
+        public void InitShrinkState()
+        {
+            this.ShrinkState = ViewShrinkState.Individual;
+            this.ShrinkView = null;
+        }
 
         /// <summary>
-        /// end point
+        /// 別のPointViewを自PointViewの縮約に取り込む
         /// </summary>
-        public double ShrinkerClose { get; set; }
+        public void AddToShrinkView(AccelHorizontalBezierPointView shrinkedPointView, SeriesOrientation orientation)
+        {
+            shrinkedPointView.ShrinkState = ViewShrinkState.Shrinked;
+
+            if (this.ShrinkView == null)
+            {
+                this.ShrinkState = ViewShrinkState.Shrinker;
+
+                this.ShrinkView = new _ShrinkView();
+
+                //縮約表示用の端点を初期化
+                this.ShrinkView.PointH = this.Data.Point1;
+                this.ShrinkView.PointL = this.Data.Point1;
+                this.ShrinkView.PointC = this.Data.Point3;
+            }
+
+            //TODO:縦軸表示の場合への対応は後日
+            //if(orientation== SeriesOrientation.Vertical)
+            //{
+            //}
+
+            //より高い値をPointHに保持
+            if (this.ShrinkView.PointH.Y > shrinkedPointView.Data.Point1.Y)
+            {
+                this.ShrinkView.PointH = shrinkedPointView.Data.Point1;
+                this.ShrinkView.IsHighFirst = true;
+            }
+
+            //より低い値をPointLに保持
+            if (this.ShrinkView.PointL.Y < shrinkedPointView.Data.Point1.Y)
+            {
+                this.ShrinkView.PointL = shrinkedPointView.Data.Point1;
+                this.ShrinkView.IsHighFirst = false;
+            }
+
+            this.ShrinkView.PointC = shrinkedPointView.Data.Point3;
+        }
+
+        private _ShrinkView ShrinkView { set; get; }
+
+        private class _ShrinkView
+        {
+            public CorePoint PointH { get; set; }
+            public CorePoint PointL { get; set; }
+            public CorePoint PointC { get; set; }
+
+            public bool IsHighFirst { get; set; }
+        }
 
         #endregion
 
-        /*
-        public int SegmentPosition { get; private set; }
-
-        public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
+        public static void DrawBezierTo(
+            AccelHorizontalBezierPointView currentView
+            , StreamGeometryContext ctx
+            )
         {
-            //indexは、segment内での位置を示している（全体の位置ではない）
-            //1なら最初のセグメント、２なら、２番目以降のセグメントのスタート
-            //つまり2以下なら、新しいセグメントがスタートしたことを意味する
-            SegmentPosition = index;
+            if (currentView.ShrinkState == ViewShrinkState.Individual)
+            {
+                ctx.BezierTo(
+                    currentView.Data.Point1.AsPoint(),
+                    currentView.Data.Point2.AsPoint(),
+                    currentView.Data.Point3.AsPoint(),
+                    true, false);
+            }
+            else if (currentView.ShrinkState == ViewShrinkState.Shrinker)
+            {
+                //縮約での表示
+                if (currentView.ShrinkView.IsHighFirst)
+                {
+                    ctx.LineTo(currentView.ShrinkView.PointH.AsPoint(), true, false);
+                    ctx.LineTo(currentView.ShrinkView.PointL.AsPoint(), true, false);
+                }
+                else
+                {
+                    ctx.LineTo(currentView.ShrinkView.PointL.AsPoint(), true, false);
+                    ctx.LineTo(currentView.ShrinkView.PointH.AsPoint(), true, false);
+                }
+                ctx.LineTo(currentView.ShrinkView.PointC.AsPoint(), true, false);
+            }
+
         }
-        */
-
-
 
     }
 
@@ -225,35 +295,19 @@ namespace LiveCharts.Wpf
                     var currentView = current.View as AccelHorizontalBezierPointView;
                     if (currentView != null)
                     {
-                        currentView.ShrinkState = ViewShrinkState.Individual;
+                        currentView.InitShrinkState();
 
                         if (shrinkerView == null)
                         {
                             shrinkerView = currentView;
-
-                            //縮約表示用の矩形を初期化
-                            shrinkerView.ShrinkerRectangle = new CoreRectangle(
-                                Math.Min(shrinkerView.Data.Point1.X, shrinkerView.Data.Point3.X),
-                                Math.Min(shrinkerView.Data.Point1.Y, shrinkerView.Data.Point3.Y),
-                                Math.Abs(shrinkerView.Data.Point3.X - shrinkerView.Data.Point1.X),
-                                Math.Abs(shrinkerView.Data.Point3.Y - shrinkerView.Data.Point1.Y)
-                                );
                         }
                         else
                         {
                             //compare with shrinkerView
-                            if (Math.Abs(shrinkerView.Data.Point1.X - currentView.Data.Point3.X) < 2d)
+                            if (Math.Abs(shrinkerView.Data.Point1.X - currentView.Data.Point3.X) < 1.5d)
                             //if (false)
                             {
-                                shrinkerView.ShrinkState = ViewShrinkState.Shrinker;
-                                currentView.ShrinkState = ViewShrinkState.Shrinked;
-
-                                //縮約表示用の矩形に、縮約されるViewのViewをマージする
-                                shrinkerView.ShrinkerRectangle.Merge(currentView.Data.Point1);
-                                shrinkerView.ShrinkerRectangle.Merge(currentView.Data.Point3);
-
-                                shrinkerView.ShrinkerClose = seriesOrientation == SeriesOrientation.Horizontal 
-                                    ? currentView.Data.Point3.Y : currentView.Data.Point3.X;
+                                shrinkerView.AddToShrinkView( currentView, seriesOrientation);
                             }
                             else
                             {
@@ -275,6 +329,7 @@ namespace LiveCharts.Wpf
                     using (StreamGeometryContext ctx = geometry.Open())
                     {
                         AccelHorizontalBezierPointView lastPointView = null;
+                        CorePoint firstPoint = new CorePoint();
                         bool isFirst = true;
                         foreach (var current in segmentedList)
                         {
@@ -285,7 +340,7 @@ namespace LiveCharts.Wpf
                                 {
                                     isFirst = false;
 
-                                    var firstPoint = currentView.Data.Point1;
+                                    firstPoint = currentView.Data.Point1;
                                     if(seriesOrientation== SeriesOrientation.Horizontal)
                                     {
                                         firstPoint.Y = Model.Chart.DrawMargin.Top + Model.Chart.DrawMargin.Height;
@@ -300,21 +355,7 @@ namespace LiveCharts.Wpf
                                     ctx.LineTo(currentView.Data.Point1.AsPoint(), false, true);
                                 }
 
-
-                                if (currentView.ShrinkState == ViewShrinkState.Individual)
-                                {
-                                    ctx.BezierTo(
-                                        currentView.Data.Point1.AsPoint(),
-                                        currentView.Data.Point2.AsPoint(),
-                                        currentView.Data.Point3.AsPoint(),
-                                        true, false);
-                                }
-                                else if(currentView.ShrinkState== ViewShrinkState.Shrinker)
-                                {
-                                    //縮約での表示
-                                    ctx.LineTo(currentView.Data.Point3.AsPoint(), true, false);
-                                }
-
+                                AccelHorizontalBezierPointView.DrawBezierTo(currentView, ctx);
 
                                 lastPointView = currentView;
                             }
@@ -334,6 +375,7 @@ namespace LiveCharts.Wpf
                             }
 
                             ctx.LineTo(lastPoint.AsPoint(), false, true);
+                            ctx.LineTo(firstPoint.AsPoint(), false, true);
                         }
                     }
 

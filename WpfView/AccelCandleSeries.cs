@@ -32,7 +32,6 @@ namespace LiveCharts.Wpf
 
         public string Label { get; set; }
 
-       
 
 
         #region shrink drawing
@@ -40,17 +39,57 @@ namespace LiveCharts.Wpf
         /// <summary>
         /// if this view is shrinking or not
         /// </summary>
-        public ViewShrinkState ShrinkState { set; get; }
+        public ViewShrinkState ShrinkState { get; private set; }
 
         /// <summary>
-        /// if this view draws shrinking mode, this rectangle is representative.
+        /// 縮約表示の初期化（縮約表示しない状態にしておく）
         /// </summary>
-        public CoreRectangle ShrinkerRectangle { set; get; }
- 
+        public void InitShrinkState()
+        {
+            this.ShrinkState = ViewShrinkState.Individual;
+            this.ShrinkView = null;
+        }
+
         /// <summary>
-        /// end point
+        /// 別のPointViewを自PointViewの縮約に取り込む
         /// </summary>
-        public double ShrinkerClose { get; set; }
+        public void AddToShrinkView(AccelCandlePointView shrinkedPointView)
+        {
+            shrinkedPointView.ShrinkState = ViewShrinkState.Shrinked;
+
+            if(this.ShrinkView == null)
+            {
+                this.ShrinkState = ViewShrinkState.Shrinker;
+
+                this.ShrinkView = new _ShrinkView();
+
+                //縮約表示用の矩形を初期化
+                this.ShrinkView.ShrinkerRectangle = new CoreRectangle(
+                        this.Left, this.High,
+                        this.Width, this.Low - this.High);
+            }
+
+            //縮約表示用の矩形に、縮約されるViewのViewをマージする
+            this.ShrinkView.ShrinkerRectangle.Merge(new CorePoint(shrinkedPointView.Left, shrinkedPointView.High));
+            this.ShrinkView.ShrinkerRectangle.Merge(new CorePoint(shrinkedPointView.Left + shrinkedPointView.Width, shrinkedPointView.Low));
+
+            this.ShrinkView.ShrinkerClose = shrinkedPointView.Close;
+        }
+
+        private _ShrinkView ShrinkView{ set; get;}
+
+        private class _ShrinkView
+        {
+            /// <summary>
+            /// this rectangle is representative.
+            /// </summary>
+            public CoreRectangle ShrinkerRectangle { set; get; }
+
+            /// <summary>
+            /// end point
+            /// </summary>
+            public double ShrinkerClose { get; set; }
+        }
 
         #endregion
 
@@ -75,9 +114,9 @@ namespace LiveCharts.Wpf
 
                     var center = currentView.Left + currentView.Width / 2;
 
-                    var penLine = current.Open <= current.Close ? penIncrease : penDecrease;
-                    var brushRect = current.Open <= current.Close ? brushIncrease : brushDecrease;
-                    var penRect = current.Open <= current.Close ? penIncrease : penDecrease;
+                    var penLine = current.Open >= current.Close ? penIncrease : penDecrease;
+                    var brushRect = current.Open >= current.Close ? brushIncrease : brushDecrease;
+                    var penRect = current.Open >= current.Close ? penIncrease : penDecrease;
 
                     if (coloringRules != null)
                     {
@@ -119,9 +158,11 @@ namespace LiveCharts.Wpf
                 else if (currentView.ShrinkState == ViewShrinkState.Shrinker)
                 {
                     //draw as shrinker
-
-                    var brushRect = currentView.Open <= currentView.ShrinkerClose ? brushIncrease : brushDecrease;
-                    drawingContext.DrawRectangle(brushRect, null, currentView.ShrinkerRectangle.AsRect());
+                    if (currentView.ShrinkView != null)
+                    {
+                        var brushRect = currentView.Open >= currentView.ShrinkView.ShrinkerClose ? brushIncrease : brushDecrease;
+                        drawingContext.DrawRectangle(brushRect, null, currentView.ShrinkView.ShrinkerRectangle.AsRect());
+                    }
                 }
 
             }
@@ -267,30 +308,18 @@ namespace LiveCharts.Wpf
                     var currentView = current.View as AccelCandlePointView;
                     if (currentView != null)
                     {
-                        currentView.ShrinkState = ViewShrinkState.Individual;
+                        currentView.InitShrinkState();
 
                         if (shrinkerView == null)
                         {
                             shrinkerView = currentView;
-
-                            //縮約表示用の矩形を初期化
-                            shrinkerView.ShrinkerRectangle = new CoreRectangle(
-                                shrinkerView.Left, shrinkerView.High,
-                                shrinkerView.Width, shrinkerView.Low - shrinkerView.High);
                         }
                         else
                         {
                             //compare with shrinkerView
-                            if (Math.Abs(shrinkerView.Left - currentView.Left) < 2d)
+                            if (Math.Abs(shrinkerView.Left - currentView.Left) < 1.5d)
                             {
-                                shrinkerView.ShrinkState = ViewShrinkState.Shrinker;
-                                currentView.ShrinkState = ViewShrinkState.Shrinked;
-
-                                //縮約表示用の矩形に、縮約されるViewのViewをマージする
-                                shrinkerView.ShrinkerRectangle.Merge(new CorePoint(currentView.Left, currentView.High));
-                                shrinkerView.ShrinkerRectangle.Merge(new CorePoint(currentView.Left + currentView.Width, currentView.Low));
-
-                                shrinkerView.ShrinkerClose = currentView.Close;
+                                shrinkerView.AddToShrinkView( currentView );
                             }
                             else
                             {
