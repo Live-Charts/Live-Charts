@@ -4,7 +4,7 @@
 
 # This project will continue in another repo, please see  [LiveCharts2](https://github.com/Live-Charts/LiveCharts2) for more info
 
-# ~~LiveCharts 1.0 is coming soon (ETA April~~ September 2018)!~~
+# ~~LiveCharts 1.0 is coming soon (ETA AprilSeptember 2018)!~~
 
 ~~We are doing a full rewrite of the library with all the learned lessons, the new version is focused on:~~
 
