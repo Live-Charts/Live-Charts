@@ -80,9 +80,18 @@ namespace LiveCharts.Wpf.Components
             
             if (!force && !wpfChart.IsVisible && !wpfChart.IsMocked) return;
 
+            double rowSeriesPaddingCorrectionValue = 0;
+            foreach (Series series in wpfChart.Series)
+            {
+              if (series is RowSeries rowSeries)
+              {
+                rowSeriesPaddingCorrectionValue = Math.Max(rowSeriesPaddingCorrectionValue, rowSeries.RowPadding);
+              }
+            }
+
             Chart.ControlSize = wpfChart.IsMocked
                 ? wpfChart.Model.ControlSize
-                : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight);
+                : new CoreSize(wpfChart.ActualWidth, wpfChart.ActualHeight - rowSeriesPaddingCorrectionValue);
 
             Timer.Stop();
             Update(restartView, force);
