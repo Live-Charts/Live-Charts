@@ -441,6 +441,21 @@ namespace LiveCharts.Wpf
         /// Series point Geometry
         /// </summary>
         public Geometry PointGeometry { get; set; }
+        
+         /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            var item = obj as SeriesViewModel;
+            if (item == null)
+                return false;
+            
+            return Fill == item.Fill
+                   && Stroke == item.Stroke
+                   && Title == item.Title
+                   && (PointGeometry == null || item.PointGeometry == null
+                                             || PointGeometry.Bounds == item.PointGeometry.Bounds && PointGeometry.Transform == item.PointGeometry.Transform)
+                   && StrokeThickness == item.StrokeThickness;
+        }
     }
 
 }

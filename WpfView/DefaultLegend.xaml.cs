@@ -37,6 +37,17 @@ namespace LiveCharts.Wpf
     {
         private List<SeriesViewModel> _series;
 
+        private bool HasSeriesItemsChanged(List<SeriesViewModel> newSeries)
+        {
+            if (_series == null)
+                return true;
+            
+            if (newSeries.Count != _series.Count)
+                return true;
+
+            return newSeries.Select(newItem => Enumerable.Contains(_series, newItem)).Any(found => !found);
+        }
+
         /// <summary>
         /// Initializes a new instance of DefaultLegend class
         /// </summary>
@@ -60,8 +71,11 @@ namespace LiveCharts.Wpf
             get { return _series; }
             set
             {
-                _series = value;
-                OnPropertyChanged("Series");
+                if (HasSeriesItemsChanged(value))
+                {
+                    _series = value;
+                    OnPropertyChanged("Series");
+                }  
             }
         }
 
