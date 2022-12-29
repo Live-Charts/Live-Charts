@@ -161,6 +161,8 @@ namespace LiveCharts.Wpf
             }
 
             pbv.Rectangle.Fill = Fill;
+            if (point.Fill != null) pbv.Rectangle.Fill = (Brush)point.Fill;
+
             pbv.Rectangle.StrokeThickness = StrokeThickness;
             pbv.Rectangle.Stroke = Stroke;
             pbv.Rectangle.StrokeDashArray = StrokeDashArray;
