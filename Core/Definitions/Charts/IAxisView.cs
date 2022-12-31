@@ -95,6 +95,13 @@ namespace LiveCharts.Definitions.Charts
         /// </value>
         bool IsMerged { get; set; }
         /// <summary>
+        /// Gets or sets whether separator values are rounded to the nearest Unit.
+        /// </summary>
+        /// <value>
+        /// Should separator values be rounded to the nearest Unit?
+        /// </value>
+        bool RoundSeparatorsToUnit { get; set; }
+        /// <summary>
         /// Gets or sets the bar unit.
         /// </summary>
         /// <value>

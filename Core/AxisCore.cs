@@ -301,11 +301,14 @@ namespace LiveCharts
                     ? View.Unit
                     : 1);
 
+            var botLimit = View.RoundSeparatorsToUnit ? Math.Truncate(BotLimit / m) * m : BotLimit; 
+
             if (TopLimit <= 0 && BotLimit < 0)
             {
                 var l = TopLimit - (EvaluatesUnitWidth ? u : 0);
+                
                 LastSeparator = l;
-                for (var i = l; i >= Math.Truncate(BotLimit / m) * m; i -= S)
+                for (var i = l; i >= botLimit; i -= S)
                 {
                     FirstSeparator = i;
                     DrawSeparator(i, tolerance, currentMargin, f, source);
@@ -313,11 +316,11 @@ namespace LiveCharts
             }
             else
             {
-                var l = Math.Truncate(BotLimit / m) * m;
+                var l = botLimit;
                 FirstSeparator = l;
                 for (var i = l; i <= TopLimit - (EvaluatesUnitWidth ? u : 0); i += S)
                 {
-                     LastSeparator = i;
+                    LastSeparator = i;
                     DrawSeparator(i, tolerance, currentMargin, f, source);
                 }
             }
