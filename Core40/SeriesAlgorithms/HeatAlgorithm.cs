@@ -153,7 +153,7 @@ namespace LiveCharts.SeriesAlgorithms
             CoreColor from = new CoreColor(0, 0, 0, 0), to = new CoreColor(0, 0, 0, 0);
             double fromOffset = 0, toOffset = 0;
 
-            for (var i = 0; i < gradients.Count; i++)
+            for (var i = 0; i < gradients.Count - 1; i++)
             {
                 // ReSharper disable once InvertIf
                 if (double.IsNaN(weight) || gradients[i].Offset <= weight && gradients[i + 1].Offset >= weight)
