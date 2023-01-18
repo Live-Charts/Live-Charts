@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.DateAxis.DateAxisExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Background="#FFC107" HorizontalAlignment="Right" Padding="10 5" FontWeight="Bold">Experimental</TextBlock>
+        
+        <StackPanel Grid.Row="1">
+            <Label>Set `DateAxis.InitialDateTime` to configure the starting point (X=0) dateTime.</Label>
+            <Label>Configure the DateAxis.Period to the PeriodUnit of your axis values. Use the buttons below to configure this property for the X axis.</Label>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Click="SetMilliSecondPeriod">
+                Millisecond
+            </Button>
+            <Button Click="SetSecondPeriod">
+                Second
+            </Button>
+            <Button Click="SetMinutePeriod">
+                Minute
+            </Button>
+            <Button Click="SetHourPeriod">
+                Hour
+            </Button>
+            <Button Click="SetDayPeriod">
+                Day
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label Content="Series Period: "></Label>
+            <Label Content="{Binding Period}"></Label>
+            <Label Content="Seperator window: "></Label>
+            <Label Content="{Binding SelectedWindow, Mode=TwoWay}"></Label>
+        </StackPanel>
+
+        <lvc:CartesianChart Zoom="X" Grid.Row="4" DisableAnimations="False" Series="{Binding SeriesCollection}">
+            <lvc:CartesianChart.AxisX>
+                <lvc:DateAxis
+                    MinValue="0"
+                    MaxValue="60"
+                    Foreground="DarkSlateBlue"
+                    HeaderForeground="Black"
+                    Period="{Binding Period, Mode=TwoWay}"
+                    ShowLabels="True"           
+                    SelectedWindow="{Binding SelectedWindow, Mode=TwoWay}"
+                    InitialDateTime="{Binding InitialDateTime}">
+                    <lvc:DateAxis.Separator>
+                        <lvc:Separator StrokeThickness="10" Stroke="Black"/>
+                    </lvc:DateAxis.Separator>
+                </lvc:DateAxis>
+            </lvc:CartesianChart.AxisX>
+        </lvc:CartesianChart>
+
+    </Grid>
+</UserControl>

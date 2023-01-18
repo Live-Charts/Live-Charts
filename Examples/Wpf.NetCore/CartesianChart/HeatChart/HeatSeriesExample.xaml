@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.HeatChart.HeatSeriesExample"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:heatChart="clr-namespace:Wpf.CartesianChart.HeatChart"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance heatChart:HeatSeriesExample}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Row="0" Click="ButtonBase_OnClick" Margin="10">Randomize</Button>
+        <lvc:CartesianChart Grid.Row="1" DataTooltip="{x:Null}">
+            <lvc:CartesianChart.Series>
+                <lvc:HeatSeries Values="{Binding Values}" DataLabels="True">
+                    
+                    <!--
+                    The GradientStopCollection is optional to define a custom gradient
+                    If this property is not specified, LiveCharts will set a gradient
+                    -->
+                    
+                    <lvc:HeatSeries.GradientStopCollection>
+                        <GradientStop Offset="0" Color="#99FFFF00"></GradientStop>
+                        <GradientStop Offset=".25" Color="#FFFFFF00"></GradientStop>
+                        <GradientStop Offset=".50" Color="#990000FF"></GradientStop>
+                        <GradientStop Offset=".75" Color="#FF0000FF"></GradientStop>
+                        <GradientStop Offset="1" Color="#50505050"></GradientStop>
+                    </lvc:HeatSeries.GradientStopCollection>
+                </lvc:HeatSeries>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX >
+                <lvc:Axis Labels="{Binding SalesMan}" LabelsRotation="-15">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="1"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Labels="{Binding Days}"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

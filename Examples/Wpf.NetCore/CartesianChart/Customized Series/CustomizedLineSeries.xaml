@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.Customized_Line_Series.CustomizedLineSeries"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:customizedLineSeries="clr-namespace:Wpf.CartesianChart.Customized_Line_Series"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance customizedLineSeries:CustomizedLineSeries }">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Margin="20" Click="MoveOnClick">Move</Button>
+        <lvc:CartesianChart Grid.Row="2" Background="#222E31">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="{Binding Values1}" StrokeThickness="4" StrokeDashArray="2" 
+                                Stroke="#6BBA45" Fill="Transparent" LineSmoothness="0" PointGeometrySize="20"
+                                PointGeometry="{x:Static lvc:DefaultGeometries.Diamond}" 
+                                PointForeground="#6BBA45"/>
+                <lvc:LineSeries Values="{Binding Values2}" StrokeThickness="2" 
+                                Stroke="#1C8FC5" Fill="Transparent" LineSmoothness="1" 
+                                PointGeometrySize="15" PointForeground="#222E31"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.VisualElements>
+                <lvc:VisualElement X="0.5" Y="8">
+                    <lvc:VisualElement.UIElement>
+                        <TextBlock Foreground="White">
+                            Hello!, this is a note merged in the chart.
+                        </TextBlock>
+                    </lvc:VisualElement.UIElement>
+                </lvc:VisualElement>
+            </lvc:CartesianChart.VisualElements>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis IsMerged="True">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator StrokeThickness="1" StrokeDashArray="2">
+                            <lvc:Separator.Stroke>
+                                <SolidColorBrush Color="#404F56" />
+                            </lvc:Separator.Stroke>
+                        </lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis IsMerged="True">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator StrokeThickness="1.5" StrokeDashArray="4">
+                            <lvc:Separator.Stroke>
+                                <SolidColorBrush Color="#404F56" />
+                            </lvc:Separator.Stroke>
+                        </lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

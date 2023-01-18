@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>LiveCharts</AssemblyName>
+    <RootNamespace>LiveCharts</RootNamespace>
+  </PropertyGroup>
+
+</Project>

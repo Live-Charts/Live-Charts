@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Wpf.CartesianChart.SectionsDragable.DragableSections"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Wpf.CartesianChart.SectionsDragable"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:DragableSections}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Click, hold and drag any section => </TextBlock>
+            <TextBlock>X:</TextBlock>
+            <TextBlock Text="{Binding XSection}"></TextBlock>
+            <TextBlock>, Y:</TextBlock>
+            <TextBlock Text="{Binding YSection}"></TextBlock>
+        </StackPanel>
+        <lvc:CartesianChart Grid.Row="1">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="7,2,8,2,7,4,9,4,2,8"></lvc:LineSeries>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis>
+                    <lvc:Axis.Sections>
+                        <lvc:AxisSection Draggable="True" 
+                                         Value="{Binding XSection, Mode=TwoWay}"
+                                         StrokeThickness="4"
+                                         Stroke="DarkSlateBlue"
+                                         Panel.ZIndex="99"/>
+                    </lvc:Axis.Sections>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis>
+                    <lvc:Axis.Sections>
+                        <lvc:AxisSection Draggable="True" 
+                                         Value="{Binding YSection, Mode=TwoWay}" 
+                                         StrokeThickness="4"
+                                         Stroke="DarkSlateBlue"
+                                         Panel.ZIndex="99"/>
+                    </lvc:Axis.Sections>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>

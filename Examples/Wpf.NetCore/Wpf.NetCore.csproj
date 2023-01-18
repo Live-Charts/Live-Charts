@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>Wpf</AssemblyName>
+    <RootNamespace>Wpf</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="cities.csv" />
+    <None Remove="Maps\World.xml" />
+    <None Remove="Resources\LiveChartsLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="cities.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\World.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0531" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core.NetStandard\Core.NetStandard.csproj" />
+    <ProjectReference Include="..\..\WpfView.NetCore\WpfView.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\LiveChartsLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
