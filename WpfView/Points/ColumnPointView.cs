@@ -62,14 +62,26 @@ namespace LiveCharts.Wpf.Points
                 double y;
 
 #pragma warning disable 618
-                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.ParallelTopRight || LabelPosition == BarLabelPosition.ParallelBottomLeft || LabelPosition == BarLabelPosition.Merged)
 #pragma warning restore 618
                 {
                     if (Transform == null)
                         Transform = new RotateTransform(270);
 
-                    y = Data.Top + Data.Height/2 + DataLabel.ActualWidth*.5;
                     DataLabel.RenderTransform = Transform;
+
+                    if (LabelPosition == BarLabelPosition.ParallelTopRight)
+                    {
+                        y = Data.Top + DataLabel.ActualWidth;
+                    }
+                    else if (LabelPosition == BarLabelPosition.ParallelBottomLeft)
+                    {
+                        y = Data.Top + Data.Height;
+                    }
+                    else
+                    {
+                        y = Data.Top + Data.Height / 2 + DataLabel.ActualWidth * .5;
+                    }
                 }
                 else if (LabelPosition == BarLabelPosition.Perpendicular)
                 {
@@ -97,7 +109,7 @@ namespace LiveCharts.Wpf.Points
                 double x;
 
 #pragma warning disable 618
-                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.Merged)
+                if (LabelPosition == BarLabelPosition.Parallel || LabelPosition == BarLabelPosition.ParallelTopRight || LabelPosition == BarLabelPosition.ParallelBottomLeft || LabelPosition == BarLabelPosition.Merged)
 #pragma warning restore 618
                 {
                     x = Data.Left + Data.Width/2 - DataLabel.ActualHeight/2;
