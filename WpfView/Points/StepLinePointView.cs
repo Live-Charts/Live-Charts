@@ -35,6 +35,7 @@ namespace LiveCharts.Wpf.Points
         public double DeltaY { get; set; }
         public Line Line1 { get; set; }
         public Line Line2 { get; set; }
+        public Line Line3 { get; set; }
         public Path Shape { get; set; }
 
         public override void DrawOrMove(ChartPoint previousDrawn, ChartPoint current, int index, ChartCore chart)
@@ -66,6 +67,20 @@ namespace LiveCharts.Wpf.Points
                     Line2.X2 = current.ChartLocation.X;
                     Line2.Y1 = chart.DrawMargin.Height;
                     Line2.Y2 = chart.DrawMargin.Height;
+                                      
+                }
+
+                if (((StepLineSeries)current.SeriesView).ContinueLastLine && index == current.SeriesView.Values.Count - 1)
+                {
+                    Line3.Visibility = System.Windows.Visibility.Visible;
+                    Line3.X1 = current.ChartLocation.X;
+                    Line3.X2 = current.ChartLocation.X + DeltaX;
+                    Line3.Y1 = chart.DrawMargin.Height;
+                    Line3.Y2 = chart.DrawMargin.Height;
+                }
+                else
+                {
+                    Line3.Visibility = System.Windows.Visibility.Collapsed;
                 }
 
                 if (Shape != null)
@@ -114,6 +129,20 @@ namespace LiveCharts.Wpf.Points
                     Line2.X2 = current.ChartLocation.X;
                     Line2.Y1 = current.ChartLocation.Y - DeltaY;
                     Line2.Y2 = current.ChartLocation.Y - DeltaY;
+                   
+                }
+
+                if (((StepLineSeries)current.SeriesView).ContinueLastLine && index == current.SeriesView.Values.Count - 1)
+                {
+                    Line3.Visibility = System.Windows.Visibility.Visible;
+                    Line3.X1 = current.ChartLocation.X;
+                    Line3.X2 = current.ChartLocation.X + DeltaX;
+                    Line3.Y1 = current.ChartLocation.Y;
+                    Line3.Y2 = current.ChartLocation.Y;
+                }
+                else
+                {
+                    Line3.Visibility = System.Windows.Visibility.Collapsed;
                 }
 
                 if (Shape != null)
@@ -175,6 +204,25 @@ namespace LiveCharts.Wpf.Points
                     new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
                 Line2.BeginAnimation(Line.Y2Property,
                     new DoubleAnimation(current.ChartLocation.Y - DeltaY, animSpeed));
+                
+            }
+
+            if (((StepLineSeries)current.SeriesView).ContinueLastLine &&  index == current.SeriesView.Values.Count - 1)
+            {
+                Line3.Visibility = System.Windows.Visibility.Visible;
+                Line3.BeginAnimation(Line.X1Property,
+                new DoubleAnimation(current.ChartLocation.X, animSpeed));
+                Line3.BeginAnimation(Line.X2Property,
+                new DoubleAnimation(current.ChartLocation.X + DeltaX, animSpeed));
+                Line3.BeginAnimation(Line.Y1Property,
+                new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+                Line3.BeginAnimation(Line.Y2Property,
+                new DoubleAnimation(current.ChartLocation.Y, animSpeed));
+
+            }
+            else
+            {
+                Line3.Visibility = System.Windows.Visibility.Collapsed;
             }
 
             if (Shape != null)
@@ -203,6 +251,7 @@ namespace LiveCharts.Wpf.Points
             chart.View.RemoveFromDrawMargin(DataLabel);
             chart.View.RemoveFromDrawMargin(Line1);
             chart.View.RemoveFromDrawMargin(Line2);
+            chart.View.RemoveFromDrawMargin(Line3);
         }
 
         public override void OnHover(ChartPoint point)

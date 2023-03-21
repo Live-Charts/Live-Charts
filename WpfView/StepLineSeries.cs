@@ -133,6 +133,17 @@ namespace LiveCharts.Wpf
             set { SetValue(InvertedModeProperty, value); }
         }
 
+        public bool ContinueLastLine
+        {
+            get { return (bool)GetValue(ContinueLastLineProperty); }
+            set { SetValue(ContinueLastLineProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ContinueLastLine.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ContinueLastLineProperty =
+            DependencyProperty.Register("ContinueLastLine", typeof(bool), typeof(StepLineSeries), new PropertyMetadata(false, CallChartUpdater()));
+
+
         #endregion
 
         #region Overridden Methods
@@ -154,10 +165,12 @@ namespace LiveCharts.Wpf
                     IsNew = true,
                     Line2 = new Line(),
                     Line1 = new Line()
+                    Line3 = new Line() { StrokeLineJoin = PenLineJoin.Miter, StrokeEndLineCap = PenLineCap.Square, StrokeStartLineCap = PenLineCap.Square }
                 };
 
                 Model.Chart.View.AddToDrawMargin(pbv.Line2);
                 Model.Chart.View.AddToDrawMargin(pbv.Line1);
+                Model.Chart.View.AddToDrawMargin(pbv.Line3);
                 Model.Chart.View.AddToDrawMargin(pbv.Shape);
             }
             else
@@ -173,6 +186,8 @@ namespace LiveCharts.Wpf
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Line2);
                 point.SeriesView.Model.Chart.View
                     .EnsureElementBelongsToCurrentDrawMargin(pbv.Line1);
+                point.SeriesView.Model.Chart.View
+                    .EnsureElementBelongsToCurrentDrawMargin(pbv.Line3);
             }
 
             pbv.Line1.StrokeThickness = StrokeThickness;
@@ -185,6 +200,12 @@ namespace LiveCharts.Wpf
             pbv.Line2.Stroke = Stroke;
             pbv.Line2.StrokeDashArray = StrokeDashArray;
             pbv.Line2.Visibility = Visibility;
+            Panel.SetZIndex(pbv.Line2, Panel.GetZIndex(this));
+
+            pbv.Line3.StrokeThickness = StrokeThickness;
+            pbv.Line3.Stroke = Stroke;
+            pbv.Line3.StrokeDashArray = StrokeDashArray;
+            pbv.Line3.Visibility = Visibility;
             Panel.SetZIndex(pbv.Line2, Panel.GetZIndex(this));
 
             if (PointGeometry != null && Math.Abs(PointGeometrySize) > 0.1 && pbv.Shape == null)
