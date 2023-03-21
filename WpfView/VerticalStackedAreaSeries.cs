@@ -125,7 +125,8 @@ namespace LiveCharts.Wpf
                 StrokeThickness = StrokeThickness,
                 Fill = Fill,
                 Visibility = Visibility,
-                StrokeDashArray = StrokeDashArray
+                StrokeDashArray = StrokeDashArray,
+                StrokeMiterLimit = 0
             };
 
             Panel.SetZIndex(Path, Panel.GetZIndex(this));

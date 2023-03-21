@@ -131,7 +131,8 @@ namespace LiveCharts.Wpf
                 StrokeThickness = StrokeThickness,
                 Fill = Fill,
                 Visibility = Visibility,
-                StrokeDashArray = StrokeDashArray
+                StrokeDashArray = StrokeDashArray,
+                StrokeMiterLimit = 0
             };
 
             var geometry = new PathGeometry();
