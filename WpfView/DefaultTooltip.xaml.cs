@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using LiveCharts.Definitions.Series;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,7 +46,7 @@ namespace LiveCharts.Wpf
         public DefaultTooltip()
         {
             InitializeComponent();
-            
+
             DataContext = this;
         }
 
@@ -60,7 +61,7 @@ namespace LiveCharts.Wpf
                 typeof(DefaultTooltip), new FrameworkPropertyMetadata(new Thickness(10, 5, 10, 5)));
             EffectProperty.OverrideMetadata(
                 typeof(DefaultTooltip),
-                new FrameworkPropertyMetadata(new DropShadowEffect {BlurRadius = 3, Color = Color.FromRgb(50,50,50), Opacity = .2}));
+                new FrameworkPropertyMetadata(new DropShadowEffect { BlurRadius = 3, Color = Color.FromRgb(50, 50, 50), Opacity = .2 }));
         }
 
         /// <summary>
@@ -362,6 +363,23 @@ namespace LiveCharts.Wpf
         /// </returns>
         /// <exception cref="System.NotImplementedException"></exception>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class GroupingSeriesConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is IGroupedStackedSeriesView view)
+            {
+                return view.Grouping;
+            }
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -41,10 +41,11 @@
         <wpf:SharedVisibilityConverter x:Key="SharedVisibilityConverter"/>
         <wpf:ChartPointLabelConverter x:Key="ChartPointLabelConverter"/>
         <wpf:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter"/>
+        <wpf:GroupingSeriesConverter x:Key="GroupingSeriesConverter"/>
         <BooleanToVisibilityConverter x:Key="Bvc"></BooleanToVisibilityConverter>
         <CollectionViewSource x:Key="GroupedPoints" Source="{Binding Data.Points}" >
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="ChartPoint.SeriesView.Grouping" />
+                <PropertyGroupDescription PropertyName="ChartPoint.SeriesView" Converter="{StaticResource GroupingSeriesConverter}" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
@@ -71,7 +72,12 @@
                                 <GroupStyle>
                                     <GroupStyle.HeaderTemplate>
                                         <DataTemplate>
-                                            <ContentPresenter Content="{Binding Name}" />
+                                            <ContentPresenter Name="ContentName" Content="{Binding Name}" />
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Name}" Value="">
+                                                    <Setter TargetName="ContentName" Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </GroupStyle.HeaderTemplate>
                                 </GroupStyle>
@@ -98,9 +104,9 @@
 
                                         <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
                                                VerticalAlignment="Center" Margin="5 0 0 0"
-                                               Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, 
-                                                                                                    AncestorType={x:Type StackPanel}}, 
-                                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
+                                               Visibility="{Binding DataContext.Data,
+                                                    RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+                                                    Converter={StaticResource ParticipationVisibilityConverter}}"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
