@@ -973,6 +973,7 @@ namespace LiveCharts.Wpf.Charts.Base
                                 : ((Series) x.SeriesView).Fill,
                             Stroke = ((Series) x.SeriesView).Stroke,
                             StrokeThickness = ((Series) x.SeriesView).StrokeThickness,
+                            StrokeDashArray = ((Series) x.SeriesView).StrokeDashArray,
                             Title = ((Series) x.SeriesView).Title,
                         },
                         ChartPoint = x
@@ -1059,6 +1060,7 @@ namespace LiveCharts.Wpf.Charts.Base
                     ? ((IFondeable) t).PointForeground
                     : ((Series) t).Fill;
                 item.PointGeometry = series.PointGeometry ?? Geometry.Parse("M0,0 L1,0");
+                item.StrokeDashArray = series.StrokeDashArray != null? new DoubleCollection{1,1} : null;
 
                 l.Add(item);
             }

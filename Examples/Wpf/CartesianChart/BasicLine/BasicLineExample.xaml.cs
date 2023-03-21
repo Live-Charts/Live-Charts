@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -16,12 +17,16 @@ namespace Wpf.CartesianChart.BasicLine
                 new LineSeries
                 {
                     Title = "Series 1",
-                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 }
+                    Values = new ChartValues<double> { 4, 6, 5, 2 ,7 },
+                    StrokeDashArray = new DoubleCollection{ 2, 2 }, //Dashed lines
+                    PointGeometry = null //PointGeometry set to null so that point markers do not appear
                 },
                 new LineSeries
                 {
                     Title = "Series 2",
-                    Values = new ChartValues<double> { 6, 7, 3, 4 ,6 }
+                    Values = new ChartValues<double> { 6, 7, 3, 4 ,6 },
+                    StrokeDashArray = new DoubleCollection{ 1, 1 }, //Dotted lines
+                    PointGeometry = null
                 }
             };
 
@@ -32,7 +37,8 @@ namespace Wpf.CartesianChart.BasicLine
             SeriesCollection.Add(new LineSeries
             {
                 Values = new ChartValues<double> {5, 3, 2, 4},
-                LineSmoothness = 0 //straight lines, 1 really smooth lines
+                LineSmoothness = 0, //straight lines, 1 really smooth lines
+                PointGeometry = null
             });
 
             //modifying any series values will also animate and update the chart
