@@ -72,7 +72,7 @@ namespace LiveCharts.Charts
                 xi.CalculateSeparator(this, AxisOrientation.X);
 
                 // ReSharper disable once AccessToModifiedClosure
-                SetAxisLimits(xi, cartesianSeries.Where(x => x.View.ScalesXAt == index).ToArray(), AxisOrientation.X);
+                SetAxisLimits(xi, cartesianSeries.Where(x => x.View.ScalesXAt == (int)AxisX[index].AxisType).ToArray(), AxisOrientation.X);
 
                 if (Math.Abs(xi.BotLimit - xi.TopLimit) < xi.S * .01)
                 {
@@ -106,7 +106,7 @@ namespace LiveCharts.Charts
                 yi.CalculateSeparator(this, AxisOrientation.Y);
 
                 // ReSharper disable once AccessToModifiedClosure
-                SetAxisLimits(yi, cartesianSeries.Where(x => x.View.ScalesYAt == index).ToArray(), AxisOrientation.Y);
+                SetAxisLimits(yi, cartesianSeries.Where(x => x.View.ScalesYAt == (int)AxisY[index].AxisType).ToArray(), AxisOrientation.Y);
 
                 if (Math.Abs(yi.BotLimit - yi.TopLimit) < yi.S * .01)
                 {

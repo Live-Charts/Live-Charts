@@ -203,7 +203,7 @@ namespace LiveCharts.Charts
                     AxisX[index],
                     View.ActualSeries
                         // ReSharper disable once AccessToModifiedClosure
-                        .Where(series => series.Values != null && series.ScalesXAt == index).ToArray(),
+                        .Where(series => series.Values != null && series.ScalesXAt == (int)AxisX[index].AxisType).ToArray(),
                     AxisOrientation.X);
             }
 
@@ -213,7 +213,7 @@ namespace LiveCharts.Charts
                     AxisY[index],
                     View.ActualSeries
                         // ReSharper disable once AccessToModifiedClosure
-                        .Where(series => series.Values != null && series.ScalesYAt == index).ToArray(),
+                        .Where(series => series.Values != null && series.ScalesYAt == (int)AxisY[index].AxisType).ToArray(),
                     AxisOrientation.Y);
             }
         }

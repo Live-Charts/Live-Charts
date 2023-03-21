@@ -32,6 +32,13 @@ namespace LiveCharts.Definitions.Charts
     public interface IAxisView
     {
         /// <summary>
+        /// Get or sets the axis type
+        /// </summary>
+        /// <value>
+        /// The axis type
+        /// </value>
+        AxisType AxisType { get; set; }
+        /// <summary>
         /// Gets or sets the model.
         /// </summary>
         /// <value>
