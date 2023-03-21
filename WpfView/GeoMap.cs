@@ -381,6 +381,10 @@ namespace LiveCharts.Wpf
         /// <param name="value">new value</param>
         public void UpdateKey(string key, double value)
         {
+            if (HeatMap == null)
+            {
+              HeatMap = new Dictionary<string, double>();
+            }
             HeatMap[key] = value;
             ShowMeSomeHeat();
         }
@@ -482,6 +486,8 @@ namespace LiveCharts.Wpf
 
         private void ShowMeSomeHeat()
         {
+            if (HeatMap == null) return;
+
             var max = double.MinValue;
             var min = double.MaxValue;
 
@@ -541,9 +547,9 @@ namespace LiveCharts.Wpf
             var land = Lands.Values.FirstOrDefault(x => x.Shape == sender);
             if (land == null) return;
 
-            double value;
+            double value = 0d;
 
-            if (!HeatMap.TryGetValue(land.Id, out value)) return;
+            if (HeatMap?.TryGetValue(land.Id, out value) != true) return;
             if (!Hoverable) return;
 
             GeoMapTooltip.Visibility = Visibility.Visible;
