@@ -720,7 +720,7 @@ namespace LiveCharts.Uwp.Charts.Base
         public void AddToView(object element)
         {
             var wpfElement = (FrameworkElement) element;
-            if (wpfElement == null) return;
+            if (wpfElement == null || Canvas.Children.Contains(wpfElement)) return;
             Canvas.Children.Add(wpfElement);
         }
 
@@ -731,7 +731,7 @@ namespace LiveCharts.Uwp.Charts.Base
         public void AddToDrawMargin(object element)
         {
             var wpfElement = (FrameworkElement) element;
-            if (wpfElement == null) return;
+            if (wpfElement == null || DrawMargin.Children.Contains(wpfElement)) return;
             DrawMargin.Children.Add(wpfElement);
         }
 
