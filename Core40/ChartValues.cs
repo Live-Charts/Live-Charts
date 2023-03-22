@@ -174,13 +174,12 @@ namespace LiveCharts
             var isObservable = isClass && typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
             var notifies = isClass && typeof(INotifyPropertyChanged).IsAssignableFrom(typeof(T));
 
-#endif
-#if NET45
-            var isClass = typeof(T).GetTypeInfo().IsClass;
+#else
+            var isClass = typeof(T).IsClass;
             var isObservable = isClass &&
-                               typeof(IObservableChartPoint).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
-            var notifies = isClass && typeof(INotifyPropertyChanged).GetTypeInfo()
-                               .IsAssignableFrom(typeof(T).GetTypeInfo());
+                               typeof(IObservableChartPoint).IsAssignableFrom(typeof(T));
+            var notifies = isClass && typeof(INotifyPropertyChanged)
+                               .IsAssignableFrom(typeof(T));
 #endif
 
             var tracker = GetTracker(seriesView);
@@ -237,12 +236,8 @@ namespace LiveCharts
         /// </summary>
         public void CollectGarbage(ISeriesView seriesView)
         {
-#if NET40
+
             var isclass = typeof(T).IsClass;
-#endif
-#if NET45
-            var isclass = typeof(T).GetTypeInfo().IsClass;
-#endif
 
             var tracker = GetTracker(seriesView);
 
